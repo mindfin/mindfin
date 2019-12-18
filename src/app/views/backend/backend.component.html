@@ -1,0 +1,158 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <b> CUSTOMER'S DOCUMENT UPLOAD FORM </b>
+            </div>
+            <div class="card-body">
+                <form #form="ngForm" (ngSubmit)="submitForm(form.value);">
+                    <!-- <div class="card-header">Member Details</div> -->
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label><b>COMPANY NAME</b><code>(*)</code></label>
+                                <input [(ngModel)]="model.companyname" type="text" class="form-control" name="companyname" required #companyname="ngModel">
+                                <div class="alert" *ngIf="companyname.errors && (companyname.dirty || companyname.touched)">
+                                    <div [hidden]="!companyname.errors.required">
+                                        Company Name is required...
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label><b>CUSTOMER NAME</b><code>(*)</code></label>
+                                <input [(ngModel)]="model.customername" type="text" class="form-control" name="customername" required #customername="ngModel">
+                                <div class="alert" *ngIf="customername.errors && (customername.dirty || customername.touched)">
+                                    <div [hidden]="!customername.errors.required">
+                                        Customer Name is required...
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label><b>MOBILE NUMBER</b><code>(*)</code></label>
+                                <input [(ngModel)]="model.mobile" type="text" maxlength="10" class="form-control" name="mobile" required #mobile="ngModel">
+                                <div class="alert" *ngIf="mobile.errors && (mobile.dirty || mobile.touched)">
+                                    <div [hidden]="!mobile.errors.required">
+                                        Mobile Number required...
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label><b>WHOSE CASE</b><code>(*)</code></label>
+                                <input [(ngModel)]="model.whosecase" type="text" class="form-control" name="whosecase" required #whosecase="ngModel">
+                                <div class="alert" *ngIf="whosecase.errors && (whosecase.dirty || whosecase.touched)">
+                                    <div [hidden]="!whosecase.errors.required">
+                                        Whose Case is required...
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label><b>EXECUTIVE</b><code>(*)</code></label><br>
+                                <select class="form-control" name="executiveid" [(ngModel)]="model.executiveid" required #executiveid="ngModel">
+                           <option [value]="">Select Executive</option>
+                           <option *ngFor="let item of fetchData" value="{{item.idemployee}},{{item.name}}">{{item.name}}</option>
+                        </select>
+                                <div class="alert" *ngIf="executiveid.errors && (executiveid.dirty || executiveid.touched)">
+                                    <div [hidden]="!executiveid.errors.required">
+                                        Executive is required!
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label><b>AADHAR NUMBER</b><code>(*)</code></label>
+                                <input [(ngModel)]="model.aadharno" type="text" maxlength="12" class="form-control" name="aadharno" required #aadharno="ngModel">
+                                <div class="alert" *ngIf="aadharno.errors && (aadharno.dirty || aadharno.touched)">
+                                    <div [hidden]="!aadharno.errors.required">
+                                        Aadhar is required...
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label><b>PAN NUMBER</b><code>(*)</code></label>
+                                <input [(ngModel)]="model.panno" type="text" maxlength="10" class="form-control" name="panno" required #panno="ngModel">
+                                <div class="alert" *ngIf="panno.errors && (panno.dirty || panno.touched)">
+                                    <div [hidden]="!panno.errors.required">
+                                        PAN is required...
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-header"><b>DOCUMENTS UPLOAD
+                  </b>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <label><b>COMPANY KYC</b><code>(Everthing In One File)</code></label>
+                                <input [(ngModel)]="model.Companykyc" type="file" class="form-control" name="Companykyc" (change)="onFileSelect($event)" #Companykyc="ngModel">
+                                <br>
+                            </div>
+                            <div class="col-sm-4">
+                                <label><b>CUSTOMER KYC</b><code>(Everthing In One File)</code></label>
+                                <input [(ngModel)]="model.customerkyc" type="file" class="form-control" name="customerkyc" (change)="onFileSelect1($event)" #customerkyc="ngModel">
+                                <br>
+                            </div>
+
+
+                            <div class="col-sm-4">
+                                <label><b>ITR</b><code>(2 Yeas ITR In One File)</code></label>
+                                <input [(ngModel)]="model.itr" type="file" class="form-control" name="itr" (change)="onFileSelect2($event)" #itr="ngModel">
+                                <br>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <label><b>BANK STATEMENT</b><code>(Last 12 Months)</code></label>
+                                <input [(ngModel)]="model.bankstatement" type="file" class="form-control" name="bankstatement" (change)="onFileSelect3($event)" #bankstatement="ngModel">
+                                <br>
+                            </div>
+                            <div class="col-sm-4">
+                                <label><b>LOAN SANCTION LETTER</b><code>(Everthing In One File)</code></label>
+                                <input [(ngModel)]="model.loanstatement" type="file" class="form-control" name="loanstatement" (change)="onFileSelect4($event)" #loanstatement="ngModel">
+                                <br>
+                            </div>
+                            <div class="col-sm-4">
+                                <label><b>GST RETURNS</b><code>(last 6 month)</code></label>
+                                <input [(ngModel)]="model.gstandreturns" type="file" class="form-control" name="gstandreturns" (change)="onFileSelect5($event)" #gstandreturns="ngModel">
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label><b>STATUS</b><code>(*)</code></label>
+                            <select class="form-control" name="displaystatus" [(ngModel)]="model.displaystatus" #displaystatus="ngModel" required>
+                        <option value="" selected>Select option</option>
+                        <option value="PENDING">PENDING</option>
+                        <option value="APPROVED">APPROVED</option>
+                     </select>
+                            <div class="alert" *ngIf="displaystatus.errors && (displaystatus.dirty || displaystatus.touched)">
+                                <div [hidden]="!displaystatus.errors.required">
+                                    Status is required...
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="col-md-6">
+                            <label><b>COMMENTS</b><code>(*)</code></label>
+                            <textarea [(ngModel)]="model.comment" type="text" class="form-control" name="comment" #comment="ngModel"></textarea>
+
+                        </div>
+                        <br>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-primary" [disabled]="!form.valid || model.status===false ">Submit</button>
+                    </div>
+                </form>
+            </div>
+            <!-- </form> -->
+        </div>
+    </div>
+</div>
+<style>
+    .alert {
+        color: red;
+        padding: 0;
+    }
+</style>

@@ -1,0 +1,2910 @@
+const express = require ('express');
+const router = express.Router();
+var sha1 = require('sha1');
+var generator = require('generate-password');
+const format = require ('date-format');
+const multer = require('multer');
+var request=require('request');
+var convertRupeesIntoWords = require('convert-rupees-into-words');
+const knex = require('../knex/knex.js');
+var DateDiff = require('date-diff');
+var zeropad = require('zeropad');
+var moment =require('moment');
+var urlencode = require('urlencode');
+var otpGenerator = require('otp-generator')
+const nodemailer = require('nodemailer');
+
+// const format = require('date-format');
+var now = new Date()
+
+
+const storage=multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, './src/assets/President/');
+  },
+  filename: function(req, file, cb) {
+
+    cb(null,  Date.now()+""+ file.originalname);
+
+ 
+  }
+  
+})
+
+const fileFilter = (req, file, cb) => {
+    
+  if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype ==='image/pdf'  ) {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 1024 * 1024 * 5
+  },
+ fileFilter: fileFilter
+});
+
+
+
+
+
+ 
+
+router.get('/piechart',function(req,res){
+knex.select('usertype.user')
+.from('usertype')  
+.count('employee.name as total')  
+.join('employee','employee.iduser','usertype.idusertype')
+.where('employee.status','active')
+.groupBy('employee.iduser')
+.then(function(result){  
+res.json(result);
+})
+})
+  
+
+// new apis to mindfin//
+router.post('/bankinsert',(req,res)=>{
+  const nowdate1 = format.asString('yyyy-MM-dd',new Date()); 
+
+  var date = moment.utc().format('YYYY-MM-DD HH:mm:ss');
+  var localTime  = moment.utc(date).toDate();
+  localTime = moment(localTime).format('YYYY-MM-DD HH:mm:ss');
+  console.log("moment: " + localTime);
+  
+  if(req.body.idbank!=null){
+
+    knex('bank')
+    .where({idbank:req.body.idbank})
+    .update({
+      bankname: req.body.bankname,
+      updateddate:localTime
+    })
+    .then(function(result){  
+      //console.log(result); 
+      res.json('Bank Updated Successfully');})
+  
+  }else{
+    knex('bank')
+    .returning('id')
+    .insert({bankname:req.body.bankname,
+   status:"active",
+   createddate:moment().format(nowdate1)  
+    })
+    .then(function(result){  
+      //console.log(result); 
+      res.json('Bank Added Successfully');
+    })
+  }
+})
+
+
+router.get('/getbanklist',(req,res)=>{
+  knex.select()
+  .from('bank')
+  .where('bank.status','active')
+  .then(function(result){  
+    res.json(result);
+  })    
+})
+
+router.post('/getnames',(req,res)=>{
+  //console.log(req.body.length);
+  var vbs=req.body.length;
+  for(var j=0;j<req.body.length;j++){
+ var b1= req.body[j].previousbankname;
+ var l1= req.body[j].previousapplytype;
+
+  knex.select('bank.bankname')
+  .from('bank')
+  .where({idbank:b1})
+  .then(function(result){ 
+    //console.log(result);
+    knex.select('loantype.loantype')
+    .from('loantype')
+   .where({idloantype:l1})
+    .then(function(re){ 
+    //console.log(re)
+    res.json({result:result,
+    re:re})
+      
+      // result,re);
+  })    
+})
+  }
+})
+
+
+
+router.post('/loaninsert',(req,res)=>{
+  const nowdate1 = format.asString('yyyy-MM-dd',new Date()); 
+  if(req.body.idloantype!=null){
+    knex('loantype')
+    .where({idloantype:req.body.idloantype})
+    .update({
+      loantype: req.body.loantype,
+      code: req.body.code,
+      updateddate:moment().format(nowdate1)  
+    })
+    .then(function(result){  
+      //console.log(result); 
+      res.json('Loan Updated Successfully');})
+  }else{
+    knex('loantype')
+    .returning('id')
+    .insert({loantype:req.body.loantype, code: req.body.code,
+   status:"active",
+   createddate:moment().format(nowdate1)  
+    })
+    .then(function(result){  
+      //console.log(result); 
+      res.json('Loan Added Successfully');
+    })
+  }
+})
+
+
+router.get('/getloanlist',(req,res)=>{
+  knex.select()
+  .from('loantype')
+  .where('loantype.status','active')
+
+  .then(function(result){  
+    //console.log(result); 
+    res.json(result);
+  })    
+})
+
+
+router.post('/userinsert',(req,res)=>{
+  const nowdate1 = format.asString('yyyy-MM-dd',new Date()); 
+
+  if(req.body.idusertype!=null){
+    knex('usertype')
+    .where({idusertype:req.body.idusertype})
+    .update({
+      user: req.body.user,
+      updateddate:moment().format(nowdate1)  
+
+    })
+    .then(function(result){  
+      //console.log(result); 
+      res.json('Loan Updated Successfully');})
+  
+  }else{
+    knex('usertype')
+    .returning('id')
+    .insert({user:req.body.user,
+   status:"active",
+   createddate:moment().format(nowdate1)  
+
+    })
+    .then(function(result){  
+      //console.log(result); 
+      res.json('Loan Added Successfully');
+    })
+  }
+})
+
+router.get('/getuserlist',(req,res)=>{
+  knex.select()
+  .from('usertype')
+  .where('usertype.status','active')
+  .then(function(result){  
+    //console.log(result); 
+    res.json(result);
+  })    
+})
+
+
+router.post('/employeetypeinsert',(req,res)=>{
+  console.log(req.body);
+
+  var date3 = format.asString('yyyy-MM-dd',new Date());
+  // var d=new Date(date3);
+  //  console.log(d);
+  if(req.body.idemployeetype!=null){
+    knex('employeetype')
+    .where({idemployeetype:req.body.idemployeetype})
+    .update({
+      emp_type: req.body.emp_type,
+      updateddate:moment().format(date3)  
+
+    })
+    .then(function(result){  
+      res.json('Employeetype Updated Successfully');})
+  
+  }else{
+    knex('employeetype')
+    .insert({emp_type:req.body.emp_type,
+   status:"active",
+   createddate:moment().format(date3)  
+
+  
+    })
+    .then(function(result){  
+      //console.log(result); 
+      res.json('Employeetype Added Successfully');
+    })
+  }
+})
+
+
+
+router.get('/getemployeetypelist',(req,res)=>{
+  knex.select()
+  .from('employeetype')
+  .where('employeetype.status','active')
+  .then(function(result){  
+    //console.log(result); 
+    res.json(result);
+  })    
+})
+
+
+router.post('/customeradd',
+    upload.fields([{name:'cimage'},
+    , { name: 'pimage'},
+     {name: 'aimage'}])
+        , (req, res) => {
+            var dob = req.body.dob;
+            const nowdate1 = format.asString('yyyy-MM-dd',new Date(dob)); 
+            const nowdate= format.asString('yyyy-MM-dd',new Date()); 
+            let config=req.body.arr;
+            console.log(config);
+            if(req.files.cimage!=null)
+            {
+         cimage=req.files.cimage[0]['filename'];
+             }  
+           else{
+        cimage= req.body.cimage;
+               }
+    
+               if(req.files.pimage!=null)
+               {
+            pimage=req.files.pimage[0]['filename'];
+                }  
+              else{
+           pimage= req.body.pimage;
+                  }
+    
+                  if(req.files.aimage!=null)
+                  {
+               aimage=req.files.aimage[0]['filename'];
+                   }  
+                 else{
+              aimage= req.body.aimage;
+                     }
+  knex('customer')
+  .insert({
+    name:req.body.name,
+    mobile:req.body.mobile,
+    email:req.body.email,
+    dob:nowdate1  ,
+    salary:req.body.salary,
+    altmobile:req.body.altmobile,
+    address:req.body.address,
+    cname:req.body.cname,
+    designation:req.body.designation,
+    caddress:req.body.caddress,
+    pincode:req.body.pincode,
+    idexecutive:req.body.idexecutive,  
+    gender:req.body.gender,
+    amount:req.body.amount,
+    applytype:req.body.applytype,
+    cimage : cimage,
+    pimage : pimage,
+    aimage : aimage,
+    status:'active',
+    displaystatus:'Pending',
+    applieddate:nowdate,
+    source:'Application'
+
+  }).returning('id')
+  .then(function(id){  
+    console.log(config);
+    const ids=id.toString();
+if(config==undefined || config=='undefined')
+{
+res.json("Not Inserted");
+console.log("empty data")
+}
+else{
+  const vbs=JSON.parse(config);
+  for(var j=0;j<vbs.length;j++){
+    var previousapplytype=vbs[j].loanid
+    var previousbankname=vbs[j].bankid
+    var previousamounttaken=vbs[j].previousamounttaken
+    knex('previousbankdetails')
+    .insert({
+      idloantype:previousapplytype,
+      idbank:previousbankname,
+      amount:previousamounttaken,
+      idcustomer:ids
+    }).then(function(re){
+  res.json(re);
+
+      
+    })
+  }
+}
+
+  })
+ });  
+
+ router.get('/hotCustomers/:pagesize/:page',function(req,res){
+   console.log("hiii");
+   const pageSize = req.params.pagesize;
+   const currentPage = req.params.page;
+   const skip = (pageSize*(currentPage-1))
+  var date3 = format.asString('MM/dd/yyyy',new Date());
+  var ddd=moment().format(date3);
+   var d=new Date(ddd);
+   var e=d.getDate();
+   var m=d.getMonth()+1;
+   var y = d.getFullYear()+','+m+','+e;
+
+  knex.select()
+  .from('customer')
+  .join('loantype','loantype.idloantype','customer.applytype')
+  .where ({'customer.status':'active'})
+  .havingRaw("customer.name IS NOT ?", [null])
+  .havingRaw("customer.mobile IS NOT ?", [null])
+  .havingRaw("customer.email IS NOT ?", [null])
+  .havingRaw("customer.dob IS NOT ?", [null])
+  .havingRaw("customer.address IS NOT ?", [null])
+  .havingRaw("customer.amount IS NOT ?", [null])
+  .havingRaw("customer.cimage IS NOT ?", [null])
+  .havingRaw("customer.pimage IS NOT ?", [null])
+  .havingRaw("customer.aimage IS NOT ?", [null])
+  // .havingRaw("customer.accno IS NOT ?", [null])
+  // .havingRaw("customer.ifsc IS NOT ?", [null])
+  .havingRaw("customer.salary IS NOT ?", [null])
+  .havingRaw("customer.cname IS NOT ?", [null])
+  .havingRaw("customer.applytype IS NOT ?", [null])
+  .limit(pageSize).offset(skip)
+  .then(function(result){
+
+    knex.select()
+  .from('customer')
+  // .join('bank','bank.idbank','customer.bankname')
+  .join('loantype','loantype.idloantype','customer.applytype')
+  .where ({'customer.status':'active'})
+  
+  .havingRaw("customer.name IS NOT ?", [null])
+  .havingRaw("customer.mobile IS NOT ?", [null])
+  .havingRaw("customer.email IS NOT ?", [null])
+  .havingRaw("customer.dob IS NOT ?", [null])
+  .havingRaw("customer.address IS NOT ?", [null])
+  .havingRaw("customer.amount IS NOT ?", [null])
+  .havingRaw("customer.cimage IS NOT ?", [null])
+  .havingRaw("customer.pimage IS NOT ?", [null])
+  .havingRaw("customer.aimage IS NOT ?", [null])
+  // .havingRaw("customer.accno IS NOT ?", [null])
+  // .havingRaw("customer.ifsc IS NOT ?", [null])
+  .havingRaw("customer.salary IS NOT ?", [null])
+  .havingRaw("customer.cname IS NOT ?", [null])
+  .havingRaw("customer.applytype IS NOT ?", [null])
+  // .count({a:'customer.idcustomer'})
+  .then(function(re){  
+   var a=re.length
+   console.log(a);
+
+   for(i=0;i<a;i++){
+    var d1=new Date(result[i].applieddate);
+    var e1=d1.getDate();
+    var m1=d1.getMonth()+1;
+    var y1 = d1.getFullYear()+','+m1+','+e1;
+  
+ var date1=new Date(y);
+ var date4=new Date(y1);
+   var diff = new DateDiff(date1,date4);
+    var opt=diff.days();
+console.log(opt);
+result[i].opt=opt;
+   }
+    res.status(200).json({
+      message:"Memberlists fetched",
+      posts:result,
+      maxPosts:re.length
+    });
+  
+})
+  })
+})
+
+
+ router.get('/customerlist/:pagesize/:page',function(req,res){
+  const pageSize = req.params.pagesize;
+  const currentPage = req.params.page;
+  const skip = (pageSize*(currentPage-1))
+  var date3 = format.asString('MM/dd/yyyy',new Date());
+  var ddd=moment().format(date3);
+   var d=new Date(ddd);
+   var e=d.getDate();
+   var m=d.getMonth()+1;
+   var y = d.getFullYear()+','+m+','+e;
+
+  knex.select('customer.*','loantype.loantype')
+  .from('customer')
+  // .join('employee','employee.idemployee','customer.idexecutive')
+  .join('loantype','loantype.idloantype','customer.applytype')
+  .where ({'customer.status':'active'})
+  .limit(pageSize).offset(skip)
+  .then(function(result){
+
+    knex.select()
+  .from('customer')
+  // .join('bank','bank.idbank','customer.bankname')
+  .join('loantype','loantype.idloantype','customer.applytype')
+  .where ({'customer.status':'active'})
+  // .count({a:'customer.idcustomer'})
+  .then(function(re){  
+   var a=re.length
+   console.log(a);
+
+   for(i=0;i<a;i++){
+    var d1=new Date(result[i].applieddate);
+    var e1=d1.getDate();
+    var m1=d1.getMonth()+1;
+    var y1 = d1.getFullYear()+','+m1+','+e1;
+  
+ var date1=new Date(y);
+ var date4=new Date(y1);
+   var diff = new DateDiff(date1,date4);
+    var opt=diff.days();
+console.log(opt);
+result[i].opt=opt;
+   }
+    res.status(200).json({
+      message:"Memberlists fetched",
+      posts:result,
+      maxPosts:re.length
+    });
+})
+  })
+})
+
+router.get('/getexecutivelist',function(req,res){
+  knex.select()
+  .from('employee')
+  .join('usertype','usertype.idusertype','employee.iduser')
+  .where('usertype.user ','EXECUTIVE')
+  .where('employee.status ','active')
+  .then(function(result){  
+      //console.log(result);
+      res.json(result);
+    })
+ });
+
+ router.post('/approvecustomer',upload.fields([{name:'cimage'}, { name: 'pimage'},{name: 'aimage'}]), (req, res) => {
+
+  knex.select()
+  .from('approvedcustomer')
+  .then(function(re){  
+      //console.log(re);
+      var length=re.length;
+  console.log(length);
+  var len=length + 1;
+console.log(len);
+  knex.select()
+  .from('loantype')
+  .where('loantype.idloantype ',req.body.applytype)
+  .then(function(re){  
+   var code=re[0].code;
+  
+//console.log(req.body.applieddate);
+var x = Buffer.from(req.body.applieddate);
+var y = x.slice(2,4);
+//console.log(y.toString());
+
+var abc="MF"+code+y;
+console.log(abc);
+var autoid=abc+zeropad(len, 4)
+// console.log(zeropad(len, 4));
+console.log(autoid);
+
+  var password = generator.generate({
+      length: 8,
+      numbers: true
+  });
+
+  var dob = req.body.dob;
+  const nowdate = format.asString('yyyy-MM-dd',new Date(dob)); 
+  var nowdate1=moment().format(nowdate)
+  const encryptedString = sha1(password);
+
+  knex('approvedcustomer')
+  .returning('id')
+  .insert({
+  autoid:autoid,
+  name:req.body.name,
+  mobile:req.body.mobile,
+  email:req.body.email,
+  dob:moment().format(nowdate1),
+  salary:req.body.salary,
+  altmobile:req.body.altmobile,
+  address:req.body.address,
+  cname:req.body.cname,
+  designation:req.body.designation,
+  caddress:req.body.caddress,
+  pincode:req.body.pincode,
+  idexecutive:req.body.idexecutive,
+  gender:req.body.gender,
+  amount:req.body.amount,
+  applytype:req.body.applytype,
+  cimage : req.body.cimage,
+  pimage : req.body.pimage,
+  aimage : req.body.aimage,
+  status:'active',
+  password:encryptedString,
+  orgpassword:password,
+  source:req.body.source
+}) 
+.then(function(id){  
+knex('customer')
+  .where({idcustomer:req.body.idcustomer})
+  .update({
+    idapprovecustomer:id,
+    status:"inactive",
+    displaystatus:"Approved"
+  }) .then(function(result){  
+    res.json('Approved customer Added Successfully');
+  })
+  knex('previousbankdetails')
+  .where({idcustomer:req.body.idcustomer})
+  .update({
+    idapprovedcustomer:id,
+    status:"active"
+  }) .then(function(result){  
+    res.json('Approved customer Added Successfully');
+  })
+})
+})
+})
+})
+
+router.post('/rejectcustomer',function(req,res)
+{
+  var date3 = format.asString('yyyy-MM-dd',new Date());
+  knex('customer')
+  .where({idcustomer:req.body.idcustomer})
+  .update({
+    status:"reject",
+    displaystatus:"Reject",
+    updateddate:moment().format(date3)
+  }) .then(function(result){  
+    //console.log(result); 
+    res.json('Approved custome Rejected Successfully');
+  })
+});
+
+router.post('/deleteemp',function(req,res)
+{
+  var date3 = format.asString('yyyy-MM-dd',new Date());
+  knex('employee')
+  .where({idemployee:req.body.idemployee})
+  .update({
+    status:"inactive",
+    updateddate:moment().format(date3)
+  }) .then(function(result){  
+    //console.log(result); 
+    res.json('Employee Deleted Successfully');
+  })
+ 
+})
+
+router.post('/employeeadd',           
+upload.fields([{name:'cimage'},{ name: 'pimage'},{name: 'aimage'}]),(req, res) => {
+    // console.log(req.body);
+    // console.log(req.files);
+        var password = generator.generate({
+            length: 8,
+            numbers: true
+        });
+        var dob = req.body.dob;
+        const nowdate1 = format.asString('yyyy-MM-dd',new Date(dob)); 
+        const nowdate = format.asString('yyyy-MM-dd',new Date()); 
+
+        const encryptedString = sha1(password);
+        
+        if(req.files.cimage!=null)
+        {
+     cimage=req.files.cimage[0]['filename'];
+         }  
+       else{
+    cimage= req.body.cimage;
+           }
+
+           if(req.files.pimage!=null)
+           {
+        pimage=req.files.pimage[0]['filename'];
+            }  
+          else{
+       pimage= req.body.pimage;
+              }
+
+              if(req.files.aimage!=null)
+              {
+           aimage=req.files.aimage[0]['filename'];
+               }  
+             else{
+          aimage= req.body.aimage;
+                 }
+
+        knex('employee') 
+        .returning('id')
+        .insert({
+        name:req.body.name,
+        mobile:req.body.mobile,
+        email:req.body.email,
+        dob:moment().format(nowdate1),
+        ifsc:req.body.ifsc,
+        altmobile:req.body.altmobile,
+        address:req.body.address,
+        qualification:req.body.qualification,
+        accno:req.body.accno,
+        branch:req.body.branch,
+        pincode:req.body.pincode,
+        iduser:req.body.iduser,
+        gender:req.body.gender,
+        cimage : cimage,
+        pimage : pimage,
+        aimage : aimage,
+        status:'active',
+        password:encryptedString,
+        orgpassword:password,
+        createddate:moment().format(nowdate)
+    }) 
+ 
+    .then(function(result){  
+      //console.log(result); 
+      res.json('Employee Added Successfully');
+    })
+
+})
+
+
+
+
+router.get('/getemployeelist/:pagesize/:page',function(req,res){
+  const pageSize = req.params.pagesize;
+  const currentPage = req.params.page;
+  const skip = (pageSize*(currentPage-1))
+  knex.select()
+  .from('employee')
+  .join('usertype','usertype.idusertype','employee.iduser')
+  .where('employee.status','active')
+  .limit(pageSize).offset(skip)
+  .then(function(result){  
+    knex.select()
+    .from('employee')
+    .join('usertype','usertype.idusertype','employee.iduser')
+    .where('employee.status','active')
+
+
+  .then(function(re){  
+    //console.log(re);
+    //console.log(result);
+
+    res.status(200).json({
+      message:"Memberlists fetched",
+      posts:result,
+      maxPosts:re.length
+    });
+
+})
+  })
+})
+
+
+router.get('/getexecutiveelist/:pagesize/:page',function(req,res){
+ console.log("hii");
+  const pageSize = req.params.pagesize;
+  const currentPage = req.params.page;
+  const skip = (pageSize*(currentPage-1))
+
+  knex.select()
+  .from('employee')
+  .join('usertype','usertype.idusertype','employee.iduser')
+  .where('usertype.user ','EXECUTIVE')
+  .limit(pageSize).offset(skip)
+  .then(function(result){  
+    knex.select()
+    .from('employee')
+    .join('usertype','usertype.idusertype','employee.iduser')
+    .where('usertype.user ','EXECUTIVE')
+   .then(function(re){  
+    res.status(200).json({
+      message:"Memberlists fetched",
+      posts:result,
+      maxPosts:re.length
+
+    });
+    })
+    })
+    
+})
+
+router.get('/viewcustomerid/:pagesize/:page/:id', (req, res, next) => {
+    //console.log(req.params);
+    const pageSize = req.params.pagesize;
+            const currentPage = req.params.page;
+            const skip = (pageSize*(currentPage-1));
+// router.get('/viewcustomerid',function(req,res){
+//   //console.log(req.body);
+//   //console.log(req.params);
+  knex.select()
+  .from('customer')
+  // .join('bank','bank.idbank','customer.bankname')
+  .join('loantype','loantype.idloantype','customer.applytype')
+   .where('customer.idexecutive',req.params.id )
+   .limit(pageSize).offset(skip)
+  .then(function(result){  
+    knex.select()
+    .from('customer')
+    // .join('bank','bank.idbank','customer.bankname')
+    .join('loantype','loantype.idloantype','customer.applytype')
+     .where('customer.idexecutive',req.params.id )
+  // .count({a:'customer.idcustomer'})
+  .then(function(re){  
+    //console.log(re);
+    //console.log(result);
+    res.status(200).json({
+      message:"Memberlists fetched",
+      posts:result,
+      maxPosts:re.length
+    });
+})
+  })
+})
+
+router.get('/approvedlist/:pagesize/:page',function(req,res){
+  const pageSize = req.params.pagesize;
+  const currentPage = req.params.page;
+  const skip = (pageSize*(currentPage-1))
+  knex.select()
+  .from('approvedcustomer')
+  // .join('bank','bank.idbank','approvedcustomer.bankname')
+  .join('loantype','loantype.idloantype','approvedcustomer.applytype')
+  .where('approvedcustomer.status','active')
+  .limit(pageSize).offset(skip)
+  .then(function(result){  
+    knex.select()
+    .from('approvedcustomer')
+    // .join('bank','bank.idbank','approvedcustomer.bankname')
+    .join('loantype','loantype.idloantype','approvedcustomer.applytype')
+    .where('approvedcustomer.status','active')
+    .then(function(re){  
+    //console.log(re);
+    //console.log(result);
+    res.status(200).json({
+      message:"Approved list fetched",
+      posts:result,
+      maxPosts:re.length
+    });
+})
+})
+})
+
+// router.get('/approvedlist', (req, res, next) => {
+//   ////console.log('');
+//   const pageSize = +req.query.pagesize;
+//   const currentPage = +req.query.page;
+//   const postQuery = Approvedcustomer.find({memberstatus:'active'}).populate('bankname');
+//   let fetchedPosts;
+//   if (pageSize && currentPage) { 
+//     postQuery.skip(pageSize * (currentPage - 1)).limit(pageSize);
+//   }
+//   postQuery
+//   .then(documents => {
+//   fetchedPosts = documents;
+//   return Approvedcustomer.find({memberstatus:'active'}).count();
+//     })
+//     .then(count => {
+//       //console.log(fetchedPosts);
+//       res.status(200).json({
+//           // //console.log(fetchedPosts);
+//         message: "Posts fetched successfully!",
+//         posts: fetchedPosts,
+//         maxPosts: count
+//       });
+//     });
+// });
+
+
+router.post('/adminlogin',(req,res)=>{
+  console.log(req.body);
+username=req.body.username;
+const password = (sha1(req.body.password));
+
+knex.select()
+.from('employee')
+.join('usertype','usertype.idusertype','employee.iduser')
+.where({email:username,password:password})
+.then(function(result){  
+  console.log(result);
+  if(result==''||result==null||result==undefined)
+{
+  knex.select()
+  .from('customer')
+  .where({email:username,password:password})
+  .then(function(re){ 
+    console.log(re);
+
+    re.user="CUSTOMER";
+res.json(re);
+})
+}
+else{
+  res.json(result);
+}
+})
+})
+
+
+
+  
+
+router.get('/employeecount',(req,res)=>{
+  knex.select()
+  .from('employee')
+  .where({status:"active"})
+  .count({a:'employee.idemployee'})
+  .then(function(result){  
+    //console.log(result); 
+    res.json(result);
+  })    
+})
+
+router.get('/membercount',(req,res)=>{
+  knex.select()
+  .from('approvedcustomer')
+  .where({status:"active"})
+  .count({a:'approvedcustomer.idapprovedcustomer'})
+  .then(function(result){  
+    //console.log(result); 
+    res.json(result);
+  })    
+})
+
+router.get('/rejectcount',(req,res)=>{
+  knex.select()
+  .from('customer')
+  .where({status:"reject"})
+  // .count({a:'customer.idcustomer'})
+  .then(function(result){  
+    //console.log(result); 
+    res.json(result.length);
+  })    
+})
+
+
+router.get('/pendingcount',(req,res)=>{
+  knex.select()
+  .from('customer')
+  .where({status:"active"})
+  .count({a:'customer.idcustomer'})
+  .then(function(result){  
+    //console.log(result); 
+    res.json(result);
+  })    
+})
+
+
+router.get('/editemp/:id',function(req,res){
+  knex.select()
+  .from('employee')
+  .join('usertype','usertype.idusertype','employee.iduser')
+   .where('employee.idemployee',req.params.id )
+  .then(function(result){  
+    //console.log(result); 
+    res.json(result);
+  })
+})
+
+
+
+                router.post('/editemployee', upload.fields([{name:'cimage'},{ name: 'pimage'},{name: 'aimage'}])
+                    , (req, res) => {
+                    
+                        if(req.files.cimage!=null)
+                         {
+                             //console.log("hi");
+                      cimage=req.files.cimage[0]['filename'];
+                          }  
+                        else{
+                            //console.log("bye");
+                     cimage= req.body.cimage;
+                     //console.log(cimage)
+                            }
+
+                            if(req.files.pimage!=null)
+                            {
+                                //console.log("hi");
+                             pimage=req.files.pimage[0]['filename'];
+                             }  
+                           else{
+                               //console.log("bye");
+                            pimage= req.body.pimage;
+                           //console.log(pimage)
+                               }
+                               if(req.files.aimage!=null)
+                               {
+                            //console.log("hi");
+                            aimage=req.files.aimage[0]['filename'];
+                                }  
+                              else{
+                                  //console.log("bye");
+                           aimage= req.body.aimage;
+                           //console.log(aimage)
+                                  }
+                                  var dob = req.body.dob;
+                                  const nowdate1 = format.asString('yyyy-MM-dd',new Date(dob)); 
+                                  const nowdate = format.asString('yyyy-MM-dd',new Date()); 
+                          //console.log(req.body);
+                          knex('employee')
+                          .where({idemployee:req.body.id})
+                          .update({
+                                name:req.body.name,
+                                mobile:req.body.mobile,
+                                email:req.body.email,
+                                dob:moment().format(nowdate1),
+                                ifsc:req.body.ifsc,
+
+                                altmobile:req.body.altmobile,
+                                address:req.body.address,
+                                qualification:req.body.qualification,
+                                accno:req.body.accno,
+                                branch:req.body.branch,
+
+                                pincode:req.body.pincode,
+                                iduser:req.body.idusertype,
+                                gender:req.body.gender,
+                                cimage : cimage,
+                                pimage : pimage,
+                                aimage : aimage,
+                                status:'active',
+                                updateddate:moment().format(nowdate)
+
+                              })
+                              .then(function(result){  
+                                //console.log(result); 
+                                res.json('Project Updated Successfully');})
+                              })
+    
+
+
+
+                router.get('/memberviewdetails/:memberid',function(req,res){
+
+                    //console.log(req.params);
+                    Approvedcustomer.findOne({_id:req.params.memberid}).populate('idexecutive applytype ').exec(function(err,result){
+                                            res.json(result);
+                    })
+                      })
+
+
+            
+                        router.get('/editcust/:id',function(req,res){
+                          knex.select()
+                          .from('customer')
+                          // .join('bank','bank.idbank','customer.bankname')
+                          .join('loantype','loantype.idloantype','customer.applytype')
+                          // .join('previousbankdetails','previousbankdetails.idcustomer','customer.idcustomer')
+                           .where('customer.idcustomer',req.params.id )
+                          .then(function(result){  
+                            //console.log(result); 
+                            res.json(result);
+                          })
+                        })
+
+                        router.get('/getextradetails/:id',function(req,res){
+                          knex.select('previousbankdetails.amount as previousamounttaken','bank.bankname as previousbankname','loantype.loantype as previousapplytype')
+                          .from('previousbankdetails')
+                          .join('bank','bank.idbank','previousbankdetails.idbank')
+                          .join('loantype','loantype.idloantype','previousbankdetails.idloantype')
+                           .where('previousbankdetails.idcustomer',req.params.id )
+                          .then(function(result){  
+                            //console.log(result); 
+                            res.json(result);
+                          })
+                        })
+
+
+
+
+router.post('/customerupdate', upload.fields([{name:'cimage'},{ name: 'pimage'},{name: 'aimage'}])
+                        ,(req, res) => {
+                          
+                            if(req.files.cimage!=null)
+                             {
+                                 //console.log("hi");
+                          cimage=req.files.cimage[0]['filename'];
+                              }  
+                            else{
+                                //console.log("bye");
+                         cimage= req.body.cimage;
+                         //console.log(cimage)
+                                }
+
+                                if(req.files.pimage!=null)
+                                {
+                                    //console.log("hi");
+                                 pimage=req.files.pimage[0]['filename'];
+                                 }  
+                               else{
+                                   //console.log("bye");
+                                pimage= req.body.pimage;
+                               //console.log(pimage)
+                                   }
+
+
+
+                                   if(req.files.aimage!=null)
+                                   {
+                                       //console.log("hi");
+                                aimage=req.files.aimage[0]['filename'];
+                                    }  
+                                  else{
+                                      //console.log("bye");
+                               aimage= req.body.aimage;
+                               //console.log(aimage)
+                                      }
+                                      var dob = req.body.dob;
+                                      const nowdate1 = format.asString('yyyy-MM-dd',new Date(dob)); 
+                                      const nowdate = format.asString('yyyy-MM-dd',new Date()); 
+                        
+                              //console.log(req.body);
+                              knex('customer')
+                              .where({idcustomer:req.body.id})
+                              .update({
+                                    name:req.body.name,
+                                    mobile:req.body.mobile,
+                                    email:req.body.email,
+                                    dob:moment().format(nowdate1),
+                                    salary:req.body.salary,
+
+                                    altmobile:req.body.altmobile,
+                                    address:req.body.address,
+                                    cname:req.body.cname,
+                                    designation:req.body.designation,
+                                    caddress:req.body.caddress,
+
+                                    pincode:req.body.pincode,
+                                    idexecutive:req.body.idexecutive,
+                                    // iduser:'MEMBER',
+                                    gender:req.body.gender,
+                                    amount:req.body.amount,
+
+                                    applytype:req.body.applytype,
+                                    previousbankname:req.body.previousbankname,
+                                    previousapplytype:req.body.previousapplytype,
+                                    previousamounttaken:req.body.previousamounttaken,
+                                    loanpurpose:req.body.loanpurpose,
+
+                                    cimage : cimage,
+                                    pimage : pimage,
+                                    aimage : aimage,
+                                    updateddate :moment().format(nowdate)
+                              })
+                              .then(function(result){  
+                                //console.log(result); 
+                                res.json('Customers Updated Successfully');})
+          //             
+                    });
+
+
+                 
+router.get('/getaging/:date',function(req,res){    
+    var date3 = format.asString('MM/dd/yyyy',new Date());
+  
+     var d=new Date(date3);
+     var e=d.getDate();
+     var m=d.getMonth()+1;
+     var y = d.getFullYear()+','+m+','+e;
+ 
+
+     var d1=new Date(req.params.date);
+     var e1=d1.getDate();
+     var m1=d1.getMonth()+1;
+     var y1 = d1.getFullYear()+','+m1+','+e1;
+
+var date1=new Date(y);
+var date4=new Date(y1);
+    var diff = new DateDiff(date1,date4);
+ 
+res.json(diff.days());
+  
+});
+
+router.post('/applybank',(req,res,next)=>
+{
+    const id = req.body.bname;
+    var id1 = id.substr(2);
+    arr = [id1];
+    //console.log(arr);
+    var str = arr.toString();
+    var output = str.split(',');
+    //console.log(output.length);
+    for(i=0;i<output.length;i++){
+//console.log(req.body.idvalue);
+//console.log(output[i]);
+knex('applybank')
+    .insert({
+      idbank : output[i],
+     idcustomer:req.body.idvalue
+    })
+    .then(function(result){  
+      //console.log(result); 
+      res.json('ApplyBank Added Successfully');
+    })
+    }
+
+})
+
+router.get('/homememberlist/:memberid',function(req,res){
+  //console.log(req.params.memberid);
+      knex.select()
+      .from('employee')
+      .join('usertype','usertype.idusertype','employee.iduser')
+      .where({idemployee:req.params.memberid})
+      .then(function(result){  
+      //console.log(result);
+        res.json(result);
+      });
+    });
+
+
+router.post('/memberlogin',(req,res,next)=>
+{
+var username = req.body.mid;
+var password = req.body.password;
+const pwd = (sha1(password));
+knex.select()
+.from('customer')
+.where({email:username,password:pwd})
+.then(function(result){  
+  res.json(result);
+})
+})
+
+
+router.post('/businesslistinsert',(req,res)=>{
+  if(req.body.idlistforbusiness!=null){
+
+    knex('listforbusiness')
+    .where({idlistforbusiness:req.body.idlistforbusiness})
+    .update({
+      list: req.body.list
+    })
+    .then(function(result){  
+      res.json('Business List Updated Successfully');})
+  
+  }else{
+    knex('listforbusiness')
+    .insert({list:req.body.list,
+   status:"active"
+    })
+    .then(function(result){  
+      //console.log(result); 
+      res.json('Bank Added Successfully');
+    })
+  }
+})
+
+
+router.get('/getbusinesslist',(req,res)=>{
+  knex.select()
+  .from('listforbusiness')
+  .where('listforbusiness.status','active')
+  .then(function(result){  
+  
+    res.json(result);
+  })    
+})
+
+router.get('/getviewbanklist/:id',(req,res)=>{
+  // console.log(req.params);
+  knex.select('applybank.*','bank.bankname','loantype.loantype')
+  .from('applybank')
+  .join('customer','customer.idcustomer','applybank.idcustomer')
+  .join('bank','bank.idbank','applybank.idbank')
+  .join('loantype','loantype.idloantype','applybank.idloan')
+  .where('applybank.idcustomer',req.params.id)
+  .where('applybank.status','PENDING')
+
+  .then(function(result){  
+  
+    res.json(result);
+  })    
+})
+
+router.get('/getviewbanklistt/:id',(req,res)=>{
+  // console.log(req.params);
+  knex.select('applybank.*','bank.bankname','loantype.loantype')
+  .from('applybank')
+  .join('customer','customer.idcustomer','applybank.idcustomer')
+  .join('bank','bank.idbank','applybank.idbank')
+  .join('loantype','loantype.idloantype','applybank.idloan')
+  .where('applybank.idcustomer',req.params.id)
+  .where('applybank.status','APPROVED')
+
+  .then(function(result){  
+  
+    res.json(result);
+  })    
+})
+
+router.get('/getViewPrevBankList/:id',(req,res)=>{
+  // console.log(req.params);
+  knex.select('previousbankdetails.*','bank.bankname','loantype.loantype')
+  .from('previousbankdetails')
+  .join('customer','customer.idcustomer','previousbankdetails.idcustomer')
+  .join('bank','bank.idbank','previousbankdetails.idbank')
+  .join('loantype','loantype.idloantype','previousbankdetails.idloantype')
+  .where('previousbankdetails.idcustomer',req.params.id)
+  .then(function(result){  
+  
+    res.json(result);
+  })    
+})
+
+
+router.post('/addenquiry',(req,res)=>{
+console.log(req.body);
+var date1 = moment.utc().format('YYYY-MM-DD HH:mm:ss');
+var localTime  = moment.utc(date1).toDate();
+knex('enquirydata')
+.insert({name:req.body.value.name,
+  email:req.body.value.email,
+  mobile:req.body.value.mobile,
+  altmobile:req.body.value.altmobile,
+  address:req.body.value.address,
+status:req.body.value.status,
+gender:req.body.value.gender,
+loantype:req.body.value.applytype,
+createddate:localTime,
+teleid:req.body.teleid
+
+})
+.then(function(result){  
+  //console.log(result); 
+  res.json('Enquiry Added Successfully');
+})
+})
+
+
+router.get('/getenquirylist/:pagesize/:page/:id', (req, res, next) => {
+  const pageSize = req.params.pagesize;
+          const currentPage = req.params.page;
+          const skip = (pageSize*(currentPage-1));
+          console.log(req.params.id);
+
+knex.select('enquirydata.*','loantype.loantype','employee.dob')
+.from('enquirydata')
+.join('loantype','loantype.idloantype','enquirydata.loantype')
+.join('employee','employee.idemployee','enquirydata.teleid')
+ .where('enquirydata.teleid',req.params.id ) 
+ .limit(pageSize).offset(skip)
+.then(function(result){  
+  knex.select()
+  .from('enquirydata')
+  .join('loantype','loantype.idloantype','enquirydata.loantype')
+  .join('employee','employee.idemployee','enquirydata.teleid')
+   .where('enquirydata.teleid',req.params.id )
+.then(function(re){  
+  res.status(200).json({
+    message:"Memberlists fetched",
+    posts:result,
+    maxPosts:re.length
+  });
+})
+})
+})
+
+
+router.get('/enquirycount/:id',(req,res)=>{
+  console.log(req.params.id);
+  knex.select()
+  .from('enquirydata')
+  .where({teleid:req.params.id})
+  .then(function(result){  
+    console.log(result.length); 
+    res.json(result.length);
+  })    
+})
+
+
+router.get('/getDataEnquirylist/:pagesize/:page/', (req, res, next) => {
+  const pageSize = req.params.pagesize;
+          const currentPage = req.params.page;
+          const skip = (pageSize*(currentPage-1));
+
+knex.select('enquirydata.*','loantype.loantype','employee.name as empname')
+.from('enquirydata')
+.join('loantype','loantype.idloantype','enquirydata.loantype')
+.join('employee','employee.idemployee','enquirydata.teleid')
+
+//  .where('enquirydata.teleid',req.params.id ) 
+ .limit(pageSize).offset(skip)
+.then(function(result){  
+  knex.select()
+  .from('enquirydata')
+  .join('loantype','loantype.idloantype','enquirydata.loantype')
+  .join('employee','employee.idemployee','enquirydata.teleid')
+  //  .where('enquirydata.teleid',req.params.id )
+.then(function(re){  
+  res.status(200).json({
+    message:"Memberlists fetched",
+    posts:result,
+    maxPosts:re.length
+  });
+})
+})
+})
+
+
+
+router.get('/getPdlist/:pagesize/:page',function(req,res){
+  const pageSize = req.params.pagesize;
+  const currentPage = req.params.page;
+  const skip = (pageSize*(currentPage-1))
+  knex.select('customer.*','loantype.loantype','employee.name as empname')
+  .from('customer')
+  .join('loantype','loantype.idloantype','customer.applytype')
+  .join('employee','employee.idemployee','customer.idexecutive')
+  .where ({'customer.status':'pd'})
+  .limit(pageSize).offset(skip)
+  .then(function(result){
+
+    knex.select()
+  .from('customer')
+  .join('loantype','loantype.idloantype','customer.applytype')
+  .join('employee','employee.idemployee','customer.idexecutive')
+  .where ({'customer.status':'pd'})
+  .then(function(re){  
+   var a=re.length
+   console.log(a);
+    res.status(200).json({
+      message:"Memberlists fetched",
+      posts:result,
+      maxPosts:re.length
+    });
+})
+  })
+})
+
+router.get('/getApprovallist/:pagesize/:page',function(req,res){
+  const pageSize = req.params.pagesize;
+  const currentPage = req.params.page;
+  const skip = (pageSize*(currentPage-1))
+  knex.select('customer.*','loantype.loantype','employee.name as empname')
+  .from('customer')
+  .join('loantype','loantype.idloantype','customer.applytype')
+  .join('employee','employee.idemployee','customer.idexecutive')
+  .where ({'customer.status':'approve'})
+  .limit(pageSize).offset(skip)
+  .then(function(result){
+
+    knex.select()
+  .from('customer')
+  .join('loantype','loantype.idloantype','customer.applytype')
+  .join('employee','employee.idemployee','customer.idexecutive')
+
+  .where ({'customer.status':'approve'})
+  .then(function(re){  
+   var a=re.length
+   console.log(a);
+    res.status(200).json({
+      message:"Memberlists fetched",
+      posts:result,
+      maxPosts:re.length
+    });
+})
+  })
+})
+
+
+router.get('/getDisburstlist/:pagesize/:page',function(req,res){
+  const pageSize = req.params.pagesize;
+  const currentPage = req.params.page;
+  const skip = (pageSize*(currentPage-1))
+  knex.select('customer.*','loantype.loantype','employee.name as empname')
+  .from('customer')
+  .join('loantype','loantype.idloantype','customer.applytype')
+  .join('employee','employee.idemployee','customer.idexecutive')
+
+  .where ({'customer.status':'disburse'})
+  .limit(pageSize).offset(skip)
+  .then(function(result){
+
+    knex.select()
+  .from('customer')
+  .join('loantype','loantype.idloantype','customer.applytype')
+  .join('employee','employee.idemployee','customer.idexecutive')
+
+  .where ({'customer.status':'disburse'})
+  .then(function(re){  
+   var a=re.length
+   console.log(a);
+    res.status(200).json({
+      message:"Memberlists fetched",
+      posts:result,
+      maxPosts:re.length
+    });
+})
+  })
+})
+
+
+router.post('/approve',(req,res)=>{
+  var date1 = moment.utc().format('YYYY-MM-DD HH:mm:ss');
+  var localTime  = moment.utc(date1).toDate();
+
+  console.log(req.body);
+    knex('customer')
+    .where({idcustomer:req.body.idcustomer})
+    .update({
+      status: 'disburse',
+      disbursedate:localTime,
+      displaystatus:'DISBURSED'
+    })
+    .then(function(result){  
+      //console.log(result); 
+})
+})
+
+router.post('/pdapprove',(req,res)=>{
+  console.log(req.body);
+    knex('customer')
+    .where({idcustomer:req.body.idcustomer})
+    .update({
+      status:'approve',
+      displaystatus:'APPROVED'
+    })
+    .then(function(result){  
+      //console.log(result); 
+})
+})
+
+router.post('/loginapprove',(req, res) => {
+  console.log(req.body);
+  knex.select()
+  .from('customer')
+  .whereNot({status:'active'})
+  .then(function(re){  
+  var length=re.length;
+  console.log(length);
+  var len=length + 1;
+console.log(len);
+  knex.select()
+  .from('loantype')
+  .where('loantype.idloantype ',req.body.applytype)
+  .then(function(re){  
+
+   var code=re[0].code;
+var x = Buffer.from(req.body.applieddate);
+var y = x.slice(2,4);
+var abc="MF"+code+y;
+console.log(abc);
+var autoid=abc+zeropad(len, 4)
+console.log(autoid);
+  var password = generator.generate({
+      length: 8,
+      numbers: true
+  });
+  var dob = req.body.dob;
+  const nowdate = format.asString('yyyy-MM-dd',new Date(dob)); 
+  var nowdate1=moment().format(nowdate)
+  const encryptedString = sha1(password);
+
+  
+knex('customer')
+  .where({idcustomer:req.body.idcustomer})
+  .update({
+    status:"pd",
+    autoid:autoid,
+    password:encryptedString,
+    orgpassword:password,
+    displaystatus:'PD'
+  }) .then(function(result){  
+    res.json('customer Updated Successfully');
+
+
+
+    knex.select()
+    .from('settings').where({status:'active'})
+    .then(function(resu){  
+      console.log(resu); 
+      console.log(resu[0].idsetting);
+       console.log(resu[0].emailuser);
+     var emailuser = resu[0].emailuser; 
+     var emailpassword = resu[0].emailpassword;
+     var hostmail = resu[0].hostmail;
+     var resubject = resu[0].subject;
+     var bsubject = resu[0].bsubject;
+
+     var mloginlink = resu[0].mloginlink;
+      var fromemail1 = resu[0].fromemail1;
+      var regards = resu[0].regards;
+      var cc = resu[0].cc;
+      var bcc = resu[0].bcc;
+      var address = resu[0].address;
+      // res.json(resu);
+   const output = `
+  
+     <table class="col-600" width="600"  cellpadding="0" cellspacing="0">
+     <tbody>
+        <tr>
+           <td  valign="top" background="https://designmodo.com/demo/emailtemplate/images/header-background.jpg"  style="background-size:cover; background-position:top;" >
+              <table class="col-600" width="600" height="400"  cellpadding="0" cellspacing="0">
+                 <tbody>
+                    <tr>
+                       <td height="40"></td>
+                    </tr>
+                    <tr>
+            <td style="background-position: center;background-repeat: no-repeat;width:100%;"  
+             background="https://dl2.pushbulletusercontent.com/RVaYweWhqDXwjEPjkrH7Knd5Jo3zo1hQ/logo1.jpg"  width="109" height="103" alt="logo">
+            <!-- <img style="display:block; line-height:0px; font-size:0px; border:0px;" src="https://dl2.pushbulletusercontent.com/4Le4jER6h9iSzV7d7hYSG3jjp31soXFw/logo11.png" width="109" height="103" alt="logo"> -->
+                       </td>
+                    </tr>
+                    <tr>
+                       <td style="text-align: center;font-family: 'Raleway', sans-serif; font-size:37px; color:#ffffff; line-height:24px; font-weight: bold; letter-spacing: 7px;">
+                          WELCOME <span style="font-family: 'Raleway', sans-serif; font-size:37px; color:#ffffff; line-height:39px; font-weight: 300; letter-spacing: 7px;">TO BSNL</span>
+                       </td>
+                    </tr>
+                    <tr>
+                       <td style="text-align: center;font-family: 'Lato', sans-serif; font-size:15px; color:#ffffff; line-height:24px; font-weight: 300;">
+                         `+address+`
+                       </td>
+                    </tr>
+                    <tr>
+                       <td height="50"></td>
+                    </tr>
+                 </tbody>
+              </table>
+           </td>
+        </tr>
+     </tbody>
+  </table>
+  <table>
+     <tbody>
+        <tr>
+           <p  style="font-size:18px;">Dear <b>`+req.body.name+`</b>,Thank you for Sucessfully Register.<br/>
+          Your Loan ID for checking Tracking status is  <b>`+autoid+`</b> <br/>
+           Password = <b>`+password+`</b> 
+         <br/>   
+         </p>
+        </tr>
+     </tbody>
+  </table>
+
+  
+  <table class="col2" cellpadding="0" cellspacing="0">
+     <tr>
+        <td height="50"></td>
+     </tr>
+     <tr>
+        <p style="font-size: 16px;">Click here to login <a href="`+mloginlink+`" style="color: blue">"`+mloginlink+`"</a></p>
+        <br>
+     <tr style=" text-align: left; "><b style="font-size:16px;">THANK YOU</b></tr>
+     <tbody>
+        <tr>
+           <td  style="line-height:0px;">
+              <p style="font-size:16px;"><b>Regards</b></p>
+              <br>
+              <p style="font-size: 16px;">`+regards+`</p>
+              <br>
+           </td>
+        </tr>
+     </tbody>
+  </table>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <center style="width:100%;table-layout:fixed">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#F5F7F8">
+  <tbody><tr>
+  <td>
+              
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#F5F7F8">
+  <tbody><tr>
+  <td>    
+       <div style="margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:0px;padding-right:0px">
+<table align="center" style="border-spacing:0;font-family:sans-serif;color:#f5f7f8;Margin:0 auto;width:100%" bgcolor="#F5F7F8">
+     <tbody><tr>
+<td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0" bgcolor="#F5F7F8">
+      <table width="100%" style="border-spacing:0;font-family:sans-serif;color:#f5f7f8" bgcolor="#F5F7F8">
+          <tbody><tr>
+             <td style="padding-bottom:0px;padding-top:0px;padding-left:20px;padding-right:20px;background-color:#f5f7f8;color:#f5f7f8;width:100%;font-size:1px;line-height:1px;text-align:left;display:none!important">
+               <p class="m_3203954183132274498prehdr" style="text-align:left;line-height:6px;Margin-top:0px;Margin-bottom:0px">This name is now available, Abhilash. &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;</p>
+               <div style="display:none;max-height:0px;overflow:hidden">
+              &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;<wbr>&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;<wbr>&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;<wbr>&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;<wbr>&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;<wbr>&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;<wbr>&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;<wbr>&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+              
+              </div>
+          </td>
+          </tr>           
+      </tbody></table>
+  </td>
+</tr>
+</tbody></table>
+      </div>
+      </td>
+      </tr>
+      </tbody></table>
+  
+
+              <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#F5F7F8">
+  <tbody><tr>
+  <td style="padding-bottom:20px">
+       <div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
+
+<table align="center" style="border-spacing:0;font-family:sans-serif;color:#111111;Margin:0 auto;width:100%;max-width:600px" bgcolor="#F5F7F8">
+     <tbody><tr>
+<td bgcolor="#F5F7F8" style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0">
+      <table width="73%" style="border-spacing:0;font-family:sans-serif;color:#111111" bgcolor="#F5F7F8">
+          <tbody><tr>
+          <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0px"  
+          width="109" height="103" alt="logo"  
+          background="https://dl2.pushbulletusercontent.com/CEyJvfyccHBYUunsWk8U99b6dkeV3s5Y/logo1.png"
+          width="109" height="103" alt="logo">
+                    </td>
+
+          </tr>
+          
+      </tbody></table>
+  </td>
+  <td width="100%" bgcolor="#F5F7F8" style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0">
+      <table width="100%" style="border-spacing:0;font-family:sans-serif;color:#111111" bgcolor="#F5F7F8">
+          <tbody><tr>
+              <td style="padding-top:10px;padding-bottom:0px;padding-left:10px;padding-right:0px;background-color:#f5f7f8;width:100%;text-align:right">
+              <p class="m_3203954183132274498customerinfo" style="Margin-top:0px;margin-bottom:0px;font-size:13px;line-height:16px">
+              <strong><a>
+              We understand financial needs.</a></strong></p>
+              </td>
+          </tr>
+         
+      </tbody></table>
+  </td>
+</tr>
+</tbody></table>
+
+      </div>
+      </td>
+      </tr>
+      </tbody></table>
+
+              
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
+  <tbody><tr>
+  <td bgcolor="#F5F7F8" style="background-color:#f5f7f8;padding-top:0;padding-right:0;padding-left:0;padding-bottom:0">
+  <div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
+    <table bgcolor="#FFFFFF" width="100%" align="center" border="0" cellspacing="0" cellpadding="0" style="font-family:sans-serif;color:#111111">
+      <tbody><tr>
+      <td bgcolor="#FFFFFF" align="center" style="word-break:break-all;padding-top:40px;padding-bottom:0;padding-right:40px;padding-left:40px;text-align:center;background-color:#ffffff;font-weight:bold;font-family:Arial,sans-serif,'Arial Bold','gdsherpa-bold';font-size:32px;line-height:42px" class="m_3203954183132274498h2mobile">
+              
+        <span>
+        <a>Hi <b>`+req.body.name+`,</b><br/>
+        </a>
+        </span>
+               
+      </td>
+      </tr>
+    </tbody></table>
+    
+  </div>
+</td>
+</tr>
+</tbody></table>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
+<tbody><tr>
+<td bgcolor="#F5F7F8" style="background-color:#f5f7f8;padding-top:0;padding-right:0;padding-left:0;padding-bottom:0">
+<div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">	
+<table bgcolor="#FFFFFF" width="100%" align="center" border="0" cellspacing="0" cellpadding="0" style="font-family:sans-serif;color:#111111">
+<tbody><tr>
+<td bgcolor="#FFFFFF" align="center" style="padding-top:15px;padding-bottom:0;padding-right:40px;padding-left:40px;text-align:center;background-color:#ffffff;font-weight:bold;font-family:Arial,sans-serif,'Arial Bold','gdsherpa-bold';font-size:21px;line-height:31px">
+<span><a>
+Thank you for Registering  with us 
+</a></span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</td>
+</tr>
+
+</tbody></table>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
+     <tbody><tr>
+        <td bgcolor="#F5F7F8" style="padding-top:0px;padding-bottom:0px">
+           <div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
+              
+                       <table bgcolor="#FFFFFF" align="center" style="border-spacing:0;font-family:sans-serif;color:#111111;margin:0 auto;width:100%;max-width:600px">
+                          <tbody><tr>
+                             <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0">
+                                <table width="100%" style="border-spacing:0;font-family:sans-serif;color:#111111">
+                                   <tbody><tr>
+                                      <td style="padding-top:40px;padding-bottom:0px;padding-left:40px;padding-right:40px;background-color:#ffffff;width:100%;text-align:left">
+                                         <p style="margin-top:0px;line-height:0px;margin-bottom:0px;font-size:4px">&nbsp;</p>
+                                      </td>
+                                   </tr>
+                                </tbody></table>
+                             </td>
+          </tr>
+           </tbody></table>     
+           </div>
+        </td>
+     </tr>
+  </tbody></table>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
+     <tbody><tr>
+        <td bgcolor="#F5F7F8" style="padding-top:0px;padding-bottom:0px">
+           <div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
+              
+                       <table bgcolor="#1976D2" align="center" style="border-spacing:0;font-family:sans-serif;color:#ffffff;margin:0 auto;width:100%;max-width:600px">
+                          <tbody><tr>
+                             <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0">
+                                <table width="100%" style="border-spacing:0;font-family:sans-serif;color:#ffffff">
+                                   <tbody><tr>
+                                      <td style="padding-top:25px;padding-bottom:0px;padding-left:40px;padding-right:40px;background-color:#1976d2;width:100%;text-align:center">
+                                         <p class="m_3203954183132274498bodycopy" 
+                                         style="font-family:Arial,sans-serif,'gdsherpa-regular';margin-top:0px;font-size:16px;line-height:26px;margin-bottom:0px">
+                                        YOUR PASSWORD:<b>`+password+`</b>,
+                                        <br/>CUSTOMER ID:<b>`+autoid+`</b>
+                                      
+
+                                        </p>
+                                      </td>
+                                   </tr>
+                                </tbody></table>
+                             </td>
+                          </tr>
+                       </tbody></table>
+                       
+           </div>
+        </td>
+     </tr>
+  </tbody></table>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
+     <tbody><tr>
+        <td bgcolor="#F5F7F8" style="padding-top:0px;padding-bottom:0px">
+           <div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
+              
+                       <table bgcolor="#1976D2" align="center" style="border-spacing:0;font-family:sans-serif;color:#111111;margin:0 auto;width:100%;max-width:600px">
+                        <tbody><tr>
+                        <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0">
+                        <table width="100%" style="border-spacing:0;font-family:sans-serif;color:#111111">
+                        <tbody><tr>
+                        <td style="padding-top:25px;padding-bottom:0px;padding-left:40px;padding-right:40px;background-color:#1976d2;width:100%;text-align:left">
+                        <p style="margin-top:0px;line-height:0px;margin-bottom:0px;font-size:4px">&nbsp;</p>
+                        </td>
+                        </tr>
+                        </tbody></table>
+                        </td>
+                        </tr>
+                       </tbody></table>
+                       
+           </div>
+        </td>
+     </tr>
+  </tbody></table>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
+    <tbody><tr>
+	<td bgcolor="#F5F7F8" style="background-color:#f5f7f8;padding-top:0;padding-right:0;padding-left:0;padding-bottom:0">
+		<div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
+			
+			<table bgcolor="#FFFFFF" width="100%" align="center" border="0" cellspacing="0" cellpadding="0" style="font-family:sans-serif;color:#111111">
+				<tbody><tr>
+				<td bgcolor="#FFFFFF" align="center" style="padding-top:40px;padding-bottom:0;padding-right:40px;padding-left:40px;text-align:center;background-color:#ffffff;font-weight:bold;font-family:Arial,sans-serif,'Arial Bold','gdsherpa-bold';font-size:21px;line-height:31px">
+                
+          <span>
+           
+          <p style="font-size: 16px;">
+          Click here to login <a href="`+mloginlink+`" style="color: blue">"`+mloginlink+`"</a><br/>
+           Our Executive Will Contact You Soon for <br/>Further Documentation Process.....</p>
+
+         
+          </span>
+                 
+				</td>
+				</tr>
+			</tbody></table>
+			
+		</div>
+	</td>
+	</tr>
+</tbody></table>
+
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
+     <tbody><tr>
+        <td bgcolor="#F5F7F8" style="padding-top:0px;padding-bottom:0px">
+           <div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
+              
+                       <table bgcolor="#FFFFFF" align="center" style="border-spacing:0;font-family:sans-serif;color:#111111;margin:0 auto;width:100%;max-width:600px">
+                          <tbody><tr>
+                             <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0">
+                                <table width="100%" style="border-spacing:0;font-family:sans-serif;color:#111111">
+                                   <tbody><tr>
+                                      <td style="padding-top:0px;padding-bottom:0px;padding-left:40px;padding-right:40px;background-color:#ffffff;width:100%;text-align:center">
+                                      </td>
+                                   </tr>
+                                </tbody></table>
+                             </td>
+                          </tr>
+                       </tbody></table>
+                       
+           </div>
+        </td>
+     </tr>
+  </tbody></table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
+	<tbody><tr>
+		<td bgcolor="#F5F7F8" style="padding-top:0px;padding-bottom:0px">
+			<div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
+				
+				<table bgcolor="#FFFFFF" align="center" style="border-spacing:0;font-family:sans-serif;color:#111111;margin:0 auto;width:100%;max-width:600px">
+					<tbody><tr>
+						<td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0">
+							<table width="100%" style="border-spacing:0;font-family:sans-serif;color:#111111;table-layout:fixed">
+								<tbody><tr>
+									<td style="padding-top:15px;padding-bottom:0px;padding-left:40px;padding-right:40px;background-color:#ffffff;width:100%;text-align:center;word-break:break-all">
+		
+									</td>
+								</tr>
+							</tbody></table>
+						</td>
+					</tr>
+				</tbody></table>
+				
+			</div>
+		</td>
+	</tr>
+</tbody></table>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
+    <tbody><tr>
+       <td bgcolor="#F5F7F8" style="padding-top:0px;padding-right:0;padding-left:0;padding-bottom:0px">
+          <div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
+             
+                      <table bgcolor="#FFFFFF" width="100%" align="center" border="0" cellspacing="0" cellpadding="0" style="font-family:sans-serif;color:#ffffff">
+                        <tbody><tr>
+                           <td bgcolor="#FFFFFF" align="center" style="padding-top:20px;padding-bottom:0;padding-right:40px;padding-left:40px;text-align:center">
+                              <table border="0" cellpadding="0" cellspacing="0" align="center" width="100%">
+                                <tbody><tr>
+                                   <td align="center" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0">
+                                      <table border="0" cellspacing="0" cellpadding="0" align="center">
+                                        <tbody><tr>
+                                           <td align="center" style="font-size:18px;line-height:22px;font-weight:bold;font-family:Arial,sans-serif,'Arial Bold','gdsherpa-bold'">
+										   <span>
+										   </span></td>
+                                        </tr>
+                                      </tbody></table>
+                                   </td>
+                                </tr>
+                              </tbody></table>
+                           </td>
+                        </tr>
+                      </tbody></table>
+                      
+          </div>
+       </td>
+    </tr>
+  </tbody></table>
+
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
+     <tbody><tr>
+        <td bgcolor="#F5F7F8" style="padding-top:0px;padding-bottom:0px">
+           <div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
+              
+                       <table bgcolor="#FFFFFF" align="center" style="border-spacing:0;font-family:sans-serif;color:#111111;margin:0 auto;width:100%;max-width:600px">
+                          <tbody><tr>
+                             <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0">
+                                <table width="100%" style="border-spacing:0;font-family:sans-serif;color:#111111">
+                                   <tbody><tr>
+                                      <td style="padding-top:15px;padding-bottom:0px;padding-left:40px;padding-right:40px;background-color:#ffffff;width:100%;text-align:left">
+                                      </td>
+                                   </tr>
+                                </tbody></table>
+                             </td>
+                          </tr>
+                       </tbody></table>
+                       
+           </div>
+        </td>
+     </tr>
+  </tbody></table>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
+     <tbody><tr>
+        <td bgcolor="#F5F7F8" style="padding-top:0px;padding-bottom:0px">
+           <div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
+              
+                       <table bgcolor="#FFFFFF" align="center" style="border-spacing:0;font-family:sans-serif;color:#111111;margin:0 auto;width:100%;max-width:600px">
+                          <tbody><tr>
+                             <td width="20" bgcolor="#FFFFFF" style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0"><img src="https://ci5.googleusercontent.com/proxy/RICSIZJJJakoeRjSl1leY13zGXyq9_HKIqrwFRrOPA57xyZdbs53L1rQ4yhCH11-SspdFH__fOZOY6Z2y9DifqeOMXwq3pGBzw-CBms=s0-d-e1-ft#https://imagesak.secureserver.net/promos/std/spc_trans.gif" height="10" width="20" border="0" style="display:block;border-width:0" class="CToWUd"></td>
+                             <td style="padding-top:25px;padding-bottom:0px;padding-right:0;padding-left:0;text-align:center;font-size:0;background-color:#ffffff">
+                                
+                                         <div style="width:100%;max-width:560px;display:inline-block;vertical-align:top">
+                                            <table width="100%" style="border-spacing:0;font-family:sans-serif;color:#111111">
+                                               <tbody><tr>
+                                                  <td style="padding-top:0px;padding-bottom:0px;padding-left:20px;padding-right:20px;background-color:#ffffff">
+                                                     <table style="border-spacing:0;font-family:sans-serif;color:#111111;width:100%;font-size:14px;text-align:left;background-color:#ffffff;border-left-color:#fedc45;border-left-style:solid;border-left-width:3px">
+                                                        <tbody><tr>
+                                                           <td style="padding-top:0px;padding-bottom:0px;padding-left:20px;padding-right:20px;background-color:#ffffff;width:100%;text-align:left">
+                                                           </td>
+                                                        </tr>
+                                                     </tbody></table>
+                                                  </td>
+                                               </tr>
+                                            </tbody></table>
+                                         </div>
+                                         
+                             </td>
+                             <td width="20" bgcolor="#FFFFFF" style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0"><img src="https://ci5.googleusercontent.com/proxy/RICSIZJJJakoeRjSl1leY13zGXyq9_HKIqrwFRrOPA57xyZdbs53L1rQ4yhCH11-SspdFH__fOZOY6Z2y9DifqeOMXwq3pGBzw-CBms=s0-d-e1-ft#https://imagesak.secureserver.net/promos/std/spc_trans.gif" height="10" width="20" border="0" style="display:block;border-width:0" class="CToWUd"></td>
+                          </tr>
+                       </tbody></table>
+                       
+           </div>
+        </td>
+     </tr>
+  </tbody></table>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
+     <tbody><tr>
+        <td bgcolor="#F5F7F8" style="padding-top:0px;padding-bottom:0px">
+           <div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
+              
+                       <table bgcolor="#FFFFFF" align="center" style="border-spacing:0;font-family:sans-serif;color:#111111;margin:0 auto;width:100%;max-width:600px">
+                          <tbody><tr>
+                             <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0">
+                                <table width="100%" style="border-spacing:0;font-family:sans-serif;color:#111111">
+                                   <tbody><tr>
+                                      <td style="padding-top:40px;padding-bottom:0px;padding-left:40px;padding-right:40px;background-color:#ffffff;width:100%;text-align:left">
+                                      </td>
+                                   </tr>
+                                </tbody></table>
+                             </td>
+                          </tr>
+                       </tbody></table>
+                       
+           </div>
+        </td>
+     </tr>
+  </tbody></table>
+                
+                
+                
+                
+                
+                            
+                
+                            
+                
+                
+                
+                
+                
+                            
+                
+                            
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
+<tbody><tr>
+<td bgcolor="#F5F7F8" style="padding-top:0px;padding-bottom:0px">
+    <div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
+
+<table align="center" style="border-spacing:0;Margin:0 auto;width:100%;max-width:600px">
+ <tbody><tr>
+<td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0">
+    <table width="100%" style="border-spacing:0;font-family:sans-serif;color:#ffffff">
+            <tbody><tr>
+                <td style="padding-top:40px;padding-bottom:0px;padding-left:40px;padding-right:40px;background-color:#f5f7f8;width:100%;text-align:left">
+                </td>
+            </tr>
+        </tbody></table>
+    </td>
+</tr>
+</tbody></table>
+
+        </div>
+        </td>
+        </tr>
+        </tbody></table>
+
+                
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#E8EAEB">
+<tbody><tr>
+<td bgcolor="#E8EAEB" style="padding-top:0px;padding-bottom:0px">
+    <div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
+
+<table align="center" style="border-spacing:0;Margin:0 auto;width:100%;max-width:600px">
+ <tbody><tr>
+<td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0">
+    <table width="100%" style="border-spacing:0;font-family:sans-serif;color:#ffffff">
+            <tbody><tr>
+                <td style="padding-top:40px;padding-bottom:0px;padding-left:40px;padding-right:40px;background-color:#e8eaeb;width:100%;text-align:left">
+                </td>
+            </tr>
+        </tbody></table>
+    </td>
+</tr>
+</tbody></table>
+
+        </div>
+        </td>
+        </tr>
+        </tbody></table>
+
+                
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#E8EAEB">
+     <tbody><tr>
+        <td bgcolor="#E8EAEB" style="padding-top:0px;padding-bottom:0px">
+           <div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
+              
+                       <table align="center" style="border-spacing:0;font-family:sans-serif;color:#757575;margin:0 auto;width:100%;max-width:600px">
+                          <tbody><tr>
+                             <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0">
+                                <table width="100%" style="border-spacing:0;font-family:sans-serif;color:#757575">
+                                   <tbody><tr>
+                                      <td style="padding-top:0px;padding-bottom:15px;padding-left:0px;padding-right:0px;background-color:#e8eaeb;width:100%;text-align:left">
+                                      </td>
+                                   </tr>
+                                </tbody></table>
+                             </td>
+                          </tr>
+                       </tbody></table>
+                       
+           </div>
+        </td>
+     </tr>
+  </tbody></table>
+                
+                
+                
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#E8EAEB">
+<tbody><tr><td bgcolor="#E8EAEB" style="padding-top:0px;padding-bottom:0px">
+<div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
+
+<table align="center" style="border-spacing:0;font-family:sans-serif;color:#757575;Margin:0 auto;width:100%;max-width:600px">
+ <tbody><tr>
+<td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0">
+        <table width="100%" style="border-spacing:0;font-family:sans-serif;color:#757575">
+            <tbody><tr>
+                <td style="padding-top:0px;padding-bottom:25px;padding-left:0px;padding-right:0px;background-color:#e8eaeb;width:100%;text-align:left">
+            
+                          </td>
+            </tr>
+        </tbody></table>
+    </td>
+</tr>
+</tbody></table>
+
+        </div>
+        </td>
+        </tr>
+        </tbody></table>
+                
+                
+                
+                
+                
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#E8EAEB">
+<tbody><tr><td bgcolor="#E8EAEB" style="padding-top:0px;padding-bottom:0px">
+<div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
+
+<table align="center" style="border-spacing:0;font-family:sans-serif;color:#757575;Margin:0 auto;width:100%;max-width:600px">
+ <tbody><tr>
+<td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0">
+        <table width="100%" style="border-spacing:0;font-family:sans-serif;color:#757575">
+            <tbody><tr>
+                <td style="padding-top:0px;padding-bottom:25px;padding-left:0px;padding-right:0px;background-color:#e8eaeb;width:100%;text-align:left">
+            
+            
+                </td>
+            </tr>
+        </tbody></table>
+    </td>
+</tr>
+</tbody></table>
+
+        </div>
+        </td>
+        </tr>
+        </tbody></table>
+                
+		</td>
+		</tr>
+		</tbody></table>
+    </center>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   `;
+
+   let transporter = nodemailer.createTransport({
+     host: hostmail,
+     port: 587,
+     transportMethod: 'SMTP',
+     // secure: false, // true for 465, false for other ports
+     auth: {
+       user: emailuser, // gmail id
+       pass: emailpassword // gmail password
+     },
+     tls:{
+       rejectUnauthorized:false
+     }
+   });
+   // setup email data with unicode symbols
+   let mailOptions = {
+     from: fromemail1,
+       to: req.body.email, // list of receivers
+       cc:cc,
+       bcc: bcc,
+       subject: bsubject,//"Project Payment Update From", // Subject line
+       text: 'Hello world?', // plain text body
+       html: output // html body
+   };
+   // send mail with defined transport object
+   transporter.sendMail(mailOptions, (error, info) => {
+       if (error)
+       {
+       return console.log(error);
+       }
+       console.log('Message sent: %s', info.messageId);   
+       console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+       res.render('contact', {msg:'Email has been sent'});
+   });
+ })
+
+
+
+
+    
+  })
+})
+})
+})
+
+router.get('/dataentrycount',(req,res)=>{
+  knex.select()
+  .from('customer')
+  .where('customer.status','active')
+  .then(function(result){  
+    res.json(result.length);
+  })    
+})
+
+router.get('/pdcount',(req,res)=>{
+  knex.select()
+  .from('customer')
+  .where('customer.status','pd')
+  .then(function(result){  
+    res.json(result.length);
+  })    
+})
+
+router.get('/approvcount',(req,res)=>{
+  knex.select()
+  .from('customer')
+  .where('customer.status','approve')
+  .then(function(result){  
+    res.json(result.length);
+  })    
+})
+router.get('/disbursecount',(req,res)=>{
+  knex.select()
+  .from('customer')
+  .where('customer.status','disburse')
+  .then(function(result){  
+    res.json(result.length);
+  })    
+})
+router.get('/enqcount',(req,res)=>{
+  knex.select()
+  .from('enquirydata')
+  .join('employee','employee.idemployee','enquirydata.teleid')
+  // .where('enquirydata.status','')
+  .then(function(result){  
+    res.json(result.length);
+  })    
+})
+
+
+router.post('/bankapply',(req,res)=>{
+  const vbs=req.body.arr;
+
+  for(var j=0;j<vbs.length;j++){
+    var applytype=vbs[j].loanid
+    var bankname=vbs[j].bankid
+    var amt=vbs[j].previousamounttaken
+   knex('applybank')
+    .insert({
+      idloan:applytype,
+      idbank:bankname,
+      amount:amt,
+      idcustomer:req.body.idvalue,
+      status:'PENDING'
+    }).then(function(result){
+  console.log(result);
+    })
+        }
+        })
+
+        router.get('/checktrack/:id',(req,res)=>{
+          console.log(req.params.id);
+          knex.select()
+  .from('customer')
+  .where('customer.autoid',req.params.id)
+  .then(function(result){  
+    res.json(result);
+  })    
+})
+       
+        
+router.post('/onChange',(req,res)=>{
+  console.log(req.body);
+    knex('applybank')
+    .where({idapplybank:req.body.idapplybank})
+    .update({
+      status: 'APPROVED'
+    })
+    .then(function(result){  
+      //console.log(result); 
+})
+})
+
+router.get('/getApprovedBankList/:id',(req,res)=>{
+  knex.select('applybank.*','bank.bankname','loantype.loantype','topup.period as p')
+  .from('applybank')
+  .join('customer','customer.idcustomer','applybank.idcustomer')
+  .join('bank','bank.idbank','applybank.idbank')
+  .join('loantype','loantype.idloantype','applybank.idloan')
+  .join('topup','topup.idtopup','applybank.idtopup')
+  .where('applybank.idcustomer',req.params.id)
+  .where('applybank.status','ACTIVE')
+  .then(function(result){  
+    res.json(result);
+  })    
+})
+
+router.get('/getApprovedBankListt/:id',(req,res)=>{
+  knex.select('applybank.*','bank.bankname','loantype.loantype')
+  .from('applybank')
+  .join('customer','customer.idcustomer','applybank.idcustomer')
+  .join('bank','bank.idbank','applybank.idbank')
+  .join('loantype','loantype.idloantype','applybank.idloan')
+  .where('applybank.idcustomer',req.params.id)
+  .where('applybank.status','APPROVED')
+  .then(function(result){  
+    res.json(result);
+  })    
+})
+
+router.post('/addPeriod',(req,res)=>{
+console.log(req.body);
+knex('applybank')
+.where({idapplybank:req.body.obj.idapplybank})
+.update({
+  idtopup:req.body.period,
+  status:'ACTIVE'
+})
+.then(function(result){  
+})
+})
+
+
+router.get('/singleCustomer/:id',(req,res)=>{
+  knex.select('customer.*','loantype.loantype')
+  .from('customer')
+  .join('loantype','loantype.idloantype','customer.applytype')
+  .where({idcustomer:req.params.id})
+  .then(function(result){  
+    res.json(result);
+  })    
+})
+
+router.get('/gettopuplist/:id',(req,res)=>{
+console.log(req.params.id);
+knex.select('customer.disbursedate')
+.from('customer')
+.where('customer.idcustomer',req.params.id)
+.then(function(re){
+// console.log(re[0].disbursedate);
+
+knex.select('applybank.*','bank.bankname','topup.period as p','topup.eligibleperiod')
+.from('applybank')
+.join('customer','customer.idcustomer','applybank.idcustomer')
+.join('topup','topup.idtopup','applybank.idtopup')
+.join('bank','bank.idbank','applybank.idbank')
+.where('applybank.idcustomer',req.params.id)
+.then(function(result){ 
+  console.log(result.length);
+  for(var i=0;i<result.length;i++){
+  var local = moment(re[0].disbursedate).local().format('YYYY-MM-DD ');
+  var ex1 =moment(local).add(result[i].eligibleperiod, 'month'); 
+  var local1 = moment(ex1).local().format('YYYY-MM-DD ');
+  console.log(local1);
+  console.log(ex1);
+  var q=moment(ex1).format("dddd, MMMM Do YYYY");
+console.log(result);
+result[i].q=q;
+// res.json({result});
+  }
+  res.json(result)
+}) 
+})
+})
+
+router.get('/getPeriod',(req,res)=>{
+  knex.select()
+  .from('topup')
+  .where({status:'active'})
+  .then(function(result){  
+    res.json(result);
+  })    
+})
+
+
+router.get('/checkcurrent/:id',(req,res)=>
+{
+  console.log(req.params);
+knex.select()
+.from('employee')
+.where({email:req.params.id})
+.then(function(result){  
+console.log(result);
+if(result==undefined || result=='' || result==null){
+console.log("hi")
+res.json({status:true});
+}
+else
+{
+console.log("bye")
+res.json({
+status:false
+});
+}
+});
+})
+
+router.post('/addtopup',(req,res)=>{
+  const nowdate1 = format.asString('yyyy-MM-dd',new Date()); 
+  var date = moment.utc().format('YYYY-MM-DD HH:mm:ss');
+  var localTime  = moment.utc(date).toDate();
+  localTime = moment(localTime).format('YYYY-MM-DD HH:mm:ss');
+  console.log("moment: " + localTime);
+
+  if(req.body.idtopup!=null){
+    knex('topup')
+    .where({idtopup:req.body.idtopup})
+    .update({
+      period: req.body.period,
+      eligibleperiod:req.body.eligibleperiod
+    })
+    .then(function(result){  
+      res.json('Topup Updated Successfully');})
+  }else{
+
+    knex('topup')
+    .insert({period:req.body.period,
+   status:"active",eligibleperiod:req.body.eligibleperiod
+    })
+    .then(function(result){  
+      res.json('Topup Added Successfully');
+    })
+  }
+})
+
+router.get('/getperiodlist',function(req,res){
+  knex.select()
+  .from('topup')
+  .where('topup.status ','active')
+  .then(function(result){  
+      res.json(result);
+    })
+ });
+
+ router.get('/rejectlist/:pagesize/:page',function(req,res){
+  const pageSize = req.params.pagesize;
+  const currentPage = req.params.page;
+  const skip = (pageSize*(currentPage-1))
+  knex.select('customer.*','loantype.loantype','employee.name as empname')
+  .from('customer')
+  .join('loantype','loantype.idloantype','customer.applytype')
+  .join('employee','employee.idemployee','customer.idexecutive')
+
+  .where ({'customer.status':'reject'})
+  .limit(pageSize).offset(skip)
+  .then(function(result){
+
+    knex.select()
+  .from('customer')
+  .join('loantype','loantype.idloantype','customer.applytype')
+  .join('employee','employee.idemployee','customer.idexecutive')
+
+  .where ({'customer.status':'reject'})
+  .then(function(re){  
+   var a=re.length
+   console.log(a);
+    res.status(200).json({
+      message:"Memberlists fetched",
+      posts:result,
+      maxPosts:re.length
+    });
+})
+  })
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Android Apis
+
+//signup
+router.post('/androidsignup', upload.fields([{name:'file'}])
+,(req,res)=>{
+  console.log(req.files);
+  console.log(req.body);
+  console.log("hiii");
+
+  var gen=otpGenerator.generate(5, { upperCase: false, specialChars: false,alphabets :false });
+  console.log(gen);
+  // res.json({gen});
+  var message = urlencode('Mindfin One Time Password For Sign up is '+ gen);
+  var mobile=req.body.mobile;
+
+  knex('customer')
+  .insert({
+    name:req.body.name,
+    mobile:req.body.mobile,
+    email:req.body.email,
+    address:req.body.address,
+    dob:req.body.dob  ,
+    pincode:req.body.pincode,
+    altmobile:req.body.altmobile,
+    gender:req.body.gender,
+    otp:gen
+  })
+  .then(function(result){  
+    res.json('Customer Added Successfully');
+  })
+  console.log(mobile);
+  request('http://13.127.28.222/vendorsms/pushsms.aspx?apikey=ef23d052-14d5-409e-b78a-becf4ad3dea6&clientid=a4fdddfc-9f2d-4bae-97a6-95f5496f5335&msisdn='+mobile+'&sid=MAVYAH&msg='+message+'&fl=0&gwid=2'
+  ,
+   function(err,res,body)
+  {
+  if(!err && res.statusCode==200)
+  {
+  console.log(body);
+  }
+  })
+})
+
+//login
+router.get('/androidadminlogin',(req,res)=>{
+  console.log(req.query.username);
+  console.log("hiii");
+const username= req.query.username;
+const password = (sha1(req.query.password));
+knex.select()
+.from('employee')
+.join('usertype','usertype.idusertype','employee.iduser')
+.where({email:username,password:password})
+.then(function(result){  
+if(result[0]==''||result[0]==undefined||result[0]==0||result[0]==null)
+{
+  knex.select()
+  .from('customer')
+  .where({email:username,password:password})
+  .then(function(result1){ 
+res.json({result:result1[0],
+  message:'customer'
+})
+})
+}
+else if(result[0].user=='ADMIN')
+{
+res.json({result:result[0],
+  message:'admin'
+})
+}
+else{
+  res.json({result:result[0],
+    message:'executive'
+
+})
+}
+})
+})
+
+
+//checkotp
+router.get('/checkotp',(req,res)=>{
+  const otpno= req.query.otpno;
+  knex.select()
+  .from('customer')
+  .where({otp:otpno})
+  .then(function(result){  
+  res.json({result:result[0],
+    message:'true'
+   })
+  })
+  })
+
+
+  //banklist
+  router.get('/getbanklist1',(req,res)=>{
+    knex.select()
+    .from('bank')
+    .where('bank.status','active')
+    .then(function(result){   
+      res.json({result:result,
+        message:"Data found sucessfully",
+      success:'1'
+      });
+    })    
+  })
+
+//loanlist
+  router.get('/getloanlist1',(req,res)=>{
+    knex.select()
+    .from('loantype')
+    .where('loantype.status','active')
+    .then(function(result){  
+      res.json({result:result,
+        message:"Data found sucessfully",
+      success:'1'});
+    })    
+  })
+
+  //pdlist
+  router.get('/getandroidpdlist',(req,res)=>{
+    knex.select()
+    .from('customer')
+    .where('customer.status','pd')
+    .then(function(result){  
+      //console.log(result); 
+      res.json(result);
+    })    
+  })
+
+//pdlistcount
+  router.get('/getandroidpdcount',(req,res)=>{
+    knex.select()
+    .from('customer')
+    .where('customer.status','pd')
+    // .where('customer.displaystatus','Approved')
+    .then(function(result){  
+      res.json({result:result.length,
+        status:'true'
+      });
+    })    
+  })
+
+//logincount
+  router.get('/getandroidlogincount',(req,res)=>{
+    knex.select()
+    .from('customer')
+    .where('customer.status','active')
+    // .where('customer.displaystatus','Pending')
+    .then(function(result){  
+      res.json({result:result.length,
+        status:'true'
+      });
+    })    
+  })
+
+  //loginlist
+  router.get('/getandroidloginlist',(req,res)=>{
+    knex.select()
+    .from('customer')
+    .where('customer.status','active')
+    // .where('customer.displaystatus','Pending')
+    .then(function(result){  
+      res.json(result
+      );
+    })    
+  })
+
+
+  //rejectcount
+  router.get('/getrejectcustomercount',(req,res)=>{
+    knex.select()
+    .from('customer')
+    .where('customer.status','reject')
+    // .where('customer.displaystatus','Reject')
+    .then(function(result){  
+      res.json({result:result.length,
+        status:'true'
+      });
+    })    
+  })
+
+  //rejectlist
+  router.get('/getrejectcustomerlist',(req,res)=>{
+    knex.select()
+    .from('customer')
+    .where('customer.status','reject')
+    // .where('customer.displaystatus','Reject')
+    .then(function(result){  
+      res.json(result);
+    })    
+  })
+
+  //executivecount
+  router.get('/getexecutivecount',(req,res)=>{
+    knex.select()
+  .from('employee')
+  .join('usertype','usertype.idusertype','employee.iduser')
+  .where('usertype.user ','EXECUTIVE')
+  .where('employee.status ','active')
+  .then(function(result){  
+  res.json({result:result.length,
+  status:'true'
+      });
+    })    
+  })
+
+
+  //
+  // router.get('/androidadminlogin1',(req,res)=>{
+  //   console.log(req.query.username);
+  //   console.log("hiii");
+  // const username= req.query.username;
+  // const password = (sha1(req.query.password));
+  // knex.select()
+  // .from('employee')
+  // .join('usertype','usertype.idusertype','employee.iduser')
+  // .where({email:username,password:password})
+  // .then(function(result){  
+  // if(result[0]==''||result[0]==undefined||result[0]==0||result[0]==null)
+  // {
+  //   knex.select()
+  //   .from('approvedcustomer')
+  //   .where({email:username,password:password})
+  //   .then(function(result1){ 
+  // res.json(result1[0],
+  //   // message:'customer'
+  // )
+  // })
+  // }
+  // else if(result[0].user=='ADMIN')
+  // {
+  // res.json(result[0],
+  //   // message:'admin'
+  // )
+  // }
+  // else{
+  //   res.json(result[0],
+  //     // message:'executive'
+  
+  // )
+  // }
+  // })
+  // })
+
+
+  //emplist
+  router.get('/getemployeelist1',(req,res)=>{
+    knex.select()
+    .from('employee')
+    .join('usertype','usertype.idusertype','employee.iduser')
+    .where('employee.status','active')
+    .then(function(result){  
+      res.json(result);
+    })    
+  })
+
+
+  //emplist by id
+  router.get('/getemplist',(req,res)=>{
+    console.log(req.query);
+    knex.select()
+    .from('employee')
+    .join('usertype','usertype.idusertype','employee.iduser')
+    .where('employee.status','active')
+    .where('usertype.idusertype',req.query.id)
+    .then(function(result){  
+      res.json(result);
+    })    
+  })
+
+  //approvelist
+  router.get('/getandroidapprovelist',(req,res)=>{
+    knex.select()
+    .from('customer')
+    .where('customer.status','approve')
+    .then(function(result){  
+      //console.log(result); 
+      res.json(result);
+    })    
+  })
+
+//approvecount
+  router.get('/getandroidapprovecount',(req,res)=>{
+    knex.select()
+    .from('customer')
+    .where('customer.status','approve')
+    // .where('customer.displaystatus','Approved')
+    .then(function(result){  
+      res.json({result:result.length,
+        status:'true'
+      });
+    })    
+  })
+  
+  //disburselist
+  router.get('/getandroiddisburselist',(req,res)=>{
+    knex.select()
+    .from('customer')
+    .where('customer.status','disburse')
+    .then(function(result){  
+      //console.log(result); 
+      res.json(result);
+    })    
+  })
+
+//disbursecount
+  router.get('/getandroiddisbursecount',(req,res)=>{
+    knex.select()
+    .from('customer')
+    .where('customer.status','disburse')
+    // .where('customer.displaystatus','Approved')
+    .then(function(result){  
+      res.json({result:result.length,
+        status:'true'
+      });
+    })    
+  })
+
+  router.post('/settings',upload.fields([{name:'leftimg'}]) , (req, res) => {
+    console.log(req.body);
+    console.log(req.files);
+
+        if(req.files.leftimg!=null)
+         {
+      image=req.files.leftimg[0]['filename'];
+          }  
+        else{  
+     image= req.body.leftimg;
+            }
+            console.log(image)
+            knex('settings')
+            .where({idsetting:req.body.idsetting})
+            .update({
+              emailpassword:req.body.emailpassword,
+              emailuser: req.body.emailuser,    
+              fromemail1: req.body.fromemail1,    
+              fromemail2: req.body.fromemail2,    
+              hostmail: req.body.hostmail,    
+              mloginlink: req.body.mloginlink,    
+              subject: req.body.subject ,
+              regards: req.body.regards ,
+              cc: req.body.cc ,
+              bcc: req.body.bcc ,
+              bsubject: req.body.bsubject ,
+              status:'active',
+              address:req.body.address,
+              image:image
+              })
+                .then(function(result){  
+                  console.log(result); 
+                  res.json('Settings Updated Successfully');})
+              
+          });
+
+  
+ router.get('/settinglist',(req,res)=>{     
+  knex.select()
+.from('settings')  
+// .count('member_table.pname as total')  
+// .join('member_table','member_table.pname','project.idproject')
+// .groupBy('member_table.pname')
+.then(function(result1){  
+  res.json(result1);
+})
+});
+  module.exports = router;  
