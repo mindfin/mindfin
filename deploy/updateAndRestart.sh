@@ -25,7 +25,7 @@ cd /home/mindfinadmin/mindfin
 
 #install npm packages
 echo "Running npm install"
-/usr/bin/npm install
+/home/mindfinadmin/.nvm/versions/node/v12.13.0/bin/npm install
 
 #Restart the node server
 /home/mindfinadmin/.nvm/versions/node/v12.13.0/bin/pm2 start mindfin-webapp
