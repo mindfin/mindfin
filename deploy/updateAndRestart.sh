@@ -7,7 +7,7 @@ set -e
 rm -rf /home/mindfinadmin/mindfin
  
 # clone the repo again
-git clone git@gitlab.com:Harishraj/mindfin.git /home/mindfinadmin/mindfin 
+git clone git@gitlab.com:mindfin1/mindfin.git /home/mindfinadmin/mindfin 
 
 
 
