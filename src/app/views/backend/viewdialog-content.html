@@ -1,0 +1,74 @@
+<h1 mat-dialog-title>CUSTOMERS DOCUMENT DETAILS</h1>
+<div mat-dialog-content class="mat-typography">
+
+
+    <table class="table">
+
+        <tbody>
+            <tr>
+                <th>COMPANY KYC</th>
+                <td>
+                    <p>{{data.element.companykyc_orgname}}</p>
+                    <!-- <img src="https://bank.mindfin.co.in{{data.element.companykyc}}" height="200" width="200" /></td> -->
+                    <!-- <td><button mat-raised-button color="primary" (click)="downlaod(element.idcustomer)">DOWNLOAD</button></td> -->
+                    <!-- <td><button mat-raised-button color="primary">DOWNLOAD</button></td> -->
+            </tr>
+            <tr>
+                <th> CUSTOMER KYC</th>
+                <td>
+
+                    <p>{{data.element.customerkyc_orgname}}</p>
+                </td>
+                <!-- <td><button mat-raised-button color="primary">DOWNLOAD</button></td> -->
+            </tr>
+            <tr>
+                <th>ITR</th>
+                <td>
+                    <p>{{data.element.itr_orgname}}</p>
+                    <!-- <img src="assets/President/{{data.element.	itr}}" height="200" width="200" /></td> -->
+
+                    <!-- <td><button mat-raised-button color="primary">DOWNLOAD</button></td> -->
+            </tr>
+            <tr>
+                <th>BANK STATEMENT</th>
+                <td>
+                    <p>{{data.element.bankstatement_orgname}}</p>
+                    <!-- <img src="assets/President/{{data.element.	bankstatement}}" height="200" width="200" /></td> -->
+                    <!-- <td><button mat-raised-button color="primary">DOWNLOAD</button></td> -->
+            </tr>
+            <tr>
+                <th>GST RETURNS</th>
+                <td>
+                    <p>{{data.element.gstandreturns_orgname}}</p>
+                    <!-- <img src="assets/President/{{data.element.gstandreturns}}" height="200" width="200" /></td> -->
+                    <!-- <td><button mat-raised-button color="primary">DOWNLOAD</button></td> -->
+            </tr>
+            <tr>
+                <th>LOAN STATEMENT</th>
+                <td>
+                    <p>{{data.element.loanstatement_orgname}}</p>
+                    <!-- <img src="assets/President/{{data.element.loanstatement}}" height="200" width="200" /></td> -->
+                    <!-- <td><button mat-raised-button color="primary">DOWNLOAD</button></td> -->
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+
+
+
+
+
+<style>
+    .table {
+        flex: 5 1 auto;
+        padding: 6.25rem !important;
+        font-size: medium !important;
+    }
+    
+    table,
+    th,
+    td {
+        border: 1px solid black;
+    }
+</style>

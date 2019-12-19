@@ -1,0 +1,37 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <b> Testing Document cam</b>
+            </div>
+            <div class="card-body">
+                <form #form="ngForm">
+
+                    <div class="card-body">
+
+                        <div class="row">
+
+                            <div class="col-sm-4">
+                                <label><b>Uploab document</b></label>
+                                <input type="file" class="form-control" name="image" (change)="onFileSelect($event)">
+                                <br>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <button class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+            <!-- </form> -->
+        </div>
+    </div>
+</div>
+<style>
+    .alert {
+        color: red;
+        padding: 0;
+    }
+</style>
