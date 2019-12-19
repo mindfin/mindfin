@@ -18,7 +18,7 @@ git clone git@gitlab.com:mindfin1/mindfin.git /home/mindfinadmin/mindfin
 
 # stop the previous pm2
 
-/home/mindfinadmin/.npm-global/bin/pm2 stop mindfin-webapp
+pm2 stop mindfin-webapp
 
 
 cd /home/mindfinadmin/mindfin
@@ -28,4 +28,4 @@ echo "Running npm install"
 /usr/bin/npm install
 
 #Restart the node server
-/home/mindfinadmin/.npm-global/bin/pm2 start mindfin-webapp
+pm2 start mindfin-webapp
