@@ -10,7 +10,7 @@ module.exports = {
             host: 'localhost',
             user: 'root',
             password: 'mindfin@098',
-            database: 'mindFin',
+            database: 'mindfin',
 
             // host: 'localhost',
             // user: 'root',
