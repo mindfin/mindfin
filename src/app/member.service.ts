@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-const commonurl = 'https://bank.mindfin.co.in';
+const commonurl = 'http://localhost:7000';
 @Injectable({
     providedIn:'root'
 })
@@ -10,7 +10,7 @@ export class MemberService{
     constructor(private http:HttpClient,private router:Router){}
     login(loginvalue){
         console.log(loginvalue);
-        const uri = "https://bank.mindfin.co.in/member/memberlogin/";
+        const uri = "http://localhost:7000/member/memberlogin/";
         // return this.http.post(uri,obj);
         this.http.post(uri,loginvalue).subscribe(res=>{
           console.log(res);
@@ -38,14 +38,14 @@ export class MemberService{
   
       getsinglemember(id){
         console.log(id);
-        const uri='https://bank.mindfin.co.in/member/getsinglemember/' + id;
+        const uri='http://localhost:7000/member/getsinglemember/' + id;
          return this.http.get(uri);
       }     
 
   
       homememberlist(memberid){
         console.log(memberid);
-        const uri='https://bank.mindfin.co.in/member/homememberlist/' +memberid;
+        const uri='http://localhost:7000/member/homememberlist/' +memberid;
         return this.http.get(uri);
       }
       
@@ -54,7 +54,7 @@ export class MemberService{
       
       myprojectlist(memberid){
         console.log(memberid);
-        const uri='https://bank.mindfin.co.in/member/myprojectlist/' +memberid;
+        const uri='http://localhost:7000/member/myprojectlist/' +memberid;
         return this.http.get(uri);
       }
 
@@ -62,7 +62,7 @@ export class MemberService{
 
       changepwd(obj){
         console.log(obj);
-        const uri='https://bank.mindfin.co.in/member/changepwd/';
+        const uri='http://localhost:7000/member/changepwd/';
         this.http.post(uri,obj).subscribe(res=>{
           console.log(res);
           if (res['status']==true ) {
@@ -77,7 +77,7 @@ export class MemberService{
   
       checkcurrentpwd(obj){
         console.log(obj);
-        const uri="https://bank.mindfin.co.in/member/checkcurrentpwd";
+        const uri="http://localhost:7000/member/checkcurrentpwd";
       return  this.http.post(uri,obj);
   
       }
