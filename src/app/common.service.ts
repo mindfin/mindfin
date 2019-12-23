@@ -366,7 +366,7 @@ export class CommonService {
   }
   employeeadd(fd) {
     console.log(fd);
-    const uri = "https://bank.mindfin.co.in/callapi/employeeadd";
+    const uri = "https://bank.mindfin.co.in/callapi/addemployee";
     return this.http.post(uri, fd)
 
   }

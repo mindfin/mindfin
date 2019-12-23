@@ -1340,7 +1340,7 @@ router.get('/enquirycount/:id',(req,res)=>{
 })
 
 
-router.get('/getDataEnquirylist/:pagesize/:page/', (req, res, next) => {
+router.get('/https://bank.mindfin.co.in/:pagesize/:page/', (req, res, next) => {
   const pageSize = req.params.pagesize;
           const currentPage = req.params.page;
           const skip = (pageSize*(currentPage-1));

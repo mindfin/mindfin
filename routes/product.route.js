@@ -585,639 +585,639 @@ router.post('/deleteemp', function(req, res) {
 
 })
 
-router.post('/employeeadd', (req, res) => {
-    console.log(req.body);
-    var password = generator.generate({
-        length: 8,
-        numbers: true
-    });
-    var dob = req.body.value.dob;
-    const nowdate1 = format.asString('yyyy-MM-dd', new Date(dob));
-    const nowdate = format.asString('yyyy-MM-dd', new Date());
-    const doj = req.body.value.joiningdate;
-    var cimage;
-    var pimage;
-    var aimage;
-    console.log(doj);
-    const nowdate2 = format.asString('yyyy-MM-dd', new Date(doj));
-    const encryptedString = sha1(password);
-    if (req.body.cimg == undefined) {
-        cimage = 'admin.png';
+// router.post('/employeeadd', (req, res) => {
+//     console.log(req.body);
+//     var password = generator.generate({
+//         length: 8,
+//         numbers: true
+//     });
+//     var dob = req.body.value.dob;
+//     const nowdate1 = format.asString('yyyy-MM-dd', new Date(dob));
+//     const nowdate = format.asString('yyyy-MM-dd', new Date());
+//     const doj = req.body.value.joiningdate;
+//     var cimage;
+//     var pimage;
+//     var aimage;
+//     console.log(doj);
+//     const nowdate2 = format.asString('yyyy-MM-dd', new Date(doj));
+//     const encryptedString = sha1(password);
+//     if (req.body.cimg == undefined) {
+//         cimage = 'admin.png';
 
-    } else {
-        cimage = req.body.cimg[0].blobName;
-        console.log("BlobName  " + cimage);
-    }
-    if (req.body.pimg == undefined) {
-        pimage = 'admin.png';
+//     } else {
+//         cimage = req.body.cimg[0].blobName;
+//         console.log("BlobName  " + cimage);
+//     }
+//     if (req.body.pimg == undefined) {
+//         pimage = 'admin.png';
 
-    } else {
-        pimage = req.body.pimg[0].blobName;
-        console.log(pimage);
-    }
-    if (req.body.aimg == undefined) {
-        aimage = 'admin.png';
-    } else {
-        aimage = req.body.aimg[0].blobName;
-        console.log(aimage);
-    }
+//     } else {
+//         pimage = req.body.pimg[0].blobName;
+//         console.log(pimage);
+//     }
+//     if (req.body.aimg == undefined) {
+//         aimage = 'admin.png';
+//     } else {
+//         aimage = req.body.aimg[0].blobName;
+//         console.log(aimage);
+//     }
 
-    knex('employee')
-        .returning('id')
-        .insert({
-            name: req.body.value.name,
-            mobile: req.body.value.mobile,
-            email: req.body.value.email,
-            dob: nowdate1,
-            ifsc: req.body.value.ifsc,
-            altmobile: req.body.value.altmobile,
-            address: req.body.value.address,
-            qualification: req.body.value.qualification,
-            accno: req.body.value.accno,
-            branch: req.body.value.branch,
-            pincode: req.body.value.pincode,
-            iduser: req.body.value.idusertype,
-            gender: req.body.value.gender,
-            cimage: cimage,
-            pimage: pimage,
-            aimage: aimage,
-            status: 'active',
-            password: encryptedString,
-            orgpassword: password,
-            joiningdate: nowdate2,
-            createddate: nowdate,
-            designation: req.body.value.designation,
-            createdby: req.body.createdby
+//     knex('employee')
+//         .returning('id')
+//         .insert({
+//             name: req.body.value.name,
+//             mobile: req.body.value.mobile,
+//             email: req.body.value.email,
+//             dob: nowdate1,
+//             ifsc: req.body.value.ifsc,
+//             altmobile: req.body.value.altmobile,
+//             address: req.body.value.address,
+//             qualification: req.body.value.qualification,
+//             accno: req.body.value.accno,
+//             branch: req.body.value.branch,
+//             pincode: req.body.value.pincode,
+//             iduser: req.body.value.idusertype,
+//             gender: req.body.value.gender,
+//             cimage: cimage,
+//             pimage: pimage,
+//             aimage: aimage,
+//             status: 'active',
+//             password: encryptedString,
+//             orgpassword: password,
+//             joiningdate: nowdate2,
+//             createddate: nowdate,
+//             designation: req.body.value.designation,
+//             createdby: req.body.createdby
 
-        })
+//         })
 
-    .then(function(result) {
+//     .then(function(result) {
 
-        res.json('Employee Added Successfully');
-        knex.select()
-            .from('settings').where({ status: 'active' })
-            .then(function(resu) {
-                console.log(resu);
-                console.log(resu[0].idsetting);
-                console.log(resu[0].emailuser);
-                var emailuser = resu[0].emailuser;
-                var emailpassword = resu[0].emailpassword;
-                var hostmail = resu[0].hostmail;
-                var resubject = resu[0].subject;
-                var bsubject = resu[0].bsubject;
+//         res.json('Employee Added Successfully');
+//         knex.select()
+//             .from('settings').where({ status: 'active' })
+//             .then(function(resu) {
+//                 console.log(resu);
+//                 console.log(resu[0].idsetting);
+//                 console.log(resu[0].emailuser);
+//                 var emailuser = resu[0].emailuser;
+//                 var emailpassword = resu[0].emailpassword;
+//                 var hostmail = resu[0].hostmail;
+//                 var resubject = resu[0].subject;
+//                 var bsubject = resu[0].bsubject;
 
-                var mloginlink = resu[0].mloginlink;
-                var fromemail1 = resu[0].fromemail1;
-                var regards = resu[0].regards;
-                var cc = resu[0].cc;
-                var bcc = resu[0].bcc;
-                var address = resu[0].address;
-                // res.json(resu);
-                const output = `
-    
-  
-    <center style="width:100%;table-layout:fixed">
-    <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#F5F7F8">
-    <tbody><tr>
-    <td>
-                
-    <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#F5F7F8">
-    <tbody><tr>
-    <td>    
-         <div style="margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:0px;padding-right:0px">
-  <table align="center" style="border-spacing:0;font-family:sans-serif;color:#f5f7f8;Margin:0 auto;width:100%" bgcolor="#F5F7F8">
-       <tbody><tr>
-  <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0" bgcolor="#F5F7F8">
-        <table width="100%" style="border-spacing:0;font-family:sans-serif;color:#f5f7f8" bgcolor="#F5F7F8">
-            <tbody><tr>
-               <td style="padding-bottom:0px;padding-top:0px;padding-left:20px;
-               padding-right:20px;background-color:#f5f7f8;color:#f5f7f8;width:100%;
-               font-size:1px;line-height:1px;text-align:left;display:none!important">
-                 
-              
-            </td>
-            </tr>           
-        </tbody></table>
-    </td>
-  </tr>
-  </tbody></table>
-        </div>
-        </td>
-        </tr>
-        </tbody></table>
-    
-  
-                <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#F5F7F8">
-    <tbody><tr>
-    <td style="padding-bottom:20px">
-         <div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
-  
-  <table align="center"
-   style="border-spacing:0;font-family:sans-serif;color:#111111;Margin:0 auto;width:100%;max-width:600px" bgcolor="#F5F7F8">
-       <tbody><tr>
-  <td bgcolor="#F5F7F8" style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0">
-        <table width="73%" style="border-spacing:0;font-family:sans-serif;color:#111111" bgcolor="#F5F7F8">
-            <tbody><tr>
-                 <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0px" 
-                  width="109" 
-                  height="103" 
-                  alt="logo"
-                   align="center">
-                   <img style="display:block; line-height:0px; font-size:0px; 
-                   border:0px;" src="https://dl2.pushbulletusercontent.com/CEyJvfyccHBYUunsWk8U99b6dkeV3s5Y/logo1.png" 
-                   width="150" height="100" alt="logo">
-   </td>
-            </tr>
-            
-        </tbody></table>
-    </td>
-   
-  </tr>
-  </tbody></table>
-  
-        </div>
-        </td>
-        </tr>
-        </tbody></table>
-  
-                
-    <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
-    <tbody><tr>
-    <td bgcolor="#F5F7F8" style="background-color:#f5f7f8;padding-top:0;padding-right:0;padding-left:0;padding-bottom:0">
-    <div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
-      <table bgcolor="#FFFFFF" width="100%" align="center" border="0" cellspacing="0" cellpadding="0" style="font-family:sans-serif;color:#111111">
-        <tbody><tr>
-        <td bgcolor="#FFFFFF" align="center" style="word-break:break-all;padding-top:40px;padding-bottom:0;padding-right:40px;padding-left:40px;text-align:center;background-color:#ffffff;font-weight:bold;font-family:Arial,sans-serif,'Arial Bold','gdsherpa-bold';font-size:32px;line-height:42px" class="m_3203954183132274498h2mobile">
-                
-          <span>
-          <a>Hi <b>` + req.body.name + `,</b><br/>
-          </a>
-          </span>
-                 
-        </td>
-        </tr>
-      </tbody></table>
-      
-    </div>
-  </td>
-  </tr>
-  </tbody></table>
-  
-  <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
-  <tbody><tr>
-  <td bgcolor="#F5F7F8" style="background-color:#f5f7f8;padding-top:0;padding-right:0;padding-left:0;padding-bottom:0">
-  <div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">	
-  <table bgcolor="#FFFFFF" width="100%" align="center" border="0" cellspacing="0" cellpadding="0" style="font-family:sans-serif;color:#111111">
-  <tbody><tr>
-  <td bgcolor="#FFFFFF" align="center" style="padding-top:15px;padding-bottom:0;padding-right:40px;padding-left:40px;text-align:center;background-color:#ffffff;font-weight:bold;font-family:Arial,sans-serif,'Arial Bold','gdsherpa-bold';font-size:21px;line-height:31px">
-  <span><a>
-  Please note your CRM  credentials!!! .
-  </a></span>
-  </td>
-  </tr>
-  </tbody>
-  </table>
-  </div>
-  </td>
-  </tr>
-  
-  </tbody></table>
-    <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
-       <tbody><tr>
-          <td bgcolor="#F5F7F8" style="padding-top:0px;padding-bottom:0px">
-             <div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
-                
-                         <table bgcolor="#FFFFFF" align="center" style="border-spacing:0;font-family:sans-serif;color:#111111;margin:0 auto;width:100%;max-width:600px">
-                            <tbody><tr>
-                               <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0">
-                                  <table width="100%" style="border-spacing:0;font-family:sans-serif;color:#111111">
-                                     <tbody><tr>
-                                        <td style="padding-top:40px;padding-bottom:0px;padding-left:40px;padding-right:40px;background-color:#ffffff;width:100%;text-align:left">
-                                           <p style="margin-top:0px;line-height:0px;margin-bottom:0px;font-size:4px">&nbsp;</p>
-                                        </td>
-                                     </tr>
-                                  </tbody></table>
-                               </td>
-            </tr>
-             </tbody></table>     
-             </div>
-          </td>
-       </tr>
-    </tbody></table>
-    <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
-       <tbody><tr>
-          <td bgcolor="#F5F7F8" style="padding-top:0px;padding-bottom:0px">
-             <div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
-                
-                         <table bgcolor="#1976D2" align="center" style="border-spacing:0;font-family:sans-serif;color:#ffffff;margin:0 auto;width:100%;max-width:600px">
-                            <tbody><tr>
-                               <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0">
-                                  <table width="100%" style="border-spacing:0;font-family:sans-serif;color:#ffffff">
-                                     <tbody><tr>
-                                        <td style="padding-top:25px;padding-bottom:0px;padding-left:40px;padding-right:40px;background-color:#1976d2;width:100%;text-align:center">
-                                           <p class="m_3203954183132274498bodycopy" 
-                                           style="font-family:Arial,sans-serif,'gdsherpa-regular';margin-top:0px;font-size:16px;line-height:26px;margin-bottom:0px">
-                                          YOUR PASSWORD:<b>` + password + `</b>,
-                                           <br/>EMAILID:<b style="font-family:Arial,sans-serif,'gdsherpa-regular';;color:#ffffff";margin-top:0px;font-size:16px;line-height:26px;margin-bottom:0px"> ` + req.body.email + `</b>
-                                          <br/>
-                                          </p>
-                                        </td>
-                                     </tr>
-                                  </tbody></table>
-                               </td>
-                            </tr>
-  
-                           
-  
-  
-  
-                                  <tr>
-          <td bgcolor="#F5F7F8" style="padding-top:0px;padding-bottom:0px">
-             <div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:0px;padding-right:0px">
-                
-                         <table bgcolor="#FFFFFF" align="center" style="border-spacing:0;font-family:sans-serif;color:#111111;margin:0 auto;width:100%;max-width:600px">
-                            <tbody><tr>
-                               <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0  ">
-                                  <table width="100%" style="border-spacing:0;font-family:sans-serif;color:#111111">
-                                     <tbody><tr>
-                                        <td style="padding-top:29px;font-size:23px;padding-bottom:0px;padding-left:40px;padding-right:40px;background-color:#ffffff;width:100%;text-align:center">
-                                       
-                                        
-                                        <p style="font-size: 16px;">
-                                      Click here to login <a href="` + mloginlink + `" style="color: blue">"` + mloginlink + `"</a><br/>
-                                       Login To Above Link <br/>To Start Your Process.....</p>
-                            
-                                      
-                              
-                                        
-                                       
-                                        </td>
-                                     </tr>
-                                  </tbody></table>
-                               </td>
-                            </tr>
-                         </tbody></table>
-                         
-             </div>
-          </td>
-       </tr>
-  
-  
-  
-                         </tbody></table>
-                         
-             </div>
-          </td>
-       </tr>
-    </tbody></table>
-    
-  <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
-      <tbody>
-        </tbody></table>
-        
-      </div>
-    </td>
-    </tr>
-  </tbody></table>
-  
-    <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
-       <tbody>
-    </tbody></table>
-  <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
-    <tbody><tr>
-      <td bgcolor="#F5F7F8" style="padding-top:0px;padding-bottom:0px">
-        <div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
-          
-          <table bgcolor="#FFFFFF" align="center" style="border-spacing:0;font-family:sans-serif;color:#111111;margin:0 auto;width:100%;max-width:600px">
-            <tbody><tr>
-              <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0">
-                <table width="100%" style="border-spacing:0;font-family:sans-serif;color:#111111;table-layout:fixed">
-                  <tbody><tr>
-                    <td style="padding-top:15px;padding-bottom:0px;padding-left:40px;padding-right:40px;background-color:#ffffff;width:100%;text-align:left;word-break:break-all">
-                    <p style="font-size:16px;"><b>Regards</b></p>
-                    <p style="font-size: 16px;">` + regards + `</p>
-                    <p style="font-size: 16px;">` + address + `</p>
-                    <br>
-                    </td>
-                  </tr>
-                </tbody></table>
-              </td>
-            </tr>
-          </tbody></table>
-          
-        </div>
-      </td>
-    </tr>
-  </tbody></table>
-    <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
-      <tbody><tr>
-         <td bgcolor="#F5F7F8" style="padding-top:0px;padding-right:0;padding-left:0;padding-bottom:0px">
-            <div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
-               
-                        <table bgcolor="#FFFFFF" width="100%" align="center" border="0" cellspacing="0" cellpadding="0" style="font-family:sans-serif;color:#ffffff">
-                          <tbody><tr>
-                             <td bgcolor="#FFFFFF" align="center" style="padding-top:20px;padding-bottom:0;padding-right:40px;padding-left:40px;text-align:center">
-                                <table border="0" cellpadding="0" cellspacing="0" align="center" width="100%">
-                                  <tbody><tr>
-                                     <td align="center" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0">
-                                        <table border="0" cellspacing="0" cellpadding="0" align="center">
-                                          <tbody><tr>
-                                             <td align="center" style="font-size:18px;line-height:22px;font-weight:bold;font-family:Arial,sans-serif,'Arial Bold','gdsherpa-bold'">
-                         <span>
-                         </span></td>
-                                          </tr>
-                                        </tbody></table>
-                                     </td>
-                                  </tr>
-                                </tbody></table>
-                             </td>
-                          </tr>
-                        </tbody></table>
-                        
-            </div>
-         </td>
-      </tr>
-    </tbody></table>
-  
-    <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
-       <tbody><tr>
-          <td bgcolor="#F5F7F8" style="padding-top:0px;padding-bottom:0px">
-             <div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
-                
-                         <table bgcolor="#FFFFFF" align="center" style="border-spacing:0;font-family:sans-serif;color:#111111;margin:0 auto;width:100%;max-width:600px">
-                            <tbody><tr>
-                               <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0">
-                                  <table width="100%" style="border-spacing:0;font-family:sans-serif;color:#111111">
-                                     <tbody><tr>
-                                        <td style="padding-top:15px;padding-bottom:0px;padding-left:40px;padding-right:40px;background-color:#ffffff;width:100%;text-align:left">
-                                        </td>
-                                     </tr>
-                                  </tbody></table>
-                               </td>
-                            </tr>
-                         </tbody></table>
-                         
-             </div>
-          </td>
-       </tr>
-    </tbody></table>
-    <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
-       <tbody><tr>
-          <td bgcolor="#F5F7F8" style="padding-top:0px;padding-bottom:0px">
-             <div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
-                
-                         <table bgcolor="#FFFFFF" align="center" style="border-spacing:0;font-family:sans-serif;color:#111111;margin:0 auto;width:100%;max-width:600px">
-                            <tbody><tr>
-                               <td width="20" bgcolor="#FFFFFF" style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0"><img src="https://ci5.googleusercontent.com/proxy/RICSIZJJJakoeRjSl1leY13zGXyq9_HKIqrwFRrOPA57xyZdbs53L1rQ4yhCH11-SspdFH__fOZOY6Z2y9DifqeOMXwq3pGBzw-CBms=s0-d-e1-ft#https://imagesak.secureserver.net/promos/std/spc_trans.gif" height="10" width="20" border="0" style="display:block;border-width:0" class="CToWUd"></td>
-                               <td style="padding-top:25px;padding-bottom:0px;padding-right:0;padding-left:0;text-align:center;font-size:0;background-color:#ffffff">
-                                  
-                                           <div style="width:100%;max-width:560px;display:inline-block;vertical-align:top">
-                                              <table width="100%" style="border-spacing:0;font-family:sans-serif;color:#111111">
-                                                 <tbody><tr>
-                                                    <td style="padding-top:0px;padding-bottom:0px;padding-left:20px;padding-right:20px;background-color:#ffffff">
-                                                       <table style="border-spacing:0;font-family:sans-serif;color:#111111;width:100%;font-size:14px;text-align:left;background-color:#ffffff;border-left-color:#fedc45;border-left-style:solid;border-left-width:3px">
-                                                          <tbody><tr>
-                                                             <td style="padding-top:0px;padding-bottom:0px;padding-left:20px;padding-right:20px;background-color:#ffffff;width:100%;text-align:left">
-                                                             </td>
-                                                          </tr>
-                                                       </tbody></table>
-                                                    </td>
-                                                 </tr>
-                                              </tbody></table>
-                                           </div>
-                                           
-                               </td>
-                               <td width="20" bgcolor="#FFFFFF" style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0"><img src="https://ci5.googleusercontent.com/proxy/RICSIZJJJakoeRjSl1leY13zGXyq9_HKIqrwFRrOPA57xyZdbs53L1rQ4yhCH11-SspdFH__fOZOY6Z2y9DifqeOMXwq3pGBzw-CBms=s0-d-e1-ft#https://imagesak.secureserver.net/promos/std/spc_trans.gif" height="10" width="20" border="0" style="display:block;border-width:0" class="CToWUd"></td>
-                            </tr>
-                         </tbody></table>
-                         
-             </div>
-          </td>
-       </tr>
-    </tbody></table>
-    <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
-       <tbody><tr>
-          <td bgcolor="#F5F7F8" style="padding-top:0px;padding-bottom:0px">
-             <div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
-                
-                         <table bgcolor="#FFFFFF" align="center" style="border-spacing:0;font-family:sans-serif;color:#111111;margin:0 auto;width:100%;max-width:600px">
-                            <tbody><tr>
-                               <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0">
-                                  <table width="100%" style="border-spacing:0;font-family:sans-serif;color:#111111">
-                                     <tbody><tr>
-                                        <td style="padding-top:40px;padding-bottom:0px;padding-left:40px;padding-right:40px;background-color:#ffffff;width:100%;text-align:left">
-                                        </td>
-                                     </tr>
-                                  </tbody></table>
-                               </td>
-                            </tr>
-                         </tbody></table>
-                         
-             </div>
-          </td>
-       </tr>
-    </tbody></table>
-                  
-                  
-                  
-                  
-                  
-                              
-                  
-                              
-                  
-                  
-                  
-                  
-                  
-                              
-                  
-                              
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
-  <tbody><tr>
-  <td bgcolor="#F5F7F8" style="padding-top:0px;padding-bottom:0px">
-      <div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
-  
-  <table align="center" style="border-spacing:0;Margin:0 auto;width:100%;max-width:600px">
-   <tbody><tr>
-  <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0">
-      <table width="100%" style="border-spacing:0;font-family:sans-serif;color:#ffffff">
-              <tbody><tr>
-                  <td style="padding-top:40px;padding-bottom:0px;padding-left:40px;padding-right:40px;background-color:#f5f7f8;width:100%;text-align:left">
-                  </td>
-              </tr>
-          </tbody></table>
-      </td>
-  </tr>
-  </tbody></table>
-  
-          </div>
-          </td>
-          </tr>
-          </tbody></table>
-  
-                  
-                  <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#E8EAEB">
-  <tbody><tr>
-  <td bgcolor="#E8EAEB" style="padding-top:0px;padding-bottom:0px">
-      <div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
-  
-  <table align="center" style="border-spacing:0;Margin:0 auto;width:100%;max-width:600px">
-   <tbody><tr>
-  <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0">
-      <table width="100%" style="border-spacing:0;font-family:sans-serif;color:#ffffff">
-              <tbody><tr>
-                  <td style="padding-top:40px;padding-bottom:0px;padding-left:40px;padding-right:40px;background-color:#e8eaeb;width:100%;text-align:left">
-                  </td>
-              </tr>
-          </tbody></table>
-      </td>
-  </tr>
-  </tbody></table>
-  
-          </div>
-          </td>
-          </tr>
-          </tbody></table>
-  
-                  
-                    <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#E8EAEB">
-       <tbody><tr>
-          <td bgcolor="#E8EAEB" style="padding-top:0px;padding-bottom:0px">
-             <div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
-                
-                         <table align="center" style="border-spacing:0;font-family:sans-serif;color:#757575;margin:0 auto;width:100%;max-width:600px">
-                            <tbody><tr>
-                               <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0">
-                                  <table width="100%" style="border-spacing:0;font-family:sans-serif;color:#757575">
-                                     <tbody><tr>
-                                        <td style="padding-top:0px;padding-bottom:15px;padding-left:0px;padding-right:0px;background-color:#e8eaeb;width:100%;text-align:left">
-                                        </td>
-                                     </tr>
-                                  </tbody></table>
-                               </td>
-                            </tr>
-                         </tbody></table>
-                         
-             </div>
-          </td>
-       </tr>
-    </tbody></table>
-                  
-                  
-                  
-                  <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#E8EAEB">
-  <tbody><tr><td bgcolor="#E8EAEB" style="padding-top:0px;padding-bottom:0px">
-  <div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
-  
-  <table align="center" style="border-spacing:0;font-family:sans-serif;color:#757575;Margin:0 auto;width:100%;max-width:600px">
-   <tbody><tr>
-  <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0">
-          <table width="100%" style="border-spacing:0;font-family:sans-serif;color:#757575">
-              <tbody><tr>
-                  <td style="padding-top:0px;padding-bottom:25px;padding-left:0px;padding-right:0px;background-color:#e8eaeb;width:100%;text-align:left">
-              
-                            </td>
-              </tr>
-          </tbody></table>
-      </td>
-  </tr>
-  </tbody></table>
-  
-          </div>
-          </td>
-          </tr>
-          </tbody></table>
-                  
-                  
-                  
-                  
-                  
-                  <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#E8EAEB">
-  <tbody><tr><td bgcolor="#E8EAEB" style="padding-top:0px;padding-bottom:0px">
-  <div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
-  
-  <table align="center" style="border-spacing:0;font-family:sans-serif;color:#757575;Margin:0 auto;width:100%;max-width:600px">
-   <tbody><tr>
-  <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0">
-          <table width="100%" style="border-spacing:0;font-family:sans-serif;color:#757575">
-              <tbody><tr>
-                  <td style="padding-top:0px;padding-bottom:25px;padding-left:0px;padding-right:0px;background-color:#e8eaeb;width:100%;text-align:left">
-              
-              
-                  </td>
-              </tr>
-          </tbody></table>
-      </td>
-  </tr>
-  </tbody></table>
-  
-          </div>
-          </td>
-          </tr>
-          </tbody></table>
-                  
-      </td>
-      </tr>
-      </tbody></table>
-      </center>
-  
-
-  
-     `;
-
-                let transporter = nodemailer.createTransport({
-                    host: hostmail,
-                    port: 587,
-                    transportMethod: 'SMTP',
-                    // secure: false, // true for 465, false for other ports
-                    auth: {
-                        user: emailuser, // gmail id
-                        pass: emailpassword // gmail password
-                    },
-                    tls: {
-                        rejectUnauthorized: false
-                    }
-                });
-                // setup email data with unicode symbols
-                let mailOptions = {
-                    from: fromemail1,
-                    to: req.body.email, // list of receivers
-                    cc: cc,
-                    bcc: bcc,
-                    subject: bsubject, //"Project Payment Update From", // Subject line
-                    text: 'Hello world?', // plain text body
-                    html: output // html body
-                };
-                // send mail with defined transport object
-                transporter.sendMail(mailOptions, (error, info) => {
-                    if (error) {
-                        return console.log(error);
-                    }
-                    console.log('Message sent: %s', info.messageId);
-                    console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-                    res.render('contact', { msg: 'Email has been sent' });
-                });
+//                 var mloginlink = resu[0].mloginlink;
+//                 var fromemail1 = resu[0].fromemail1;
+//                 var regards = resu[0].regards;
+//                 var cc = resu[0].cc;
+//                 var bcc = resu[0].bcc;
+//                 var address = resu[0].address;
+//                 // res.json(resu);
+//                 const output = `
 
 
-            })
+//     <center style="width:100%;table-layout:fixed">
+//     <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#F5F7F8">
+//     <tbody><tr>
+//     <td>
+
+//     <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#F5F7F8">
+//     <tbody><tr>
+//     <td>    
+//          <div style="margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:0px;padding-right:0px">
+//   <table align="center" style="border-spacing:0;font-family:sans-serif;color:#f5f7f8;Margin:0 auto;width:100%" bgcolor="#F5F7F8">
+//        <tbody><tr>
+//   <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0" bgcolor="#F5F7F8">
+//         <table width="100%" style="border-spacing:0;font-family:sans-serif;color:#f5f7f8" bgcolor="#F5F7F8">
+//             <tbody><tr>
+//                <td style="padding-bottom:0px;padding-top:0px;padding-left:20px;
+//                padding-right:20px;background-color:#f5f7f8;color:#f5f7f8;width:100%;
+//                font-size:1px;line-height:1px;text-align:left;display:none!important">
+
+
+//             </td>
+//             </tr>           
+//         </tbody></table>
+//     </td>
+//   </tr>
+//   </tbody></table>
+//         </div>
+//         </td>
+//         </tr>
+//         </tbody></table>
+
+
+//                 <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#F5F7F8">
+//     <tbody><tr>
+//     <td style="padding-bottom:20px">
+//          <div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
+
+//   <table align="center"
+//    style="border-spacing:0;font-family:sans-serif;color:#111111;Margin:0 auto;width:100%;max-width:600px" bgcolor="#F5F7F8">
+//        <tbody><tr>
+//   <td bgcolor="#F5F7F8" style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0">
+//         <table width="73%" style="border-spacing:0;font-family:sans-serif;color:#111111" bgcolor="#F5F7F8">
+//             <tbody><tr>
+//                  <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0px" 
+//                   width="109" 
+//                   height="103" 
+//                   alt="logo"
+//                    align="center">
+//                    <img style="display:block; line-height:0px; font-size:0px; 
+//                    border:0px;" src="https://dl2.pushbulletusercontent.com/CEyJvfyccHBYUunsWk8U99b6dkeV3s5Y/logo1.png" 
+//                    width="150" height="100" alt="logo">
+//    </td>
+//             </tr>
+
+//         </tbody></table>
+//     </td>
+
+//   </tr>
+//   </tbody></table>
+
+//         </div>
+//         </td>
+//         </tr>
+//         </tbody></table>
+
+
+//     <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
+//     <tbody><tr>
+//     <td bgcolor="#F5F7F8" style="background-color:#f5f7f8;padding-top:0;padding-right:0;padding-left:0;padding-bottom:0">
+//     <div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
+//       <table bgcolor="#FFFFFF" width="100%" align="center" border="0" cellspacing="0" cellpadding="0" style="font-family:sans-serif;color:#111111">
+//         <tbody><tr>
+//         <td bgcolor="#FFFFFF" align="center" style="word-break:break-all;padding-top:40px;padding-bottom:0;padding-right:40px;padding-left:40px;text-align:center;background-color:#ffffff;font-weight:bold;font-family:Arial,sans-serif,'Arial Bold','gdsherpa-bold';font-size:32px;line-height:42px" class="m_3203954183132274498h2mobile">
+
+//           <span>
+//           <a>Hi <b>` + req.body.name + `,</b><br/>
+//           </a>
+//           </span>
+
+//         </td>
+//         </tr>
+//       </tbody></table>
+
+//     </div>
+//   </td>
+//   </tr>
+//   </tbody></table>
+
+//   <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
+//   <tbody><tr>
+//   <td bgcolor="#F5F7F8" style="background-color:#f5f7f8;padding-top:0;padding-right:0;padding-left:0;padding-bottom:0">
+//   <div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">	
+//   <table bgcolor="#FFFFFF" width="100%" align="center" border="0" cellspacing="0" cellpadding="0" style="font-family:sans-serif;color:#111111">
+//   <tbody><tr>
+//   <td bgcolor="#FFFFFF" align="center" style="padding-top:15px;padding-bottom:0;padding-right:40px;padding-left:40px;text-align:center;background-color:#ffffff;font-weight:bold;font-family:Arial,sans-serif,'Arial Bold','gdsherpa-bold';font-size:21px;line-height:31px">
+//   <span><a>
+//   Please note your CRM  credentials!!! .
+//   </a></span>
+//   </td>
+//   </tr>
+//   </tbody>
+//   </table>
+//   </div>
+//   </td>
+//   </tr>
+
+//   </tbody></table>
+//     <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
+//        <tbody><tr>
+//           <td bgcolor="#F5F7F8" style="padding-top:0px;padding-bottom:0px">
+//              <div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
+
+//                          <table bgcolor="#FFFFFF" align="center" style="border-spacing:0;font-family:sans-serif;color:#111111;margin:0 auto;width:100%;max-width:600px">
+//                             <tbody><tr>
+//                                <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0">
+//                                   <table width="100%" style="border-spacing:0;font-family:sans-serif;color:#111111">
+//                                      <tbody><tr>
+//                                         <td style="padding-top:40px;padding-bottom:0px;padding-left:40px;padding-right:40px;background-color:#ffffff;width:100%;text-align:left">
+//                                            <p style="margin-top:0px;line-height:0px;margin-bottom:0px;font-size:4px">&nbsp;</p>
+//                                         </td>
+//                                      </tr>
+//                                   </tbody></table>
+//                                </td>
+//             </tr>
+//              </tbody></table>     
+//              </div>
+//           </td>
+//        </tr>
+//     </tbody></table>
+//     <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
+//        <tbody><tr>
+//           <td bgcolor="#F5F7F8" style="padding-top:0px;padding-bottom:0px">
+//              <div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
+
+//                          <table bgcolor="#1976D2" align="center" style="border-spacing:0;font-family:sans-serif;color:#ffffff;margin:0 auto;width:100%;max-width:600px">
+//                             <tbody><tr>
+//                                <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0">
+//                                   <table width="100%" style="border-spacing:0;font-family:sans-serif;color:#ffffff">
+//                                      <tbody><tr>
+//                                         <td style="padding-top:25px;padding-bottom:0px;padding-left:40px;padding-right:40px;background-color:#1976d2;width:100%;text-align:center">
+//                                            <p class="m_3203954183132274498bodycopy" 
+//                                            style="font-family:Arial,sans-serif,'gdsherpa-regular';margin-top:0px;font-size:16px;line-height:26px;margin-bottom:0px">
+//                                           YOUR PASSWORD:<b>` + password + `</b>,
+//                                            <br/>EMAILID:<b style="font-family:Arial,sans-serif,'gdsherpa-regular';;color:#ffffff";margin-top:0px;font-size:16px;line-height:26px;margin-bottom:0px"> ` + req.body.email + `</b>
+//                                           <br/>
+//                                           </p>
+//                                         </td>
+//                                      </tr>
+//                                   </tbody></table>
+//                                </td>
+//                             </tr>
 
 
 
-    })
 
-})
+
+//                                   <tr>
+//           <td bgcolor="#F5F7F8" style="padding-top:0px;padding-bottom:0px">
+//              <div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:0px;padding-right:0px">
+
+//                          <table bgcolor="#FFFFFF" align="center" style="border-spacing:0;font-family:sans-serif;color:#111111;margin:0 auto;width:100%;max-width:600px">
+//                             <tbody><tr>
+//                                <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0  ">
+//                                   <table width="100%" style="border-spacing:0;font-family:sans-serif;color:#111111">
+//                                      <tbody><tr>
+//                                         <td style="padding-top:29px;font-size:23px;padding-bottom:0px;padding-left:40px;padding-right:40px;background-color:#ffffff;width:100%;text-align:center">
+
+
+//                                         <p style="font-size: 16px;">
+//                                       Click here to login <a href="` + mloginlink + `" style="color: blue">"` + mloginlink + `"</a><br/>
+//                                        Login To Above Link <br/>To Start Your Process.....</p>
+
+
+
+
+
+//                                         </td>
+//                                      </tr>
+//                                   </tbody></table>
+//                                </td>
+//                             </tr>
+//                          </tbody></table>
+
+//              </div>
+//           </td>
+//        </tr>
+
+
+
+//                          </tbody></table>
+
+//              </div>
+//           </td>
+//        </tr>
+//     </tbody></table>
+
+//   <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
+//       <tbody>
+//         </tbody></table>
+
+//       </div>
+//     </td>
+//     </tr>
+//   </tbody></table>
+
+//     <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
+//        <tbody>
+//     </tbody></table>
+//   <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
+//     <tbody><tr>
+//       <td bgcolor="#F5F7F8" style="padding-top:0px;padding-bottom:0px">
+//         <div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
+
+//           <table bgcolor="#FFFFFF" align="center" style="border-spacing:0;font-family:sans-serif;color:#111111;margin:0 auto;width:100%;max-width:600px">
+//             <tbody><tr>
+//               <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0">
+//                 <table width="100%" style="border-spacing:0;font-family:sans-serif;color:#111111;table-layout:fixed">
+//                   <tbody><tr>
+//                     <td style="padding-top:15px;padding-bottom:0px;padding-left:40px;padding-right:40px;background-color:#ffffff;width:100%;text-align:left;word-break:break-all">
+//                     <p style="font-size:16px;"><b>Regards</b></p>
+//                     <p style="font-size: 16px;">` + regards + `</p>
+//                     <p style="font-size: 16px;">` + address + `</p>
+//                     <br>
+//                     </td>
+//                   </tr>
+//                 </tbody></table>
+//               </td>
+//             </tr>
+//           </tbody></table>
+
+//         </div>
+//       </td>
+//     </tr>
+//   </tbody></table>
+//     <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
+//       <tbody><tr>
+//          <td bgcolor="#F5F7F8" style="padding-top:0px;padding-right:0;padding-left:0;padding-bottom:0px">
+//             <div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
+
+//                         <table bgcolor="#FFFFFF" width="100%" align="center" border="0" cellspacing="0" cellpadding="0" style="font-family:sans-serif;color:#ffffff">
+//                           <tbody><tr>
+//                              <td bgcolor="#FFFFFF" align="center" style="padding-top:20px;padding-bottom:0;padding-right:40px;padding-left:40px;text-align:center">
+//                                 <table border="0" cellpadding="0" cellspacing="0" align="center" width="100%">
+//                                   <tbody><tr>
+//                                      <td align="center" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0">
+//                                         <table border="0" cellspacing="0" cellpadding="0" align="center">
+//                                           <tbody><tr>
+//                                              <td align="center" style="font-size:18px;line-height:22px;font-weight:bold;font-family:Arial,sans-serif,'Arial Bold','gdsherpa-bold'">
+//                          <span>
+//                          </span></td>
+//                                           </tr>
+//                                         </tbody></table>
+//                                      </td>
+//                                   </tr>
+//                                 </tbody></table>
+//                              </td>
+//                           </tr>
+//                         </tbody></table>
+
+//             </div>
+//          </td>
+//       </tr>
+//     </tbody></table>
+
+//     <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
+//        <tbody><tr>
+//           <td bgcolor="#F5F7F8" style="padding-top:0px;padding-bottom:0px">
+//              <div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
+
+//                          <table bgcolor="#FFFFFF" align="center" style="border-spacing:0;font-family:sans-serif;color:#111111;margin:0 auto;width:100%;max-width:600px">
+//                             <tbody><tr>
+//                                <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0">
+//                                   <table width="100%" style="border-spacing:0;font-family:sans-serif;color:#111111">
+//                                      <tbody><tr>
+//                                         <td style="padding-top:15px;padding-bottom:0px;padding-left:40px;padding-right:40px;background-color:#ffffff;width:100%;text-align:left">
+//                                         </td>
+//                                      </tr>
+//                                   </tbody></table>
+//                                </td>
+//                             </tr>
+//                          </tbody></table>
+
+//              </div>
+//           </td>
+//        </tr>
+//     </tbody></table>
+//     <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
+//        <tbody><tr>
+//           <td bgcolor="#F5F7F8" style="padding-top:0px;padding-bottom:0px">
+//              <div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
+
+//                          <table bgcolor="#FFFFFF" align="center" style="border-spacing:0;font-family:sans-serif;color:#111111;margin:0 auto;width:100%;max-width:600px">
+//                             <tbody><tr>
+//                                <td width="20" bgcolor="#FFFFFF" style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0"><img src="https://ci5.googleusercontent.com/proxy/RICSIZJJJakoeRjSl1leY13zGXyq9_HKIqrwFRrOPA57xyZdbs53L1rQ4yhCH11-SspdFH__fOZOY6Z2y9DifqeOMXwq3pGBzw-CBms=s0-d-e1-ft#https://imagesak.secureserver.net/promos/std/spc_trans.gif" height="10" width="20" border="0" style="display:block;border-width:0" class="CToWUd"></td>
+//                                <td style="padding-top:25px;padding-bottom:0px;padding-right:0;padding-left:0;text-align:center;font-size:0;background-color:#ffffff">
+
+//                                            <div style="width:100%;max-width:560px;display:inline-block;vertical-align:top">
+//                                               <table width="100%" style="border-spacing:0;font-family:sans-serif;color:#111111">
+//                                                  <tbody><tr>
+//                                                     <td style="padding-top:0px;padding-bottom:0px;padding-left:20px;padding-right:20px;background-color:#ffffff">
+//                                                        <table style="border-spacing:0;font-family:sans-serif;color:#111111;width:100%;font-size:14px;text-align:left;background-color:#ffffff;border-left-color:#fedc45;border-left-style:solid;border-left-width:3px">
+//                                                           <tbody><tr>
+//                                                              <td style="padding-top:0px;padding-bottom:0px;padding-left:20px;padding-right:20px;background-color:#ffffff;width:100%;text-align:left">
+//                                                              </td>
+//                                                           </tr>
+//                                                        </tbody></table>
+//                                                     </td>
+//                                                  </tr>
+//                                               </tbody></table>
+//                                            </div>
+
+//                                </td>
+//                                <td width="20" bgcolor="#FFFFFF" style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0"><img src="https://ci5.googleusercontent.com/proxy/RICSIZJJJakoeRjSl1leY13zGXyq9_HKIqrwFRrOPA57xyZdbs53L1rQ4yhCH11-SspdFH__fOZOY6Z2y9DifqeOMXwq3pGBzw-CBms=s0-d-e1-ft#https://imagesak.secureserver.net/promos/std/spc_trans.gif" height="10" width="20" border="0" style="display:block;border-width:0" class="CToWUd"></td>
+//                             </tr>
+//                          </tbody></table>
+
+//              </div>
+//           </td>
+//        </tr>
+//     </tbody></table>
+//     <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
+//        <tbody><tr>
+//           <td bgcolor="#F5F7F8" style="padding-top:0px;padding-bottom:0px">
+//              <div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
+
+//                          <table bgcolor="#FFFFFF" align="center" style="border-spacing:0;font-family:sans-serif;color:#111111;margin:0 auto;width:100%;max-width:600px">
+//                             <tbody><tr>
+//                                <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0">
+//                                   <table width="100%" style="border-spacing:0;font-family:sans-serif;color:#111111">
+//                                      <tbody><tr>
+//                                         <td style="padding-top:40px;padding-bottom:0px;padding-left:40px;padding-right:40px;background-color:#ffffff;width:100%;text-align:left">
+//                                         </td>
+//                                      </tr>
+//                                   </tbody></table>
+//                                </td>
+//                             </tr>
+//                          </tbody></table>
+
+//              </div>
+//           </td>
+//        </tr>
+//     </tbody></table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//                   <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
+//   <tbody><tr>
+//   <td bgcolor="#F5F7F8" style="padding-top:0px;padding-bottom:0px">
+//       <div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
+
+//   <table align="center" style="border-spacing:0;Margin:0 auto;width:100%;max-width:600px">
+//    <tbody><tr>
+//   <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0">
+//       <table width="100%" style="border-spacing:0;font-family:sans-serif;color:#ffffff">
+//               <tbody><tr>
+//                   <td style="padding-top:40px;padding-bottom:0px;padding-left:40px;padding-right:40px;background-color:#f5f7f8;width:100%;text-align:left">
+//                   </td>
+//               </tr>
+//           </tbody></table>
+//       </td>
+//   </tr>
+//   </tbody></table>
+
+//           </div>
+//           </td>
+//           </tr>
+//           </tbody></table>
+
+
+//                   <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#E8EAEB">
+//   <tbody><tr>
+//   <td bgcolor="#E8EAEB" style="padding-top:0px;padding-bottom:0px">
+//       <div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
+
+//   <table align="center" style="border-spacing:0;Margin:0 auto;width:100%;max-width:600px">
+//    <tbody><tr>
+//   <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0">
+//       <table width="100%" style="border-spacing:0;font-family:sans-serif;color:#ffffff">
+//               <tbody><tr>
+//                   <td style="padding-top:40px;padding-bottom:0px;padding-left:40px;padding-right:40px;background-color:#e8eaeb;width:100%;text-align:left">
+//                   </td>
+//               </tr>
+//           </tbody></table>
+//       </td>
+//   </tr>
+//   </tbody></table>
+
+//           </div>
+//           </td>
+//           </tr>
+//           </tbody></table>
+
+
+//                     <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#E8EAEB">
+//        <tbody><tr>
+//           <td bgcolor="#E8EAEB" style="padding-top:0px;padding-bottom:0px">
+//              <div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
+
+//                          <table align="center" style="border-spacing:0;font-family:sans-serif;color:#757575;margin:0 auto;width:100%;max-width:600px">
+//                             <tbody><tr>
+//                                <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0">
+//                                   <table width="100%" style="border-spacing:0;font-family:sans-serif;color:#757575">
+//                                      <tbody><tr>
+//                                         <td style="padding-top:0px;padding-bottom:15px;padding-left:0px;padding-right:0px;background-color:#e8eaeb;width:100%;text-align:left">
+//                                         </td>
+//                                      </tr>
+//                                   </tbody></table>
+//                                </td>
+//                             </tr>
+//                          </tbody></table>
+
+//              </div>
+//           </td>
+//        </tr>
+//     </tbody></table>
+
+
+
+//                   <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#E8EAEB">
+//   <tbody><tr><td bgcolor="#E8EAEB" style="padding-top:0px;padding-bottom:0px">
+//   <div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
+
+//   <table align="center" style="border-spacing:0;font-family:sans-serif;color:#757575;Margin:0 auto;width:100%;max-width:600px">
+//    <tbody><tr>
+//   <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0">
+//           <table width="100%" style="border-spacing:0;font-family:sans-serif;color:#757575">
+//               <tbody><tr>
+//                   <td style="padding-top:0px;padding-bottom:25px;padding-left:0px;padding-right:0px;background-color:#e8eaeb;width:100%;text-align:left">
+
+//                             </td>
+//               </tr>
+//           </tbody></table>
+//       </td>
+//   </tr>
+//   </tbody></table>
+
+//           </div>
+//           </td>
+//           </tr>
+//           </tbody></table>
+
+
+
+
+
+//                   <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#E8EAEB">
+//   <tbody><tr><td bgcolor="#E8EAEB" style="padding-top:0px;padding-bottom:0px">
+//   <div style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
+
+//   <table align="center" style="border-spacing:0;font-family:sans-serif;color:#757575;Margin:0 auto;width:100%;max-width:600px">
+//    <tbody><tr>
+//   <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0">
+//           <table width="100%" style="border-spacing:0;font-family:sans-serif;color:#757575">
+//               <tbody><tr>
+//                   <td style="padding-top:0px;padding-bottom:25px;padding-left:0px;padding-right:0px;background-color:#e8eaeb;width:100%;text-align:left">
+
+
+//                   </td>
+//               </tr>
+//           </tbody></table>
+//       </td>
+//   </tr>
+//   </tbody></table>
+
+//           </div>
+//           </td>
+//           </tr>
+//           </tbody></table>
+
+//       </td>
+//       </tr>
+//       </tbody></table>
+//       </center>
+
+
+
+//      `;
+
+//                 let transporter = nodemailer.createTransport({
+//                     host: hostmail,
+//                     port: 587,
+//                     transportMethod: 'SMTP',
+//                     // secure: false, // true for 465, false for other ports
+//                     auth: {
+//                         user: emailuser, // gmail id
+//                         pass: emailpassword // gmail password
+//                     },
+//                     tls: {
+//                         rejectUnauthorized: false
+//                     }
+//                 });
+//                 // setup email data with unicode symbols
+//                 let mailOptions = {
+//                     from: fromemail1,
+//                     to: req.body.email, // list of receivers
+//                     cc: cc,
+//                     bcc: bcc,
+//                     subject: bsubject, //"Project Payment Update From", // Subject line
+//                     text: 'Hello world?', // plain text body
+//                     html: output // html body
+//                 };
+//                 // send mail with defined transport object
+//                 transporter.sendMail(mailOptions, (error, info) => {
+//                     if (error) {
+//                         return console.log(error);
+//                     }
+//                     console.log('Message sent: %s', info.messageId);
+//                     console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+//                     res.render('contact', { msg: 'Email has been sent' });
+//                 });
+
+
+//             })
+
+
+
+//     })
+
+// })
 
 
 
@@ -1887,10 +1887,9 @@ router.post('/addenquiry', (req, res) => {
     // var applieddate = req.body.value.enqdate;
     // console.log(applieddate);
     // const localTime = format.asString('yyyy-MM-dd', new Date());
-    var date1 = moment.utc().format('YYYY-MM-DD');
     var abc = req.body.value.executive.split(",", 2);
     console.log(abc);
-    var localTime = moment.utc(date1).toDate();
+    var localTime = format.asString('yyyy-MM-dd', new Date());
     knex('enquirydata')
         .insert({
             name: req.body.value.name,
@@ -1908,7 +1907,6 @@ router.post('/addenquiry', (req, res) => {
             comment: req.body.value.comment,
             updateddate: localTime,
             turnover: req.body.value.turnover
-
         })
         .then(function(result) {
             //console.log(result); 
@@ -4296,8 +4294,8 @@ router.post('/updateenquiry', (req, res) => {
     // var applieddate = req.body.value.enqdate;
     // console.log(applieddate);
     // const localTime = format.asString('yyyy-MM-dd', new Date());
-    var date1 = moment.utc().format('YYYY-MM-DD HH:mm:ss');
-    var localTime = moment.utc(date1).toDate();
+    // var date1 = moment.utc().format('YYYY-MM-DD HH:mm:ss');
+    var localTime = format.asString('yyyy-MM-dd', new Date());
     knex('enquirydata')
         .where('idenquiry', req.body.idenquiry)
         .update({
@@ -5190,7 +5188,7 @@ router.get('/completlist/:pagesize/:page', function(req, res) {
             })
         })
 });
-router.get('/getDataEnquirylist/:pagesize/:page/:sdate/:edate', (req, res, next) => {
+router.get('/https://bank.mindfin.co.in/:pagesize/:page/:sdate/:edate', (req, res, next) => {
     const pageSize = req.params.pagesize;
     const currentPage = req.params.page;
     const skip = (pageSize * (currentPage - 1));
@@ -5202,6 +5200,7 @@ router.get('/getDataEnquirylist/:pagesize/:page/:sdate/:edate', (req, res, next)
         .join('employee', 'employee.idemployee', 'enquirydata.teleid')
         .where('enquirydata.createddate', '>=', sdate)
         .where('enquirydata.createddate', '<=', edate)
+        .orderBy('enquirydata.createddate', 'desc')
         .limit(pageSize).offset(skip)
         .then(function(result) {
             knex.select()
@@ -5210,6 +5209,7 @@ router.get('/getDataEnquirylist/:pagesize/:page/:sdate/:edate', (req, res, next)
                 .join('employee', 'employee.idemployee', 'enquirydata.teleid')
                 .where('enquirydata.createddate', '>=', sdate)
                 .where('enquirydata.createddate', '<=', edate)
+                .orderBy('enquirydata.createddate', 'desc')
                 .then(function(re) {
                     res.status(200).json({
                         message: "Memberlists fetched",
@@ -5235,7 +5235,9 @@ router.get('/getBackendlist/:pagesize/:page/:sdate/:edate', (req, res, next) => 
         .join('customer', 'customer.idcustomer', 'applybank.idcustomer')
         .where('status.createddate', '>=', sdate)
         .where('status.createddate', '<=', edate)
-        .limit(pageSize).offset(skip)
+        .orderBy('status.createddate', 'desc')
+
+    .limit(pageSize).offset(skip)
         .then(function(result) {
             knex.select()
                 .from('applybank', 'customer', 'status')
@@ -5244,6 +5246,7 @@ router.get('/getBackendlist/:pagesize/:page/:sdate/:edate', (req, res, next) => 
                 .join('customer', 'customer.idcustomer', 'applybank.idcustomer')
                 .where('status.createddate', '>=', sdate)
                 .where('status.createddate', '<=', edate)
+                .orderBy('status.createddate', 'desc')
                 .then(function(re) {
                     res.status(200).json({
                         message: "Memberlists fetched",
@@ -5271,6 +5274,7 @@ router.get('/getLoginreportlist/:pagesize/:page/:sdate/:edate', (req, res, next)
         .where({ 'applybank.lstatus': 'loginsent' })
         .where('applybank.logindate', '>=', sdate)
         .where('applybank.logindate', '<=', edate)
+        .orderBy('applybank.logindate', 'desc')
         .limit(pageSize).offset(skip)
         .then(function(result) {
             knex.select()
@@ -5282,6 +5286,7 @@ router.get('/getLoginreportlist/:pagesize/:page/:sdate/:edate', (req, res, next)
                 .where({ 'applybank.lstatus': 'loginsent' })
                 .where('applybank.logindate', '>=', sdate)
                 .where('applybank.logindate', '<=', edate)
+                .orderBy('applybank.logindate', 'desc')
                 .then(function(re) {
                     res.status(200).json({
                         message: "Memberlists fetched",
@@ -5305,6 +5310,7 @@ router.get('/getLoginroutinelist/:pagesize/:page/:sdate/:edate', (req, res, next
         .where('usertype.user', 'LOGIN')
         .where('daily_routine.createddate', '>=', sdate)
         .where('daily_routine.createddate', '<=', edate)
+        .orderBy('daily_routine.createddate', 'desc')
         .limit(pageSize).offset(skip)
         .then(function(result) {
             knex.select()
@@ -5315,6 +5321,7 @@ router.get('/getLoginroutinelist/:pagesize/:page/:sdate/:edate', (req, res, next
                 .where('usertype.user', 'LOGIN')
                 .where('daily_routine.createddate', '>=', sdate)
                 .where('daily_routine.createddate', '<=', edate)
+                .orderBy('daily_routine.createddate', 'desc')
                 .then(function(re) {
                     res.status(200).json({
                         message: "Memberlists fetched",
@@ -5338,6 +5345,7 @@ router.get('/getExecutiveroutinelist/:pagesize/:page/:sdate/:edate', (req, res, 
         .where('usertype.user', 'EXECUTIVE')
         .where('daily_routine.createddate', '>=', sdate)
         .where('daily_routine.createddate', '<=', edate)
+        .orderBy('daily_routine.createddate', 'desc')
         .limit(pageSize).offset(skip)
         .then(function(result) {
             knex.select()
@@ -5348,6 +5356,7 @@ router.get('/getExecutiveroutinelist/:pagesize/:page/:sdate/:edate', (req, res, 
                 .where('usertype.user', 'EXECUTIVE')
                 .where('daily_routine.createddate', '>=', sdate)
                 .where('daily_routine.createddate', '<=', edate)
+                .orderBy('daily_routine.createddate', 'desc')
                 .then(function(re) {
                     res.status(200).json({
                         message: "Memberlists fetched",
@@ -5375,6 +5384,7 @@ router.get('/getDataentryReportlist/:pagesize/:page/:sdate/:edate', (req, res, n
         .whereIn('status.statusid', subquery)
         .where('customer.editdate', '>=', sdate)
         .where('customer.editdate', '<=', edate)
+        .orderBy('customer.editdate', 'desc')
         .limit(pageSize).offset(skip)
         .then(function(result) {
             knex.select()
@@ -5385,6 +5395,7 @@ router.get('/getDataentryReportlist/:pagesize/:page/:sdate/:edate', (req, res, n
                 .whereIn('status.statusid', subquery)
                 .where('customer.editdate', '>=', sdate)
                 .where('customer.editdate', '<=', edate)
+                .orderBy('customer.editdate', 'desc')
                 .then(function(re) {
                     res.status(200).json({
                         message: "Memberlists fetched",
@@ -5405,6 +5416,7 @@ router.get('/geEnquiryDatalist/:pagesize/:page/:sdate/:exeid', (req, res, next) 
         .join('employee', 'employee.idemployee', 'enquirydata.teleid')
         .where('enquirydata.createddate', sdate)
         .where('executiveid', req.params.exeid)
+        .orderBy('enquirydata.createddate', 'desc')
         .limit(pageSize).offset(skip)
         .then(function(result) {
             knex.select()
@@ -5413,6 +5425,7 @@ router.get('/geEnquiryDatalist/:pagesize/:page/:sdate/:exeid', (req, res, next) 
                 .join('employee', 'employee.idemployee', 'enquirydata.teleid')
                 .where('enquirydata.createddate', sdate)
                 .where('executiveid', req.params.exeid)
+                .orderBy('enquirydata.createddate', 'desc')
                 .then(function(re) {
                     res.status(200).json({
                         message: "Memberlists fetched",
@@ -5543,6 +5556,7 @@ router.get('/getloginlist1/:pagesize/:page/:sdate/:obj', function(req, res) {
             .join('customer', 'applybank.idcustomer', 'customer.idcustomer')
             .where({ 'applybank.lstatus': "loginsent" })
             .where('applybank.logindate', sdate)
+            .orderBy('applybank.logindate', 'desc')
             .limit(pageSize).offset(skip)
             .then(function(result) {
 
@@ -5553,6 +5567,7 @@ router.get('/getloginlist1/:pagesize/:page/:sdate/:obj', function(req, res) {
                     .join('customer', 'applybank.idcustomer', 'customer.idcustomer')
                     .where({ 'applybank.lstatus': "loginsent" })
                     .where('applybank.logindate', sdate)
+                    .orderBy('applybank.logindate', 'desc')
                     .then(function(re) {
                         var a = re.length
                         console.log(a);
@@ -5617,6 +5632,7 @@ router.get('/getdocument4/:pagesize/:page/:sdate', function(req, res) {
         .from('customer', 'employee')
         .join('employee', 'employee.idemployee', 'customer.idexecutive')
         .where('customer.applieddate', sdate)
+        .orderBy('customer.applieddate', 'desc')
         .limit(pageSize).offset(skip)
         .then(function(result) {
 
@@ -5624,6 +5640,7 @@ router.get('/getdocument4/:pagesize/:page/:sdate', function(req, res) {
                 .from('customer', 'employee')
                 .join('employee', 'employee.idemployee', 'customer.idexecutive')
                 .where('customer.applieddate', sdate)
+                .orderBy('customer.applieddate', 'desc')
                 .then(function(re) {
                     var a = re.length
                     console.log(a);
@@ -5646,6 +5663,7 @@ router.get('/getdocument5/:pagesize/:page/:sdate', function(req, res) {
 
     .where({ 'customer.status': "APPROVED" })
         .where('customer.applieddate', sdate)
+        .orderBy('customer.applieddate', 'desc')
         .limit(pageSize).offset(skip)
         .then(function(result) {
 
@@ -5654,6 +5672,7 @@ router.get('/getdocument5/:pagesize/:page/:sdate', function(req, res) {
                 .join('employee', 'employee.idemployee', 'customer.idexecutive')
                 .where({ 'customer.status': "APPROVED" })
                 .where('customer.applieddate', sdate)
+                .orderBy('customer.applieddate', 'desc')
                 .then(function(re) {
                     var a = re.length
                     console.log(a);
@@ -5767,7 +5786,7 @@ router.get('/teleeditData/:id', function(req, res) {
             res.json(result);
         })
 });
-router.get('/getDataEnquirylist1/:pagesize/:page/:sdate/:edate/:eid', (req, res, next) => {
+router.get('/https://bank.mindfin.co.in1/:pagesize/:page/:sdate/:edate/:eid', (req, res, next) => {
     const pageSize = req.params.pagesize;
     const currentPage = req.params.page;
     const skip = (pageSize * (currentPage - 1));
@@ -5790,6 +5809,7 @@ router.get('/getDataEnquirylist1/:pagesize/:page/:sdate/:edate/:eid', (req, res,
                 .where('enquirydata.createddate', '>=', sdate)
                 .where('enquirydata.createddate', '<=', edate)
                 .where('enquirydata.adminid', req.params.eid)
+                .orderBy('enquirydata.idenquiry', 'desc')
 
             .then(function(re) {
                 res.status(200).json({
@@ -5933,5 +5953,758 @@ router.post('/image-upload', upload.any(), (req, res) => {
     // res.json(req.files.blobName)
     return res.json({ 'imageUrl': req.files });
 });
+router.post('/addemployee', (req, res) => {
+    console.log(req.body);
+    var password = generator.generate({
+        length: 8,
+        numbers: true
+    });
+    var dob = req.body.value.dob;
+    const nowdate1 = format.asString('yyyy-MM-dd', new Date(dob));
+    const nowdate = format.asString('yyyy-MM-dd', new Date());
+    const doj = req.body.value.joiningdate;
+    var cimage;
+    var pimage;
+    var aimage;
+    console.log(doj);
+    const nowdate2 = format.asString('yyyy-MM-dd', new Date(doj));
+    const encryptedString = sha1(password);
+    if (req.body.cimg == undefined) {
+        cimage = 'admin.png';
+
+    } else {
+        cimage = req.body.cimg[0].blobName;
+        console.log("BlobName  " + cimage);
+    }
+    if (req.body.pimg == undefined) {
+        pimage = 'admin.png';
+
+    } else {
+        pimage = req.body.pimg[0].blobName;
+        console.log(pimage);
+    }
+    if (req.body.aimg == undefined) {
+        aimage = 'admin.png';
+    } else {
+        aimage = req.body.aimg[0].blobName;
+        console.log(aimage);
+    }
+
+    knex('employee')
+        .returning('id')
+        .insert({
+            name: req.body.value.name,
+            mobile: req.body.value.mobile,
+            email: req.body.value.email,
+            dob: nowdate1,
+            ifsc: req.body.value.ifsc,
+            altmobile: req.body.value.altmobile,
+            address: req.body.value.address,
+            qualification: req.body.value.qualification,
+            accno: req.body.value.accno,
+            branch: req.body.value.branch,
+            pincode: req.body.value.pincode,
+            iduser: req.body.value.idusertype,
+            gender: req.body.value.gender,
+            cimage: cimage,
+            pimage: pimage,
+            aimage: aimage,
+            status: 'active',
+            password: encryptedString,
+            orgpassword: password,
+            joiningdate: nowdate2,
+            createddate: nowdate,
+            designation: req.body.value.designation,
+            createdby: req.body.createdby
+
+        })
+
+    .then(function(result) {
+
+        res.json('Employee Added Successfully');
+        knex.select()
+            .from('settings').where({ status: 'active' })
+            .then(function(resu) {
+                console.log(resu);
+                console.log(resu[0].idsetting);
+                console.log(resu[0].emailuser);
+                var emailuser = resu[0].emailuser;
+                var emailpassword = resu[0].emailpassword;
+                var hostmail = resu[0].hostmail;
+                var resubject = resu[0].subject;
+                var bsubject = resu[0].bsubject;
+
+                var mloginlink = resu[0].mloginlink;
+                var fromemail1 = resu[0].fromemail1;
+                var regards = resu[0].regards;
+                var cc = resu[0].cc;
+                var bcc = resu[0].bcc;
+                var address = resu[0].address;
+                // res.json(resu);
+                const output = `<center style="width:100%;table-layout:fixed">
+                <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#F5F7F8">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#F5F7F8">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div
+                                                    style="margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:0px;padding-right:0px">
+                                                    <table align="center"
+                                                        style="border-spacing:0;font-family:sans-serif;color:#f5f7f8;Margin:0 auto;width:100%"
+                                                        bgcolor="#F5F7F8">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0"
+                                                                    bgcolor="#F5F7F8">
+                                                                    <table width="100%"
+                                                                        style="border-spacing:0;font-family:sans-serif;color:#f5f7f8"
+                                                                        bgcolor="#F5F7F8">
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td style="padding-bottom:0px;padding-top:0px;padding-left:20px;
+                           padding-right:20px;background-color:#f5f7f8;color:#f5f7f8;width:100%;
+                           font-size:1px;line-height:1px;text-align:left;display:none!important">
+            
+            
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+            
+            
+                                <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#F5F7F8">
+                                    <tbody>
+                                        <tr>
+                                            <td style="padding-bottom:20px">
+                                                <div
+                                                    style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
+            
+                                                    <table align="center"
+                                                        style="border-spacing:0;font-family:sans-serif;color:#111111;Margin:0 auto;width:100%;max-width:600px"
+                                                        bgcolor="#F5F7F8">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td bgcolor="#F5F7F8"
+                                                                    style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0">
+                                                                    <table width="73%"
+                                                                        style="border-spacing:0;font-family:sans-serif;color:#111111"
+                                                                        bgcolor="#F5F7F8">
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0px"
+                                                                                    width="109" height="103" alt="logo"
+                                                                                    align="center">
+                                                                                    <img style="display:block; line-height:0px; font-size:0px; 
+                               border:0px;" src="https://dl2.pushbulletusercontent.com/CEyJvfyccHBYUunsWk8U99b6dkeV3s5Y/logo1.png"
+                                                                                        width="150" height="100" alt="logo">
+                                                                                </td>
+                                                                            </tr>
+            
+                                                                        </tbody>
+                                                                    </table>
+                                                                </td>
+            
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+            
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+            
+            
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
+                                    <tbody>
+                                        <tr>
+                                            <td bgcolor="#F5F7F8"
+                                                style="background-color:#f5f7f8;padding-top:0;padding-right:0;padding-left:0;padding-bottom:0">
+                                                <div
+                                                    style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
+                                                    <table bgcolor="#FFFFFF" width="100%" align="center" border="0" cellspacing="0"
+                                                        cellpadding="0" style="font-family:sans-serif;color:#111111">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td bgcolor="#FFFFFF" align="center"
+                                                                    style="word-break:break-all;padding-top:40px;padding-bottom:0;padding-right:40px;padding-left:40px;text-align:center;background-color:#ffffff;font-weight:bold;font-family:Arial,sans-serif,'Arial Bold','gdsherpa-bold';font-size:32px;line-height:42px"
+                                                                    class="m_3203954183132274498h2mobile">
+            
+                                                                    <span>
+                                                                        <a>Hi <b>` + req.body.name + `,</b><br />
+                                                                        </a>
+                                                                    </span>
+            
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+            
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+            
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
+                                    <tbody>
+                                        <tr>
+                                            <td bgcolor="#F5F7F8"
+                                                style="background-color:#f5f7f8;padding-top:0;padding-right:0;padding-left:0;padding-bottom:0">
+                                                <div
+                                                    style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
+                                                    <table bgcolor="#FFFFFF" width="100%" align="center" border="0" cellspacing="0"
+                                                        cellpadding="0" style="font-family:sans-serif;color:#111111">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td bgcolor="#FFFFFF" align="center"
+                                                                    style="padding-top:15px;padding-bottom:0;padding-right:40px;padding-left:40px;text-align:center;background-color:#ffffff;font-weight:bold;font-family:Arial,sans-serif,'Arial Bold','gdsherpa-bold';font-size:21px;line-height:31px">
+                                                                    <span><a>
+                                                                            Please note your CRM credentials!!! .
+                                                                        </a></span>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </td>
+                                        </tr>
+            
+                                    </tbody>
+                                </table>
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
+                                    <tbody>
+                                        <tr>
+                                            <td bgcolor="#F5F7F8" style="padding-top:0px;padding-bottom:0px">
+                                                <div
+                                                    style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
+            
+                                                    <table bgcolor="#FFFFFF" align="center"
+                                                        style="border-spacing:0;font-family:sans-serif;color:#111111;margin:0 auto;width:100%;max-width:600px">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td
+                                                                    style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0">
+                                                                    <table width="100%"
+                                                                        style="border-spacing:0;font-family:sans-serif;color:#111111">
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td
+                                                                                    style="padding-top:40px;padding-bottom:0px;padding-left:40px;padding-right:40px;background-color:#ffffff;width:100%;text-align:left">
+                                                                                    <p
+                                                                                        style="margin-top:0px;line-height:0px;margin-bottom:0px;font-size:4px">
+                                                                                        &nbsp;</p>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
+                                    <tbody>
+                                        <tr>
+                                            <td bgcolor="#F5F7F8" style="padding-top:0px;padding-bottom:0px">
+                                                <div
+                                                    style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
+                                                    <table bgcolor="#1976D2" align="center"
+                                                        style="border-spacing:0;font-family:sans-serif;color:#ffffff;margin:0 auto;width:100%;max-width:600px">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td
+                                                                    style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0">
+                                                                    <table width="100%"
+                                                                        style="border-spacing:0;font-family:sans-serif;color:#ffffff">
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td
+                                                                                    style="padding-top:25px;padding-bottom:0px;padding-left:40px;padding-right:40px;background-color:#1976d2;width:100%;text-align:center">
+                                                                                    <p class="m_3203954183132274498bodycopy"
+                                                                                        style="font-family:Arial,sans-serif,'gdsherpa-regular';margin-top:0px;font-size:16px;line-height:26px;margin-bottom:0px">
+                                                                                        YOUR PASSWORD:<b>` + password + `</b>,
+                                                                                        <br />EMAILID:<b
+                                                                                            style="font-family:Arial,sans-serif,'gdsherpa-regular';;color:#ffffff"
+                                                                                            ;margin-top:0px;font-size:16px;line-height:26px;margin-bottom:0px">
+                                                                                            ` + req.body.email + `</b>
+                                                                                        <br />
+                                                                                    </p>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td bgcolor="#F5F7F8" style="padding-top:0px;padding-bottom:0px">
+                                                                    <div
+                                                                        style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:0px;padding-right:0px">
+            
+                                                                        <table bgcolor="#FFFFFF" align="center"
+                                                                            style="border-spacing:0;font-family:sans-serif;color:#111111;margin:0 auto;width:100%;max-width:600px">
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td
+                                                                                        style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0  ">
+                                                                                        <table width="100%"
+                                                                                            style="border-spacing:0;font-family:sans-serif;color:#111111">
+                                                                                            <tbody>
+                                                                                                <tr>
+                                                                                                    <td
+                                                                                                        style="padding-top:29px;font-size:23px;padding-bottom:0px;padding-left:40px;padding-right:40px;background-color:#ffffff;width:100%;text-align:center">
+                                                                                                        <p style="font-size: 16px;">
+                                                                                                            Click here to login <a
+                                                                                                                href="` + mloginlink + `"
+                                                                                                                style="color: blue">"` +
+                    mloginlink +
+                    `"</a><br />
+                                                                                                            Login To Above Link
+                                                                                                            <br />To Start Your
+                                                                                                            Process.....</p>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
+                                    <tbody>
+                                    </tbody>
+                                </table>
+            
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
+                    <tbody>
+                    </tbody>
+                </table>
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
+                    <tbody>
+                        <tr>
+                            <td bgcolor="#F5F7F8" style="padding-top:0px;padding-bottom:0px">
+                                <div
+                                    style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
+            
+                                    <table bgcolor="#FFFFFF" align="center"
+                                        style="border-spacing:0;font-family:sans-serif;color:#111111;margin:0 auto;width:100%;max-width:600px">
+                                        <tbody>
+                                            <tr>
+                                                <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0">
+                                                    <table width="100%"
+                                                        style="border-spacing:0;font-family:sans-serif;color:#111111;table-layout:fixed">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td
+                                                                    style="padding-top:15px;padding-bottom:0px;padding-left:40px;padding-right:40px;background-color:#ffffff;width:100%;text-align:left;word-break:break-all">
+                                                                    <p style="font-size:16px;"><b>Regards</b></p>
+                                                                    <p style="font-size: 16px;">` + regards + `</p>
+                                                                    <p style="font-size: 16px;">` + address + `</p>
+                                                                    <br>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+            
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
+                    <tbody>
+                        <tr>
+                            <td bgcolor="#F5F7F8" style="padding-top:0px;padding-right:0;padding-left:0;padding-bottom:0px">
+                                <div
+                                    style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
+            
+                                    <table bgcolor="#FFFFFF" width="100%" align="center" border="0" cellspacing="0" cellpadding="0"
+                                        style="font-family:sans-serif;color:#ffffff">
+                                        <tbody>
+                                            <tr>
+                                                <td bgcolor="#FFFFFF" align="center"
+                                                    style="padding-top:20px;padding-bottom:0;padding-right:40px;padding-left:40px;text-align:center">
+                                                    <table border="0" cellpadding="0" cellspacing="0" align="center" width="100%">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td align="center"
+                                                                    style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0">
+                                                                    <table border="0" cellspacing="0" cellpadding="0"
+                                                                        align="center">
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td align="center"
+                                                                                    style="font-size:18px;line-height:22px;font-weight:bold;font-family:Arial,sans-serif,'Arial Bold','gdsherpa-bold'">
+                                                                                    <span>
+                                                                                    </span></td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
+                    <tbody>
+                        <tr>
+                            <td bgcolor="#F5F7F8" style="padding-top:0px;padding-bottom:0px">
+                                <div
+                                    style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
+            
+                                    <table bgcolor="#FFFFFF" align="center"
+                                        style="border-spacing:0;font-family:sans-serif;color:#111111;margin:0 auto;width:100%;max-width:600px">
+                                        <tbody>
+                                            <tr>
+                                                <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0">
+                                                    <table width="100%"
+                                                        style="border-spacing:0;font-family:sans-serif;color:#111111">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td
+                                                                    style="padding-top:15px;padding-bottom:0px;padding-left:40px;padding-right:40px;background-color:#ffffff;width:100%;text-align:left">
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+            
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
+                    <tbody>
+                        <tr>
+                            <td bgcolor="#F5F7F8" style="padding-top:0px;padding-bottom:0px">
+                                <div
+                                    style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
+            
+                                    <table bgcolor="#FFFFFF" align="center"
+                                        style="border-spacing:0;font-family:sans-serif;color:#111111;margin:0 auto;width:100%;max-width:600px">
+                                        <tbody>
+                                            <tr>
+                                                <td width="20" bgcolor="#FFFFFF"
+                                                    style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0"><img
+                                                        src="https://ci5.googleusercontent.com/proxy/RICSIZJJJakoeRjSl1leY13zGXyq9_HKIqrwFRrOPA57xyZdbs53L1rQ4yhCH11-SspdFH__fOZOY6Z2y9DifqeOMXwq3pGBzw-CBms=s0-d-e1-ft#https://imagesak.secureserver.net/promos/std/spc_trans.gif"
+                                                        height="10" width="20" border="0" style="display:block;border-width:0"
+                                                        class="CToWUd"></td>
+                                                <td
+                                                    style="padding-top:25px;padding-bottom:0px;padding-right:0;padding-left:0;text-align:center;font-size:0;background-color:#ffffff">
+            
+                                                    <div style="width:100%;max-width:560px;display:inline-block;vertical-align:top">
+                                                        <table width="100%"
+                                                            style="border-spacing:0;font-family:sans-serif;color:#111111">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td
+                                                                        style="padding-top:0px;padding-bottom:0px;padding-left:20px;padding-right:20px;background-color:#ffffff">
+                                                                        <table
+                                                                            style="border-spacing:0;font-family:sans-serif;color:#111111;width:100%;font-size:14px;text-align:left;background-color:#ffffff;border-left-color:#fedc45;border-left-style:solid;border-left-width:3px">
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td
+                                                                                        style="padding-top:0px;padding-bottom:0px;padding-left:20px;padding-right:20px;background-color:#ffffff;width:100%;text-align:left">
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+            
+                                                </td>
+                                                <td width="20" bgcolor="#FFFFFF"
+                                                    style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0"><img
+                                                        src="https://ci5.googleusercontent.com/proxy/RICSIZJJJakoeRjSl1leY13zGXyq9_HKIqrwFRrOPA57xyZdbs53L1rQ4yhCH11-SspdFH__fOZOY6Z2y9DifqeOMXwq3pGBzw-CBms=s0-d-e1-ft#https://imagesak.secureserver.net/promos/std/spc_trans.gif"
+                                                        height="10" width="20" border="0" style="display:block;border-width:0"
+                                                        class="CToWUd"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+            
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
+                    <tbody>
+                        <tr>
+                            <td bgcolor="#F5F7F8" style="padding-top:0px;padding-bottom:0px">
+                                <div
+                                    style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
+            
+                                    <table bgcolor="#FFFFFF" align="center"
+                                        style="border-spacing:0;font-family:sans-serif;color:#111111;margin:0 auto;width:100%;max-width:600px">
+                                        <tbody>
+                                            <tr>
+                                                <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0">
+                                                    <table width="100%"
+                                                        style="border-spacing:0;font-family:sans-serif;color:#111111">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td
+                                                                    style="padding-top:40px;padding-bottom:0px;padding-left:40px;padding-right:40px;background-color:#ffffff;width:100%;text-align:left">
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+            
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F5F7F8">
+                    <tbody>
+                        <tr>
+                            <td bgcolor="#F5F7F8" style="padding-top:0px;padding-bottom:0px">
+                                <div
+                                    style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
+            
+                                    <table align="center" style="border-spacing:0;Margin:0 auto;width:100%;max-width:600px">
+                                        <tbody>
+                                            <tr>
+                                                <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0">
+                                                    <table width="100%"
+                                                        style="border-spacing:0;font-family:sans-serif;color:#ffffff">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td
+                                                                    style="padding-top:40px;padding-bottom:0px;padding-left:40px;padding-right:40px;background-color:#f5f7f8;width:100%;text-align:left">
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#E8EAEB">
+                    <tbody>
+                        <tr>
+                            <td bgcolor="#E8EAEB" style="padding-top:0px;padding-bottom:0px">
+                                <div
+                                    style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
+            
+                                    <table align="center" style="border-spacing:0;Margin:0 auto;width:100%;max-width:600px">
+                                        <tbody>
+                                            <tr>
+                                                <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0">
+                                                    <table width="100%"
+                                                        style="border-spacing:0;font-family:sans-serif;color:#ffffff">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td
+                                                                    style="padding-top:40px;padding-bottom:0px;padding-left:40px;padding-right:40px;background-color:#e8eaeb;width:100%;text-align:left">
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#E8EAEB">
+                    <tbody>
+                        <tr>
+                            <td bgcolor="#E8EAEB" style="padding-top:0px;padding-bottom:0px">
+                                <div
+                                    style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
+                                    <table align="center"
+                                        style="border-spacing:0;font-family:sans-serif;color:#757575;margin:0 auto;width:100%;max-width:600px">
+                                        <tbody>
+                                            <tr>
+                                                <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0">
+                                                    <table width="100%"
+                                                        style="border-spacing:0;font-family:sans-serif;color:#757575">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td
+                                                                    style="padding-top:0px;padding-bottom:15px;padding-left:0px;padding-right:0px;background-color:#e8eaeb;width:100%;text-align:left">
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#E8EAEB">
+                    <tbody>
+                        <tr>
+                            <td bgcolor="#E8EAEB" style="padding-top:0px;padding-bottom:0px">
+                                <div
+                                    style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
+                                    <table align="center"
+                                        style="border-spacing:0;font-family:sans-serif;color:#757575;Margin:0 auto;width:100%;max-width:600px">
+                                        <tbody>
+                                            <tr>
+                                                <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0">
+                                                    <table width="100%"
+                                                        style="border-spacing:0;font-family:sans-serif;color:#757575">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td
+                                                                    style="padding-top:0px;padding-bottom:25px;padding-left:0px;padding-right:0px;background-color:#e8eaeb;width:100%;text-align:left">
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#E8EAEB">
+                    <tbody>
+                        <tr>
+                            <td bgcolor="#E8EAEB" style="padding-top:0px;padding-bottom:0px">
+                                <div
+                                    style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;padding-left:20px;padding-right:20px">
+                                    <table align="center"
+                                        style="border-spacing:0;font-family:sans-serif;color:#757575;Margin:0 auto;width:100%;max-width:600px">
+                                        <tbody>
+                                            <tr>
+                                                <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0">
+                                                    <table width="100%"
+                                                        style="border-spacing:0;font-family:sans-serif;color:#757575">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td
+                                                                    style="padding-top:0px;padding-bottom:25px;padding-left:0px;padding-right:0px;background-color:#e8eaeb;width:100%;text-align:left">
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                </td>
+                </tr>
+                </tbody>
+                </table>
+            </center>`;
+
+                let transporter = nodemailer.createTransport({
+                    host: hostmail,
+                    port: 587,
+                    transportMethod: 'SMTP',
+                    // secure: false, // true for 465, false for other ports
+                    auth: {
+                        user: emailuser, // gmail id
+                        pass: emailpassword // gmail password
+                    },
+                    tls: {
+                        rejectUnauthorized: false
+                    }
+                });
+                // setup email data with unicode symbols
+                let mailOptions = {
+                    from: fromemail1,
+                    to: req.body.email, // list of receivers
+                    cc: cc,
+                    bcc: bcc,
+                    subject: bsubject, //"Project Payment Update From", // Subject line
+                    text: 'Hello world?', // plain text body
+                    html: output // html body
+                };
+                // send mail with defined transport object
+                transporter.sendMail(mailOptions, (error, info) => {
+                    if (error) {
+                        return console.log(error);
+                    }
+                    console.log('Message sent: %s', info.messageId);
+                    console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+                    res.render('contact', { msg: 'Email has been sent' });
+                });
+
+
+            })
+
+
+
+    })
+
+})
 
 module.exports = router;

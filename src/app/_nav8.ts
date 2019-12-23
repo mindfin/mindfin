@@ -5,11 +5,11 @@ export const navItems8 = [
       url: '/member/home',
       icon: 'fa fa-address-book-o',
     },
-    {
-      name: 'Add Employee',
-      url: '/member/employee',
-      icon: 'fa fa-briefcase'
-    },
+    // {
+    //   name: 'Add Employee',
+    //   url: '/member/employee',
+    //   icon: 'fa fa-briefcase'
+    // },
     {
       name: 'Tele Data',
       url: '/executives/admindata',
@@ -26,30 +26,30 @@ export const navItems8 = [
         url:'/member/changepwd',
         icon:'icon-settings'
     },
-    {
-      name: 'WEBSITE',
-      url: '/website',
-      icon: 'fa fa-globe',
-      children: [
-        {
-          name: 'CONTACT US',
-          url: '/member/contact',
-          icon: 'fa fa-handshake-o',
+    // {
+    //   name: 'WEBSITE',
+    //   url: '/website',
+    //   icon: 'fa fa-globe',
+    //   children: [
+    //     {
+    //       name: 'CONTACT US',
+    //       url: '/member/contact',
+    //       icon: 'fa fa-handshake-o',
         
-        },
+    //     },
       
-        {
-          name: 'CAREER',
-          url: '/member/career',
-          icon: 'fa fa-briefcase',
-         },
-         {
-          name: 'CALL BACK',
-          url: '/member/callback',
-          icon: 'fa fa-phone',
-         },
+    //     {
+    //       name: 'CAREER',
+    //       url: '/member/career',
+    //       icon: 'fa fa-briefcase',
+    //      },
+    //      {
+    //       name: 'CALL BACK',
+    //       url: '/member/callback',
+    //       icon: 'fa fa-phone',
+    //      },
     
-      ]},
+    //   ]},
 
   ];
   
