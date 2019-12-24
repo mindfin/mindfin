@@ -16,7 +16,7 @@ import {Keepalive} from '@ng-idle/keepalive';
 const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
 const EXCEL_EXTENSION = '.xlsx';
 import { TabHeadingDirective } from 'ngx-bootstrap/tabs';
-const commonurl = 'http://localhost:7000';
+const commonurl = 'https://bank.mindfin.co.in';
 @Injectable({
   providedIn: 'root'
 })
@@ -60,27 +60,27 @@ this.reset();
 
  
   getintroducer1(){
-    const uri='http://localhost:7000/superadmin/getintroducer1';
+    const uri='https://bank.mindfin.co.in/superadmin/getintroducer1';
     //console.log('');
    return this.http.get(uri)
   }  
    
   addintroducer1(obj){
     console.log(obj);
-    const uri="http://localhost:7000/superadmin/addintroducer1/" ;
+    const uri="https://bank.mindfin.co.in/superadmin/addintroducer1/" ;
     return this.http.post(uri,obj).subscribe(res=>{
     })
     }
 
     getintroducer2(){
-        const uri='http://localhost:7000/superadmin/getintroducer2';
+        const uri='https://bank.mindfin.co.in/superadmin/getintroducer2';
         //console.log('');
        return this.http.get(uri)
       }  
        
       addintroducer2(obj){
         console.log(obj);
-        const uri="http://localhost:7000/superadmin/addintroducer2/" ;
+        const uri="https://bank.mindfin.co.in/superadmin/addintroducer2/" ;
         return this.http.post(uri,obj).subscribe(res=>{
         })
         }
@@ -89,7 +89,7 @@ this.reset();
         //     const queryParams = `/${postsPerPage}/${currentPage}`;
         //     this.http
         //       .get<{ message: string; posts: any; maxPosts: number }>(
-        //         "http://localhost:7000/callapi/gettransfer" + queryParams
+        //         "https://bank.mindfin.co.in/callapi/gettransfer" + queryParams
         //       )
         //       .pipe(
         //         map(postData => {
@@ -113,7 +113,7 @@ this.reset();
           const queryParams = `/${postsPerPage}/${currentPage}`;
           this.http
             .get<{ message: string; posts: any; maxPosts: number }>(
-              "http://localhost:7000/superadmin/gettransfer" + queryParams
+              "https://bank.mindfin.co.in/superadmin/gettransfer" + queryParams
             )
             .pipe(
               map(postData => {
@@ -139,7 +139,7 @@ this.reset();
 
           approvemember(obj){
             console.log(obj);
-            const uri="http://localhost:7000/superadmin/approvemember/" ;
+            const uri="https://bank.mindfin.co.in/superadmin/approvemember/" ;
             return this.http.post(uri,obj).subscribe(res=>{
               //console.log('');
             })
@@ -152,7 +152,7 @@ this.reset();
             const queryParams = `/${postsPerPage}/${currentPage}`;
             this.http
               .get<{ message: string; posts: any; maxPosts: number }>(
-                "http://localhost:7000/superadmin/memberlist" + queryParams
+                "https://bank.mindfin.co.in/superadmin/memberlist" + queryParams
               )
               .pipe(
                 map(postData => {
@@ -179,14 +179,14 @@ this.reset();
           
           rejectmember(obj){
             console.log(obj);
-            const uri="http://localhost:7000/superadmin/rejectmember/" ;
+            const uri="https://bank.mindfin.co.in/superadmin/rejectmember/" ;
             return this.http.post(uri,obj).subscribe(res=>{
             })
           }
 
           rejecteditmember(obj){
             console.log(obj);
-            const uri="http://localhost:7000/superadmin/rejecteditmember/" ;
+            const uri="https://bank.mindfin.co.in/superadmin/rejecteditmember/" ;
             return this.http.post(uri,obj).subscribe(res=>{
             })
           }
@@ -196,7 +196,7 @@ this.reset();
             const queryParams = `/${postsPerPage}/${currentPage}`;
             this.http
               .get<{ message: string; posts: any; maxPosts: number }>(
-                "http://localhost:7000/superadmin/editmemberlist" + queryParams
+                "https://bank.mindfin.co.in/superadmin/editmemberlist" + queryParams
               )
               .pipe(
                 map(postData => {
@@ -218,7 +218,7 @@ this.reset();
 
            editapprovemember(obj){
             console.log(obj);
-            const uri="http://localhost:7000/superadmin/editapprovemember/" ;
+            const uri="https://bank.mindfin.co.in/superadmin/editapprovemember/" ;
             return this.http.post(uri,obj).subscribe(res=>{
               //console.log('');
             })
@@ -230,7 +230,7 @@ this.reset();
             const queryParams = `/${postsPerPage}/${currentPage}`;
             this.http
               .get<{ message: string; posts: any; maxPosts: number }>(
-                "http://localhost:7000/superadmin/getdeleteMember" + queryParams
+                "https://bank.mindfin.co.in/superadmin/getdeleteMember" + queryParams
               )
               .pipe(
                 map(postData => {
@@ -250,14 +250,14 @@ this.reset();
           }
           deleteapprovemember(obj){
             console.log(obj);
-            const uri="http://localhost:7000/superadmin/deleteapprovemember/" ;
+            const uri="https://bank.mindfin.co.in/superadmin/deleteapprovemember/" ;
             return this.http.post(uri,obj).subscribe(res=>{
               //console.log('');
             })
           }
           rejectdeletemember(obj){
             console.log(obj);
-            const uri="http://localhost:7000/superadmin/rejectdeletemember/" ;
+            const uri="https://bank.mindfin.co.in/superadmin/rejectdeletemember/" ;
             return this.http.post(uri,obj).subscribe(res=>{
             })
           }
@@ -275,7 +275,7 @@ this.reset();
           }
           deletebooking(obj){
             console.log(obj);
-            const uri="http://localhost:7000/superadmin/deletebooking/" ;
+            const uri="https://bank.mindfin.co.in/superadmin/deletebooking/" ;
             return this.http.post(uri,obj).subscribe(res=>{
               //console.log('');
             })
@@ -286,7 +286,7 @@ this.reset();
             const queryParams = `/${postsPerPage}/${currentPage}`;
             this.http
               .get<{ message: string; posts: any; maxPosts: number }>(
-                "http://localhost:7000/superadmin/gethistoryMember" + queryParams
+                "https://bank.mindfin.co.in/superadmin/gethistoryMember" + queryParams
               )
               .pipe(
                 map(postData => {
@@ -310,7 +310,7 @@ this.reset();
             const queryParams = `/${postsPerPage}/${currentPage}`;
             this.http
               .get<{ message: string; posts: any; maxPosts: number }>(
-                "http://localhost:7000/superadmin/getReceiptapproval" + queryParams
+                "https://bank.mindfin.co.in/superadmin/getReceiptapproval" + queryParams
               )
               .pipe(
                 map(postData => {
@@ -330,30 +330,30 @@ this.reset();
           }
           approvereceipt(obj){
             console.log(obj);
-            const uri="http://localhost:7000/superadmin/approvereceipt/" ;
+            const uri="https://bank.mindfin.co.in/superadmin/approvereceipt/" ;
             return this.http.post(uri,obj).subscribe(res=>{
               //console.log('');
             })
           }
           rejectreceipt(obj){
             console.log(obj);
-            const uri="http://localhost:7000/superadmin/rejectreceipt/" ;
+            const uri="https://bank.mindfin.co.in/superadmin/rejectreceipt/" ;
             return this.http.post(uri,obj).subscribe(res=>{
             })
           }
           getSeniorityid(){
-            const uri="http://localhost:7000/superadmin/getseniorityid";
+            const uri="https://bank.mindfin.co.in/superadmin/getseniorityid";
             return this.http.get(uri);
           }
       
           getseniordetails(id){
-            const uri="http://localhost:7000/superadmin/getseniordetails/" +encodeURIComponent(id);
+            const uri="https://bank.mindfin.co.in/superadmin/getseniordetails/" +encodeURIComponent(id);
             return this.http.get(uri);
           }
       
           updateplot(obj){
             console.log(obj);
-            const uri="http://localhost:7000/superadmin/updateplot";
+            const uri="https://bank.mindfin.co.in/superadmin/updateplot";
             this.http.post(uri,obj).subscribe(res=>{
               // console.log(res);
             })
@@ -364,7 +364,7 @@ this.reset();
             const queryParams = `/${postsPerPage}/${currentPage}`;
             this.http
               .get<{ message: string; posts: any; maxPosts: number }>(
-                "http://localhost:7000/superadmin/gettransferapproval" + queryParams
+                "https://bank.mindfin.co.in/superadmin/gettransferapproval" + queryParams
               )
               .pipe(
                 map(postData => {
@@ -384,7 +384,7 @@ this.reset();
           }
           approvetransfer(obj){
             console.log(obj);
-            const uri="http://localhost:7000/superadmin/approvetransfer/" ;
+            const uri="https://bank.mindfin.co.in/superadmin/approvetransfer/" ;
             return this.http.post(uri,obj).subscribe(res=>{
               //console.log('');
             })
@@ -392,7 +392,7 @@ this.reset();
 
           rejecttransfermember(obj){
             console.log(obj);
-            const uri="http://localhost:7000/superadmin/rejecttransfermember/" ;
+            const uri="https://bank.mindfin.co.in/superadmin/rejecttransfermember/" ;
             return this.http.post(uri,obj).subscribe(res=>{
             })
           }
@@ -403,7 +403,7 @@ this.reset();
             const queryParams = `/${postsPerPage}/${currentPage}/${id}/${psize}/${fdate}/${tdate}/${ndays}/${introducer1}/${introducer2}/${lamount}`;
             this.http
               .get<{ message: string; posts: any; maxPosts: number }>(
-                "http://localhost:7000/callapi/memberlist" + queryParams
+                "https://bank.mindfin.co.in/callapi/memberlist" + queryParams
               )
               .pipe(
                 map(postData => {
@@ -439,7 +439,7 @@ this.reset();
             const queryParams = `/${postsPerPage}/${currentPage}/${mode}/${stat}/${fdate}/${tdate}/`;
             this.http
               .get<{ message: string; posts: any; maxPosts: number }>(
-                "http://localhost:7000/callapi/getallreceipts" + queryParams
+                "https://bank.mindfin.co.in/callapi/getallreceipts" + queryParams
               )
               .pipe(
                 map(postData => {
@@ -462,7 +462,7 @@ this.reset();
           }
           editaffidivate(obj){
             console.log(obj);
-            const uri = "http://localhost:7000/callapi/editaffidivate/";
+            const uri = "https://bank.mindfin.co.in/callapi/editaffidivate/";
             return this.http.post(uri,obj);
             // .subscribe(res=>{
             //   console.log(res);
@@ -470,14 +470,14 @@ this.reset();
           }
       
           getaffidivate(){
-            const uri = "http://localhost:7000/superadmin/getaffidivate";
+            const uri = "https://bank.mindfin.co.in/superadmin/getaffidivate";
             return this.http.get(uri);
           }
 
 
           login(loginvalue){
             console.log(loginvalue);
-            const uri = "http://localhost:7000/superadmin/superadmin/";
+            const uri = "https://bank.mindfin.co.in/superadmin/superadmin/";
             // return this.http.post(uri,obj);
             this.http.post(uri,loginvalue).subscribe(res=>{
               // console.log(res[0]['adminid']);
@@ -506,7 +506,7 @@ this.reset();
 
 
           presidentlist1(){
-            const uri = "http://localhost:7000/superadmin/presidentlist1";
+            const uri = "https://bank.mindfin.co.in/superadmin/presidentlist1";
             return this.http.get(uri);
           }
 
@@ -515,7 +515,7 @@ this.reset();
             const queryParams = `/${postsPerPage}/${currentPage}`;       
                  this.http
               .get<{ message: string; posts: any; maxPosts: number }>(
-                "http://localhost:7000/callapi/customerlist" + queryParams
+                "https://bank.mindfin.co.in/callapi/customerlist" + queryParams
               )
               .pipe(
                 map(postData => {
