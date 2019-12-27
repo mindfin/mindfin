@@ -62,6 +62,7 @@ import { MemberloginComponent } from './views/login/memberlogin.component';
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive'; // this includes the core NgIdleModule but includes keepalive providers for easy wireup
 import { MomentModule } from 'angular2-moment'; // optional, provides moment-style pipes for date formatting
 import { SuperadminService } from './superadmin.service';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 // import { ViewsComponent } from './views/views.component';
 
 @NgModule({
@@ -95,7 +96,8 @@ import { SuperadminService } from './superadmin.service';
     HttpModule,
     MomentModule,
     BrowserAnimationsModule,
-    NgIdleKeepaliveModule.forRoot()
+    NgIdleKeepaliveModule.forRoot(),
+    BsDatepickerModule.forRoot()
   
 
   ],

@@ -5981,7 +5981,7 @@ router.post('/addemployee', (req, res) => {
     //     numbers: true
     // });
     var password = 'mindfin@123'
-    const encryptedString = (sha1(password));
+    const encryptedString = sha1(password);
     const nowdate = format.asString('yyyy-MM-dd', new Date());
     const nowdate1 = format.asString('yyyy-MM-dd', new Date(req.body.value.dob));
     const nowdate2 = format.asString('yyyy-MM-dd', new Date(req.body.value.joiningdate));

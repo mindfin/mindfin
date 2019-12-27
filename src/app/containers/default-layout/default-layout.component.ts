@@ -13,6 +13,7 @@ import { CommonService } from '../../common.service';
 import { navItems8 } from '../../_nav8';
 import { navItems9 } from '../../_nav9';
 import { MAT_DIALOG_DATA, MatDialogConfig, MatDialog } from '@angular/material';
+
 class FileSnippet {
   static readonly IMAGE_SIZE = { width: 950, height: 720 };
   pending: boolean = false;
@@ -48,6 +49,7 @@ export class DefaultLayoutComponent {
   reason;
   half;
   other;
+  
   constructor(private router: Router, private service: CommonService, private dialog: MatDialog) {
 
     this.changes = new MutationObserver((mutations) => {
