@@ -15,7 +15,7 @@ export class BackendViewComponent implements OnInit {
   myControl = new FormControl();
   val: any = [];
 
-  displayedColumns: string[] = ['date', 'cname', 'name', 'whosecase', 'executive','status','reason', 'view', 'edit', 'downlaod'];
+  displayedColumns: string[] = ['date', 'cname', 'name', 'whosecase', 'executive','status','reason','creator', 'view', 'edit', 'downlaod'];
   constructor(private route: ActivatedRoute, private router: Router, private commonservice: CommonService,private dialog: MatDialog) { }
   samples: any;
   dataSource;

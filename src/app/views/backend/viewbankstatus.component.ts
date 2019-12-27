@@ -15,7 +15,7 @@ export class ViewBankStatusComponent implements OnInit {
   myControl = new FormControl();
   val: any = [];
 
-  displayedColumns: string[] = ['date', 'cname', 'name', 'whosecase', 'executive','status', 'view'];
+  displayedColumns: string[] = ['date', 'cname', 'name', 'whosecase', 'executive','status','created', 'view'];
   constructor(private route: ActivatedRoute, private router: Router, private commonservice: CommonService,private dialog: MatDialog) { }
   samples: any;
   dataSource;

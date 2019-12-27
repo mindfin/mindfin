@@ -25,6 +25,7 @@ import { EmployeeComponent } from './employee.component';
 import { ContactComponent } from './contact.component';
 import { CareerComponent } from './career.component';
 import { CallbackComponent } from './callback.component';
+import { DeletedEmployeelistComponent } from './deletedemployeelist.component';
 @NgModule({
   imports: [CommonModule,FormsModule,ReactiveFormsModule,MatNativeDateModule,MatInputModule,
     MatDatepickerModule,MatFormFieldModule,MatBadgeModule,MatButtonModule,MatButtonToggleModule,
@@ -34,9 +35,10 @@ import { CallbackComponent } from './callback.component';
   declarations: [HomeComponent,ChangepwdComponent,CustomerprofileComponent,AddperiodComponent,
     EditemployeeComponent,EmployeetypeComponent,EmployeelistComponent,EmpPasswordComponent,
     LoantypeComponent,BankComponent,UserComponent,SettingsComponent,BulksmsComponent,ViewdetailsComponent,
-    EmpdialogContent,ChecktrackComponent,TrackComponent,EmployeeComponent,CareerComponent,ContactComponent,CallbackComponent
+    EmpdialogContent,ChecktrackComponent,TrackComponent,EmployeeComponent,CareerComponent,ContactComponent,CallbackComponent,
+    DeletedEmployeelistComponent
  ],
-  entryComponents: [EmployeelistComponent,EmpdialogContent
+  entryComponents: [EmployeelistComponent,EmpdialogContent,DeletedEmployeelistComponent
   ],
 })
 export class MemberModule { }

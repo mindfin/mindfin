@@ -22,6 +22,7 @@ import { ChecktrackComponent } from './checktrack.component';
 import { CareerComponent } from './career.component';
 import { ContactComponent } from './contact.component';
 import { CallbackComponent } from './callback.component';
+import { DeletedEmployeelistComponent } from './deletedemployeelist.component';
 const routes: Routes = [
   {
     path: '',
@@ -72,7 +73,14 @@ const routes: Routes = [
         path:'employeelist',
         component:EmployeelistComponent,
         data:{
-          title:'Add User'
+          title:'Employee List'
+        }
+      },
+      {
+        path:'oldemployeelist',
+        component:DeletedEmployeelistComponent,
+        data:{
+          title:'Old Employee List'
         }
       },
       {

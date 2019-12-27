@@ -18,7 +18,7 @@ import { MatDialog, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material';
 })
 export class LoginReportComponent {
 
-  displayedColumns: string[] = ['date', 'cname', 'name', 'whosecase','executive', 'bname', 'bvendor', 'logexe', 'time', 'status'];
+  displayedColumns: string[] = ['date', 'cname', 'name', 'whosecase','executive', 'bname', 'bvendor', 'logexe', 'time', 'status','loghead'];
   samples: any;
   dataSource;
 

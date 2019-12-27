@@ -67,19 +67,19 @@ export const navItems = [
         icon: 'fa fa-globe',
         children: [
           {
-            name: 'CONTACT US',
+            name: 'Contact Us',
             url: '/member/contact',
             icon: 'fa fa-handshake-o',
           
           },
         
           {
-            name: 'CAREER',
+            name: 'Career',
             url: '/member/career',
             icon: 'fa fa-briefcase',
            },
            {
-            name: 'CALL BACK',
+            name: 'Call Back',
             url: '/member/callback',
             icon: 'fa fa-phone',
            },
@@ -97,8 +97,13 @@ export const navItems = [
           icon: 'icon-note'
         },
         {
-          name: 'Employee List',
+          name: 'Current Employee List',
           url: '/member/employeelist',
+          icon: 'icon-eye'
+        },
+        {
+          name: 'Old Employee List',
+          url: '/member/oldemployeelist',
           icon: 'icon-eye'
         },
   
@@ -114,14 +119,14 @@ export const navItems = [
         icon: 'fa fa-money',
         children: [
           {
-            name: 'ADD PAYOUTS',
+            name: 'Add Payouts',
             url: '/account/subvendor',
             icon: 'fa fa-sign-out',
           
           },
         
           {
-            name: 'ADD TRANSCATIONS',
+            name: 'Add Transcations',
             url: '/account/disburselist',
             icon: 'fa fa-globe',
            },
@@ -143,12 +148,13 @@ export const navItems = [
     icon: 'icon-wrench',
     children: [
       {
-        name: 'Document Cam',
-        url: '/member/bank',
-        icon: 'icon-home'
-      }, 
+        name: 'Executive Wise Enquired List',
+        url: '/executives/viewexecutives',
+        icon: 'fa fa-list-ul'
+      },
+      
       {
-        name: 'VIEW PASSWORD',
+        name: 'View Password',
         url: '/member/emppassword',
         icon: 'icon-docs'
       },
@@ -209,19 +215,15 @@ export const navItems = [
       url: '/receipt',
       icon: 'fa fa-bug',
       children: [
+        
         {
-          name: 'Executive Wise Enquired List',
-          url: '/executives/viewexecutives',
-          icon: 'fa fa-list-ul'
-        },
-        {
-          name: 'Enquired List',
+          name: 'Teledata List',
           url: '/reports/datatelelist',
           icon: 'fa fa-list-ul'
         },
   
         {
-          name: 'Executive Routine',
+          name: 'Sales Executive Routine',
           url: '/reports/exeroutine',
           icon: 'icon-docs'
   

@@ -13,7 +13,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 import { AppComponent } from './app.component';
 
 // Import containers
-import { DefaultLayoutComponent } from './containers';
+import { DefaultLayoutComponent, SugboxDialogContent, ConvenienceDialogContent, LeaveAppDialogContent } from './containers';
 
 import { P404Component } from './views/error/404.component';
 import { P500Component } from './views/error/500.component';
@@ -22,7 +22,7 @@ import { LoginComponent } from './views/login/login.component';
 // import { RegisterComponent } from './views/register/register.component';
 
 const APP_CONTAINERS = [
-  DefaultLayoutComponent
+  DefaultLayoutComponent,SugboxDialogContent,ConvenienceDialogContent,LeaveAppDialogContent
 ];
 
 import {
@@ -122,6 +122,8 @@ import { SuperadminService } from './superadmin.service';
   ,SampleService,MemberService
   //MemberService,SuperadminService
 ],
-  bootstrap: [ AppComponent ]
+  bootstrap: [ AppComponent ],
+  entryComponents: [SugboxDialogContent,ConvenienceDialogContent,LeaveAppDialogContent
+  ]
 })
 export class AppModule { }

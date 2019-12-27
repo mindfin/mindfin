@@ -5,41 +5,40 @@
         color: #ffff;
         border-radius: 5px;
     }
-
+    
     .btn_red {
         background-color: rgb(201, 14, 14) !important;
         padding: 8px 10px;
         color: #ffff;
         border-radius: 5px;
     }
-
+    
     body {
         color: #000000;
         font-family: Sans-Serif;
         padding: 30px;
         background-color: #f6f6f6;
     }
-
+    
     .abc {
         margin: 0rem !important;
     }
-
+    
     a {
         text-decoration: none;
         color: #000000;
     }
-
+    
     a:hover {
         color: #222222
     }
-
     /* Dropdown */
-
+    
     .dropdown {
         display: inline-block;
         position: relative;
     }
-
+    
     .dd-button {
         display: inline-block;
         border: 1px solid gray;
@@ -49,7 +48,7 @@
         cursor: pointer;
         white-space: nowrap;
     }
-
+    
     .dd-button:after {
         content: '';
         position: absolute;
@@ -62,16 +61,15 @@
         border-right: 5px solid transparent;
         border-top: 5px solid black;
     }
-
+    
     .dd-button:hover {
         background-color: #eeeeee;
     }
-
-
+    
     .dd-input {
         display: none;
     }
-
+    
     .dd-menu {
         position: absolute;
         top: 100%;
@@ -83,31 +81,31 @@
         background-color: #ffffff;
         list-style-type: none;
     }
-
+    
     .dd-input+.dd-menu {
         display: none;
     }
-
+    
     .dd-input:checked+.dd-menu {
         display: block;
     }
-
+    
     .dd-menu li {
         padding: 10px 20px;
         cursor: pointer;
         white-space: nowrap;
     }
-
+    
     .dd-menu li:hover {
         background-color: #f6f6f6;
     }
-
+    
     .dd-menu li a {
         display: block;
         margin: -10px -20px;
         padding: 10px 20px;
     }
-
+    
     .dd-menu li.divider {
         padding: 0;
         border-bottom: 1px solid #cccccc;
@@ -128,31 +126,30 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <form> 
+                        <form>
                             <div class="row">
                                 <div class="col-lg-3">
-                                <mat-form-field>
-                                    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
-                                  </mat-form-field>
+                                    <mat-form-field>
+                                        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
+                                    </mat-form-field>
                                 </div>
-                              <div class="col-lg-3">
-                                <mat-form-field color="primary">
-                                  <mat-label>FROM (MM/DD/YYYY)</mat-label>
-                                  <input matInput [matDatepicker]="picker1" [(ngModel)]="model.startdate" name="startdate">
-                                  <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                                  <mat-datepicker #picker1></mat-datepicker>
-                                </mat-form-field>
-                              </div>
-                              
-                              <div class="col-lg-3">
-                                <button class="btn btn-primary" (click)="getreport(model)">Get List</button>
-                              </div>
-                            </div>
-                          </form>
-            
+                                <div class="col-lg-3">
+                                    <mat-form-field color="primary">
+                                        <mat-label>FROM (MM/DD/YYYY)</mat-label>
+                                        <input matInput [matDatepicker]="picker1" [(ngModel)]="model.startdate" name="startdate">
+                                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker1></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
 
-                        <table mat-table #table [dataSource]="dataSource" class="table table-striped responsive"
-                            matSort>
+                                <div class="col-lg-3">
+                                    <button class="btn btn-primary" (click)="getreport(model)">Get List</button>
+                                </div>
+                            </div>
+                        </form>
+
+
+                        <table mat-table #table [dataSource]="dataSource" class="table table-striped responsive" matSort>
                             <ng-container matColumnDef="date">
                                 <th *matHeaderCellDef mat-sort-header>APPLIED DATE</th>
                                 <td *matCellDef="let element" style="text-align:center;">
@@ -162,7 +159,7 @@
                                 </td>
                             </ng-container>
 
-                            
+
                             <!-- </div>  -->
                             <ng-container matColumnDef="cname">
                                 <th *matHeaderCellDef mat-sort-header>COMPANY NAME</th>
@@ -200,6 +197,12 @@
 
                                 </td>
                             </ng-container>
+                            <ng-container matColumnDef="creator">
+                                <th *matHeaderCellDef mat-sort-header>CREATED BY</th>
+                                <td *matCellDef="let element" style="text-align:center;"> {{element.createdbyname}}<br />
+
+                                </td>
+                            </ng-container>
                             <ng-container matColumnDef="view">
                                 <th *matHeaderCellDef mat-sort-header>VIEW</th>
                                 <td *matCellDef="let element">
@@ -230,8 +233,7 @@
                             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                         </table>
                     </div>
-                    <mat-paginator [length]="totalPosts" [pageSize]="postsPerPage" [pageSizeOptions]="pageSizeOptions"
-                        (page)="onChangedPage($event)"></mat-paginator>
+                    <mat-paginator [length]="totalPosts" [pageSize]="postsPerPage" [pageSizeOptions]="pageSizeOptions" (page)="onChangedPage($event)"></mat-paginator>
                 </div>
             </div>
         </div>
@@ -243,7 +245,7 @@
     td {
         border: 1px solid black;
     }
-
+    
     mat-spinner {
         margin: auto;
     }

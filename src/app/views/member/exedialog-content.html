@@ -47,25 +47,18 @@
             <tr>
                 <th>ACCOUNT NO</th>
                 <td> {{data.element.accno}}</td>
-                <th>IFSC</th>
-                <td> {{data.element.ifsc}}</td>
+                <th> CUSTOMER IMAGE</th>
+                <td> <img src="https://mindfinfiles.blob.core.windows.net/mindfin-backend/{{data.element.cimage}}" height="50" width="50" />
+                </td>
 
             </tr>
             <tr>
-                <th> CUSTOMER IMAGE</th>
-                <!-- <td *ngIf="data.element.cimage===admin" >
-                <img src="assets/images1/{{data.element.cimage}}" height="50" width="50"/></td>
 
-                <td *ngIf="data.element.cimage!=admin" >
-                <img src="https://bank.mindfin.co.in0{{data.element.cimage}}" height="50" width="50"/></td> -->
-
-                <td> <img src="assets/President/{{data.element.cimage}}" height="50" width="50" />
+                <th>PAN IMAGE</th>
+                <td> <img src="https://mindfinfiles.blob.core.windows.net/mindfin-backend/{{data.element.pimage}}" height="50" width="50" />
                 </td>
-
-                <!-- <td> <img src="assets/images1/{{data.element.cimage}}" height="50" width="50"/>
-               </td> -->
                 <th>AADHAR IMAGE</th>
-                <td> <img src="assets/President/{{data.element.aimage}}" height="50" width="50" /></td>
+                <td> <img src="https://mindfinfiles.blob.core.windows.net/mindfin-backend/{{data.element.aimage}}" height="50" width="50" /></td>
             </tr>
 
 

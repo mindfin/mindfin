@@ -2195,4 +2195,52 @@ public uploadImage(file) {
   console.log(file)
   return this.http.post(`https://bank.mindfin.co.in/callapi/image-upload`, file);
 }
+public suggbox(value){
+  console.log(value);
+  return this.http.post(`https://bank.mindfin.co.in/callapi/suggbox`, value);
+}
+public leaveapp(value){
+  console.log(value);
+  return this.http.post(`https://bank.mindfin.co.in/callapi/leaveapp`, value);
+}
+public conves(value){
+  console.log(value);
+  return this.http.post(`https://bank.mindfin.co.in/callapi/conves`, value);
+}
+activeemp(obj) {
+  console.log(obj);
+  const uri = "https://bank.mindfin.co.in/callapi/activeemp/ ";
+  return this.http.post(uri, obj).subscribe(res => {
+    //console.log('');
+  })
+}
+
+getinactiveemployeelist(postsPerPage: number, currentPage: number) {
+  const queryParams = `/${postsPerPage}/${currentPage}`;
+  this.http
+    .get<{ message: string; posts: any; maxPosts: number }>(
+      "https://bank.mindfin.co.in/callapi/getinactiveemployeelist" + queryParams
+    )
+    .pipe(
+      map(postData => {
+        //console.log('');
+        return {
+          posts: postData.posts,
+
+          maxPosts: postData.maxPosts
+        };
+      })
+    )
+    .subscribe(transformedPostData => {
+      this.posts = transformedPostData.posts;
+      this.postsUpdated.next({
+        posts: [...this.posts],
+        postCount: transformedPostData.maxPosts
+      });
+    });
+}
+
+getinactiveemployeeDetails() {
+  return this.postsUpdated.asObservable();
+}
 }

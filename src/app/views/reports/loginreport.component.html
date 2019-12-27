@@ -111,7 +111,12 @@
 
                                 </td>
                             </ng-container>
+                            <ng-container matColumnDef="loghead">
+                                <th *matHeaderCellDef mat-sort-header>LOGIN HEAD</th>
+                                <td *matCellDef="let element" style="text-align:center;"> {{element.logincreadtedbyname}}<br />
 
+                                </td>
+                            </ng-container>
                             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                         </table>
