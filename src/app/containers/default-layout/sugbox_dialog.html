@@ -1,0 +1,17 @@
+<h1 mat-dialog-title>Suggestions / consensus / complaints Box</h1>
+<div mat-dialog-content class="mat-typography">
+    <div class="card">
+        <form (ngSubmit)="onSubmit(data)">
+            <div class="card-body">
+                <div class="col-md-12">
+                    <label>Suggestion / consensu / complaint</label>
+                    <textarea class="form-control" [(ngModel)]="data.reason" class="form-control" name="reason"></textarea>
+                    <br>
+                </div>
+                <div center>
+                    <button type="submit" class="btn btn-success">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
