@@ -49,7 +49,9 @@ export class DefaultLayoutComponent {
   reason;
   half;
   other;
-  
+  from;
+  to;
+
   constructor(private router: Router, private service: CommonService, private dialog: MatDialog) {
 
     this.changes = new MutationObserver((mutations) => {
@@ -86,7 +88,7 @@ export class DefaultLayoutComponent {
 
   leaveapp() {
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = {from:any, to:any,half:this.half, reason:this.reason};
+    dialogConfig.data = {from:this.from,half:this.half, reason:this.reason};
     this.dialog.open(LeaveAppDialogContent, dialogConfig
     );
     console.log(dialogConfig);

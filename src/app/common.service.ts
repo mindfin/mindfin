@@ -1807,6 +1807,7 @@ export class CommonService {
   getDataentryReportlistDetails() {
     return this.postsUpdated.asObservable();
   }
+
   geEnquiryDatalist(postsPerPage: number, currentPage: number, sdate, exeid) {
     console.log(sdate)
     const queryParams = `/${postsPerPage}/${currentPage}/${sdate}/${exeid}`;

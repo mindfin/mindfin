@@ -13,6 +13,7 @@ import { DataentryReportComponent } from './dataentryreport.component';
 import { ExecutiveRoutineComponent } from './executiveroutine.component';
 import { LoginRoutineComponent } from './loginroutine.component';
 import { DatatelelistComponent } from './datatelelist.component';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 
 
@@ -42,7 +43,9 @@ import { DatatelelistComponent } from './datatelelist.component';
     MatProgressSpinnerModule,
     MatTableModule,
     MatDialogModule,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    BsDatepickerModule.forRoot()
+
   ],
   declarations: [LoginReportComponent,BackendReportComponent,DataentryReportComponent
     ,ExecutiveRoutineComponent,LoginRoutineComponent,

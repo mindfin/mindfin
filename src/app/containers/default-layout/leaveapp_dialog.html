@@ -7,19 +7,19 @@
 
             <div class="card-body">
                 <div class="col-md-12">
-                    <label>From</label>
+                    <label>From And To</label>
                     <br>
                     <div class="col-sm-12 ">
-                        <input class="form-group" [(ngModel)]="data.from" name="from" type="text" placeholder="Datepicker" class="form-control" bsDatepicker>
+                        <input class="form-group" [(ngModel)]="data.from" name="from" type="text" placeholder="From(MM/DD/YYYY) - To(MM/DD/YYYY)" class="form-control" bsDaterangepicker required>
                     </div>
                 </div>
-                <div class="col-sm-12">
+                <!-- <div class="col-sm-12">
                     <label>To</label>
                     <br>
                     <div class="col-sm-12 ">
-                        <input class="form-group" [(ngModel)]="data.to" name="to" type="text" placeholder="Datepicker" class="form-control" bsDatepicker>
+                        <input class="form-group" [(ngModel)]="data.to" name="to" type="text" placeholder="MM/DD/YYYY" class="form-control" bsDatepicker required>
                     </div>
-                </div>
+                </div> -->
                 <div class="col-md-12">
                     <label>Half Day</label>
                     <input type="checkbox" name="half" [(ngModel)]="data.half" value="yes">

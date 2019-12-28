@@ -54,8 +54,8 @@ export class BackendReportComponent {
     console.log(obj);
     this.isLoading = true;
     console.log(obj)
-    localStorage.setItem("startdate", obj.startdate);
-    localStorage.setItem("enddate", obj.enddate);
+    localStorage.setItem("startdate", obj.startdate[0]);
+    localStorage.setItem("enddate", obj.startdate[1]);
     this.sdate = localStorage.getItem("startdate");
     this.edate = localStorage.getItem("enddate");
     this.commonservice.getBackendlist(this.postsPerPage, this.currentPage, this.sdate, this.edate);

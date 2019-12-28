@@ -6733,11 +6733,11 @@ router.post('/suggbox', function(req, res) {
 });
 router.post('/leaveapp', function(req, res) {
     var date = format.asString('yyyy-MM-dd', new Date());
-    var from = format.asString('yyyy-MM-dd', new Date(req.body.value.from));
-    var to = format.asString('yyyy-MM-dd', new Date(req.body.value.to));
+    var from = format.asString('yyyy-MM-dd', new Date(req.body.value.from[0]));
+    var to = format.asString('yyyy-MM-dd', new Date(req.body.value.from[1]));
     var NOD;
-    var date1 = new Date(req.body.value.from);
-    var date2 = new Date(req.body.value.to);
+    var date1 = new Date(req.body.value.from[0]);
+    var date2 = new Date(req.body.value.from[1]);
     var Difference_In_Time = date1.getTime() - date2.getTime();
 
     if (req.body.value.half == undefined) {
