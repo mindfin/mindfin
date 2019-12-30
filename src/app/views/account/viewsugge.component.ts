@@ -20,7 +20,7 @@ import {MatDialog,MAT_DIALOG_DATA,MatDialogConfig} from '@angular/material';
 })
 export class SuggestionlistComponent  {
  
-  displayedColumns: string[] = ['name', 'mobile', 'email', 'bankname','Edit'];
+  displayedColumns: string[] = ['name', 'mobile', 'email', 'bankname','status','Edit'];
   samples: any;
   dataSource;
 
@@ -124,7 +124,7 @@ export class EditsuggestionContent{
     console.log(this.value1);
     this.commonservice.editsug(this.value1)
       .subscribe(res => {
-        alert("Leave Application edited Successfully");
+        alert("Suggestion "+value.element.status+" Successfully");
         window.location.reload();
       })
   }

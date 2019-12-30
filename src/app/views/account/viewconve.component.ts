@@ -20,7 +20,7 @@ import { MatDialog, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material';
 })
 export class ConveniencslistComponent {
 
-  displayedColumns: string[] = ['name', 'mobile', 'email', 'bankname', 'view','download','Edit'];
+  displayedColumns: string[] = ['name', 'mobile', 'email', 'bankname', 'view','status','download','Edit'];
   samples: any;
   dataSource;
 
@@ -122,7 +122,7 @@ export class EditConvContent{
     console.log(this.value1);
     this.commonservice.editconves(this.value1)
       .subscribe(res => {
-        alert("Leave Application edited Successfully");
+        alert("Convenience "+value.element.status+" Successfully");
         window.location.reload();
       })
   }

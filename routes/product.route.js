@@ -5976,11 +5976,11 @@ router.post('/image-upload', upload.any(), (req, res) => {
 });
 router.post('/addemployee', (req, res) => {
     console.log(req.body);
-    // var password = generator.generate({
-    //     length: 8,
-    //     numbers: true
-    // });
-    var password = 'mindfin@123'
+    var password = generator.generate({
+        length: 8,
+        numbers: true
+    });
+    // var password = 'mindfin@123'
     const encryptedString = sha1(password);
     const nowdate = format.asString('yyyy-MM-dd', new Date());
     const nowdate1 = format.asString('yyyy-MM-dd', new Date(req.body.value.dob));
@@ -6026,6 +6026,8 @@ router.post('/addemployee', (req, res) => {
             pimage: pimage,
             aimage: aimage,
             status: 'active',
+            // password: req.body.encry,
+            // orgpassword: req.body.pass,
             password: encryptedString,
             orgpassword: password,
             joiningdate: nowdate2,
@@ -6157,7 +6159,7 @@ router.post('/addemployee', (req, res) => {
                                                                     class="m_3203954183132274498h2mobile">
 
                                                                     <span>
-                                                                        <a>Hi <b>` + req.body.name + `,</b><br />
+                                                                        <a>Hi <b>` + req.body.value.name + `,</b><br />
                                                                         </a>
                                                                     </span>
 
@@ -6186,7 +6188,7 @@ router.post('/addemployee', (req, res) => {
                                                                 <td bgcolor="#FFFFFF" align="center"
                                                                     style="padding-top:15px;padding-bottom:0;padding-right:40px;padding-left:40px;text-align:center;background-color:#ffffff;font-weight:bold;font-family:Arial,sans-serif,'Arial Bold','gdsherpa-bold';font-size:21px;line-height:31px">
                                                                     <span><a>
-                                                                            Please note your CRM credentials!!! .
+                                                                            Please note your Login credentials!!! .
                                                                         </a></span>
                                                                 </td>
                                                             </tr>
@@ -6257,7 +6259,7 @@ router.post('/addemployee', (req, res) => {
                                                                                         <br />EMAILID:<b
                                                                                             style="font-family:Arial,sans-serif,'gdsherpa-regular';;color:#ffffff"
                                                                                             ;margin-top:0px;font-size:16px;line-height:26px;margin-bottom:0px">
-                                                                                            ` + req.body.email + `</b>
+                                                                                            ` + req.body.value.email + `</b>
                                                                                         <br />
                                                                                     </p>
                                                                                 </td>
@@ -6695,7 +6697,7 @@ router.post('/addemployee', (req, res) => {
                     // setup email data with unicode symbols
                     let mailOptions = {
                         from: fromemail1,
-                        to: req.body.email, // list of receivers
+                        to: req.body.value.email, // list of receivers
                         cc: cc,
                         bcc: bcc,
                         subject: bsubject, //"Project Payment Update From", // Subject line

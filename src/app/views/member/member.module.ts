@@ -29,10 +29,12 @@ import { DeletedEmployeelistComponent } from './deletedemployeelist.component';
 import { IndiConveniencslistComponent } from './viewindiconve.component';
 import { IndiLeaveApplistComponent } from './viewindileaveapp.component';
 import { IndiSuggestionlistComponent } from './viewindisugge.component';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 @NgModule({
   imports: [CommonModule,FormsModule,ReactiveFormsModule,MatNativeDateModule,MatInputModule,
     MatDatepickerModule,MatFormFieldModule,MatBadgeModule,MatButtonModule,MatButtonToggleModule,
     MatPaginatorModule,MatSortModule,MatProgressSpinnerModule,MatTableModule,MemberRoutingModule,
+    BsDatepickerModule.forRoot()
     
   ],
   declarations: [HomeComponent,ChangepwdComponent,CustomerprofileComponent,AddperiodComponent,

@@ -21,7 +21,7 @@ import {MatDialog,MAT_DIALOG_DATA,MatDialogConfig} from '@angular/material';
 export class LeaveApplistComponent  {
 
   
-  displayedColumns: string[] = ['name', 'mobile', 'email', 'bankname', 'reason','View','Delete','Edit'];
+  displayedColumns: string[] = ['name', 'mobile', 'email', 'bankname', 'reason','View','Delete','status','Edit'];
   samples: any;
   dataSource;
 
@@ -126,7 +126,7 @@ export class EditLeavappContent{
     console.log(this.value1);
     this.commonservice.editleavapp(this.value1)
       .subscribe(res => {
-        alert("Leave Application edited Successfully");
+        alert("Leave Application "+value.element.status+" Successfully");
         window.location.reload();
       })
   }

@@ -3,6 +3,7 @@ import { FormControl } from '@angular/forms';
 import { SuperadminService } from '../../superadmin.service';
 import { CommonService } from '../../common.service';
 import { Router } from '@angular/router';
+// var sha1 = require('sha1');
 
 export interface User {
   name: string;
@@ -124,8 +125,13 @@ export class EmployeeComponent {
   submitForm(value) {
     console.log(value);
     this.createdby = localStorage.getItem("id")
+    // var password = 'mindfin@123'
+    // const encryptedString = sha1(password);
+
     this.value1 = { value: value, createdby: this.createdby,
-       cimg: this.cimagfilePath, pimg: this.pimagfilePath, aimg: this.aimagfilePath };
+       cimg: this.cimagfilePath, pimg: this.pimagfilePath, aimg: this.aimagfilePath,
+      //  pass:password,encry:encryptedString
+      };
     console.log(this.value1);
     this.commonservice.employeeadd(this.value1)
       .subscribe(res => {

@@ -30,6 +30,10 @@
                                 <th *matHeaderCellDef mat-sort-header>Comments</th>
                                 <td *matCellDef="let element" style="text-align:center;"> {{element.response}} </td>
                             </ng-container>
+                            <ng-container matColumnDef="status">
+                                <th *matHeaderCellDef mat-sort-header style="text-align:center;">Status</th>
+                                <td *matCellDef="let element" style="text-align:center;"> {{element.status}} </td>
+                            </ng-container>
                             <ng-container matColumnDef="Edit">
                                 <th *matHeaderCellDef mat-sort-header style="text-align:center;">Approve/Reject</th>
                                 <td *matCellDef="let element" style="text-align:center;">

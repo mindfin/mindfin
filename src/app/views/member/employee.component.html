@@ -31,11 +31,14 @@
                             <div class="col-md-4">
                                 <label><b>DOB</b>
                                 </label><br>
-                                <mat-form-field style="float:right;">
+
+                                <input class="form-group" [(ngModel)]="model.dob" name="dob" type="text" placeholder="MM/DD/YYYY" class="form-control" bsDatepicker>
+
+                                <!-- <mat-form-field style="float:right;">
                                     <input matInput #ref [matDatepicker]="picker" [(ngModel)]="model.dob" name="dob">
                                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                     <mat-datepicker #picker></mat-datepicker>
-                                </mat-form-field>
+                                </mat-form-field> -->
                             </div>
                         </div>
                         <div class="row">
@@ -132,11 +135,13 @@
                             <div class="col-sm-4">
                                 <label><b>JOINING DATE</b><code>(*)</code>
                                 </label>
-                                <mat-form-field>
+                                <input class="form-group" [(ngModel)]="model.joiningdate" name="joiningdate" type="text" placeholder="MM/DD/YYYY" class="form-control" bsDatepicker>
+
+                                <!-- <mat-form-field>
                                     <input matInput #ref [matDatepicker]="picker4" [(ngModel)]="model.joiningdate" name="joiningdate" placeholder="mm/dd/yyyy">
                                     <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
                                     <mat-datepicker #picker4></mat-datepicker>
-                                </mat-form-field>
+                                </mat-form-field> -->
                             </div>
                         </div>
                     </div>
