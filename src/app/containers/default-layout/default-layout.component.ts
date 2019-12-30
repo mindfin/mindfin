@@ -46,11 +46,20 @@ export class DefaultLayoutComponent {
   public element: HTMLElement = document.body;
   memberid: any;
   fetchData;
+  fetchData1;
+  fetchData2;
+  fetchData3;
+  fetchData4;
+  fetchData5;
+  fetchData6;
   reason;
   half;
   other;
   from;
   to;
+  currentPage = 1;
+  postsPerPage = 5;
+  pageSizeOptions = [5, 10, 20];
 
   constructor(private router: Router, private service: CommonService, private dialog: MatDialog) {
 
@@ -70,9 +79,28 @@ export class DefaultLayoutComponent {
   ngOnInit() {
     this.memberid = localStorage.getItem("id");
     this.service.getemployeename(this.memberid).subscribe(res => {
-      console.log(res);
+      // console.log(res);
       this.fetchData = res[0];
-      console.log(this.fetchData);
+      // console.log(this.fetchData);
+    });
+
+    this.service.gettopleave(this.postsPerPage,this.currentPage,this.memberid).subscribe(res=>{
+      this.fetchData1 = res;
+    });
+    this.service.gettopconven(this.postsPerPage,this.currentPage,this.memberid).subscribe(res=>{
+      this.fetchData2 = res;
+    });
+    this.service.gettopsug(this.postsPerPage,this.currentPage,this.memberid).subscribe(res=>{
+      this.fetchData3 = res;
+    });
+    this.service.getsugpending().subscribe(res=>{
+      this.fetchData4 = res;
+    });
+    this.service.getconvpending().subscribe(res=>{
+      this.fetchData5 = res;
+    });
+    this.service.getleaveapp().subscribe(res=>{
+      this.fetchData6 = res;
     });
   }
 
@@ -140,7 +168,7 @@ export class SugboxDialogContent {
   selector: 'dialog-content-example-dialog',
   templateUrl: 'leaveapp_dialog.html',
 })
-
+ 
 export class LeaveAppDialogContent {
 
 

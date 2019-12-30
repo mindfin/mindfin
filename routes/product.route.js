@@ -6835,4 +6835,302 @@ router.get('/getinactiveemployeelist/:pagesize/:page', function(req, res) {
             })
         })
 });
+router.get('/gettopleave/:pagesize/:page/:empid', (req, res, next) => {
+    const pageSize = req.params.pagesize;
+    const currentPage = req.params.page;
+    const skip = (pageSize * (currentPage - 1));
+    knex.select()
+        .from('leaveapplication')
+        .where('empID', req.params.empid)
+        .orderBy('appliedDate', 'desc')
+        .limit(pageSize).offset(skip)
+        .then(function(result) {
+            res.json(result);
+            // console.log(result);
+        });
+});
+router.get('/gettopconven/:pagesize/:page/:empid', (req, res, next) => {
+    const pageSize = req.params.pagesize;
+    const currentPage = req.params.page;
+    const skip = (pageSize * (currentPage - 1));
+    knex.select()
+        .from('conveniences')
+        .where('empID', req.params.empid)
+        .orderBy('appliedDate', 'desc')
+        .limit(pageSize).offset(skip)
+        .then(function(result) {
+            res.json(result);
+            // console.log(result);
+        });
+});
+router.get('/gettopsug/:pagesize/:page/:empid', (req, res, next) => {
+    const pageSize = req.params.pagesize;
+    const currentPage = req.params.page;
+    const skip = (pageSize * (currentPage - 1));
+    knex.select()
+        .from('suggestionbox')
+        .where('empID', req.params.empid)
+        .orderBy('appliedDate', 'desc')
+        .limit(pageSize).offset(skip)
+        .then(function(result) {
+            res.json(result);
+            // console.log(result);
+        });
+});
+router.get('/getconven/:pagesize/:page/:empid', function(req, res) {
+    const pageSize = req.params.pagesize;
+    const currentPage = req.params.page;
+    const skip = (pageSize * (currentPage - 1))
+    knex.select()
+        .from('conveniences')
+        .where('empID', req.params.empid)
+        .orderBy('appliedDate', 'desc')
+        .limit(pageSize).offset(skip)
+        .then(function(result) {
+            knex.select()
+                .from('conveniences')
+                .where('empID', req.params.empid)
+                .orderBy('appliedDate', 'desc')
+                .then(function(re) {
+                    res.status(200).json({
+                        message: "Memberlists fetched",
+                        posts: result,
+                        maxPosts: re.length
+                    });
+
+                })
+        })
+});
+router.get('/getleavapp/:pagesize/:page/:empid', function(req, res) {
+    const pageSize = req.params.pagesize;
+    const currentPage = req.params.page;
+    const skip = (pageSize * (currentPage - 1))
+    knex.select()
+        .from('leaveapplication')
+        .where('empID', req.params.empid)
+        .orderBy('appliedDate', 'desc')
+        .limit(pageSize).offset(skip)
+        .then(function(result) {
+            knex.select()
+                .from('leaveapplication')
+                .where('empID', req.params.empid)
+                .orderBy('appliedDate', 'desc')
+                .then(function(re) {
+                    res.status(200).json({
+                        message: "Memberlists fetched",
+                        posts: result,
+                        maxPosts: re.length
+                    });
+
+                })
+        })
+});
+router.get('/getsug/:pagesize/:page/:empid', function(req, res) {
+    const pageSize = req.params.pagesize;
+    const currentPage = req.params.page;
+    const skip = (pageSize * (currentPage - 1))
+    knex.select()
+        .from('suggestionbox')
+        .where('empID', req.params.empid)
+        .orderBy('appliedDate', 'desc')
+        .limit(pageSize).offset(skip)
+        .then(function(result) {
+            knex.select()
+                .from('suggestionbox')
+                .where('empID', req.params.empid)
+                .orderBy('appliedDate', 'desc')
+                .then(function(re) {
+                    res.status(200).json({
+                        message: "Memberlists fetched",
+                        posts: result,
+                        maxPosts: re.length
+                    });
+
+                })
+        })
+});
+router.get('/getsugpending', (req, res) => {
+    knex.select()
+        .from('suggestionbox')
+        .where('status', "Pending")
+        .then(function(result) {
+            res.json(result.length);
+        })
+});
+router.get('/getconvpending', (req, res) => {
+    knex.select()
+        .from('conveniences')
+        .where('status', "Pending")
+        .then(function(result) {
+            res.json(result.length);
+        })
+});
+router.get('/getleaveapp', (req, res) => {
+    knex.select()
+        .from('leaveapplication')
+        .where('status', "Pending")
+        .then(function(result) {
+            res.json(result.length);
+        })
+});
+router.get('/getallconven/:pagesize/:page', function(req, res) {
+    const pageSize = req.params.pagesize;
+    const currentPage = req.params.page;
+    const skip = (pageSize * (currentPage - 1))
+    knex.select()
+        .from('conveniences')
+        .orderBy('appliedDate', 'desc')
+        .limit(pageSize).offset(skip)
+        .then(function(result) {
+            knex.select()
+                .from('conveniences')
+                .orderBy('appliedDate', 'desc')
+                .then(function(re) {
+                    res.status(200).json({
+                        message: "Memberlists fetched",
+                        posts: result,
+                        maxPosts: re.length
+                    });
+
+                })
+        })
+});
+router.get('/getallleavapp/:pagesize/:page', function(req, res) {
+    const pageSize = req.params.pagesize;
+    const currentPage = req.params.page;
+    const skip = (pageSize * (currentPage - 1))
+    knex.select()
+        .from('leaveapplication')
+        .orderBy('appliedDate', 'desc')
+        .limit(pageSize).offset(skip)
+        .then(function(result) {
+            knex.select()
+                .from('leaveapplication')
+                .orderBy('appliedDate', 'desc')
+                .then(function(re) {
+                    res.status(200).json({
+                        message: "Memberlists fetched",
+                        posts: result,
+                        maxPosts: re.length
+                    });
+
+                })
+        })
+});
+router.get('/getallsug/:pagesize/:page', function(req, res) {
+    const pageSize = req.params.pagesize;
+    const currentPage = req.params.page;
+    const skip = (pageSize * (currentPage - 1))
+    knex.select()
+        .from('suggestionbox')
+        .orderBy('appliedDate', 'desc')
+        .limit(pageSize).offset(skip)
+        .then(function(result) {
+            knex.select()
+                .from('suggestionbox')
+                .orderBy('appliedDate', 'desc')
+                .then(function(re) {
+                    res.status(200).json({
+                        message: "Memberlists fetched",
+                        posts: result,
+                        maxPosts: re.length
+                    });
+
+                })
+        })
+});
+router.post('/editconves', function(req, res) {
+    var date = format.asString('yyyy-MM-dd', new Date());
+    // console.log(req.body)
+    knex('conveniences')
+        .where({ conID: req.body.value.element.conID })
+        .update({
+            approvedDate: date,
+            status: req.body.value.element.status,
+            response: req.body.value.element.response,
+            approverId: req.body.empid,
+            approverName: req.body.empname,
+        })
+        .then(function(result) {
+            res.json('Updated Successfully');
+        })
+});
+router.post('/editleavapp', function(req, res) {
+    var date = format.asString('yyyy-MM-dd', new Date());
+    // console.log(req.body)
+    knex('leaveapplication')
+        .where({ laID: req.body.value.element.laID })
+        .update({
+            approvedDate: date,
+            status: req.body.value.element.status,
+            response: req.body.value.element.response,
+            approverID: req.body.empid,
+            approverName: req.body.empname,
+        })
+        .then(function(result) {
+            res.json('Updated Successfully');
+        })
+});
+router.post('/editsug', function(req, res) {
+    var date = format.asString('yyyy-MM-dd', new Date());
+    // console.log(req.body)
+    knex('suggestionbox')
+        .where({ sbID: req.body.value.element.sbID })
+        .update({
+            updateDate: date,
+            status: req.body.value.element.status,
+            response: req.body.value.element.response,
+            acceptorID: req.body.empid,
+            acceptorName: req.body.empname,
+        })
+        .then(function(result) {
+            res.json('Updated Successfully');
+        })
+});
+
+router.post('/conveopenstatus', function(req, res) {
+    var date = format.asString('yyyy-MM-dd', new Date());
+    // console.log(req.body)
+    knex('conveniences')
+        .where({ status: 'Pending' })
+        .update({
+            approvedDate: date,
+            status: 'Opened',
+            approverId: req.body.empid,
+            approverName: req.body.empname,
+        })
+        .then(function(result) {
+            res.json('Updated Successfully');
+        })
+});
+router.post('/leavappeopenstatus', function(req, res) {
+    var date = format.asString('yyyy-MM-dd', new Date());
+    // console.log(req.body)
+    knex('leaveapplication')
+        .where({ status: 'Pending' })
+        .update({
+            approvedDate: date,
+            status: 'Opened',
+            approverID: req.body.empid,
+            approverName: req.body.empname,
+        })
+        .then(function(result) {
+            res.json('Updated Successfully');
+        })
+});
+router.post('/sugopenstatus', function(req, res) {
+    var date = format.asString('yyyy-MM-dd', new Date());
+    // console.log(req.body)
+    knex('suggestionbox')
+        .where({ status: 'Pending' })
+        .update({
+            updateDate: date,
+            status: 'Opened',
+            acceptorID: req.body.empid,
+            acceptorName: req.body.empname,
+        })
+        .then(function(result) {
+            res.json('Updated Successfully');
+        })
+});
 module.exports = router;

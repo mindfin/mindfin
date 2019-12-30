@@ -2,8 +2,10 @@ import { Component, OnInit, ViewChild, Inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService } from '../../common.service';
 import { SuperadminService } from '../../superadmin.service';
+// import { CommonService } from '../../superadmin.service';
 
 import { PageEvent, MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
+// import { Memberlist } from '../../../../models/booking.model';
 import { SampleService } from '../../sample.service';
 import { MatDialog, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material';
 
@@ -14,11 +16,11 @@ import { MatDialog, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material';
 
 @Component({
   selector: 'app-home',
-  templateUrl: './backendreport.component.html',
+  templateUrl: './viewconve.component.html',
 })
-export class BackendReportComponent {
+export class ConveniencslistComponent {
 
-  displayedColumns: string[] = ['date', 'cname', 'name', 'whosecase', 'executive', 'bank', 'amount', 'product', 'status', 'update','createdby','addbank'];
+  displayedColumns: string[] = ['name', 'mobile', 'email', 'bankname', 'view','download','Edit'];
   samples: any;
   dataSource;
 
@@ -34,35 +36,27 @@ export class BackendReportComponent {
   aa: any;
   // posts:Memberlist[] = [];
   totalPosts = 0;
-  postsPerPage = 300;
-  pageSizeOptions = [300, 500, 1000];
+  postsPerPage = 100;
   currentPage = 1;
+  pageSizeOptions = [100, 300, 500];
   isLoading = false;
   emp = 2;
-  teleid: any;
-  sdate;
-  edate;
+  empid;
+  empname;
   ngOnInit() {
+    
+    this.empid = localStorage.getItem("id");
+    this.empname = localStorage.getItem("empname");
+    var emp= {empid: this.empid, empname: this.empname };
+    this.commonservice.conveopenstatus(emp).subscribe(res=>{
+      console.log(res);
+     });
 
-
-  }
-  getreport(obj) {
-
-    // this.commonservice.gettelereport(obj).subscribe(res=>{
-    //   console.log(res);
-    // })
-    console.log(obj);
     this.isLoading = true;
-    console.log(obj)
-    localStorage.setItem("startdate", obj.startdate[0]);
-    localStorage.setItem("enddate", obj.startdate[1]);
-    this.sdate = localStorage.getItem("startdate");
-    this.edate = localStorage.getItem("enddate");
-    this.commonservice.getBackendlist(this.postsPerPage, this.currentPage, this.sdate, this.edate);
+    this.commonservice.getallconven(this.postsPerPage, this.currentPage);
     this.commonservice
-      .getBackendlistDetails()
+      .getallconvenDetails()
       .subscribe((postData: { posts: SuperadminService[], postCount: number }) => {
-
         this.totalPosts = postData.postCount;
         this.dataSource = new MatTableDataSource(postData.posts);
         // this.dataSource = new (postData.posts);
@@ -72,9 +66,8 @@ export class BackendReportComponent {
         console.log(postData.postCount);
         this.dataSource.sort = this.sort;
         console.log(this.dataSource.sort);
-      })
+      });
   }
-
   applyFilter(filterValue: string) {
     console.log(filterValue);
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -84,7 +77,7 @@ export class BackendReportComponent {
     this.currentPage = pageData.pageIndex + 1;
     this.postsPerPage = pageData.pageSize;
     console.log(this.postsPerPage);
-    this.commonservice.getBackendlist(this.postsPerPage, this.currentPage, this.sdate, this.edate);
+    this.commonservice.getallconven(this.postsPerPage, this.currentPage);
   }
 
   data: any;
@@ -92,46 +85,48 @@ export class BackendReportComponent {
   demo: any;
   array = [];
   abc: any;
-  exportAsXLSX(): void {
-    console.log(this.samples);
-    let come = this.samples;
-    var a;
-    const fileName = "Backend Report";
-    for (let i = 0; i < come.length; i++) {
-      this.array.push({
 
-        "Created Date": this.samples[i].acreateddate,
-        "Company Name": this.samples[i].cname,
-        "Customer Name":this.samples[i].name,
-        "Whose Case": this.samples[i].whosecase,
-        "Excecutive Name": this.samples[i].aexecutivename,
-        "Bank Name": this.samples[i].bankname,
-        "Applied Amount": this.samples[i].aamount,
-        "Product": this.samples[i].product,
-        "Status": this.samples[i].astatus,
-        "Comments": this.samples[i].scomment,
-        "Created By": this.samples[i].ccreatedbyname,
-        "Bank Added By": this.samples[i].acreatedbyname,
-
-      });
-    }
-    console.log(this.array);
-
-
-    // console.log(this.array);   
-    this.excelservice.JSONToCSVConvertor(this.array, "Report", true, fileName);
-
-
-  }
 
   refresh(): void {
     window.location.reload();
   }
-
-
-
-
+  openDialog(element) {
+    this.model=element;
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.data = {element};
+      this.dialog.open(EditConvContent,dialogConfig
+    );
+    console.log(dialogConfig );
+    
+    }
 }
+@Component({
+  selector: 'dialog-content-example-dialog',
+  templateUrl: 'editconven_dialog.html',
+}) 
+
+export class EditConvContent{ 
 
 
-
+  constructor(@Inject(MAT_DIALOG_DATA) public data:any,
+  private commonservice: CommonService, private route: ActivatedRoute, private router: Router,) {}
+  element: any;
+  empid: any;
+  empname: any;
+  value1: any;
+  onSubmit(value) {
+    console.log(value);
+    this.empid = localStorage.getItem("id");
+    this.empname = localStorage.getItem("empname");
+    this.value1 = { value: value, empid: this.empid, empname: this.empname };
+    console.log(this.value1);
+    this.commonservice.editconves(this.value1)
+      .subscribe(res => {
+        alert("Leave Application edited Successfully");
+        window.location.reload();
+      })
+  }
+  refresh(): void {
+    window.location.reload();
+  }
+}

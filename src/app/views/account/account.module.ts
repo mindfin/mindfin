@@ -13,6 +13,9 @@ import { SubvendorComponent} from './subvendor.component';
 import { DisburselistComponent,Empdialog1Content,Empdialog2Content} from './disburselist.component';
 import { CustomerlistComponent,EmpdialogContent} from './customerlist.component';
 import { ReloanComponent} from './reloan.component';
+import { ConveniencslistComponent, EditConvContent } from './viewconve.component';
+import { LeaveApplistComponent, EditLeavappContent } from './viewleaveapp.component';
+import { SuggestionlistComponent, EditsuggestionContent } from './viewsugge.component';
 
 
 
@@ -43,9 +46,10 @@ import { ReloanComponent} from './reloan.component';
             
   ],
   declarations: [ SubvendorComponent,CustomerlistComponent,EmpdialogContent,DisburselistComponent,
-    Empdialog1Content,Empdialog2Content,ReloanComponent,],
+    Empdialog1Content,Empdialog2Content,ReloanComponent,ConveniencslistComponent,LeaveApplistComponent,SuggestionlistComponent,
+    EditConvContent,EditLeavappContent,EditsuggestionContent],
   entryComponents: [EmpdialogContent,CustomerlistComponent,Empdialog1Content,Empdialog2Content,
-    DisburselistComponent
+     EditConvContent,EditLeavappContent,EditsuggestionContent,DisburselistComponent,
   ],
 
   // declarations: [AddapprovalComponent, DialogContent],

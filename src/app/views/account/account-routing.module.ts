@@ -7,6 +7,9 @@ import { SubvendorComponent} from './subvendor.component';
 import { CustomerlistComponent } from './customerlist.component';
 import { DisburselistComponent } from './disburselist.component';
 import { ReloanComponent } from './reloan.component';
+import { ConveniencslistComponent } from './viewconve.component';
+import { LeaveApplistComponent } from './viewleaveapp.component';
+import { SuggestionlistComponent } from './viewsugge.component';
 
 // import { BankComponent } from './bank.component';
 
@@ -52,8 +55,27 @@ const routes: Routes = [
           title:'Apply Loan'
         }
       },
-      
-   
+            {
+        path:'conveniencs',
+        component:ConveniencslistComponent,
+        data:{
+          title:'Conveniencs'
+        }
+      },
+      {
+        path:'leaveapp',
+        component:LeaveApplistComponent,
+        data:{
+          title:'Leave Applications'
+        }
+      },
+      {
+        path:'suggestion',
+        component:SuggestionlistComponent,
+        data:{
+          title:'Suggestions'
+        }
+      },
     ]
   }
 ];

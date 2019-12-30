@@ -2244,4 +2244,219 @@ getinactiveemployeelist(postsPerPage: number, currentPage: number) {
 getinactiveemployeeDetails() {
   return this.postsUpdated.asObservable();
 }
+
+gettopleave(postsPerPage: number, currentPage: number,empid: number) {
+
+  const queryParams = `/${postsPerPage}/${currentPage}/${empid}`;
+  console.log(queryParams);
+  const uri = "https://bank.mindfin.co.in/callapi/gettopleave" + queryParams;
+  return this.http.get(uri);
+}
+gettopconven(postsPerPage: number, currentPage: number,empid: number) {
+
+  const queryParams = `/${postsPerPage}/${currentPage}/${empid}`;
+  console.log(queryParams);
+  const uri = "https://bank.mindfin.co.in/callapi/gettopconven" + queryParams;
+  return this.http.get(uri);
+}
+gettopsug(postsPerPage: number, currentPage: number,empid: number) {
+
+  const queryParams = `/${postsPerPage}/${currentPage}/${empid}`;
+  console.log(queryParams);
+  const uri = "https://bank.mindfin.co.in/callapi/gettopsug" + queryParams;
+  return this.http.get(uri);
+}
+getconven(postsPerPage: number, currentPage: number,empid: number) {
+  const queryParams = `/${postsPerPage}/${currentPage}/${empid}`;
+  this.http
+    .get<{ message: string; posts: any; maxPosts: number }>(
+      "https://bank.mindfin.co.in/callapi/getconven" + queryParams
+    )
+    .pipe(
+      map(postData => {
+              return {
+          posts: postData.posts,
+          maxPosts: postData.maxPosts
+        };
+      })
+    )
+    .subscribe(transformedPostData => {
+      this.posts = transformedPostData.posts;
+      this.postsUpdated.next({
+        posts: [...this.posts],
+        postCount: transformedPostData.maxPosts
+      });
+    });
+}
+
+getconvenDetails() {
+  return this.postsUpdated.asObservable();
+}
+getleavapp(postsPerPage: number, currentPage: number,empid: number) {
+  const queryParams = `/${postsPerPage}/${currentPage}/${empid}`;
+  this.http
+    .get<{ message: string; posts: any; maxPosts: number }>(
+      "https://bank.mindfin.co.in/callapi/getleavapp" + queryParams
+    )
+    .pipe(
+      map(postData => {
+              return {
+          posts: postData.posts,
+          maxPosts: postData.maxPosts
+        };
+      })
+    )
+    .subscribe(transformedPostData => {
+      this.posts = transformedPostData.posts;
+      this.postsUpdated.next({
+        posts: [...this.posts],
+        postCount: transformedPostData.maxPosts
+      });
+    });
+}
+
+getleavappDetails() {
+  return this.postsUpdated.asObservable();
+}
+getsug(postsPerPage: number, currentPage: number,empid: number) {
+  const queryParams = `/${postsPerPage}/${currentPage}/${empid}`;
+  this.http
+    .get<{ message: string; posts: any; maxPosts: number }>(
+      "https://bank.mindfin.co.in/callapi/getsug" + queryParams
+    )
+    .pipe(
+      map(postData => {
+              return {
+          posts: postData.posts,
+          maxPosts: postData.maxPosts
+        };
+      })
+    )
+    .subscribe(transformedPostData => {
+      this.posts = transformedPostData.posts;
+      this.postsUpdated.next({
+        posts: [...this.posts],
+        postCount: transformedPostData.maxPosts
+      });
+    });
+}
+
+getsugDetails() {
+  return this.postsUpdated.asObservable();
+}
+getsugpending() {
+  const uri = "https://bank.mindfin.co.in/callapi/getsugpending";
+  return this.http.get(uri);
+}
+getconvpending() {
+  const uri = "https://bank.mindfin.co.in/callapi/getconvpending";
+  return this.http.get(uri);
+}
+getleaveapp() {
+  const uri = "https://bank.mindfin.co.in/callapi/getleaveapp";
+  return this.http.get(uri);
+}
+
+getallconven(postsPerPage: number, currentPage: number) {
+  const queryParams = `/${postsPerPage}/${currentPage}`;
+  this.http
+    .get<{ message: string; posts: any; maxPosts: number }>(
+      "https://bank.mindfin.co.in/callapi/getallconven" + queryParams
+    )
+    .pipe(
+      map(postData => {
+              return {
+          posts: postData.posts,
+          maxPosts: postData.maxPosts
+        };
+      })
+    )
+    .subscribe(transformedPostData => {
+      this.posts = transformedPostData.posts;
+      this.postsUpdated.next({
+        posts: [...this.posts],
+        postCount: transformedPostData.maxPosts
+      });
+    });
+}
+
+getallconvenDetails() {
+  return this.postsUpdated.asObservable();
+}
+getallleavapp(postsPerPage: number, currentPage: number) {
+  const queryParams = `/${postsPerPage}/${currentPage}`;
+  this.http
+    .get<{ message: string; posts: any; maxPosts: number }>(
+      "https://bank.mindfin.co.in/callapi/getallleavapp" + queryParams
+    )
+    .pipe(
+      map(postData => {
+              return {
+          posts: postData.posts,
+          maxPosts: postData.maxPosts
+        };
+      })
+    )
+    .subscribe(transformedPostData => {
+      this.posts = transformedPostData.posts;
+      this.postsUpdated.next({
+        posts: [...this.posts],
+        postCount: transformedPostData.maxPosts
+      });
+    });
+}
+
+getallleavappDetails() {
+  return this.postsUpdated.asObservable();
+}
+getallsug(postsPerPage: number, currentPage: number) {
+  const queryParams = `/${postsPerPage}/${currentPage}`;
+  this.http
+    .get<{ message: string; posts: any; maxPosts: number }>(
+      "https://bank.mindfin.co.in/callapi/getallsug" + queryParams
+    )
+    .pipe(
+      map(postData => {
+              return {
+          posts: postData.posts,
+          maxPosts: postData.maxPosts
+        };
+      })
+    )
+    .subscribe(transformedPostData => {
+      this.posts = transformedPostData.posts;
+      this.postsUpdated.next({
+        posts: [...this.posts],
+        postCount: transformedPostData.maxPosts
+      });
+    });
+}
+
+getallsugDetails() {
+  return this.postsUpdated.asObservable();
+}
+public editconves(value){
+  console.log(value);
+  return this.http.post(`https://bank.mindfin.co.in/callapi/editconves`, value);
+}
+public editleavapp(value){
+  console.log(value);
+  return this.http.post(`https://bank.mindfin.co.in/callapi/editleavapp`, value);
+}
+public editsug(value){
+  console.log(value);
+  return this.http.post(`https://bank.mindfin.co.in/callapi/editsug`, value);
+}
+public conveopenstatus(value){
+  console.log(value);
+  return this.http.post(`https://bank.mindfin.co.in/callapi/conveopenstatus`, value);
+}
+public leavappeopenstatus(value){
+  console.log(value);
+  return this.http.post(`https://bank.mindfin.co.in/callapi/leavappeopenstatus`, value);
+}
+public sugopenstatus(value){
+  console.log(value);
+  return this.http.post(`https://bank.mindfin.co.in/callapi/sugopenstatus`, value);
+}
 }

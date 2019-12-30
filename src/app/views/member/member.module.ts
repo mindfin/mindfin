@@ -26,6 +26,9 @@ import { ContactComponent } from './contact.component';
 import { CareerComponent } from './career.component';
 import { CallbackComponent } from './callback.component';
 import { DeletedEmployeelistComponent } from './deletedemployeelist.component';
+import { IndiConveniencslistComponent } from './viewindiconve.component';
+import { IndiLeaveApplistComponent } from './viewindileaveapp.component';
+import { IndiSuggestionlistComponent } from './viewindisugge.component';
 @NgModule({
   imports: [CommonModule,FormsModule,ReactiveFormsModule,MatNativeDateModule,MatInputModule,
     MatDatepickerModule,MatFormFieldModule,MatBadgeModule,MatButtonModule,MatButtonToggleModule,
@@ -36,7 +39,7 @@ import { DeletedEmployeelistComponent } from './deletedemployeelist.component';
     EditemployeeComponent,EmployeetypeComponent,EmployeelistComponent,EmpPasswordComponent,
     LoantypeComponent,BankComponent,UserComponent,SettingsComponent,BulksmsComponent,ViewdetailsComponent,
     EmpdialogContent,ChecktrackComponent,TrackComponent,EmployeeComponent,CareerComponent,ContactComponent,CallbackComponent,
-    DeletedEmployeelistComponent
+    DeletedEmployeelistComponent,IndiConveniencslistComponent,IndiLeaveApplistComponent,IndiSuggestionlistComponent
  ],
   entryComponents: [EmployeelistComponent,EmpdialogContent,DeletedEmployeelistComponent
   ],

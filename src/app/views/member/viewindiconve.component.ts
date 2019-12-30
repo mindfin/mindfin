@@ -2,8 +2,10 @@ import { Component, OnInit, ViewChild, Inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService } from '../../common.service';
 import { SuperadminService } from '../../superadmin.service';
+// import { CommonService } from '../../superadmin.service';
 
 import { PageEvent, MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
+// import { Memberlist } from '../../../../models/booking.model';
 import { SampleService } from '../../sample.service';
 import { MatDialog, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material';
 
@@ -14,11 +16,11 @@ import { MatDialog, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material';
 
 @Component({
   selector: 'app-home',
-  templateUrl: './backendreport.component.html',
+  templateUrl: './viewindiconve.component.html',
 })
-export class BackendReportComponent {
+export class IndiConveniencslistComponent {
 
-  displayedColumns: string[] = ['date', 'cname', 'name', 'whosecase', 'executive', 'bank', 'amount', 'product', 'status', 'update','createdby','addbank'];
+  displayedColumns: string[] = ['name', 'mobile', 'email', 'bankname', 'Edit'];
   samples: any;
   dataSource;
 
@@ -34,33 +36,19 @@ export class BackendReportComponent {
   aa: any;
   // posts:Memberlist[] = [];
   totalPosts = 0;
-  postsPerPage = 300;
-  pageSizeOptions = [300, 500, 1000];
+  postsPerPage = 100;
   currentPage = 1;
+  pageSizeOptions = [100, 300, 500];
   isLoading = false;
   emp = 2;
-  teleid: any;
-  sdate;
-  edate;
+  empid;
   ngOnInit() {
+    this.empid = localStorage.getItem("id");
 
-
-  }
-  getreport(obj) {
-
-    // this.commonservice.gettelereport(obj).subscribe(res=>{
-    //   console.log(res);
-    // })
-    console.log(obj);
     this.isLoading = true;
-    console.log(obj)
-    localStorage.setItem("startdate", obj.startdate[0]);
-    localStorage.setItem("enddate", obj.startdate[1]);
-    this.sdate = localStorage.getItem("startdate");
-    this.edate = localStorage.getItem("enddate");
-    this.commonservice.getBackendlist(this.postsPerPage, this.currentPage, this.sdate, this.edate);
+    this.commonservice.getconven(this.postsPerPage, this.currentPage,this.empid);
     this.commonservice
-      .getBackendlistDetails()
+      .getconvenDetails()
       .subscribe((postData: { posts: SuperadminService[], postCount: number }) => {
 
         this.totalPosts = postData.postCount;
@@ -72,9 +60,10 @@ export class BackendReportComponent {
         console.log(postData.postCount);
         this.dataSource.sort = this.sort;
         console.log(this.dataSource.sort);
-      })
-  }
+      });
 
+
+  }
   applyFilter(filterValue: string) {
     console.log(filterValue);
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -84,7 +73,7 @@ export class BackendReportComponent {
     this.currentPage = pageData.pageIndex + 1;
     this.postsPerPage = pageData.pageSize;
     console.log(this.postsPerPage);
-    this.commonservice.getBackendlist(this.postsPerPage, this.currentPage, this.sdate, this.edate);
+    this.commonservice.getconven(this.postsPerPage, this.currentPage,this.empid);
   }
 
   data: any;
@@ -92,46 +81,9 @@ export class BackendReportComponent {
   demo: any;
   array = [];
   abc: any;
-  exportAsXLSX(): void {
-    console.log(this.samples);
-    let come = this.samples;
-    var a;
-    const fileName = "Backend Report";
-    for (let i = 0; i < come.length; i++) {
-      this.array.push({
 
-        "Created Date": this.samples[i].acreateddate,
-        "Company Name": this.samples[i].cname,
-        "Customer Name":this.samples[i].name,
-        "Whose Case": this.samples[i].whosecase,
-        "Excecutive Name": this.samples[i].aexecutivename,
-        "Bank Name": this.samples[i].bankname,
-        "Applied Amount": this.samples[i].aamount,
-        "Product": this.samples[i].product,
-        "Status": this.samples[i].astatus,
-        "Comments": this.samples[i].scomment,
-        "Created By": this.samples[i].ccreatedbyname,
-        "Bank Added By": this.samples[i].acreatedbyname,
-
-      });
-    }
-    console.log(this.array);
-
-
-    // console.log(this.array);   
-    this.excelservice.JSONToCSVConvertor(this.array, "Report", true, fileName);
-
-
-  }
 
   refresh(): void {
     window.location.reload();
   }
-
-
-
-
 }
-
-
-

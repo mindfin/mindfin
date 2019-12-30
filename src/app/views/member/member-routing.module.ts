@@ -23,6 +23,9 @@ import { CareerComponent } from './career.component';
 import { ContactComponent } from './contact.component';
 import { CallbackComponent } from './callback.component';
 import { DeletedEmployeelistComponent } from './deletedemployeelist.component';
+import { IndiConveniencslistComponent } from './viewindiconve.component';
+import { IndiLeaveApplistComponent } from './viewindileaveapp.component';
+import { IndiSuggestionlistComponent } from './viewindisugge.component';
 const routes: Routes = [
   {
     path: '',
@@ -178,7 +181,28 @@ const routes: Routes = [
         data:{
           title:'Callback Form Data'
         }
+      },{
+        path:'indiconve',
+        component:IndiConveniencslistComponent,
+        data:{
+          title:'Conveniences Status'
+        }
       },
+      {
+        path:'indileavapp',
+        component:IndiLeaveApplistComponent,
+        data:{
+          title:'Leave Application Status'
+        }
+      },
+      {
+        path:'indiSuggest',
+        component:IndiSuggestionlistComponent,
+        data:{
+          title:'Suggestion Status'
+        }
+      },
+     
       // {
       //   path: 'profile',
       //   component: ProfileComponent,

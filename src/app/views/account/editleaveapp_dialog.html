@@ -1,0 +1,34 @@
+<h1 mat-dialog-title>Leave Application</h1>
+<div mat-dialog-content class="mat-typography">
+
+    <div class="card">
+
+        <form (ngSubmit)="onSubmit(data)">
+
+            <div class="card-body">
+                <div class="col-sm-12">
+                    <label><b>Comments</b></label>
+                    <textarea class="form-control" [(ngModel)]="data.element.response" class="form-control" name="reason"></textarea>
+                    <br>
+                </div>
+                <div class="col-sm-12">
+                    <label>Status</label>
+                    <br>
+                    <select class="form-control" name="status" [(ngModel)]="data.element.status">
+                        <option value="" selected>Select option</option>
+                        <option value="Approved">Approved</option>
+                        <option value="Reject">Reject</option>
+                   </select>
+
+                </div>
+                <br>
+                <div center>
+                    <button type="submit" class="btn btn-success">Submit</button>
+                </div>
+
+            </div>
+
+
+        </form>
+    </div>
+</div>
