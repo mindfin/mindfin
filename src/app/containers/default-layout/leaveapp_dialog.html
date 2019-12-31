@@ -3,11 +3,11 @@
 
     <div class="card">
 
-        <form (ngSubmit)="onSubmit(data)">
+        <form (ngSubmit)="f.form.valid && onSubmit(data)" #f="ngForm" novalidate>
 
             <div class="card-body">
                 <div class="col-md-12">
-                    <label>From And To</label>
+                    <label>From And To<code>(*)</code></label>
                     <br>
                     <div class="col-sm-12 ">
                         <input class="form-group" [(ngModel)]="data.from" name="from" type="text" placeholder="From(MM/DD/YYYY) - To(MM/DD/YYYY)" class="form-control" bsDaterangepicker required>
@@ -27,12 +27,12 @@
                    <input type="radio" value="no" name="half" [(ngModel)]="data.half" checked>NO -->
                 </div>
                 <div class="col-md-12">
-                    <label>Reason *</label>
+                    <label>Reason<code>(*)</code></label>
                     <textarea class="form-control" [(ngModel)]="data.reason" class="form-control" name="reason" required></textarea>
                     <br>
                 </div>
                 <div center>
-                    <button type="submit" class="btn btn-success">Submit</button>
+                    <button type="submit" [disabled]="!f.form.valid" class="btn btn-success">Submit</button>
                 </div>
 
             </div>

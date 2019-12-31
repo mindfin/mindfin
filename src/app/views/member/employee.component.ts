@@ -52,16 +52,22 @@ export class EmployeeComponent {
   imageURL: string;
   imageURL$: string;
   myfields: any = [];
-
+fetchData3;
   ngOnInit() {
     this.commonservice.getuserlist().subscribe(res => {
       console.log(res);
       this.fetchData = res;
     });
+    this.commonservice.getpasswords().subscribe(res=>{
+      console.log(res);
+      this.fetchData3 =res;
+
+    })
   }
   orgValueChange(date) {
     this.dob = date;
   }
+  
 
   displayFn(user?: User): string | undefined {
     return user ? user.name : undefined;
@@ -130,7 +136,7 @@ export class EmployeeComponent {
 
     this.value1 = { value: value, createdby: this.createdby,
        cimg: this.cimagfilePath, pimg: this.pimagfilePath, aimg: this.aimagfilePath,
-      //  pass:password,encry:encryptedString
+       password:this.fetchData3
       };
     console.log(this.value1);
     this.commonservice.employeeadd(this.value1)

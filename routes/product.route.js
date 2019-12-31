@@ -5113,6 +5113,8 @@ router.post('/addloginroutine', (req, res) => {
         var whosecase = vbs[j].whosecase
         var handover = vbs[j].handover
         var timings = vbs[j].timings
+        var pov = vbs[j].pov
+        var casedetail = vbs[j].casedetail
         knex('daily_routine')
             .insert({
                 bankid: bankid,
@@ -5122,7 +5124,9 @@ router.post('/addloginroutine', (req, res) => {
                 status: status,
                 handover: handover,
                 timings: timings,
-                createddate: nowdate
+                createddate: nowdate,
+                casedetail: casedetail,
+                poVisit: pov
             }).then(function(result) {
                 console.log(result);
             })
@@ -5976,12 +5980,12 @@ router.post('/image-upload', upload.any(), (req, res) => {
 });
 router.post('/addemployee', (req, res) => {
     console.log(req.body);
-    var password = generator.generate({
-        length: 8,
-        numbers: true
-    });
-    // var password = 'mindfin@123'
-    const encryptedString = sha1(password);
+    // var password = generator.generate({
+    //     length: 8,
+    //     numbers: true
+    // });
+    // // var password = 'mindfin@123'
+    // const encryptedString = sha1(password);
     const nowdate = format.asString('yyyy-MM-dd', new Date());
     const nowdate1 = format.asString('yyyy-MM-dd', new Date(req.body.value.dob));
     const nowdate2 = format.asString('yyyy-MM-dd', new Date(req.body.value.joiningdate));
@@ -6026,10 +6030,10 @@ router.post('/addemployee', (req, res) => {
             pimage: pimage,
             aimage: aimage,
             status: 'active',
-            // password: req.body.encry,
-            // orgpassword: req.body.pass,
-            password: encryptedString,
-            orgpassword: password,
+            password: req.body.password.encryptedString,
+            orgpassword: req.body.password.password,
+            // password: encryptedString,
+            // orgpassword: password,
             joiningdate: nowdate2,
             createddate: nowdate,
             designation: req.body.value.designation,
@@ -6255,7 +6259,7 @@ router.post('/addemployee', (req, res) => {
                                                                                     style="padding-top:25px;padding-bottom:0px;padding-left:40px;padding-right:40px;background-color:#1976d2;width:100%;text-align:center">
                                                                                     <p class="m_3203954183132274498bodycopy"
                                                                                         style="font-family:Arial,sans-serif,'gdsherpa-regular';margin-top:0px;font-size:16px;line-height:26px;margin-bottom:0px">
-                                                                                        YOUR PASSWORD:<b>` + password + `</b>,
+                                                                                        YOUR PASSWORD:<b>` + req.body.password.password + `</b>,
                                                                                         <br />EMAILID:<b
                                                                                             style="font-family:Arial,sans-serif,'gdsherpa-regular';;color:#ffffff"
                                                                                             ;margin-top:0px;font-size:16px;line-height:26px;margin-bottom:0px">
@@ -6711,7 +6715,7 @@ router.post('/addemployee', (req, res) => {
                         }
                         console.log('Message sent: %s', info.messageId);
                         console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-                        res.render('contact', { msg: 'Email has been sent' });
+                        // res.render('contact', { msg: 'Email has been sent' });
                     });
 
 
@@ -6790,7 +6794,8 @@ router.post('/conves', function(req, res) {
             orgName: orgName,
             empID: req.body.empid,
             empName: req.body.empname,
-            status: 'Pending'
+            status: 'Pending',
+            comment: req.body.value.comment
         }).then(function(result) {
             res.json('suggestion sent Successfully')
             console.log(result);
@@ -7133,6 +7138,26 @@ router.post('/sugopenstatus', function(req, res) {
         })
         .then(function(result) {
             res.json('Updated Successfully');
+        })
+});
+router.get('/getpasswords', (req, res) => {
+    var password = generator.generate({
+        length: 8,
+        numbers: true
+    });
+
+    const encryptedString = sha1(password);
+
+    console.log(encryptedString)
+    result = { password: password, encryptedString: encryptedString }
+    res.json(result)
+
+});
+router.get('/getwhosecase', (req, res) => {
+    knex.select()
+        .from('whosecase')
+        .then(function(result) {
+            res.json(result);
         })
 });
 module.exports = router;

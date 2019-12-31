@@ -14,6 +14,7 @@ export class DailyRoutineEditComponent implements OnInit {
   
 obj:any;
 fetchData:any;
+fetchData1:any;
 model: any = {};
 
   idvalue;
@@ -43,8 +44,12 @@ model: any = {};
       console.log(res);
       this.model = res[0];
     });
-  })
 
+  })
+this.service.getwhosecase().subscribe(res => {
+      console.log(res);
+      this.fetchData1 = res;
+    })
   }
   refresh(): void {
     window.location.reload();

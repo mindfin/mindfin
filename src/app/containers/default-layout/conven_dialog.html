@@ -3,16 +3,16 @@
 
     <div class="card">
 
-        <form (ngSubmit)="onSubmit(data)" name="myform">
+        <form (ngSubmit)="f.form.valid && onSubmit(data)" name="myform" #f="ngForm" novalidate>
 
             <div class="card-body">
                 <div class="col-sm-12">
-                    <label><b>Uploab Conveniences</b></label>
+                    <label><b>Upload Conveniences</b></label>
                     <input type="file" class="form-control" name="image" (change)="onFileSelect($event)">
                     <br>
                 </div>
                 <div class="col-sm-12">
-                    <label>Categories</label>
+                    <label>Categories<code>(*)</code></label>
                     <br>
                     <select class="form-control" name="catgory" [(ngModel)]="data.catgory" onchange="if (this.options[this.selectedIndex].value =='other'){document.myform['other'].style.visibility='visible'}
                     else {document.myform['other'].style.visibility='hidden'};">
@@ -28,8 +28,14 @@
                     <input class="form-control" type="text" [(ngModel)]="data.other" name="other" style="visibility:hidden;" />
                     <br>
                 </div>
+                <div class="col-sm-12">
+                    <label>Comment<code>(*)</code></label>
+                    <br>
+                    <textarea required class="form-control" [(ngModel)]="data.comment" class="form-control" name="reason"></textarea>
+                    <br>
+                </div>
                 <div center>
-                    <button type="submit" class="btn btn-success">Submit</button>
+                    <button type="submit" [disabled]="!f.form.valid" class="btn btn-success">Submit</button>
                 </div>
 
             </div>

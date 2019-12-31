@@ -20,7 +20,7 @@ import { MatDialog, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material';
 })
 export class ConveniencslistComponent {
 
-  displayedColumns: string[] = ['name', 'mobile', 'email', 'bankname', 'view','status','download','Edit'];
+  displayedColumns: string[] = ['name', 'mobile','comment', 'email', 'bankname', 'view','status','download','Edit'];
   samples: any;
   dataSource;
 

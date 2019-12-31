@@ -2459,4 +2459,13 @@ public sugopenstatus(value){
   console.log(value);
   return this.http.post(`https://bank.mindfin.co.in/callapi/sugopenstatus`, value);
 }
+public getpasswords(){
+  const uri = "https://bank.mindfin.co.in/callapi/getpasswords";
+    return this.http.get(uri);
+}
+getwhosecase() {
+  const uri = "https://bank.mindfin.co.in/callapi/getwhosecase";
+  return this.http.get(uri);
+
+}
 }

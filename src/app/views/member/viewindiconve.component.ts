@@ -20,7 +20,7 @@ import { MatDialog, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material';
 })
 export class IndiConveniencslistComponent {
 
-  displayedColumns: string[] = ['name', 'mobile', 'email', 'bankname', 'Edit'];
+  displayedColumns: string[] = ['name', 'mobile', 'email', 'bankname', 'Edit','comment'];
   samples: any;
   dataSource;
 

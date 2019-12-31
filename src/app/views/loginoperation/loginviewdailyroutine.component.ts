@@ -19,7 +19,7 @@ import {MatDialog,MAT_DIALOG_DATA,MatDialogConfig} from '@angular/material';
 })
 export class LoginDailyRoutineviewComponent{
 
-  displayedColumns: string[] = ['date','company','bank','whosecase','handover','timings','status'];
+  displayedColumns: string[] = ['date','company','bank','whosecase','pov','handover','timings','status','case'];
   samples:any;
   dataSource;
 

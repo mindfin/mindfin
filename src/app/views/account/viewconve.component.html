@@ -27,6 +27,10 @@
                                 <th *matHeaderCellDef mat-sort-header style="text-align:center;">Categories</th>
                                 <td *matCellDef="let element" style="text-align:center;"> {{element.categories}} </td>
                             </ng-container>
+                            <ng-container matColumnDef="comment">
+                                <th *matHeaderCellDef mat-sort-header style="text-align:center;">Comment</th>
+                                <td *matCellDef="let element" style="text-align:center;"> {{element.comment}} </td>
+                            </ng-container>
                             <ng-container matColumnDef="email">
                                 <th *matHeaderCellDef mat-sort-header style="text-align:center;">Employee Name</th>
                                 <td *matCellDef="let element" style="text-align:center;"> {{element.empName}} </td>

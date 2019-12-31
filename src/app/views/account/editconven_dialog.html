@@ -3,18 +3,18 @@
 
     <div class="card">
 
-        <form (ngSubmit)="onSubmit(data)" name="myform">
+        <form (ngSubmit)="f.form.valid && onSubmit(data)" #f="ngForm" novalidate>
 
             <div class="card-body">
                 <div class="col-sm-12">
-                    <label><b>Comments</b></label>
-                    <textarea class="form-control" [(ngModel)]="data.element.response" class="form-control" name="reason"></textarea>
+                    <label><b>Comments</b><code>(*)</code></label>
+                    <textarea class="form-control" required [(ngModel)]="data.element.response" class="form-control" name="reason"></textarea>
                     <br>
                 </div>
                 <div class="col-sm-12">
-                    <label>Status</label>
+                    <label>Status<code>(*)</code></label>
                     <br>
-                    <select class="form-control" name="status" [(ngModel)]="data.element.status">
+                    <select class="form-control" name="status" required [(ngModel)]="data.element.status">
                         <option value="" selected>Select option</option>
                         <option value="Approved">Approved</option>
                         <option value="Reject">Reject</option>
@@ -23,7 +23,7 @@
                 </div>
                 <br>
                 <div center>
-                    <button type="submit" class="btn btn-success">Submit</button>
+                    <button type="submit" [disabled]="!f.form.valid" class="btn btn-success">Submit</button>
                 </div>
 
             </div>

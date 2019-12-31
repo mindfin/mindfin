@@ -60,6 +60,7 @@ export class DefaultLayoutComponent {
   currentPage = 1;
   postsPerPage = 5;
   pageSizeOptions = [5, 10, 20];
+  comment;
 
   constructor(private router: Router, private service: CommonService, private dialog: MatDialog) {
 
@@ -123,7 +124,7 @@ export class DefaultLayoutComponent {
   }
   convens() {
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = {catgory:any, other:this.other};
+    dialogConfig.data = {catgory:any, other:this.other,comment:this.comment};
     this.dialog.open(ConvenienceDialogContent, dialogConfig
     );
     console.log(dialogConfig);

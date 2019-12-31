@@ -41,6 +41,10 @@
                                     <img src="https://mindfinfiles.blob.core.windows.net/mindfin-backend/{{element.conImg}}" height="50" width="50" />
                                 </td>
                             </ng-container>
+                            <ng-container matColumnDef="comment">
+                                <th *matHeaderCellDef mat-sort-header style="text-align:center;">Comment</th>
+                                <td *matCellDef="let element" style="text-align:center;"> {{element.comment}} </td>
+                            </ng-container>
                             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                         </table>

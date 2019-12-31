@@ -14,6 +14,7 @@ export class LoginDailyRoutineComponent implements OnInit {
 
   obj: any;
   fetchData: any;
+  fetchData1: any;
   model: any = {};
   tempval: any;
   array: any = [];
@@ -41,7 +42,9 @@ export class LoginDailyRoutineComponent implements OnInit {
       whosecase: this.model.whosecase,
       status: this.model.status,
       handover:this.model.handover,
-      timings:this.model.timings
+      timings:this.model.timings,
+      casedetail:this.model.casedetail,
+      pov:this.model.pov
 
     })
     console.log(this.array);
@@ -74,6 +77,10 @@ export class LoginDailyRoutineComponent implements OnInit {
     this.service.getbankname().subscribe(res => {
       console.log(res);
       this.fetchData = res;
+    })
+    this.service.getwhosecase().subscribe(res => {
+      console.log(res);
+      this.fetchData1 = res;
     })
     //   this.service.getexecutivelist().subscribe(res=>{
     //     console.log(res);

@@ -14,6 +14,7 @@ export class DailyRoutineComponent implements OnInit {
 
   obj: any;
   fetchData: any;
+  fetchData1: any;
   model: any = {};
   tempval: any;
   array: any = [];
@@ -67,7 +68,10 @@ export class DailyRoutineComponent implements OnInit {
   // }
 
   ngOnInit() {
-
+    this.service.getwhosecase().subscribe(res => {
+      console.log(res);
+      this.fetchData1 = res;
+    })
     this.service.getbankname().subscribe(res => {
       console.log(res);
       this.fetchData = res;
