@@ -14,11 +14,11 @@ import { MatDialog, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material';
 
 @Component({
   selector: 'app-home',
-  templateUrl: './backendreport.component.html',
+  templateUrl: './backendcustomerreport.component.html',
 })
-export class BackendReportComponent {
+export class BackendCustomerReportComponent {
 
-  displayedColumns: string[] = ['date', 'cname', 'name', 'whosecase', 'executive', 'bank', 'amount', 'product', 'status', 'update','createdby','addbank','addstatus'];
+  displayedColumns: string[] = ['date', 'cname', 'name', 'whosecase', 'executive', 'bank', 'amount', 'product','gst','itr','sanction', 'status', 'update','createdby'];
   samples: any;
   dataSource;
 
@@ -58,9 +58,9 @@ export class BackendReportComponent {
     localStorage.setItem("enddate", obj.startdate[1]);
     this.sdate = localStorage.getItem("startdate");
     this.edate = localStorage.getItem("enddate");
-    this.commonservice.getBackendlist(this.postsPerPage, this.currentPage, this.sdate, this.edate);
+    this.commonservice.getBackendCustomerlist(this.postsPerPage, this.currentPage, this.sdate, this.edate);
     this.commonservice
-      .getBackendlistDetails()
+      .getBackendCustomerlistDetails()
       .subscribe((postData: { posts: SuperadminService[], postCount: number }) => {
 
         this.totalPosts = postData.postCount;
@@ -84,7 +84,7 @@ export class BackendReportComponent {
     this.currentPage = pageData.pageIndex + 1;
     this.postsPerPage = pageData.pageSize;
     console.log(this.postsPerPage);
-    this.commonservice.getBackendlist(this.postsPerPage, this.currentPage, this.sdate, this.edate);
+    this.commonservice.getBackendCustomerlist(this.postsPerPage, this.currentPage, this.sdate, this.edate);
   }
 
   data: any;

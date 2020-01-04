@@ -18,8 +18,6 @@
                 <td>
                     <select class="form-control" name="sstatus" [(ngModel)]="data.element.sstatus" #sstatus="ngModel">
                         <option value="" selected>Select option</option>
-                        <option value="ONLINE APPLICATION">ONLINE APPLICATION</option>
-                        <option value="DISPATCHED">DISPATCHED</option>
                         <option value="LOGIN">LOGIN</option>
                         <option value="LOGIN HOLD">LOGIN HOLD</option>
                         <option value="WORK IN PROGRESS">WORK IN PROGRESS</option>
@@ -32,12 +30,10 @@
                     </select>
                 </td>
                 <td>
-                    <textarea [(ngModel)]="data.element.comment" type="text" class="form-control" name="comment"
-                        #comment="ngModel"></textarea>
+                    <textarea [(ngModel)]="data.element.comment" type="text" class="form-control" name="comment" #comment="ngModel"></textarea>
 
                 </td>
-                <td><button mat-raised-button color="primary"
-                        (click)="editstatus(data.element,data.element.idapplybank);refresh();">EDIT STATUS</button></td>
+                <td><button mat-raised-button color="primary" (click)="editstatus(data.element,data.element.idapplybank);refresh();">EDIT STATUS</button></td>
             </tr>
         </tbody>
     </table>
@@ -54,7 +50,7 @@
         padding: 6.25rem !important;
         font-size: medium !important;
     }
-
+    
     table,
     th,
     td {

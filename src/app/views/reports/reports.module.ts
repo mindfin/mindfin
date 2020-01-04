@@ -14,6 +14,9 @@ import { ExecutiveRoutineComponent } from './executiveroutine.component';
 import { LoginRoutineComponent } from './loginroutine.component';
 import { DatatelelistComponent } from './datatelelist.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { BackendStatusReportComponent } from './backendstatusreport.component';
+import { BackendBankReportComponent } from './backendbankreport.component';
+import { BackendCustomerReportComponent } from './backendcustomerreport.component';
 
 
 
@@ -48,8 +51,8 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
   ],
   declarations: [LoginReportComponent,BackendReportComponent,DataentryReportComponent
-    ,ExecutiveRoutineComponent,LoginRoutineComponent,
-    DatatelelistComponent ],
+    ,ExecutiveRoutineComponent,LoginRoutineComponent,DatatelelistComponent,BackendStatusReportComponent,
+    BackendBankReportComponent,BackendCustomerReportComponent ],
   entryComponents: []
 })
 export class ReportsModule { }

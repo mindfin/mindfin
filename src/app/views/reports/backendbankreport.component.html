@@ -54,40 +54,33 @@
                             </ng-container>
                             <ng-container matColumnDef="executive">
                                 <th *matHeaderCellDef mat-sort-header>EXECUTIVE NAME</th>
-                                <td *matCellDef="let element"> {{element.aexecutivename}} </td>
+                                <td *matCellDef="let element"> {{element.cexecutivename}} </td>
                             </ng-container>
                             <ng-container matColumnDef="bank">
+                                <th *matHeaderCellDef mat-sort-header>CASE HANDLE BY</th>
+                                <td *matCellDef="let element"> {{element.aexecutivename}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="amount">
                                 <th *matHeaderCellDef mat-sort-header>BANK NAME</th>
                                 <td *matCellDef="let element"> {{element.bankname}} </td>
                             </ng-container>
-                            <ng-container matColumnDef="amount">
+                            <ng-container matColumnDef="product">
                                 <th *matHeaderCellDef mat-sort-header>APPLIED AMOUNT</th>
                                 <td *matCellDef="let element"> {{element.aamount}} </td>
                             </ng-container>
-                            <ng-container matColumnDef="product">
+                            <ng-container matColumnDef="status">
                                 <th *matHeaderCellDef mat-sort-header>PRODUCT</th>
                                 <td *matCellDef="let element"> {{element.product}} </td>
                             </ng-container>
-                            <ng-container matColumnDef="status">
+                            <ng-container matColumnDef="update">
                                 <th *matHeaderCellDef mat-sort-header>STATUS</th>
                                 <td *matCellDef="let element"> {{element.astatus}} </td>
                             </ng-container>
-                            <ng-container matColumnDef="update">
-                                <th *matHeaderCellDef mat-sort-header>COMMENTS</th>
-                                <td *matCellDef="let element"> {{element.scomment}} </td>
-                            </ng-container>
                             <ng-container matColumnDef="createdby">
                                 <th *matHeaderCellDef mat-sort-header>CREATED BY</th>
-                                <td *matCellDef="let element"> {{element.ccreatedbyname}} </td>
-                            </ng-container>
-                            <ng-container matColumnDef="addbank">
-                                <th *matHeaderCellDef mat-sort-header>BANK ADDED BY</th>
                                 <td *matCellDef="let element"> {{element.acreatedbyname}} </td>
                             </ng-container>
-                            <ng-container matColumnDef="addstatus">
-                                <th *matHeaderCellDef mat-sort-header>STATUS EDITED BY</th>
-                                <td *matCellDef="let element"> {{element.screatedbyname}} </td>
-                            </ng-container>
+
                             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                         </table>

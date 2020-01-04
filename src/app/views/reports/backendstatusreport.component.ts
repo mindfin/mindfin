@@ -14,11 +14,11 @@ import { MatDialog, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material';
 
 @Component({
   selector: 'app-home',
-  templateUrl: './backendreport.component.html',
+  templateUrl: './backendstatusreport.component.html',
 })
-export class BackendReportComponent {
+export class BackendStatusReportComponent {
 
-  displayedColumns: string[] = ['date', 'cname', 'name', 'whosecase', 'executive', 'bank', 'amount', 'product', 'status', 'update','createdby','addbank','addstatus'];
+  displayedColumns: string[] = ['date', 'cname', 'name', 'whosecase', 'executive', 'bank', 'amount', 'product', 'status', 'update','createdby','addbank'];
   samples: any;
   dataSource;
 

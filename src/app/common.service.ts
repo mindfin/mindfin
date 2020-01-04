@@ -1489,10 +1489,10 @@ export class CommonService {
     const uri = "https://bank.mindfin.co.in/callapi/getbackendviewbanklist/" + id;
     return this.http.get(uri);
   }
-  editstatus(obj, obj1) {
+  editstatus(obj) {
     console.log(obj);
     // const queryParams = `/${obj}/${obj1}`;
-    const uri = "https://bank.mindfin.co.in/callapi/editstatus/" + obj1;
+    const uri = "https://bank.mindfin.co.in/callapi/editstatus";
     this.http.post(uri, obj).subscribe(res => {
 
     })
@@ -2468,4 +2468,62 @@ getwhosecase() {
   return this.http.get(uri);
 
 }
+getBackendCustomerlist(postsPerPage: number, currentPage: number, sdate, edate) {
+  const queryParams = `/${postsPerPage}/${currentPage}/${sdate}/${edate}`;
+  this.http
+    .get<{ message: string; posts: any; maxPosts: number }>(
+      "https://bank.mindfin.co.in/callapi/getBackendCustomerlist" + queryParams
+    )
+    .pipe(
+      map(postData => {
+        //console.log('');
+        return { 
+          posts: postData.posts,
+
+          maxPosts: postData.maxPosts
+        };
+      })
+    )
+    .subscribe(transformedPostData => {
+      this.posts = transformedPostData.posts;
+      this.postsUpdated.next({
+        posts: [...this.posts],
+        postCount: transformedPostData.maxPosts
+      });
+    });
+}
+
+
+getBackendCustomerlistDetails() {
+  return this.postsUpdated.asObservable();
+}
+getBackendBanklist(postsPerPage: number, currentPage: number, sdate, edate) {
+    const queryParams = `/${postsPerPage}/${currentPage}/${sdate}/${edate}`;
+    this.http
+      .get<{ message: string; posts: any; maxPosts: number }>(
+        "https://bank.mindfin.co.in/callapi/getBackendBanklist" + queryParams
+      )
+      .pipe(
+        map(postData => {
+          //console.log('');
+          return {
+            posts: postData.posts,
+
+            maxPosts: postData.maxPosts
+          };
+        })
+      )
+      .subscribe(transformedPostData => {
+        this.posts = transformedPostData.posts;
+        this.postsUpdated.next({
+          posts: [...this.posts],
+          postCount: transformedPostData.maxPosts
+        });
+      });
+  }
+
+
+  getBackendBanklistDetails() {
+    return this.postsUpdated.asObservable();
+  }
 }

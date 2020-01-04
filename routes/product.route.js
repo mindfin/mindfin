@@ -4909,7 +4909,9 @@ router.post('/backendbankinsert', (req, res) => {
                     .insert({
                         addbankid: ids,
                         createddate: createddate,
-                        status: status
+                        status: status,
+                        createdbyname: req.body.createdbyname,
+                        createdby: req.body.empid,
                     }).then(function(re) {
 
                     })
@@ -4976,7 +4978,8 @@ router.get('/getdocument1/:pagesize/:page/:obj', function(req, res) {
 router.get('/getbackendviewbanklist/:id', (req, res) => {
     // console.log(req.params);
     var subquery = knex.select().from('status').max('status.statusid').groupBy('status.addbankid');
-    knex.select('applybank.*', 'bank.bankname', 'bank.bankvendor', 'status.*', 'status.status as sstatus', 'loantype.loantype')
+    knex.select('applybank.*', 'bank.bankname', 'bank.bankvendor', 'status.*', 'status.status as sstatus', 'loantype.loantype',
+            'applybank.createdbyname as bcreatedbyname')
         .from('applybank')
         .join('bank', 'bank.idbank', 'applybank.idbank')
         .join('status', 'status.addbankid', 'applybank.idapplybank')
@@ -4987,17 +4990,20 @@ router.get('/getbackendviewbanklist/:id', (req, res) => {
             res.json(result);
         })
 });
-router.post('/editstatus/:obj', function(req, res) {
+router.post('/editstatus', function(req, res) {
     // console.log(req.params.obj);
     // console.log(req.params.obj1);
     var date3 = format.asString('yyyy-MM-dd', new Date());
     knex('status')
         // .where({addbankid: req.params.obj1 })
         .insert({
-            status: req.body.sstatus,
-            comment: req.body.comment,
+            status: req.body.obj.sstatus,
+            comment: req.body.obj.comment,
             createddate: date3,
-            addbankid: req.params.obj
+            addbankid: req.body.obj.idapplybank,
+            createdby: req.body.empid,
+            createdbyname: req.body.empname
+
         }).then(function(result) {
             console.log(result);
         })
@@ -5252,11 +5258,32 @@ router.get('/getBackendlist/:pagesize/:page/:sdate/:edate', (req, res, next) => 
     const edate = format.asString('yyyy-MM-dd', new Date(req.params.edate));
     knex.select('applybank.*', 'bank.bankname', 'customer.*', 'status.*', 'customer.createdbyname as ccreatedbyname',
             'status.createddate as acreateddate', 'status.status as astatus', 'applybank.amount as aamount',
-            'status.comment as scomment', 'applybank.executivename as aexecutivename', 'applybank.createdbyname as acreatedbyname')
+            'status.comment as scomment', 'applybank.executivename as aexecutivename', 'applybank.createdbyname as acreatedbyname', 'status.createdbyname as screatedbyname')
         .from('applybank', 'customer', 'status')
         .join('bank', 'bank.idbank', 'applybank.idbank')
         .join('status', 'status.addbankid', 'applybank.idapplybank')
         .join('customer', 'customer.idcustomer', 'applybank.idcustomer')
+        .where(function() {
+            this.where({
+                'status.status': 'LOGIN',
+            }).orWhere({
+                'status.status': 'LOGIN HOLD',
+            }).orWhere({
+                'status.status': 'usWORK IN PROGRESSername',
+            }).orWhere({
+                'status.status': 'PD',
+            }).orWhere({
+                'status.status': 'PD PENDING',
+            }).orWhere({
+                'status.status': 'POST PD PENDING',
+            }).orWhere({
+                'status.status': 'APPROVED',
+            }).orWhere({
+                'status.status': 'REJECT',
+            }).orWhere({
+                'status.status': 'DISBURSED',
+            })
+        })
         .where('status.createddate', '>=', sdate)
         .where('status.createddate', '<=', edate)
         .orderBy('status.createddate', 'desc')
@@ -5268,6 +5295,27 @@ router.get('/getBackendlist/:pagesize/:page/:sdate/:edate', (req, res, next) => 
                 .join('bank', 'bank.idbank', 'applybank.idbank')
                 .join('status', 'status.addbankid', 'applybank.idapplybank')
                 .join('customer', 'customer.idcustomer', 'applybank.idcustomer')
+                .where(function() {
+                    this.where({
+                        'status.status': 'LOGIN',
+                    }).orWhere({
+                        'status.status': 'LOGIN HOLD',
+                    }).orWhere({
+                        'status.status': 'usWORK IN PROGRESSername',
+                    }).orWhere({
+                        'status.status': 'PD',
+                    }).orWhere({
+                        'status.status': 'PD PENDING',
+                    }).orWhere({
+                        'status.status': 'POST PD PENDING',
+                    }).orWhere({
+                        'status.status': 'APPROVED',
+                    }).orWhere({
+                        'status.status': 'REJECT',
+                    }).orWhere({
+                        'status.status': 'DISBURSED',
+                    })
+                })
                 .where('status.createddate', '>=', sdate)
                 .where('status.createddate', '<=', edate)
                 .orderBy('status.createddate', 'desc')
@@ -7158,6 +7206,69 @@ router.get('/getwhosecase', (req, res) => {
         .from('whosecase')
         .then(function(result) {
             res.json(result);
+        })
+});
+router.get('/getBackendCustomerlist/:pagesize/:page/:sdate/:edate', (req, res, next) => {
+    const pageSize = req.params.pagesize;
+    const currentPage = req.params.page;
+    const skip = (pageSize * (currentPage - 1));
+    const sdate = format.asString('yyyy-MM-dd', new Date(req.params.sdate));
+    const edate = format.asString('yyyy-MM-dd', new Date(req.params.edate));
+    knex.select()
+        .from('customer')
+        .where('customer.applieddate', '>=', sdate)
+        .where('customer.applieddate', '<=', edate)
+        .orderBy('customer.applieddate', 'desc')
+
+    .limit(pageSize).offset(skip)
+        .then(function(result) {
+            knex.select()
+                .from('customer')
+                .where('customer.applieddate', '>=', sdate)
+                .where('customer.applieddate', '<=', edate)
+                .orderBy('customer.applieddate', 'desc')
+                .then(function(re) {
+                    res.status(200).json({
+                        message: "Memberlists fetched",
+                        posts: result,
+                        maxPosts: re.length
+                    });
+                })
+        })
+});
+router.get('/getBackendBanklist/:pagesize/:page/:sdate/:edate', (req, res, next) => {
+    const pageSize = req.params.pagesize;
+    const currentPage = req.params.page;
+    const skip = (pageSize * (currentPage - 1));
+    const sdate = format.asString('yyyy-MM-dd', new Date(req.params.sdate));
+    const edate = format.asString('yyyy-MM-dd', new Date(req.params.edate));
+    knex.select('applybank.*', 'bank.bankname', 'customer.*', 'applybank.createdbyname as acreatedbyname',
+            'applybank.createddate as acreateddate', 'applybank.status as astatus', 'applybank.amount as aamount',
+            'applybank.executivename as aexecutivename', 'customer.executivename as cexecutivename')
+        .from('applybank', 'customer')
+        .join('bank', 'bank.idbank', 'applybank.idbank')
+        .join('customer', 'customer.idcustomer', 'applybank.idcustomer')
+
+    .where('applybank.createddate', '>=', sdate)
+        .where('applybank.createddate', '<=', edate)
+        .orderBy('applybank.createddate', 'desc')
+
+    .limit(pageSize).offset(skip)
+        .then(function(result) {
+            knex.select()
+                .from('applybank', 'customer')
+                .join('bank', 'bank.idbank', 'applybank.idbank')
+                .join('customer', 'customer.idcustomer', 'applybank.idcustomer')
+                .where('applybank.createddate', '>=', sdate)
+                .where('applybank.createddate', '<=', edate)
+                .orderBy('applybank.createddate', 'desc')
+                .then(function(re) {
+                    res.status(200).json({
+                        message: "Memberlists fetched",
+                        posts: result,
+                        maxPosts: re.length
+                    });
+                })
         })
 });
 module.exports = router;

@@ -22,9 +22,6 @@
                                     <div class="col-lg-4">
                                         <input class="form-group" [(ngModel)]="model.startdate" name="startdate" type="text" placeholder="From (MM/DD/YYYY) - To(MM/DD/YYYY)" class="form-control" bsDaterangepicker [bsConfig]="{ isAnimated: true }">
                                     </div>
-                                    <!-- <div class="col-lg-3">
-                                        <input class="form-group" [(ngModel)]="model.enddate" name="enddate" type="text" placeholder="To (MM/DD/YYYY)" class="form-control" bsDatepicker>
-                                    </div> -->
                                     <div class="col-lg-3">
                                         <button class="btn btn-primary" (click)="getreport(model)">Get Report</button>
                                     </div>
@@ -35,7 +32,7 @@
                             <ng-container matColumnDef="date">
                                 <th *matHeaderCellDef mat-sort-header>CREATED DATE</th>
                                 <td *matCellDef="let element" style="text-align:center;">
-                                    {{element.acreateddate | date:'dd/MM/yyyy'}}<br />
+                                    {{element.applieddate | date:'dd/MM/yyyy'}}<br />
                                 </td>
                             </ng-container>
                             <ng-container matColumnDef="cname">
@@ -54,40 +51,45 @@
                             </ng-container>
                             <ng-container matColumnDef="executive">
                                 <th *matHeaderCellDef mat-sort-header>EXECUTIVE NAME</th>
-                                <td *matCellDef="let element"> {{element.aexecutivename}} </td>
+                                <td *matCellDef="let element"> {{element.executivename}} </td>
                             </ng-container>
                             <ng-container matColumnDef="bank">
-                                <th *matHeaderCellDef mat-sort-header>BANK NAME</th>
-                                <td *matCellDef="let element"> {{element.bankname}} </td>
+                                <th *matHeaderCellDef mat-sort-header>COMPANY KYC</th>
+                                <td *matCellDef="let element"> {{element.companykyc_orgname}} </td>
                             </ng-container>
                             <ng-container matColumnDef="amount">
-                                <th *matHeaderCellDef mat-sort-header>APPLIED AMOUNT</th>
-                                <td *matCellDef="let element"> {{element.aamount}} </td>
+                                <th *matHeaderCellDef mat-sort-header>CUSTOMER KYC</th>
+                                <td *matCellDef="let element"> {{element.customerkyc_orgname}} </td>
                             </ng-container>
                             <ng-container matColumnDef="product">
-                                <th *matHeaderCellDef mat-sort-header>PRODUCT</th>
-                                <td *matCellDef="let element"> {{element.product}} </td>
+                                <th *matHeaderCellDef mat-sort-header>BANK STATEMENT</th>
+                                <td *matCellDef="let element"> {{element.bankstatement_orgname}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="gst">
+                                <th *matHeaderCellDef mat-sort-header>GST RETURN</th>
+                                <td *matCellDef="let element"> {{element.gstandreturns_orgname}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="itr">
+                                <th *matHeaderCellDef mat-sort-header>ITR</th>
+                                <td *matCellDef="let element"> {{element.itr_orgname}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="sanction">
+                                <th *matHeaderCellDef mat-sort-header>SANCTION LETTER</th>
+                                <td *matCellDef="let element"> {{element.loanstatement_orgname}} </td>
                             </ng-container>
                             <ng-container matColumnDef="status">
                                 <th *matHeaderCellDef mat-sort-header>STATUS</th>
-                                <td *matCellDef="let element"> {{element.astatus}} </td>
+                                <td *matCellDef="let element"> {{element.status}} </td>
                             </ng-container>
                             <ng-container matColumnDef="update">
                                 <th *matHeaderCellDef mat-sort-header>COMMENTS</th>
-                                <td *matCellDef="let element"> {{element.scomment}} </td>
+                                <td *matCellDef="let element"> {{element.comment}} </td>
                             </ng-container>
                             <ng-container matColumnDef="createdby">
                                 <th *matHeaderCellDef mat-sort-header>CREATED BY</th>
-                                <td *matCellDef="let element"> {{element.ccreatedbyname}} </td>
+                                <td *matCellDef="let element"> {{element.createdbyname}} </td>
                             </ng-container>
-                            <ng-container matColumnDef="addbank">
-                                <th *matHeaderCellDef mat-sort-header>BANK ADDED BY</th>
-                                <td *matCellDef="let element"> {{element.acreatedbyname}} </td>
-                            </ng-container>
-                            <ng-container matColumnDef="addstatus">
-                                <th *matHeaderCellDef mat-sort-header>STATUS EDITED BY</th>
-                                <td *matCellDef="let element"> {{element.screatedbyname}} </td>
-                            </ng-container>
+
                             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                         </table>

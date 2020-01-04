@@ -85,13 +85,17 @@ export class EditDialogContent{
   constructor(@Inject(MAT_DIALOG_DATA) public data:any,
   private commonservice: CommonService ,private route: ActivatedRoute, private router: Router,) {}
 element:any;
-//   constructor(
-//     @Inject(MAT_DIALOG_DATA) public data: any
-//  ) { }
+empid;
+empname;
+value;
+
  editstatus(obj,obj1){
+  this.empid = localStorage.getItem("id");
+  this.empname = localStorage.getItem("empname");
    console.log(obj);
    console.log(obj1);
-  this.commonservice.editstatus(obj,obj1);
+   this.value = {obj:obj,empid:this.empid,empname:this.empname}
+  this.commonservice.editstatus(this.value);
  }
  refresh(): void {
   window.location.reload();

@@ -84,10 +84,6 @@
                                 <th *matHeaderCellDef mat-sort-header>BANK ADDED BY</th>
                                 <td *matCellDef="let element"> {{element.acreatedbyname}} </td>
                             </ng-container>
-                            <ng-container matColumnDef="addstatus">
-                                <th *matHeaderCellDef mat-sort-header>STATUS EDITED BY</th>
-                                <td *matCellDef="let element"> {{element.screatedbyname}} </td>
-                            </ng-container>
                             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                         </table>
