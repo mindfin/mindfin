@@ -2,10 +2,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { DocumentCamRoutingModule} from './documentcam-routing.module';
-
-
 import {MatDatepickerModule, MatNativeDateModule, MatInputModule,MatFormFieldModule, MatPaginatorModule, MatSortModule, MatTableModule, MatProgressSpinnerModule, MatBadgeModule, MatButtonModule, MatButtonToggleModule} from '@angular/material';
-import { TestComponent } from './test.component';
+import { DocumentCamComponent } from './documentcam.component';
+
 
 @NgModule({
   imports: [CommonModule,FormsModule,ReactiveFormsModule,MatNativeDateModule,MatInputModule,
@@ -13,7 +12,7 @@ import { TestComponent } from './test.component';
     MatPaginatorModule,MatSortModule,MatProgressSpinnerModule,MatTableModule,DocumentCamRoutingModule,
     
   ],
-  declarations: [TestComponent,
+  declarations: [DocumentCamComponent,
  ],
   entryComponents: [
   ],

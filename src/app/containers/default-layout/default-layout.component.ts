@@ -52,6 +52,7 @@ export class DefaultLayoutComponent {
   fetchData4;
   fetchData5;
   fetchData6;
+  fetchData7;
   reason;
   half;
   other;
@@ -102,6 +103,9 @@ export class DefaultLayoutComponent {
     });
     this.service.getleaveapp().subscribe(res=>{
       this.fetchData6 = res;
+    });
+    this.service.getweblead().subscribe(res=>{
+      this.fetchData7 = res;
     });
   }
 

@@ -9,7 +9,7 @@ import { MatDialog, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material';
 
 // export interface DialogData {
 // this.model;
-// }
+// } 
 
 
 @Component({
@@ -90,7 +90,7 @@ export class ExecutiveRoutineComponent {
     console.log(this.samples);
     let come = this.samples;
     var a;
-    const fileName = "Executive Routine Data";
+    const fileName = "Sales Executive Routine";
     for (let i = 0; i < come.length; i++) {
       this.array.push({
         "Created Date": this.samples[i].dcreateddate,
@@ -98,7 +98,9 @@ export class ExecutiveRoutineComponent {
         "Whose Case": this.samples[i].whosecase,
         "Bank Name": this.samples[i].bankname,
         "Status": this.samples[i].dstatus,
+        "Comments": this.samples[i].comment,
         "Excecutive Name": this.samples[i].empname,
+        "Branch": this.samples[i].branch,
       });
     }
     console.log(this.array);

@@ -1,7 +1,7 @@
 <app-header [fixed]="true" [navbarBrandFull]="{src: 'assets/images/logo1.png', width: 130, height: 80, alt: 'Mindfin Logo'}" [navbarBrandMinimized]="{src: 'assets/images/head.png', width: 50, height: 50, alt: 'mindfin Logo'}" [sidebarToggler]="'lg'" [asideMenuToggler]="'lg'">
 
     <ul class="nav navbar-nav ml-auto">
-        <li class="nav-item d-md-down-none" *ngIf="abc==='SUPERADMIN' || abc==='ACCOUNTANT'">
+        <li class="nav-item d-md-down-none" *ngIf="abc==='SUPERADMIN'">
             <a class="nav-link" role="button" [routerLink]="['/account/leaveapp']" title="New Leave Application"><img src="/assets/images/leave.png" alt="leave" height="25px" width="25px">
                 <span class="badge  badge-danger">{{fetchData6}}</span>
             </a>
@@ -14,6 +14,11 @@
         <li class="nav-item d-md-down-none" *ngIf="abc==='SUPERADMIN' || abc==='ACCOUNTANT'">
             <a class="nav-link" role="button" [routerLink]="['/account/conveniencs']" title="New Conveniences"><img src="/assets/images/Bill.png" alt="Convenience" height="25px" width="25px">
                 <span class="badge  badge-danger">{{fetchData5}}</span>
+            </a>
+        </li>
+        <li class="nav-item d-md-down-none" *ngIf="abc==='SUPERADMIN'">
+            <a class="nav-link" role="button" [routerLink]="['/reports/websitelead']" title="New Web Lead"><img src="/assets/images/weblead.png" alt="Convenience" height="25px" width="25px">
+                <span class="badge  badge-danger">{{fetchData7}}</span>
             </a>
         </li>
 
@@ -276,7 +281,7 @@
 </div>
 <div class="foot">
     <app-footer>
-        <span>&copy; 2019 <a href="https://www.mindfin.co.in/" target="_blank" style="text-decoration:none;">Mindfin Ser
+        <span>&copy; 2020 <a href="https://www.mindfin.co.in/" target="_blank" style="text-decoration:none;">Mindfin Ser
                Pvt. Ltd.</a></span>
     </app-footer>
 </div>

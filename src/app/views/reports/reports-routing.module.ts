@@ -11,7 +11,7 @@ import { LoginRoutineComponent } from './loginroutine.component';
 import { DatatelelistComponent } from './datatelelist.component';
 import { BackendCustomerReportComponent } from './backendcustomerreport.component';
 import { BackendBankReportComponent } from './backendbankreport.component';
-import { BackendStatusReportComponent } from './backendstatusreport.component';
+import { WebsiteLeadReportComponent } from './websitelead.component';
 
 
 
@@ -79,10 +79,10 @@ const routes: Routes = [
         }
       },
       {
-        path:'backendstatusreport',
-        component:BackendStatusReportComponent,
+        path:'websitelead',
+        component:WebsiteLeadReportComponent,
         data:{
-          title:'Backend Case Status List'
+          title:'Website Lead'
         }
       },
 

@@ -1930,22 +1930,10 @@ export class CommonService {
     return this.postsUpdated.asObservable();
   }
   checkcase(obj) {
-    // console.log(obj);
+   
     const uri = "https://bank.mindfin.co.in/callapi/checkcase";
     return this.http.post(uri, obj)
-    // .subscribe(res => {
-    //   console.log(res);
-    //   // console.log(res[0].user);
-    //   if (res == null || res == undefined || res == 0) {
-    //     alert("CASE NOT EXIST!!!");
-    //     this.router.navigate(["/backend/document"]);
-    //   }
-    //   else {
-    //     const id = res[0].idcustomer;
-    //     alert("CASE EXISTS!!!!");
-    //     this.router.navigate(["/backend/edit/" + id]);
-    //   }
-    // })
+   
   }
 
   getdocument4(postsPerPage: number, currentPage: number, sdate) {
@@ -2526,4 +2514,49 @@ getBackendBanklist(postsPerPage: number, currentPage: number, sdate, edate) {
   getBackendBanklistDetails() {
     return this.postsUpdated.asObservable();
   }
+  getWebsiteLead(postsPerPage: number, currentPage: number, sdate, edate) {
+    const queryParams = `/${postsPerPage}/${currentPage}/${sdate}/${edate}`;
+    this.http
+      .get<{ message: string; posts: any; maxPosts: number }>(
+        "https://bank.mindfin.co.in/callapi/getWebsiteLead" + queryParams
+      )
+      .pipe(
+        map(postData => {
+          //console.log('');
+          return {
+            posts: postData.posts,
+
+            maxPosts: postData.maxPosts
+          };
+        })
+      )
+      .subscribe(transformedPostData => {
+        this.posts = transformedPostData.posts;
+        this.postsUpdated.next({
+          posts: [...this.posts],
+          postCount: transformedPostData.maxPosts
+        });
+      });
+  }
+
+
+  getWebsiteLeadDetails() {
+    return this.postsUpdated.asObservable();
+  }
+  savecomment(obj) {
+    console.log(obj);
+    const uri = "https://bank.mindfin.co.in/callapi/savecomment ";
+    return this.http.post(uri, obj).subscribe(res => {
+      //console.log('');
+    })
+  }
+  getweblead() {
+    const uri = "https://bank.mindfin.co.in/callapi/getweblead";
+    return this.http.get(uri);
+  }
+  public webleadopenstatus(value){
+    console.log(value);
+    return this.http.post(`https://bank.mindfin.co.in/callapi/webleadopenstatus`, value);
+  }
 }
+ 

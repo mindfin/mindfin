@@ -96,7 +96,7 @@ export class BackendBankReportComponent {
     console.log(this.samples);
     let come = this.samples;
     var a;
-    const fileName = "Backend Report";
+    const fileName = "Backend Bank "; 
     for (let i = 0; i < come.length; i++) {
       this.array.push({
 
@@ -104,14 +104,13 @@ export class BackendBankReportComponent {
         "Company Name": this.samples[i].cname,
         "Customer Name":this.samples[i].name,
         "Whose Case": this.samples[i].whosecase,
-        "Excecutive Name": this.samples[i].aexecutivename,
+        "Excecutive Name": this.samples[i].cexecutivename,
+         "Case Handle By": this.samples[i].aexecutivename,
         "Bank Name": this.samples[i].bankname,
         "Applied Amount": this.samples[i].aamount,
-        "Product": this.samples[i].product,
+        "Product": this.samples[i].product, 
         "Status": this.samples[i].astatus,
-        "Comments": this.samples[i].scomment,
-        "Created By": this.samples[i].ccreatedbyname,
-        "Bank Added By": this.samples[i].acreatedbyname,
+        "Created By": this.samples[i].acreatedbyname,
 
       });
     }

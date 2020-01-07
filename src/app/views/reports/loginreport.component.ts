@@ -10,7 +10,7 @@ import { MatDialog, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material';
 // export interface DialogData {
 // this.model;
 // }
-
+ 
 
 @Component({
   selector: 'app-home',
@@ -91,7 +91,7 @@ export class LoginReportComponent {
     console.log(this.samples);
     let come = this.samples;
     var a;
-    const fileName = "Login Report";
+    const fileName = "Login ";
     for (let i = 0; i < come.length; i++) {
       this.array.push({
 
@@ -102,9 +102,9 @@ export class LoginReportComponent {
         "Excecutive Case": this.samples[i].aexecutivename,
         "Bank Name": this.samples[i].bankname,
         "Bank Vendor": this.samples[i].bankvendor,
-        "Login Excecutive Name": this.samples[i].ename,
+        "Login Excecutive Name": this.samples[i].loginexename,
         "Sent Time": this.samples[i].timing,
-        "Status": this.samples[i].astatus,
+        "Status": this.samples[i].logincreadtedbyname,
        
 
       });

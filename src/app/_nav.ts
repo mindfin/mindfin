@@ -84,6 +84,11 @@ export const navItems = [
         url: '/member/callback',
         icon: 'fa fa-phone',
       },
+      {
+        name: 'Lead Report',
+        url: '/reports/websitelead',
+        icon: 'fa fa-globe',
+      },
 
     ]
   },

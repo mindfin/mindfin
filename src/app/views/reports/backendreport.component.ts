@@ -27,7 +27,7 @@ export class BackendReportComponent {
   coins: any;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-
+ 
 
   fetchdata: any;
   model: any = {};
@@ -96,7 +96,7 @@ export class BackendReportComponent {
     console.log(this.samples);
     let come = this.samples;
     var a;
-    const fileName = "Backend Report";
+    const fileName = "Backend Status ";
     for (let i = 0; i < come.length; i++) {
       this.array.push({
 
@@ -112,6 +112,7 @@ export class BackendReportComponent {
         "Comments": this.samples[i].scomment,
         "Created By": this.samples[i].ccreatedbyname,
         "Bank Added By": this.samples[i].acreatedbyname,
+        "Status Edited By": this.samples[i].screatedbyname,
 
       });
     }

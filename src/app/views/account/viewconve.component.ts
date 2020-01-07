@@ -43,6 +43,35 @@ export class ConveniencslistComponent {
   emp = 2;
   empid;
   empname;
+  exportAsXLSX(): void {
+    console.log(this.samples);
+    let come = this.samples;
+    var a;
+    const fileName = "Convenience "; 
+    for (let i = 0; i < come.length; i++) {
+      this.array.push({
+
+        "Applied Date": this.samples[i].appliedDate,
+        "Categories": this.samples[i].categories,
+        "Comments":this.samples[i].comment,
+        "Applied Employee Name": this.samples[i].empName,
+        "Response": this.samples[i].response,
+         "Document Name": this.samples[i].orgName,
+        "Status": this.samples[i].status,
+        "Approvor Name": this.samples[i].approverName, 
+        "Approved or Reject Date": this.samples[i].approvedDate,
+
+      });
+    }
+    console.log(this.array);
+
+
+    // console.log(this.array);   
+    this.excelservice.JSONToCSVConvertor(this.array, "Report", true, fileName);
+
+
+  }
+
   ngOnInit() {
     
     this.empid = localStorage.getItem("id");

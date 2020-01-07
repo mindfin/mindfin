@@ -116,7 +116,7 @@ export class DatatelelistComponent {
     console.log(this.samples);
     let come = this.samples;
     var a;
-    const fileName = "Enquired Data";
+    const fileName = "Telecaller Data ";
     for (let i = 0; i < come.length; i++) {
       this.array.push({
 

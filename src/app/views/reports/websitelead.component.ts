@@ -14,11 +14,11 @@ import { MatDialog, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material';
 
 @Component({
   selector: 'app-home',
-  templateUrl: './backendstatusreport.component.html',
+  templateUrl: './websitelead.component.html',
 })
-export class BackendStatusReportComponent {
+export class WebsiteLeadReportComponent {
 
-  displayedColumns: string[] = ['date', 'cname', 'name', 'whosecase', 'executive', 'bank', 'amount', 'product', 'status', 'update','createdby','addbank'];
+  displayedColumns: string[] = ['date', 'cname', 'name', 'whosecase', 'executive', 'bank', 'amount', 'product', 'status', 'update', 'createdby','disstatus', 'addbank', 'edit'];
   samples: any;
   dataSource;
 
@@ -28,7 +28,9 @@ export class BackendStatusReportComponent {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-
+  value1:any;
+  empid: any;
+  empname: any;
   fetchdata: any;
   model: any = {};
   aa: any;
@@ -44,7 +46,13 @@ export class BackendStatusReportComponent {
   edate;
   ngOnInit() {
 
-
+    this.empid = localStorage.getItem("id");
+    this.empname = localStorage.getItem("empname");
+    var emp= {empid: this.empid, empname: this.empname };
+    this.commonservice.webleadopenstatus(emp).subscribe(res=>{
+      console.log(res);
+     });
+    
   }
   getreport(obj) {
 
@@ -58,9 +66,9 @@ export class BackendStatusReportComponent {
     localStorage.setItem("enddate", obj.startdate[1]);
     this.sdate = localStorage.getItem("startdate");
     this.edate = localStorage.getItem("enddate");
-    this.commonservice.getBackendlist(this.postsPerPage, this.currentPage, this.sdate, this.edate);
+    this.commonservice.getWebsiteLead(this.postsPerPage, this.currentPage, this.sdate, this.edate);
     this.commonservice
-      .getBackendlistDetails()
+      .getWebsiteLeadDetails()
       .subscribe((postData: { posts: SuperadminService[], postCount: number }) => {
 
         this.totalPosts = postData.postCount;
@@ -84,9 +92,20 @@ export class BackendStatusReportComponent {
     this.currentPage = pageData.pageIndex + 1;
     this.postsPerPage = pageData.pageSize;
     console.log(this.postsPerPage);
-    this.commonservice.getBackendlist(this.postsPerPage, this.currentPage, this.sdate, this.edate);
+    this.commonservice.getWebsiteLead(this.postsPerPage, this.currentPage, this.sdate, this.edate);
   }
+  onchange(obj) {
+    console.log(obj)
+    this.value1 = { value: obj, empid: this.empid, empname: this.empname };
+    this.commonservice.savecomment(this.value1);
 
+    // var obj1={obj:obj,period:this.period}
+    // console.log(obj1)
+    // this.service.addPeriod(obj1).subscribe(res=>{
+    //   this.router.navigate(["/members/custstatus/"+ this.idvalue]);
+
+    // });
+  }
   data: any;
 
   demo: any;
@@ -96,22 +115,25 @@ export class BackendStatusReportComponent {
     console.log(this.samples);
     let come = this.samples;
     var a;
-    const fileName = "Backend Report";
+    const fileName = "Website Lead ";
     for (let i = 0; i < come.length; i++) {
       this.array.push({
 
-        "Created Date": this.samples[i].acreateddate,
+        "Applied Date": this.samples[i].applieddate,
         "Company Name": this.samples[i].cname,
-        "Customer Name":this.samples[i].name,
-        "Whose Case": this.samples[i].whosecase,
-        "Excecutive Name": this.samples[i].aexecutivename,
-        "Bank Name": this.samples[i].bankname,
-        "Applied Amount": this.samples[i].aamount,
-        "Product": this.samples[i].product,
-        "Status": this.samples[i].astatus,
-        "Comments": this.samples[i].scomment,
-        "Created By": this.samples[i].ccreatedbyname,
-        "Bank Added By": this.samples[i].acreatedbyname,
+        "Customer Name": this.samples[i].name,
+        "Mobile No": this.samples[i].mobile,
+        "Email Id": this.samples[i].email,
+        "Date of Birth": this.samples[i].dob,
+        "Pan No": this.samples[i].panno,
+        "Pin Code": this.samples[i].pincode,
+        "Loan Type": this.samples[i].loantype,
+        "Applied Amount": this.samples[i].amount,
+        "Display Status": this.samples[i].displaystatus,
+        "Status": this.samples[i].status,
+        "Comments": this.samples[i].comment,
+        "Opened By": this.samples[i].createdbyname,
+        "Updated Date": this.samples[i].updateddate,
 
       });
     }

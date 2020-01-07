@@ -4,7 +4,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <i class="fa fa-align-justify"></i>BACKEND OPERATOR REPORT
+                    <i class="fa fa-align-justify"></i>Website Lead
                     <button style="float:right" (click)="exportAsXLSX()">
             <i class="fa fa-file-excel-o" style="font-size:30px;color:blue"></i>
           </button>
@@ -33,9 +33,9 @@
                         </div>
                         <table mat-table #table [dataSource]="dataSource" class="table table-striped responsive" matSort>
                             <ng-container matColumnDef="date">
-                                <th *matHeaderCellDef mat-sort-header>CREATED DATE</th>
+                                <th *matHeaderCellDef mat-sort-header>APPLIED DATE</th>
                                 <td *matCellDef="let element" style="text-align:center;">
-                                    {{element.acreateddate | date:'dd/MM/yyyy'}}<br />
+                                    {{element.applieddate | date:'dd/MM/yyyy'}}<br />
                                 </td>
                             </ng-container>
                             <ng-container matColumnDef="cname">
@@ -48,41 +48,55 @@
                                 <td *matCellDef="let element"> {{element.name}} </td>
                             </ng-container>
                             <ng-container matColumnDef="whosecase">
-                                <th *matHeaderCellDef mat-sort-header>WHOSE CASE</th>
-                                <td *matCellDef="let element" style="text-align:center;"> {{element.whosecase}}<br />
+                                <th *matHeaderCellDef mat-sort-header>MOBILE NO</th>
+                                <td *matCellDef="let element" style="text-align:center;"> {{element.mobile}}<br />
                                 </td>
                             </ng-container>
                             <ng-container matColumnDef="executive">
-                                <th *matHeaderCellDef mat-sort-header>EXECUTIVE NAME</th>
-                                <td *matCellDef="let element"> {{element.aexecutivename}} </td>
+                                <th *matHeaderCellDef mat-sort-header>EMAIL ID</th>
+                                <td *matCellDef="let element"> {{element.email}} </td>
                             </ng-container>
                             <ng-container matColumnDef="bank">
-                                <th *matHeaderCellDef mat-sort-header>BANK NAME</th>
-                                <td *matCellDef="let element"> {{element.bankname}} </td>
+                                <th *matHeaderCellDef mat-sort-header>DATE OF BIRTH</th>
+                                <td *matCellDef="let element"> {{element.dob}} </td>
                             </ng-container>
                             <ng-container matColumnDef="amount">
-                                <th *matHeaderCellDef mat-sort-header>APPLIED AMOUNT</th>
-                                <td *matCellDef="let element"> {{element.aamount}} </td>
+                                <th *matHeaderCellDef mat-sort-header>PAN NO</th>
+                                <td *matCellDef="let element"> {{element.panno}} </td>
                             </ng-container>
                             <ng-container matColumnDef="product">
-                                <th *matHeaderCellDef mat-sort-header>PRODUCT</th>
-                                <td *matCellDef="let element"> {{element.product}} </td>
+                                <th *matHeaderCellDef mat-sort-header>PINCODE</th>
+                                <td *matCellDef="let element"> {{element.pincode}} </td>
                             </ng-container>
                             <ng-container matColumnDef="status">
-                                <th *matHeaderCellDef mat-sort-header>STATUS</th>
-                                <td *matCellDef="let element"> {{element.astatus}} </td>
+                                <th *matHeaderCellDef mat-sort-header>LOANTYPE</th>
+                                <td *matCellDef="let element"> {{element.loantype}} </td>
                             </ng-container>
                             <ng-container matColumnDef="update">
-                                <th *matHeaderCellDef mat-sort-header>COMMENTS</th>
-                                <td *matCellDef="let element"> {{element.scomment}} </td>
+                                <th *matHeaderCellDef mat-sort-header>LOAN AMOUNT</th>
+                                <td *matCellDef="let element"> {{element.amount}} </td>
                             </ng-container>
                             <ng-container matColumnDef="createdby">
-                                <th *matHeaderCellDef mat-sort-header>CREATED BY</th>
-                                <td *matCellDef="let element"> {{element.ccreatedbyname}} </td>
+                                <th *matHeaderCellDef mat-sort-header>DISPLAY STATUS</th>
+                                <td *matCellDef="let element">{{element.displaystatus}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="disstatus">
+                                <th *matHeaderCellDef mat-sort-header>STATUS</th>
+                                <td *matCellDef="let element">
+                                    <select class="form-control" name="status" required [(ngModel)]="element.status">
+                                <option value="" selected>Select option</option>
+                                <option value="Approved">Approved</option>
+                                <option value="Reject">Reject</option>
+                           </select>
+                                </td>
                             </ng-container>
                             <ng-container matColumnDef="addbank">
-                                <th *matHeaderCellDef mat-sort-header>BANK ADDED BY</th>
-                                <td *matCellDef="let element"> {{element.acreatedbyname}} </td>
+                                <th *matHeaderCellDef mat-sort-header>COMMENTS</th>
+                                <td *matCellDef="let element"> <textarea class="form-control" type="text" [(ngModel)]="element.comment" name="comment"></textarea> </td>
+                            </ng-container>
+                            <ng-container matColumnDef="edit">
+                                <th *matHeaderCellDef mat-sort-header>Save</th>
+                                <td *matCellDef="let element"> <button type="text" class="btn btn-success" (click)="onchange(element)">Save</button></td>
                             </ng-container>
                             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

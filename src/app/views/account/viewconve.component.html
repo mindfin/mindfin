@@ -7,7 +7,9 @@
             <div class="card">
                 <div class="card-header">
                     <i class="fa fa-align-justify"></i> Convenience Status
-
+                    <button style="float:right" (click)="exportAsXLSX()">
+                        <i class="fa fa-file-excel-o" style="font-size:20px;color:rgb(7, 11, 255)"> Download Excel</i>
+                      </button>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -36,7 +38,7 @@
                                 <td *matCellDef="let element" style="text-align:center;"> {{element.empName}} </td>
                             </ng-container>
                             <ng-container matColumnDef="bankname">
-                                <th *matHeaderCellDef mat-sort-header style="text-align:center;">Comments</th>
+                                <th *matHeaderCellDef mat-sort-header style="text-align:center;">Response</th>
                                 <td *matCellDef="let element" style="text-align:center;"> {{element.response}} </td>
                             </ng-container>
                             <ng-container matColumnDef="view">

@@ -7214,18 +7214,25 @@ router.get('/getBackendCustomerlist/:pagesize/:page/:sdate/:edate', (req, res, n
     const skip = (pageSize * (currentPage - 1));
     const sdate = format.asString('yyyy-MM-dd', new Date(req.params.sdate));
     const edate = format.asString('yyyy-MM-dd', new Date(req.params.edate));
-    knex.select()
+    knex.select('customer.*', 'employee.iduser', 'usertype.*')
         .from('customer')
+        .join('employee', 'customer.createdby', 'employee.idemployee')
+        .join('usertype', 'employee.iduser', 'usertype.idusertype')
         .where('customer.applieddate', '>=', sdate)
         .where('customer.applieddate', '<=', edate)
+        .where('employee.iduser', 8)
         .orderBy('customer.applieddate', 'desc')
+
 
     .limit(pageSize).offset(skip)
         .then(function(result) {
             knex.select()
                 .from('customer')
+                .join('employee', 'customer.createdby', 'employee.idemployee')
+                .join('usertype', 'employee.iduser', 'usertype.idusertype')
                 .where('customer.applieddate', '>=', sdate)
                 .where('customer.applieddate', '<=', edate)
+                .where('employee.iduser', 8)
                 .orderBy('customer.applieddate', 'desc')
                 .then(function(re) {
                     res.status(200).json({
@@ -7269,6 +7276,79 @@ router.get('/getBackendBanklist/:pagesize/:page/:sdate/:edate', (req, res, next)
                         maxPosts: re.length
                     });
                 })
+        })
+});
+router.get('/getWebsiteLead/:pagesize/:page/:sdate/:edate', (req, res, next) => {
+    const pageSize = req.params.pagesize;
+    const currentPage = req.params.page;
+    const skip = (pageSize * (currentPage - 1));
+    const sdate = format.asString('yyyy-MM-dd', new Date(req.params.sdate));
+    const edate = format.asString('yyyy-MM-dd', new Date(req.params.edate));
+    knex.select('loantype.loantype', 'customer.*')
+        .from('customer')
+        .join('loantype', 'customer.applytype', 'loantype.idloantype')
+        .where('customer.applieddate', '>=', sdate)
+        .where('customer.applieddate', '<=', edate)
+        .where('customer.source', 'Website')
+        .orderBy('customer.applieddate', 'desc')
+
+    .limit(pageSize).offset(skip)
+        .then(function(result) {
+            knex.select()
+                .from('customer')
+                .join('loantype', 'customer.applytype', 'loantype.idloantype')
+                .where('customer.applieddate', '>=', sdate)
+                .where('customer.applieddate', '<=', edate)
+                .where('customer.source', 'Website')
+                .orderBy('customer.applieddate', 'desc')
+                .then(function(re) {
+                    res.status(200).json({
+                        message: "Memberlists fetched",
+                        posts: result,
+                        maxPosts: re.length
+                    });
+                })
+        })
+});
+router.post('/savecomment', function(req, res) {
+    var date3 = format.asString('yyyy-MM-dd', new Date());
+    knex('customer')
+        .where({ idcustomer: req.body.value.idcustomer })
+        .update({
+            status: req.body.value.status,
+            displaystatus: req.body.value.status,
+            createdbyname: req.body.empname,
+            createdby: req.body.empid,
+            comment: req.body.value.comment,
+            updateddate: moment().format(date3)
+        }).then(function(result) {
+            //console.log(result); 
+            res.json('updated Successfully');
+        })
+});
+router.get('/getweblead', (req, res) => {
+    knex.select()
+        .from('customer')
+        .where('status', "PENDING")
+        .where('source', "Website")
+        .then(function(result) {
+            res.json(result.length);
+        })
+});
+router.post('/webleadopenstatus', function(req, res) {
+    var date = format.asString('yyyy-MM-dd', new Date());
+    // console.log(req.body)
+    knex('customer')
+        .where({ status: 'PENDING' })
+        .where({ source: 'Website' })
+        .update({
+            updateddate: date,
+            status: 'Opened',
+            createdby: req.body.empid,
+            createdbyname: req.body.empname,
+        })
+        .then(function(result) {
+            res.json('Updated Successfully');
         })
 });
 module.exports = router;

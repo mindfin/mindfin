@@ -6,13 +6,13 @@ export const navItems9 = [
   },
 
   {
-    name: 'Add Account',
-    url: '/documentcam/addaccount',
-    icon: 'fa fa-plus',
+    name: 'Document Cam',
+    url: '/documentcam/documentcam',
+    icon: 'fa fa-eye',
   },
-  {
-    name: 'Upload Statement',
-    url: '/documentcam/uploadfile',
-    icon: 'fa fa-upload',
-  },
+  // {
+  //   name: 'Upload Statement',
+  //   url: '/documentcam/uploadfile',
+  //   icon: 'fa fa-upload',
+  // },
 ];

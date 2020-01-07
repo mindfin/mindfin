@@ -18,7 +18,7 @@ import { MatDialog, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material';
 })
 export class LoginRoutineComponent {
 
-  displayedColumns: string[] = ['date', 'company', 'bank','bankvendor', 'whosecase', 'handover', 'timings', 'status', 'logemp'];
+  displayedColumns: string[] = ['date', 'company', 'bank','bankvendor','pov', 'whosecase', 'handover', 'timings', 'status','casedetail', 'logemp'];
   samples: any;
   dataSource;
 
@@ -91,7 +91,7 @@ export class LoginRoutineComponent {
     console.log(this.samples);
     let come = this.samples;
     var a;
-    const fileName = "Login Executive Routine Data";
+    const fileName = "Login Executive Routine Data ";
     for (let i = 0; i < come.length; i++) {
       this.array.push({
 
@@ -100,9 +100,11 @@ export class LoginRoutineComponent {
         "Whose Case": this.samples[i].whosecase,
         "Bank Name": this.samples[i].bankname,
         "Bank Vendor": this.samples[i].bankvendor,
+        "Purpose Of Visit": this.samples[i].poVisit,
         "Handovered To":this.samples[i].handover,
         "Handovered Time": this.samples[i].timings,
         "Status": this.samples[i].dstatus,
+        "Case Detail": this.samples[i].casedetail,
         "Login Excecutive Name": this.samples[i].empname,
        
 

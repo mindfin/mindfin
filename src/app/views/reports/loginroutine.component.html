@@ -66,6 +66,10 @@
 
                                 </td>
                             </ng-container>
+                            <ng-container matColumnDef="pov">
+                                <th *matHeaderCellDef mat-sort-header>PURPOSE OF VISIT</th>
+                                <td *matCellDef="let element"> {{element.poVisit}} </td>
+                            </ng-container>
                             <ng-container matColumnDef="whosecase">
                                 <th *matHeaderCellDef mat-sort-header>WHOSE CASE</th>
                                 <td *matCellDef="let element"> {{element.whosecase}} </td>
@@ -81,6 +85,10 @@
                             <ng-container matColumnDef="status">
                                 <th *matHeaderCellDef mat-sort-header>STATUS</th>
                                 <td *matCellDef="let element"> {{element.dstatus}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="casedetail">
+                                <th *matHeaderCellDef mat-sort-header>CASE DETAIL</th>
+                                <td *matCellDef="let element"> {{element.casedetail}} </td>
                             </ng-container>
                             <ng-container matColumnDef="logemp">
                                 <th *matHeaderCellDef mat-sort-header>LOGIN EXECUTIVE</th>

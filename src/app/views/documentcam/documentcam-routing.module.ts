@@ -1,14 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { TestComponent } from './test.component';
-
+import { DocumentCamComponent } from './documentcam.component';
 const routes: Routes = [
 
   {
-    path: 'addaccount',
-    component: TestComponent,
+    path: 'documentcam',
+    component: DocumentCamComponent,
     data: {
-      title: 'Testing Pdf Upload'
+      title: 'Doument Cam'
     }
   },
 ];

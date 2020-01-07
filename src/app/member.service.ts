@@ -81,5 +81,8 @@ export class MemberService{
       return  this.http.post(uri,obj);
   
       }
-
+      public uploadImage(file) {
+        console.log(file)
+        return this.http.post(`https://bank.mindfin.co.in/member/image-upload`, file);
+      }
 }
