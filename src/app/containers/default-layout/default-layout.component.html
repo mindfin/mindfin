@@ -123,7 +123,7 @@
         <tabset>
             <tab>
                 <ng-template tabHeading>
-                    <a role="button" title="Leave Application Status"><img src="/assets/images/leave.png" alt="leave" height="25px" width="25px"></a>
+                    <a role="button" title="Leave Application Status"><img src="/assets/images/leave.png" alt="leave" height="20px" width="20px"></a>
                 </ng-template>
                 <div class="list-group list-group-accent">
                     <div class="list-group-item list-group-item-accent-secondary bg-light text-center font-weight-bold text-muted text-uppercase small">Leave Application Status </div>
@@ -132,28 +132,28 @@
 
                         <div class="list-group-item list-group-item-accent-info list-group-item-divider" *ngIf="pro.status ==='Pending' ; else Opened; ">
                             <small class="text-muted mr-3"><i class="fa fa-calendar-times-o"></i> {{pro.leaveFrom}} - {{pro.leaveTo}}</small>
-                            <small class="text-muted"><i class="fa fa-clock-o"></i>  {{pro.noDays}}</small>
+                            <small class="text-muted"><i class="fa fa-clock-o"></i>  {{pro.noDays}}day ago</small>
                             <div><strong>{{pro.reason}}</strong></div>
                         </div>
 
                         <ng-template #Opened>
                             <div class="list-group-item list-group-item-accent-warning list-group-item-divider" *ngIf="pro.status ==='Opened' ; else Approved;">
                                 <small class="text-muted mr-3"><i class="fa fa-calendar-times-o"></i> {{pro.leaveFrom}} - {{pro.leaveTo}}</small>
-                                <small class="text-muted"><i class="fa fa-clock-o"></i>  {{pro.noDays}}</small>
+                                <small class="text-muted"><i class="fa fa-clock-o"></i>  {{pro.noDays}}day ago</small>
                                 <div><strong>{{pro.reason}}</strong></div>
                             </div>
                         </ng-template>
                         <ng-template #Approved>
                             <div class="list-group-item list-group-item-accent-success list-group-item-divider" *ngIf="pro.status==='Approved' ; else Reject;">
                                 <small class="text-muted mr-3"><i class="fa fa-calendar-times-o"></i> {{pro.leaveFrom}} - {{pro.leaveTo}}</small>
-                                <small class="text-muted"><i class="fa fa-clock-o"></i>  {{pro.noDays}}</small>
+                                <small class="text-muted"><i class="fa fa-clock-o"></i>  {{pro.noDays}}day ago</small>
                                 <div><strong>{{pro.reason}}</strong></div>
                             </div>
                         </ng-template>
                         <ng-template #Reject>
                             <div class="list-group-item list-group-item-accent-danger list-group-item-divider" *ngIf="pro.status==='Reject'">
                                 <small class="text-muted mr-3"><i class="fa fa-calendar-times-o"></i> {{pro.leaveFrom}} - {{pro.leaveTo}}</small>
-                                <small class="text-muted"><i class="fa fa-clock-o"></i>  {{pro.noDays}}</small>
+                                <small class="text-muted"><i class="fa fa-clock-o"></i>  {{pro.noDays}}day ago</small>
                                 <div><strong>{{pro.reason}}</strong></div>
                             </div>
                         </ng-template>
@@ -163,16 +163,16 @@
                     </div>
 
                     <div class="list-group-item  list-group-item-divider">
-                        <small class="text-muted badge badge-info "> Applied </small>
-                        <small class="text-muted badge badge-warning"> Opened </small>
-                        <small class="text-muted badge badge-success"> Approved </small>
-                        <small class="text-muted badge badge-danger"> Rejected </small>
+                        <small class="badge badge-info "> Applied </small>
+                        <small class="badge badge-warning"> Opened </small>
+                        <small class="badge badge-success"> Approved </small>
+                        <small class="badge badge-danger"> Rejected </small>
                     </div>
                 </div>
             </tab>
             <tab>
                 <ng-template tabHeading>
-                    <a role="button" title="Convenience Status"><img src="/assets/images/Bill.png" alt="Convenience" height="25px" width="25px"></a>
+                    <a role="button" title="Convenience Status"><img src="/assets/images/Bill.png" alt="Convenience" height="20px" width="20px"></a>
                 </ng-template>
                 <div class="list-group list-group-accent">
                     <div class="list-group-item list-group-item-accent-secondary bg-light text-center font-weight-bold text-muted text-uppercase small">Convenience Status</div>
@@ -219,16 +219,16 @@
                     </div>
 
                     <div class="list-group-item  list-group-item-divider">
-                        <small class="text-muted badge badge-info "> Applied </small>
-                        <small class="text-muted badge badge-warning"> Opened </small>
-                        <small class="text-muted badge badge-success"> Approved </small>
-                        <small class="text-muted badge badge-danger"> Rejected </small>
+                        <small class="badge badge-info "> Applied </small>
+                        <small class="badge badge-warning"> Opened </small>
+                        <small class="badge badge-success"> Approved </small>
+                        <small class="badge badge-danger"> Rejected </small>
                     </div>
                 </div>
             </tab>
             <tab>
                 <ng-template tabHeading>
-                    <a role="button" title="Suggestion Status"><img src="/assets/images/suggestionbox.png" alt="Suggestion" height="25px" width="25px"></a>
+                    <a role="button" title="Suggestion Status"><img src="/assets/images/suggestionbox.png" alt="Suggestion" height="20px" width="20px"></a>
                 </ng-template>
                 <div class="list-group list-group-accent">
                     <div class="list-group-item list-group-item-accent-secondary bg-light text-center font-weight-bold text-muted text-uppercase small">Suggestion Status</div>
@@ -259,23 +259,32 @@
                     </div>
 
                     <div class="list-group-item  list-group-item-divider">
-                        <small class="text-muted badge badge-info "> Sent </small>
-                        <small class="text-muted badge badge-warning"> Opened </small>
-                        <small class="text-muted badge badge-success"> Approved </small>
-                        <small class="text-muted badge badge-danger"> Rejected </small>
+                        <small class="badge badge-info "> Sent </small>
+                        <small class="badge badge-warning"> Opened </small>
+                        <small class="badge badge-success"> Approved </small>
+                        <small class="badge badge-danger"> Rejected </small>
                     </div>
                 </div>
 
             </tab>
             <tab>
                 <ng-template tabHeading>
-                    <a role="button" title="Upcoming Events"><img src="/assets/images/event.png" alt="event" height="25px" width="25px"></a>
+                    <a role="button" title="Upcoming Events"><img src="/assets/images/event.png" alt="event" height="20px" width="20px"></a>
                 </ng-template>
                 <!-- Events display code -->
                 <div class="list-group list-group-accent">
                     <div class="list-group-item list-group-item-accent-secondary bg-light text-center font-weight-bold text-muted text-uppercase small">Upcoming Events</div>
                 </div>
             </tab>
+            <!-- <tab>
+                <ng-template tabHeading>
+                    <a role="button" title="Upcoming Events"><img src="/assets/images/alerts.png" alt="Notification" height="20px" width="20px"></a>
+                </ng-template>
+                
+                <div class="list-group list-group-accent">
+                    <div class="list-group-item list-group-item-accent-secondary bg-light text-center font-weight-bold text-muted text-uppercase small">Notifiactions</div>
+                </div>
+            </tab> -->
         </tabset>
     </app-aside>
 </div>

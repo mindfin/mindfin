@@ -86,7 +86,11 @@
         "xlsx": "^0.14.3",
         "zeropad": "^1.1.0",
         "zone.js": "^0.8.29",
-        "multer-azure-blob-storage": "^1.0.2"
+        "multer-azure-blob-storage": "^1.0.2",
+        "pdf2json": "^1.1.8",
+        "jszip": "^3.2.2",
+        "@azure/storage-blob": "^12.0.2"
+
     },
     "devDependencies": {
         "@angular-devkit/build-angular": "^0.7.5",

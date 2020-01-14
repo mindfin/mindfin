@@ -13,7 +13,7 @@ export const navItems = [
     children: [
       {
         name: 'Check Customer',
-        url: '/backend/checkcase',
+        url: '/members/checkcase',
         icon: 'fa fa-user-plus'
       },
       {

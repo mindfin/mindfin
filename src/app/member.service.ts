@@ -85,4 +85,15 @@ export class MemberService{
         console.log(file)
         return this.http.post(`https://bank.mindfin.co.in/member/image-upload`, file);
       }
+      bankstatementcam(value) {
+        console.log(value);
+        return this.http.post( "https://bank.mindfin.co.in/member/bankstatementcam",value);
+        // return this.http.post(uri, value)
+      }
+      itrcam(value) {
+        console.log(value);
+        const uri = "https://bank.mindfin.co.in/callapi/itrcam";
+        return this.http.post(uri, value)
+      }
 }
+ 

@@ -16,7 +16,7 @@ class FileSnippet {
   templateUrl: './documentcam.component.html',
 })
 export class DocumentCamComponent implements OnInit {
-  model:any={};
+  model: any = {};
   listing: any;
   listingData: any;
   show = false;
@@ -24,7 +24,9 @@ export class DocumentCamComponent implements OnInit {
   addListing = false;
   sendDeleteListingData: any;
   filePath: any;
+  filePath1: any;
   selectedFiles: any;
+  selectedFiles1: any;
   currentFileUpload: any;
   imagePath: any;
   selectedFile: FileSnippet;
@@ -34,11 +36,15 @@ export class DocumentCamComponent implements OnInit {
   imageURL: string;
   imageURL$: string;
   myfields: any = [];
+
+  getdoctype: any;
+  value1: any;
+
   myform: FormGroup = new FormGroup({
     // name: new FormControl(null, [Validators.required]),
     value: new FormControl(null)
   });
- 
+
   constructor(private route: ActivatedRoute, private router: Router, private commonservice: MemberService) { }
 
   ngOnInit() {
@@ -61,13 +67,41 @@ export class DocumentCamComponent implements OnInit {
       }
     )
   }
+  public onFileSelect1(event) {
+    let formData = new FormData();
+    this.selectedFiles1 = event.target.files;
+    this.currentFileUpload = this.selectedFiles.item(0);
+    console.log(this.currentFileUpload);
+    formData.append('image', this.currentFileUpload, this.currentFileUpload.name);
+    this.imagePath = formData;
+    console.log(this.imagePath);
+    this.imageChangeFlag = true;
+    this.commonservice.uploadImage(this.imagePath).subscribe(
+      async (data) => {
+        this.filePath1 = await this.getImageURL(data)
+        console.log(this.filePath);
+      }
+    )
+  }
   async getImageURL(data) {
     return this.imageURL = await data.imageUrl;
   }
 
   submitForm(value) {
     console.log(value);
-    
+    localStorage.setItem("doctype", value.documenttype);
+    this.getdoctype = localStorage.getItem("doctype");
+    if (this.getdoctype == 'bankstatement') {
+      this.value1 = { bankstatement: this.filePath };
+      this.commonservice.bankstatementcam(this.value1)
+      .subscribe(res => {
+        console.log(res)
+      })
+    }
+    else if(this.getdoctype=="itr"){
+      this.value1 = { previousitr: this.filePath, currentitr:this.filePath1 };
+      this.commonservice.itrcam(this.value1)
+    }
   }
 
   refresh(): void {

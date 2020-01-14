@@ -23,6 +23,7 @@ import {SuccesstopuplistComponent} from './successtopuplist.component';
 import { CustStatusComponent } from './custstatus.component';
 import { ViewCustomerComponent } from './viewcustomer.component';
 import { BankRejectComponent } from './bankreject.component';
+import { CheckCaseWithDownloadComponent } from './checkcasewithdownload.component';
 const routes: Routes = [
   {
     
@@ -86,6 +87,13 @@ const routes: Routes = [
         component:ViewCustomerComponent,
         data:{
           title:'View Customer'
+        }
+      },
+      {
+        path: 'checkcase',
+        component: CheckCaseWithDownloadComponent,
+        data: {
+          title: 'Check Case'
         }
       },
       // {

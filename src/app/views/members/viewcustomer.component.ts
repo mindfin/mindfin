@@ -74,7 +74,7 @@ exeid:any;
     this.currentPage = pageData.pageIndex + 1;
     this.postsPerPage = pageData.pageSize;
     console.log(this.postsPerPage);
-    this.service.getCustomer(this.postsPerPage, this.currentPage);
+    this.commonservice.getdocument3(this.postsPerPage, this.currentPage);
   }
   
   data: any;

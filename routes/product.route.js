@@ -16,6 +16,8 @@ var otpGenerator = require('otp-generator')
 const nodemailer = require('nodemailer');
 var implode = require('implode')
 var defaultImg = 'admin.png';
+var JSZip = require("jszip");
+var FileSaver = require('file-saver');
 // var macaddress = require('macaddress');
 var now = new Date()
     // var blobName1 = Date.now() + "" + file.originalname;
@@ -30,7 +32,7 @@ const azureStorage = new MulterAzureStorage({
     connectionString: 'DefaultEndpointsProtocol=https;AccountName=mindfinfiles;AccountKey=4NrEY0vfXnyvJVohjkXXcBLZDfYnCCUqO/HfnaTnhmiYAYxj0n9cbVRvheeNcvdEwJFnh4DhA1Uf7Uxbcq4ocw==;EndpointSuffix=core.windows.net',
     accessKey: '4NrEY0vfXnyvJVohjkXXcBLZDfYnCCUqO/HfnaTnhmiYAYxj0n9cbVRvheeNcvdEwJFnh4DhA1Uf7Uxbcq4ocw==',
     accountName: 'mindfinfiles',
-    containerName: 'mindfin-backend',
+    containerName: 'mindfin-docment-scan',
     // blobName: originalname,
     // metadata: resolveMetadata,
     containerAccessLevel: 'blob',
@@ -376,7 +378,7 @@ router.get('/hotCustomers/:pagesize/:page', function(req, res) {
 
     knex.select('customer.*')
         .from('customer')
-        .where('customer.status', 'PENDING')
+        // .where('customer.status', 'PENDING')
         .where('customer.source', 'Website')
         .orderBy('customer.applieddate', 'desc')
         .limit(pageSize).offset(skip)
@@ -4563,6 +4565,8 @@ router.post('/custdocument', (req, res) => {
     var loan_orgname;
     var gstandreturns;
     var gst_orgname;
+    var applicationDetails;
+    var applicationDetails_orgname;
     var status;
     var displaystatus;
     // console.log(file)
@@ -4627,6 +4631,16 @@ router.post('/custdocument', (req, res) => {
         console.log("gstandreturns BlobName  " + gstandreturns);
         console.log("gstandreturns orginal name  " + gst_orgname);
     }
+    if (req.body.applicationDetails == undefined) {
+        applicationDetails = 'admin.png';
+        applicationDetails_orgname = 'admin.png';
+
+    } else {
+        applicationDetails = req.body.applicationDetails[0].blobName;
+        applicationDetails_orgname = req.body.applicationDetails[0].originalname;
+        console.log("applicationDetails BlobName  " + applicationDetails);
+        console.log("applicationDetails orginal name  " + applicationDetails_orgname);
+    }
     if (req.body.value.displaystatus != 'APPROVED') {
         displaystatus = "PENDING"
         status = "PENDING"
@@ -4653,6 +4667,8 @@ router.post('/custdocument', (req, res) => {
             gstandreturns_orgname: gst_orgname,
             loanstatement: loanstatement,
             loanstatement_orgname: loan_orgname,
+            applicationDetails: applicationDetails,
+            applicationDetails_orgname: applicationDetails_orgname,
             status: status,
             applieddate: nowdate,
             createdby: req.body.empid,
@@ -4774,6 +4790,8 @@ router.post('/editcustdoc', (req, res) => {
     var loan_orgname;
     var gstandreturns;
     var gst_orgname;
+    var applicationDetails;
+    var applicationDetails_orgname;
     var status;
     var displaystatus;
     if (req.body.companykyc == undefined) {
@@ -4830,6 +4848,26 @@ router.post('/editcustdoc', (req, res) => {
         console.log("gstandreturns BlobName  " + gstandreturns);
         console.log("gstandreturns orginal name  " + gst_orgname);
     }
+    if (req.body.applicationDetails == undefined) {
+        applicationDetails = 'admin.png';
+        applicationDetails_orgname = 'admin.png';
+
+    } else {
+        applicationDetails = req.body.applicationDetails[0].blobName;
+        applicationDetails_orgname = req.body.applicationDetails[0].originalname;
+        console.log("applicationDetails BlobName  " + applicationDetails);
+        console.log("applicationDetails orginal name  " + applicationDetails_orgname);
+    }
+    if (req.body.applicationDetails == undefined) {
+        applicationDetails = 'admin.png';
+        applicationDetails_orgname = 'admin.png';
+
+    } else {
+        applicationDetails = req.body.applicationDetails[0].blobName;
+        applicationDetails_orgname = req.body.applicationDetails[0].originalname;
+        console.log("applicationDetails BlobName  " + applicationDetails);
+        console.log("applicationDetails orginal name  " + applicationDetails_orgname);
+    }
     if (req.body.value.displaystatus != 'APPROVED') {
         displaystatus = "PENDING"
         status = "PENDING"
@@ -4856,6 +4894,8 @@ router.post('/editcustdoc', (req, res) => {
             gstandreturns_orgname: gst_orgname,
             loanstatement: loanstatement,
             loanstatement_orgname: loan_orgname,
+            applicationDetails: applicationDetails,
+            applicationDetails_orgname: applicationDetails_orgname,
             status: status,
             updateddate: nowdate,
             createdby: req.body.empid,
@@ -5985,41 +6025,7 @@ router.get('/getCallbackformlist/:pagesize/:page', (req, res, next) => {
                 })
         })
 });
-// router.post('/image-upload', upload.fields([{ name: 'companykyc' }]), (req, res) => {
 
-
-//     console.log(req.files);
-//     // const { BlobServiceClient, StorageSharedKeyCredential } = require("@azure/storage-blob");
-
-//     // // Enter your storage account name and shared key
-//     // const account = "mindfinfiles";
-//     // const accountKey = "4NrEY0vfXnyvJVohjkXXcBLZDfYnCCUqO/HfnaTnhmiYAYxj0n9cbVRvheeNcvdEwJFnh4DhA1Uf7Uxbcq4ocw==";
-
-//     // // Use StorageSharedKeyCredential with storage account and account key
-//     // // StorageSharedKeyCredential is only avaiable in Node.js runtime, not in browsers
-//     // const sharedKeyCredential = new StorageSharedKeyCredential(account, accountKey);
-//     // const blobServiceClient = new BlobServiceClient(
-//     //     `https://${account}.blob.core.windows.net`,
-//     //     sharedKeyCredential
-//     // )
-//     // const containerName = "mindfin-backend";
-
-//     // async function main() {
-//     //     const containerClient = blobServiceClient.getContainerClient(containerName);
-
-//     //     const content = "hello world";
-//     //     const blobName = "newblob" + new Date().getTime();
-//     //     const blockBlobClient = containerClient.getBlockBlobClient(blobName);
-//     //     // const uploadBlobResponse = await blockBlobClient.uploadFile(req.file, {
-//     //     //     // This should be called over the course of the upload but, instead,
-//     //     //     // it is called lots of times up-front and not as the file uploads.
-//     //     //     progress: (p) => console.log(`Uploaded ${p.loadedBytes} bytes`)
-//     //     // })
-//     //     // console.log(`Upload block blob ${blobName} successfully`, uploadBlobResponse.requestId);
-//     // }
-
-//     // main();
-// });
 router.post('/image-upload', upload.any(), (req, res) => {
     console.log(req.files)
 
@@ -7218,7 +7224,8 @@ router.get('/getBackendCustomerlist/:pagesize/:page/:sdate/:edate', (req, res, n
         .from('customer')
         .join('employee', 'customer.createdby', 'employee.idemployee')
         .join('usertype', 'employee.iduser', 'usertype.idusertype')
-        .where('customer.applieddate', '>=', sdate)
+
+    .where('customer.applieddate', '>=', sdate)
         .where('customer.applieddate', '<=', edate)
         .where('employee.iduser', 8)
         .orderBy('customer.applieddate', 'desc')
@@ -7351,4 +7358,21 @@ router.post('/webleadopenstatus', function(req, res) {
             res.json('Updated Successfully');
         })
 });
-module.exports = router;
+router.post('/downloadall', function(req, res) {
+    var zip = new JSZip();
+    zip.file("https://mindfinfiles.blob.core.windows.net/mindfin-backend/" + req.body.companykyc);
+    zip.file("https://mindfinfiles.blob.core.windows.net/mindfin-backend/" + req.body.customerkyc);
+    zip.file("https://mindfinfiles.blob.core.windows.net/mindfin-backend/" + req.body.bankstatement);
+    zip.file("https://mindfinfiles.blob.core.windows.net/mindfin-backend/" + req.body.itr);
+    zip.file("https://mindfinfiles.blob.core.windows.net/mindfin-backend/" + req.body.gstandreturns);
+    zip.file("https://mindfinfiles.blob.core.windows.net/mindfin-backend/" + req.body.loanstatement);
+
+    zip.generateAsync({ type: 'nodebuffer', mimeType: "application/zip" })
+        .then(function(content) {
+            // see FileSaver.js
+            output = "complete Zip of" + req.body.cname + ".zip"
+                // FileSaver.saveAs(content, output);
+
+        });
+})
+module.exports = router

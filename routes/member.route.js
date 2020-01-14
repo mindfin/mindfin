@@ -1,21 +1,13 @@
 const express = require('express');
+const fs = require('fs');
 const router = express.Router();
 var sha1 = require('sha1');
-var generator = require('generate-password');
-const format = require('date-format');
 const multer = require('multer');
+const { BlobServiceClient, StorageSharedKeyCredential } = require("@azure/storage-blob");
 const MulterAzureStorage = require('multer-azure-blob-storage').MulterAzureStorage;
-var request = require('request');
-var convertRupeesIntoWords = require('convert-rupees-into-words');
 const knex = require('../knex/knex.js');
-var DateDiff = require('date-diff');
-var zeropad = require('zeropad');
-var moment = require('moment');
-var urlencode = require('urlencode');
-var otpGenerator = require('otp-generator')
-const nodemailer = require('nodemailer');
-var implode = require('implode')
 var defaultImg = 'admin.png';
+const PDFParser = require("pdf2json");
 
 
 router.post('/checkcurrentpwd', (req, res, next) => {
@@ -94,6 +86,110 @@ const upload = multer({
 router.post('/image-upload', upload.any(), (req, res) => {
     console.log(req.files)
     return res.json({ 'imageUrl': req.files });
+});
+
+router.post('/bankstatementcam', (req, res) => {
+
+
+    console.log(req.body.bankstatement);
+
+    // Enter your storage account name and shared key
+    const account = "mindfinfiles";
+    const accountKey = "4NrEY0vfXnyvJVohjkXXcBLZDfYnCCUqO/HfnaTnhmiYAYxj0n9cbVRvheeNcvdEwJFnh4DhA1Uf7Uxbcq4ocw==";
+    var containerClient;
+    var blobClient;
+    var downloaded;
+    var downloadBlockBlobResponse;
+    let pdfParser = new PDFParser();
+    // Use StorageSharedKeyCredential with storage account and account key
+    // StorageSharedKeyCredential is only avaiable in Node.js runtime, not in browsers
+    const sharedKeyCredential = new StorageSharedKeyCredential(account, accountKey);
+    const blobServiceClient = new BlobServiceClient(
+        `https://${account}.blob.core.windows.net`,
+        sharedKeyCredential
+    )
+    const containerName = "mindfin-docment-scan";
+    const blobName = req.body.bankstatement[0].blobName;
+
+    async function main() {
+        containerClient = blobServiceClient.getContainerClient(containerName);
+        blobClient = containerClient.getBlobClient(blobName);
+        // console.log("blob name ", blobClient);
+        downloadBlockBlobResponse = await blobClient.download();
+        downloaded = await streamToString(downloadBlockBlobResponse.readableStreamBody);
+        // console.log("Downloaded blob content:", downloaded);
+
+
+        // [Node.js only] A helper method used to read a Node.js readable stream into string
+        async function streamToString(readableStream) {
+            return new Promise((resolve, reject) => {
+                const chunks = [];
+                readableStream.on("data", (data) => {
+                    chunks.push(data.toString());
+                });
+                readableStream.on("end", () => {
+                    resolve(chunks.join(""));
+                });
+                readableStream.on("error", reject);
+            });
+        }
+        let pdfParser = new PDFParser(this, 1);
+        // Load the pdf document
+        pdfParser.loadPDF(`${containerClient.getBlobClient(blobName)}`);
+        pdfParser.on("pdfParser_dataReady", (pdfData) => {
+            // The raw PDF data in text form
+            const raw = pdfParser.getRawTextContent().replace(/\r\n/g, " ");
+            console.log(raw);
+            // Return the parsed data
+            // resolve({
+            //     name: /Name\s(.*?)Address/i.exec(raw)[1].trim(),
+            //     address: /Address\s(.*?)Phone/i.exec(raw)[1].trim(),
+            //     phone: /Phone\s(.*?)Birthday/i.exec(raw)[1].trim(),
+            //     birthday: /Birthday\s(.*?)Email\sAddress/i.exec(raw)[1].trim(),
+            //     emailAddress: /Email\sAddress\s(.*?)Blood\stype/i.exec(raw)[1].trim(),
+            //     bloodType: /Blood\stype\s(.*?)Height/i.exec(raw)[1].trim(),
+            //     height: /Height\s(.*?)Weight/i.exec(raw)[1].trim(),
+            //     weight: /Weight\s(.*?)--/i.exec(raw)[1].trim()
+            // });
+
+        });
+        // (async() => {
+        //     // Set up the pdf parser
+        //     let pdfParser = new PDFParser(this, 1);
+        //     // Load the pdf document
+        //     pdfParser.loadPDF(blobClient);
+        //     // Parsed the statement
+        //     let statement = await new Promise(async(resolve, reject) => {
+        //         // On data ready
+        //         pdfParser.on("pdfParser_dataReady", (pdfData) => {
+        //             // The raw PDF data in text form
+        //             const raw = pdfParser.getRawTextContent().replace(/\r\n/g, " ");
+        //             console.log(raw);
+        //             // Return the parsed data
+        //             // resolve({
+        //             //     name: /Name\s(.*?)Address/i.exec(raw)[1].trim(),
+        //             //     address: /Address\s(.*?)Phone/i.exec(raw)[1].trim(),
+        //             //     phone: /Phone\s(.*?)Birthday/i.exec(raw)[1].trim(),
+        //             //     birthday: /Birthday\s(.*?)Email\sAddress/i.exec(raw)[1].trim(),
+        //             //     emailAddress: /Email\sAddress\s(.*?)Blood\stype/i.exec(raw)[1].trim(),
+        //             //     bloodType: /Blood\stype\s(.*?)Height/i.exec(raw)[1].trim(),
+        //             //     height: /Height\s(.*?)Weight/i.exec(raw)[1].trim(),
+        //             //     weight: /Weight\s(.*?)--/i.exec(raw)[1].trim()
+        //             // });
+
+        //         });
+        //     });
+        //     // Add the patient to the patients array
+        //     // patients.push(patient);
+
+        //     // }));
+
+        //     // Save the extracted information to a json file
+        //     // fs.writeFileSync("patients.json", JSON.stringify(patients));
+        // })();
+    }
+
+    main();
 });
 
 

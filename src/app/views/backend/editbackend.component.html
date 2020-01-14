@@ -84,15 +84,15 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-sm-4">
-                                <label><b>COMPANY KYC</b><code>(Everthing In One File)</code></label>
-                                <input [(ngModel)]="model.Companykyc1" type="file" class="form-control" name="Companykyc1" (change)="onFileSelect($event)" #Companykyc1="ngModel">
+                                <label><b>COMPANY KYC </b><span class="badge  badge-danger"> (Everthing In One File)</span></label>
+                                <input [(ngModel)]="model.Companykyc1" type="file" class="form-control-file" name="Companykyc1" (change)="onFileSelect($event)" #Companykyc1="ngModel">
                                 <input type="hidden" [(ngModel)]="model.companykyc" name="companykyc" class="form-control" #companykyc="ngModel">
                                 <label>{{model.companykyc_orgname}}</label>
                                 <br>
                             </div>
                             <div class="col-sm-4">
-                                <label><b>CUSTOMER KYC</b><code>(Everthing In One File)</code></label>
-                                <input [(ngModel)]="model.customerkyc1" type="file" class="form-control" name="customerkyc1" (change)="onFileSelect1($event)" #customerkyc1="ngModel">
+                                <label><b>CUSTOMER KYC </b><span class="badge  badge-danger"> (Everthing In One File)</span></label>
+                                <input [(ngModel)]="model.customerkyc1" type="file" class="form-control-file" name="customerkyc1" (change)="onFileSelect1($event)" #customerkyc1="ngModel">
                                 <input type="hidden" [(ngModel)]="model.customerkyc" name="customerkyc" class="form-control" #customerkyc="ngModel">
                                 <label>{{model.customerkyc_orgname}}</label>
                                 <br>
@@ -100,8 +100,8 @@
 
 
                             <div class="col-sm-4">
-                                <label><b>ITR</b><code>(2 Yeas ITR In One File)</code></label>
-                                <input [(ngModel)]="model.itr1" type="file" class="form-control" name="itr1" (change)="onFileSelect2($event)" #itr1="ngModel">
+                                <label><b>ITR </b><span class="badge  badge-danger"> (2 Yeas ITR In One File)</span></label>
+                                <input [(ngModel)]="model.itr1" type="file" class="form-control-file" name="itr1" (change)="onFileSelect2($event)" #itr1="ngModel">
                                 <input type="hidden" [(ngModel)]="model.itr" name="itr" class="form-control" #itr="ngModel">
                                 <label>{{model.itr_orgname}}</label>
                                 <br>
@@ -109,49 +109,56 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-4">
-                                <label><b>BANK STATEMENT</b><code>(Last 12 Months)</code></label>
-                                <input [(ngModel)]="model.bankstatement1" type="file" class="form-control" name="bankstatement1" (change)="onFileSelect3($event)" #bankstatement1="ngModel">
+                                <label><b>BANK STATEMENT </b><span class="badge  badge-danger"> (Last 12 Months)</span></label>
+                                <input [(ngModel)]="model.bankstatement1" type="file" class="form-control-file" name="bankstatement1" (change)="onFileSelect3($event)" #bankstatement1="ngModel">
                                 <input type="hidden" [(ngModel)]="model.bankstatement" name="bankstatement" class="form-control" #bankstatement="ngModel">
                                 <label>{{model.bankstatement_orgname}}</label>
                                 <br>
                             </div>
                             <div class="col-sm-4">
-                                <label><b>LOAN SANCTION LETTER</b><code>(Everthing In One File)</code></label>
-                                <input [(ngModel)]="model.loanstatement1" type="file" class="form-control" name="loanstatement1" (change)="onFileSelect4($event)" #loanstatement1="ngModel">
+                                <label><b>LOAN SANCTION LETTER </b><span class="badge  badge-danger"> (Everthing In One File)</span></label>
+                                <input [(ngModel)]="model.loanstatement1" type="file" class="form-control-file" name="loanstatement1" (change)="onFileSelect4($event)" #loanstatement1="ngModel">
                                 <input type="hidden" [(ngModel)]="model.loanstatement" name="loanstatement" class="form-control" #loanstatement="ngModel">
                                 <label>{{model.loanstatement_orgname}}</label>
                                 <br>
                             </div>
                             <div class="col-sm-4">
-                                <label><b>GST RETURNS</b><code>(last 6 month)</code></label>
-                                <input [(ngModel)]="model.gstandreturns1" type="file" class="form-control" name="gstandreturns1" (change)="onFileSelect5($event)" #gstandreturns1="ngModel">
+                                <label><b>GST RETURNS </b><span class="badge  badge-danger"> (last 6
+                                        month)</span></label>
+                                <input [(ngModel)]="model.gstandreturns1" type="file" class="form-control-file" name="gstandreturns1" (change)="onFileSelect5($event)" #gstandreturns1="ngModel">
                                 <input type="hidden" [(ngModel)]="model.gstandreturns" name="gstandreturns" class="form-control" #gstandreturns="ngModel">
-                                <label>{{model.gstandreturns_orgname}}</label>
+                                <label>{{model.gstandreturns_orgname}}</label><br>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <label><b>APPLICATION DETAILS </b></label>
+
+                                <input [(ngModel)]="model.applicationDetails1" type="file" class="form-control-file" name="applicationDetails1" (change)="onFileSelect6($event)" #applicationDetails1="ngModel">
+                                <input type="hidden" [(ngModel)]="model.applicationDetails" name="applicationDetails" class="form-control" #applicationDetails="ngModel">
+                                <label>{{model.applicationDetails_orgname}}</label>
                                 <br>
                             </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label><b>STATUS</b><code>(*)</code></label>
-                            <select class="form-control" name="displaystatus" [(ngModel)]="model.displaystatus" #displaystatus="ngModel" required>
-                        <option value="" selected>Select option</option>
-                        <option value="PENDING">PENDING</option>
-                        <option value="APPROVED">APPROVED</option>
-                     </select>
-                            <div class="alert" *ngIf="displaystatus.errors && (displaystatus.dirty || displaystatus.touched)">
-                                <div [hidden]="!displaystatus.errors.required">
-                                    Status is required...
+                            <div class="col-md-4">
+                                <label><b>STATUS</b><code>(*)</code></label>
+                                <select class="form-control" name="displaystatus" [(ngModel)]="model.displaystatus" #displaystatus="ngModel" required>
+                                    <option value="" selected>Select option</option>
+                                    <option value="PENDING">PENDING</option>
+                                    <option value="APPROVED">APPROVED</option>
+                                </select>
+                                <div class="alert" *ngIf="displaystatus.errors && (displaystatus.dirty || displaystatus.touched)">
+                                    <div [hidden]="!displaystatus.errors.required">
+                                        Status is required...
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <br>
-                        <div class="col-md-6">
-                            <label><b>COMMENTS</b><code>(*)</code></label>
-                            <textarea [(ngModel)]="model.comment" type="text" class="form-control" name="comment" #comment="ngModel"></textarea>
+                            <br>
+                            <div class="col-md-4">
+                                <label><b>COMMENTS</b><code>(*)</code></label>
+                                <textarea [(ngModel)]="model.comment" type="text" class="form-control" name="comment" #comment="ngModel"></textarea>
 
+                            </div>
+                            <br>
                         </div>
-                        <br>
                     </div>
                     <div class="card-footer">
                         <button class="btn btn-primary" [disabled]="!form.valid || model.status===false ">Submit</button>

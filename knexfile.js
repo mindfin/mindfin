@@ -8,8 +8,8 @@ module.exports = {
             // database : 'heroku_926c976eb463269',
 
             host: 'localhost',
-            user: 'root',
-            password: 'mindfin@098',
+            user: 'mindfin',
+            password: 'mindfin!@#$%',
             database: 'mindfin',
 
             // host: 'localhost',

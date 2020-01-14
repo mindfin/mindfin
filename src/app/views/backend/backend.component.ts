@@ -13,7 +13,6 @@ class FileSnippet {
 @Component({
   selector: 'app-backend',
   templateUrl: './backend.component.html',
-  // styleUrls: ['./addadmin.component.scss']
 })
 export class BackendComponent implements OnInit {
 
@@ -39,12 +38,14 @@ export class BackendComponent implements OnInit {
   bankstatementPath: any;
   loanstatementPath: any;
   gstandreturnsPath: any;
+  applicationdetailPath: any;
   selectedFiles: any;
   selectedFiles1: any;
   selectedFiles2: any;
   selectedFiles3: any;
   selectedFiles4: any;
   selectedFiles5: any;
+  selectedFiles6: any;
   currentFileUpload: any;
   imagePath: any;
   selectedFile: FileSnippet;
@@ -171,6 +172,23 @@ export class BackendComponent implements OnInit {
       }
     )
   }
+  public onFileSelect6(event) {
+    // this.processFile(event)
+    let formData = new FormData();
+    this.selectedFiles = event.target.files;
+    this.currentFileUpload = this.selectedFiles.item(0);
+    console.log(this.currentFileUpload);
+    formData.append('applicationdetails', this.currentFileUpload, this.currentFileUpload.name);
+    this.imagePath = formData;
+    console.log(this.imagePath);
+    this.imageChangeFlag = true;
+    this.commonservice.uploadImage(this.imagePath).subscribe(
+      async (data) => {
+        this.applicationdetailPath = await this.getImageURL(data)
+        console.log(this.applicationdetailPath);
+      }
+    )
+  }
   async getImageURL(data) {
     return this.imageURL = await data.imageUrl;
   }
@@ -184,7 +202,7 @@ export class BackendComponent implements OnInit {
       value: value, empid: this.empid, empname: this.empname, abc: this.abc,
       companykyc: this.companykycPath, customerkyc: this.customerkycPath, itr: this.itrPath,
       bankstatement: this.bankstatementPath, loanstatement: this.loanstatementPath,
-      gstandreturns: this.gstandreturnsPath
+      gstandreturns: this.gstandreturnsPath,applicationDetails:this.applicationdetailPath
     };
     console.log(this.value1);
     this.commonservice.custdocument(this.value1)

@@ -13,7 +13,6 @@ import { MatDialog, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material';
 // this.model;
 // }
 
-
 @Component({
   selector: 'app-home',
   templateUrl: './viewconve.component.html',
@@ -129,6 +128,7 @@ export class ConveniencslistComponent {
     
     }
 }
+
 @Component({
   selector: 'dialog-content-example-dialog',
   templateUrl: 'editconven_dialog.html',

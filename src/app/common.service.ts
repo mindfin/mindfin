@@ -363,11 +363,11 @@ export class CommonService {
     this.http.get(uri).subscribe(res => {
 
     })
-  }
+  } 
   employeeadd(fd) {
     console.log(fd);
     const uri = "https://bank.mindfin.co.in/callapi/addemployee";
-    return this.http.post(uri, fd)
+    return this.http.post(uri, fd) 
 
   }
 
@@ -1365,7 +1365,7 @@ export class CommonService {
     return this.http.get(uri);
   }
   custdocument(fd) {
-    console.log(fd);
+    console.log(fd); 
     const uri = "https://bank.mindfin.co.in/callapi/custdocument";
     return this.http.post(uri, fd)
   }
@@ -2557,6 +2557,13 @@ getBackendBanklist(postsPerPage: number, currentPage: number, sdate, edate) {
   public webleadopenstatus(value){
     console.log(value);
     return this.http.post(`https://bank.mindfin.co.in/callapi/webleadopenstatus`, value);
+  }
+  downloadall(obj) {
+    console.log(obj);
+    const uri = "https://bank.mindfin.co.in/callapi/downloadall/ ";
+    return this.http.post(uri, obj).subscribe(res => {
+      //console.log('');
+    })
   }
 }
  
