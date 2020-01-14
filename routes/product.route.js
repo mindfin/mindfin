@@ -32,7 +32,7 @@ const azureStorage = new MulterAzureStorage({
     connectionString: 'DefaultEndpointsProtocol=https;AccountName=mindfinfiles;AccountKey=4NrEY0vfXnyvJVohjkXXcBLZDfYnCCUqO/HfnaTnhmiYAYxj0n9cbVRvheeNcvdEwJFnh4DhA1Uf7Uxbcq4ocw==;EndpointSuffix=core.windows.net',
     accessKey: '4NrEY0vfXnyvJVohjkXXcBLZDfYnCCUqO/HfnaTnhmiYAYxj0n9cbVRvheeNcvdEwJFnh4DhA1Uf7Uxbcq4ocw==',
     accountName: 'mindfinfiles',
-    containerName: 'mindfin-docment-scan',
+    containerName: 'mindfin-backend',
     // blobName: originalname,
     // metadata: resolveMetadata,
     containerAccessLevel: 'blob',
