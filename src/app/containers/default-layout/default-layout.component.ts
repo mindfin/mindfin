@@ -53,6 +53,7 @@ export class DefaultLayoutComponent {
   fetchData5;
   fetchData6;
   fetchData7;
+  fetchData8;
   reason;
   half;
   other;
@@ -106,6 +107,9 @@ export class DefaultLayoutComponent {
     });
     this.service.getweblead().subscribe(res=>{
       this.fetchData7 = res;
+    });
+    this.service.getearlygocount().subscribe(res=>{
+      this.fetchData8 = res;
     });
   }
 

@@ -16,6 +16,8 @@ import { ReloanComponent} from './reloan.component';
 import { ConveniencslistComponent, EditConvContent } from './viewconve.component';
 import { LeaveApplistComponent, EditLeavappContent } from './viewleaveapp.component';
 import { SuggestionlistComponent, EditsuggestionContent } from './viewsugge.component';
+import { EarlyGoComponent } from './earlygo.component';
+import { EarlygolistComponent } from './viewearlygo.component';
 
 
 
@@ -47,7 +49,7 @@ import { SuggestionlistComponent, EditsuggestionContent } from './viewsugge.comp
   ],
   declarations: [ SubvendorComponent,CustomerlistComponent,EmpdialogContent,DisburselistComponent,
     Empdialog1Content,Empdialog2Content,ReloanComponent,ConveniencslistComponent,LeaveApplistComponent,SuggestionlistComponent,
-    EditConvContent,EditLeavappContent,EditsuggestionContent],
+    EditConvContent,EditLeavappContent,EditsuggestionContent,EarlyGoComponent,EarlygolistComponent],
   entryComponents: [EmpdialogContent,CustomerlistComponent,Empdialog1Content,Empdialog2Content,
      EditConvContent,EditLeavappContent,EditsuggestionContent,DisburselistComponent,
   ],

@@ -10,6 +10,8 @@ import { ReloanComponent } from './reloan.component';
 import { ConveniencslistComponent } from './viewconve.component';
 import { LeaveApplistComponent } from './viewleaveapp.component';
 import { SuggestionlistComponent } from './viewsugge.component';
+import { EarlyGoComponent } from './earlygo.component';
+import { EarlygolistComponent } from './viewearlygo.component';
 
 // import { BankComponent } from './bank.component';
 
@@ -74,6 +76,20 @@ const routes: Routes = [
         component:SuggestionlistComponent,
         data:{
           title:'Suggestions'
+        }
+      },
+      {
+        path:'lego',
+        component:EarlyGoComponent,
+        data:{
+          title:'Late And Early Go'
+        }
+      },
+      {
+        path:'viewEarlygo',
+        component:EarlygolistComponent,
+        data:{
+          title:'Late And Early Go Status'
         }
       },
     ]

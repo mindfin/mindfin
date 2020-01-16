@@ -2565,5 +2565,47 @@ getBackendBanklist(postsPerPage: number, currentPage: number, sdate, edate) {
       //console.log('');
     })
   }
+  public earlygo(value){
+    console.log(value);
+    return this.http.post(`https://bank.mindfin.co.in/callapi/earlygo`, value);
+  }
+  getEarlygo(id) {
+    const uri = "https://bank.mindfin.co.in/callapi/getEarlygo/" + id;
+    return this.http.get(uri);
+  }
+  getearlygocount() {
+    const uri = "https://bank.mindfin.co.in/callapi/getearlygocount";
+    return this.http.get(uri);
+  }
+  public earlygoopenstatus(value){
+    console.log(value);
+    return this.http.post(`https://bank.mindfin.co.in/callapi/earlygoopenstatus`, value);
+  }
+  getallearlygo(postsPerPage: number, currentPage: number) {
+    const queryParams = `/${postsPerPage}/${currentPage}`;
+    this.http
+      .get<{ message: string; posts: any; maxPosts: number }>(
+        "https://bank.mindfin.co.in/callapi/getallearlygo" + queryParams
+      )
+      .pipe(
+        map(postData => {
+                return {
+            posts: postData.posts,
+            maxPosts: postData.maxPosts
+          };
+        })
+      )
+      .subscribe(transformedPostData => {
+        this.posts = transformedPostData.posts;
+        this.postsUpdated.next({
+          posts: [...this.posts],
+          postCount: transformedPostData.maxPosts
+        });
+      });
+  }
+  
+  getallearlygoDetails() {
+    return this.postsUpdated.asObservable();
+  }
 }
  

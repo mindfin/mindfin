@@ -1,0 +1,57 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+
+            <form (ngSubmit)="f.form.valid && onSubmit(model)" #f="ngForm" novalidate>
+                <div class="card-header">
+                    <strong>Reason</strong>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <textarea class="form-control" required [(ngModel)]="model.reason" class="form-control" name="reason" required></textarea>
+                        </div>
+                        <div class="col-md-4">
+                            <button type="submit" [disabled]="!f.form.valid" class="btn btn-success">Submit</button>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <strong>Reasons list</strong>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Sl.No</th>
+                            <th>APPLIED DATE</th>
+                            <th>REASON</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor='let pro of fetchData1;let i=index'>
+                            <td>
+                                {{i+1}}
+                            </td>
+                            <td>
+                                {{pro.appliedDate | date:'dd/MM/yyyy'}}
+                            </td>
+                            <td>
+                                {{pro.reason}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

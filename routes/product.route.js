@@ -7374,5 +7374,74 @@ router.post('/downloadall', function(req, res) {
                 // FileSaver.saveAs(content, output);
 
         });
-})
+});
+router.post('/earlygo', function(req, res) {
+    console.log(req.body);
+    var date = format.asString('yyyy-MM-dd', new Date());
+    knex('earlygo')
+        .insert({
+            appliedDate: date,
+            reason: req.body.value.reason,
+            empID: req.body.empid,
+            empName: req.body.empname,
+            status: '1'
+        }).then(function(result) {
+            res.json('appointment sent Successfully')
+            console.log(result);
+        })
+});
+router.get('/getEarlygo/:id', (req, res) => {
+    // console.log(req.params);
+
+    knex.select()
+        .from('earlygo')
+        .where('earlygo.empID', req.params.id)
+        .orderBy('earlygo.appliedDate', 'desc')
+        .then(function(result) {
+            res.json(result);
+        })
+});
+router.get('/getearlygocount', (req, res) => {
+    knex.select()
+        .from('earlygo')
+        .where('status', "1")
+        .then(function(result) {
+            res.json(result.length);
+        })
+});
+router.post('/earlygoopenstatus', function(req, res) {
+    var date = format.asString('yyyy-MM-dd', new Date());
+    // console.log(req.body)
+    knex('earlygo')
+        .where({ status: '1' })
+        .update({
+            updateDate: date,
+            status: '0',
+        })
+        .then(function(result) {
+            res.json('Updated Successfully');
+        })
+});
+router.get('/getallearlygo/:pagesize/:page', function(req, res) {
+    const pageSize = req.params.pagesize;
+    const currentPage = req.params.page;
+    const skip = (pageSize * (currentPage - 1))
+    knex.select()
+        .from('earlygo')
+        .orderBy('appliedDate', 'desc')
+        .limit(pageSize).offset(skip)
+        .then(function(result) {
+            knex.select()
+                .from('earlygo')
+                .orderBy('appliedDate', 'desc')
+                .then(function(re) {
+                    res.status(200).json({
+                        message: "Memberlists fetched",
+                        posts: result,
+                        maxPosts: re.length
+                    });
+
+                })
+        })
+});
 module.exports = router
