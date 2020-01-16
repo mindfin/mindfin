@@ -12,7 +12,7 @@ import { any } from 'bluebird';
 import { CommonService } from '../../common.service';
 import { navItems8 } from '../../_nav8';
 import { navItems9 } from '../../_nav9';
-import { MAT_DIALOG_DATA, MatDialogConfig, MatDialog } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogConfig, MatDialog, MatDialogRef } from '@angular/material';
 
 class FileSnippet {
   static readonly IMAGE_SIZE = { width: 950, height: 720 };
@@ -54,6 +54,7 @@ export class DefaultLayoutComponent {
   fetchData6;
   fetchData7;
   fetchData8;
+  fetchData9;
   reason;
   half;
   other;
@@ -87,35 +88,39 @@ export class DefaultLayoutComponent {
       // console.log(this.fetchData);
     });
 
-    this.service.gettopleave(this.postsPerPage,this.currentPage,this.memberid).subscribe(res=>{
+    this.service.gettopleave(this.postsPerPage, this.currentPage, this.memberid).subscribe(res => {
       this.fetchData1 = res;
     });
-    this.service.gettopconven(this.postsPerPage,this.currentPage,this.memberid).subscribe(res=>{
+    this.service.gettopconven(this.postsPerPage, this.currentPage, this.memberid).subscribe(res => {
       this.fetchData2 = res;
     });
-    this.service.gettopsug(this.postsPerPage,this.currentPage,this.memberid).subscribe(res=>{
+    this.service.gettopsug(this.postsPerPage, this.currentPage, this.memberid).subscribe(res => {
       this.fetchData3 = res;
     });
-    this.service.getsugpending().subscribe(res=>{
+    this.service.getsugpending().subscribe(res => {
       this.fetchData4 = res;
     });
-    this.service.getconvpending().subscribe(res=>{
+    this.service.getconvpending().subscribe(res => {
       this.fetchData5 = res;
     });
-    this.service.getleaveapp().subscribe(res=>{
+    this.service.getleaveapp().subscribe(res => {
       this.fetchData6 = res;
     });
-    this.service.getweblead().subscribe(res=>{
+    this.service.getweblead().subscribe(res => {
       this.fetchData7 = res;
     });
-    this.service.getearlygocount().subscribe(res=>{
+    this.service.getearlygocount().subscribe(res => {
       this.fetchData8 = res;
+      console.log(this.fetchData8)
+      console.log(this.fetchData9 = this.fetchData6 + this.fetchData4 + this.fetchData5 + this.fetchData7 + this.fetchData8);
+  
     });
+    // console.log(this.fetchData9 = this.fetchData6 + this.fetchData4 + this.fetchData5 + this.fetchData7 + this.fetchData8);
   }
 
   sugbox() {
 
-       const dialogConfig = new MatDialogConfig();
+    const dialogConfig = new MatDialogConfig();
     dialogConfig.data = { reason: this.reason };
     this.dialog.open(SugboxDialogContent, dialogConfig
     );
@@ -125,14 +130,14 @@ export class DefaultLayoutComponent {
 
   leaveapp() {
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = {from:this.from,half:this.half, reason:this.reason};
+    dialogConfig.data = { from: this.from, half: this.half, reason: this.reason };
     this.dialog.open(LeaveAppDialogContent, dialogConfig
     );
     console.log(dialogConfig);
   }
   convens() {
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = {catgory:any, other:this.other,comment:this.comment};
+    dialogConfig.data = { catgory: any, other: this.other, comment: this.comment };
     this.dialog.open(ConvenienceDialogContent, dialogConfig
     );
     console.log(dialogConfig);
@@ -148,8 +153,9 @@ export class DefaultLayoutComponent {
 export class SugboxDialogContent {
 
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data:any,
-  private commonservice: CommonService, private route: ActivatedRoute, private router: Router, ) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any,
+    private commonservice: CommonService, private route: ActivatedRoute, private router: Router,
+    public dialogRef: MatDialogRef<SugboxDialogContent> ) { }
   element: any;
   empid: any;
   empname: any;
@@ -164,7 +170,7 @@ export class SugboxDialogContent {
     this.commonservice.suggbox(this.value1)
       .subscribe(res => {
         alert("Suggestion / consensu / complaint sent Successfully");
-        window.location.reload();
+        this.dialogRef.close();
       })
   }
   refresh(): void {
@@ -177,12 +183,13 @@ export class SugboxDialogContent {
   selector: 'dialog-content-example-dialog',
   templateUrl: 'leaveapp_dialog.html',
 })
- 
+
 export class LeaveAppDialogContent {
 
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data:any,
-  private commonservice: CommonService, private route: ActivatedRoute, private router: Router, ) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any,
+    private commonservice: CommonService, private route: ActivatedRoute, private router: Router,
+    public dialogRef: MatDialogRef<LeaveAppDialogContent>) { }
   element: any;
   empid: any;
   empname: any;
@@ -196,7 +203,7 @@ export class LeaveAppDialogContent {
     this.commonservice.leaveapp(this.value1)
       .subscribe(res => {
         alert("Leave Application sent Successfully");
-        window.location.reload();
+        this.dialogRef.close();
       })
   }
   refresh(): void {
@@ -212,12 +219,13 @@ export class LeaveAppDialogContent {
 export class ConvenienceDialogContent {
 
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data:any,
-  private commonservice: CommonService, private route: ActivatedRoute, private router: Router, ) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any,
+    private commonservice: CommonService, private route: ActivatedRoute, private router: Router,
+    public dialogRef: MatDialogRef<ConvenienceDialogContent> ) { }
   listing: any;
   listingData: any;
   show = false;
-  hide=false;
+  hide = false;
   addListing = false;
   sendDeleteListingData: any;
   filePath: any;
@@ -230,7 +238,7 @@ export class ConvenienceDialogContent {
   imageChangeFlag: boolean = false;
   imageURL: string;
   imageURL$: string;
-  myfields:any=[];
+  myfields: any = [];
 
   element: any;
   empid: any;
@@ -243,15 +251,15 @@ export class ConvenienceDialogContent {
     this.selectedFiles = event.target.files;
     this.currentFileUpload = this.selectedFiles.item(0);
     console.log(this.currentFileUpload);
-    formData.append('image', this.currentFileUpload,this.currentFileUpload.name);
+    formData.append('image', this.currentFileUpload, this.currentFileUpload.name);
     this.imagePath = formData;
     console.log(this.imagePath);
     this.imageChangeFlag = true;
     this.commonservice.uploadImage(this.imagePath).subscribe(
       async (data) => {
-      this.filePath = await this.getImageURL(data)
-      console.log(this.filePath);
-    }
+        this.filePath = await this.getImageURL(data)
+        console.log(this.filePath);
+      }
     )
   }
   async getImageURL(data) {
@@ -263,12 +271,12 @@ export class ConvenienceDialogContent {
     console.log(value);
     this.empid = localStorage.getItem("id");
     this.empname = localStorage.getItem("empname");
-    this.value1 = { value: value, empid: this.empid, empname: this.empname, catimg:this.filePath };
+    this.value1 = { value: value, empid: this.empid, empname: this.empname, catimg: this.filePath };
     console.log(this.value1);
     this.commonservice.conves(this.value1)
       .subscribe(res => {
         alert("Convenience sent Successfully");
-        window.location.reload();
+        this.dialogRef.close();
       })
   }
   refresh(): void {

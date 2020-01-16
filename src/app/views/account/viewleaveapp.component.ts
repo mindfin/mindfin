@@ -4,7 +4,7 @@ import { CommonService } from '../../common.service';
 import { SuperadminService } from '../../superadmin.service';
 // import { CommonService } from '../../superadmin.service';
 
-import { PageEvent, MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
+import { PageEvent, MatTableDataSource, MatSort, MatPaginator, MatDialogRef } from '@angular/material';
 // import { Memberlist } from '../../../../models/booking.model';
 import { SampleService } from '../../sample.service';
 import {MatDialog,MAT_DIALOG_DATA,MatDialogConfig} from '@angular/material';
@@ -113,7 +113,8 @@ export class EditLeavappContent{
 
 
   constructor(@Inject(MAT_DIALOG_DATA) public data:any,
-  private commonservice: CommonService, private route: ActivatedRoute, private router: Router,) {}
+  private commonservice: CommonService, private route: ActivatedRoute, private router: Router,
+  public dialogRef: MatDialogRef<EditLeavappContent>) {}
   element: any;
   empid: any;
   empname: any;
@@ -127,7 +128,7 @@ export class EditLeavappContent{
     this.commonservice.editleavapp(this.value1)
       .subscribe(res => {
         alert("Leave Application "+value.element.status+" Successfully");
-        window.location.reload();
+        this.dialogRef.close();
       })
   }
   refresh(): void {

@@ -2546,9 +2546,7 @@ getBackendBanklist(postsPerPage: number, currentPage: number, sdate, edate) {
   savecomment(obj) {
     console.log(obj);
     const uri = "https://bank.mindfin.co.in/callapi/savecomment ";
-    return this.http.post(uri, obj).subscribe(res => {
-      //console.log('');
-    })
+    return this.http.post(uri, obj)
   }
   getweblead() {
     const uri = "https://bank.mindfin.co.in/callapi/getweblead";

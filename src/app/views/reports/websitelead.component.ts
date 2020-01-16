@@ -18,7 +18,7 @@ import { MatDialog, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material';
 })
 export class WebsiteLeadReportComponent {
 
-  displayedColumns: string[] = ['date', 'cname', 'name', 'whosecase', 'executive', 'bank', 'amount', 'product', 'status', 'update', 'createdby','disstatus', 'addbank', 'edit'];
+  displayedColumns: string[] = ['date', 'cname', 'name', 'whosecase', 'executive', 'bank', 'amount', 'product', 'status', 'update', 'createdby', 'disstatus', 'addbank', 'edit'];
   samples: any;
   dataSource;
 
@@ -28,7 +28,7 @@ export class WebsiteLeadReportComponent {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  value1:any;
+  value1: any;
   empid: any;
   empname: any;
   fetchdata: any;
@@ -48,11 +48,11 @@ export class WebsiteLeadReportComponent {
 
     this.empid = localStorage.getItem("id");
     this.empname = localStorage.getItem("empname");
-    var emp= {empid: this.empid, empname: this.empname };
-    this.commonservice.webleadopenstatus(emp).subscribe(res=>{
+    var emp = { empid: this.empid, empname: this.empname };
+    this.commonservice.webleadopenstatus(emp).subscribe(res => {
       console.log(res);
-     });
-    
+    });
+
   }
   getreport(obj) {
 
@@ -97,8 +97,10 @@ export class WebsiteLeadReportComponent {
   onchange(obj) {
     console.log(obj)
     this.value1 = { value: obj, empid: this.empid, empname: this.empname };
-    this.commonservice.savecomment(this.value1);
-
+    this.commonservice.savecomment(this.value1).subscribe(res => {
+      console.log(res);
+      this.commonservice.getWebsiteLead(this.postsPerPage, this.currentPage, this.sdate, this.edate);
+    });
     // var obj1={obj:obj,period:this.period}
     // console.log(obj1)
     // this.service.addPeriod(obj1).subscribe(res=>{
