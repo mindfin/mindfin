@@ -739,13 +739,12 @@ export class CommonService {
   getViewPrevBankList(id) {
     const uri = "https://bank.mindfin.co.in/callapi/getViewPrevBankList/" + id;
     return this.http.get(uri);
-  }
+  } 
 
   addenquiry(obj) {
     console.log(obj);
     const uri = "https://bank.mindfin.co.in/callapi/addenquiry";
-    this.http.post(uri, obj).subscribe(res => {
-    })
+    return this.http.post(uri, obj)
   }
   getEnquirylist(postsPerPage: number, currentPage: number, id) {
     const queryParams = `/${postsPerPage}/${currentPage}/${id}`;
@@ -1576,7 +1575,7 @@ export class CommonService {
   }
   viewtele(id) {
     console.log(id);
-    this.router.navigate(["/executives/exeteledatalist/" + id]);
+    this.router.navigate(["/executives/exeteledatalist1/" + id]);
   }
   checkcustomer(obj) {
     // console.log(obj);
@@ -2086,9 +2085,7 @@ export class CommonService {
     console.log(obj);
     // const queryParams = `/${obj}/${obj1}`;
     const uri = "https://bank.mindfin.co.in/callapi/assignexe";
-    this.http.post(uri, obj).subscribe(res => {
-
-    })
+    return this.http.post(uri, obj)
   }
 
   getContactformlist(postsPerPage: number, currentPage: number) {
@@ -2604,6 +2601,23 @@ getBackendBanklist(postsPerPage: number, currentPage: number, sdate, edate) {
   
   getallearlygoDetails() {
     return this.postsUpdated.asObservable();
+  }
+  getnewtelcount() {
+    const uri = "https://bank.mindfin.co.in/callapi/getnewtelcount";
+    return this.http.get(uri);
+  }
+  getnewappocount(value) {
+    console.log(value);
+    const uri = "https://bank.mindfin.co.in/callapi/getnewappocount";
+    return this.http.post(uri,value);
+  }
+  public teldataopenstatus(value){
+    console.log(value);
+    return this.http.post(`https://bank.mindfin.co.in/callapi/teldataopenstatus`, value);
+  }
+  public appointmentopenstatus(value){
+    console.log(value);
+    return this.http.post(`https://bank.mindfin.co.in/callapi/appointmentopenstatus`,value);
   }
 }
  

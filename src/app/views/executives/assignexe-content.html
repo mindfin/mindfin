@@ -18,15 +18,14 @@
                 <td>{{data.element.mobile}}</td>
                 <td>{{data.element.address}}</td>
                 <td>{{data.element.turnover}}</td>
-               
+
                 <td>
-                    <select class="form-control" name="executive" [(ngModel)]="data.element.executive" required
-                    #executive="ngModel">
-                    <option *ngFor="let item of fetchData1" value="{{item.idemployee}},{{item.name}}">{{item.name}}</option>
-                 </select>
+                    <select class="form-control" name="executive" [(ngModel)]="data.element.executive" required #executive="ngModel">
+                        <option *ngFor="let item of fetchData1" value="{{item.idemployee}},{{item.name}}">{{item.name}}
+                        </option>
+                    </select>
                 </td>
-                <td><button mat-raised-button color="primary"
-                        (click)="assignexe(data.element);refresh();">Assign Executive</button></td>
+                <td><button mat-raised-button color="primary" (click)="assignexe(data.element)">Assign Executive</button></td>
             </tr>
         </tbody>
     </table>
@@ -43,7 +42,7 @@
         padding: 6.25rem !important;
         font-size: medium !important;
     }
-
+    
     table,
     th,
     td {

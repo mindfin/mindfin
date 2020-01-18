@@ -1924,7 +1924,8 @@ router.post('/addenquiry', (req, res) => {
             adminname: abc[1],
             comment: req.body.value.comment,
             updateddate: localTime,
-            turnover: req.body.value.turnover
+            turnover: req.body.value.turnover,
+            adminexeStatus: "new"
         })
         .then(function(result) {
             //console.log(result); 
@@ -1944,6 +1945,7 @@ router.get('/getenquirylist/:pagesize/:page/:id', (req, res, next) => {
         .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
         .join('employee', 'employee.idemployee', 'enquirydata.teleid')
         .where('enquirydata.teleid', req.params.id)
+        .orderBy('enquirydata.idenquiry', 'desc')
         .limit(pageSize).offset(skip)
         .then(function(result) {
             knex.select()
@@ -1951,6 +1953,7 @@ router.get('/getenquirylist/:pagesize/:page/:id', (req, res, next) => {
                 .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
                 .join('employee', 'employee.idemployee', 'enquirydata.teleid')
                 .where('enquirydata.teleid', req.params.id)
+                .orderBy('enquirydata.idenquiry', 'desc')
                 .then(function(re) {
                     res.status(200).json({
                         message: "Memberlists fetched",
@@ -4360,6 +4363,8 @@ router.get('/getEnquirylistexe/:pagesize/:page/:id', (req, res, next) => {
         .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
         .join('employee', 'employee.idemployee', 'enquirydata.teleid')
         .where('enquirydata.executiveid', req.params.id)
+
+    .orderBy('enquirydata.idenquiry', 'desc')
         .limit(pageSize).offset(skip)
         .then(function(result) {
             // console.log(res);
@@ -4368,6 +4373,8 @@ router.get('/getEnquirylistexe/:pagesize/:page/:id', (req, res, next) => {
                 .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
                 .join('employee', 'employee.idemployee', 'enquirydata.teleid')
                 .where('enquirydata.executiveid', req.params.id)
+
+            .orderBy('enquirydata.idenquiry', 'desc')
                 .then(function(re) {
 
                     res.status(200).json({
@@ -4397,6 +4404,7 @@ router.get('/viewroutine/:pagesize/:page/:id', (req, res, next) => {
         .from('daily_routine')
         .join('bank', 'bank.idbank', 'daily_routine.bankid')
         .where('employeeid', req.params.id)
+        .orderBy('daily_routine.createddate', 'desc')
         .limit(pageSize).offset(skip)
         .then(function(result) {
 
@@ -4404,6 +4412,7 @@ router.get('/viewroutine/:pagesize/:page/:id', (req, res, next) => {
                 .from('daily_routine')
                 .join('bank', 'bank.idbank', 'daily_routine.bankid')
                 .where('employeeid', req.params.id)
+                .orderBy('daily_routine.createddate', 'desc')
                 .then(function(re) {
 
                     res.status(200).json({
@@ -5945,8 +5954,11 @@ router.post('/assignexe', function(req, res) {
             assignedTime: localTime,
             executiveid: abc[0],
             executivename: abc[1],
+            adminexeStatus: 'assigned',
+            executiveStatus: 'new'
         }).then(function(result) {
             console.log(result);
+            res.json('Updated Successfully');
         })
 });
 router.get('/getContactformlist/:pagesize/:page', (req, res, next) => {
@@ -7358,23 +7370,23 @@ router.post('/webleadopenstatus', function(req, res) {
             res.json('Updated Successfully');
         })
 });
-router.post('/downloadall', function(req, res) {
-    var zip = new JSZip();
-    zip.file("https://mindfinfiles.blob.core.windows.net/mindfin-backend/" + req.body.companykyc);
-    zip.file("https://mindfinfiles.blob.core.windows.net/mindfin-backend/" + req.body.customerkyc);
-    zip.file("https://mindfinfiles.blob.core.windows.net/mindfin-backend/" + req.body.bankstatement);
-    zip.file("https://mindfinfiles.blob.core.windows.net/mindfin-backend/" + req.body.itr);
-    zip.file("https://mindfinfiles.blob.core.windows.net/mindfin-backend/" + req.body.gstandreturns);
-    zip.file("https://mindfinfiles.blob.core.windows.net/mindfin-backend/" + req.body.loanstatement);
+// router.post('/downloadall', function(req, res) {
+//     var zip = new JSZip();
+//     zip.file("https://mindfinfiles.blob.core.windows.net/mindfin-backend/" + req.body.companykyc);
+//     zip.file("https://mindfinfiles.blob.core.windows.net/mindfin-backend/" + req.body.customerkyc);
+//     zip.file("https://mindfinfiles.blob.core.windows.net/mindfin-backend/" + req.body.bankstatement);
+//     zip.file("https://mindfinfiles.blob.core.windows.net/mindfin-backend/" + req.body.itr);
+//     zip.file("https://mindfinfiles.blob.core.windows.net/mindfin-backend/" + req.body.gstandreturns);
+//     zip.file("https://mindfinfiles.blob.core.windows.net/mindfin-backend/" + req.body.loanstatement);
 
-    zip.generateAsync({ type: 'nodebuffer', mimeType: "application/zip" })
-        .then(function(content) {
-            // see FileSaver.js
-            output = "complete Zip of" + req.body.cname + ".zip"
-                // FileSaver.saveAs(content, output);
+//     zip.generateAsync({ type: 'nodebuffer', mimeType: "application/zip" })
+//         .then(function(content) {
+//             // see FileSaver.js
+//             output = "complete Zip of" + req.body.cname + ".zip"
+//                 // FileSaver.saveAs(content, output);
 
-        });
-});
+//         });
+// });
 router.post('/earlygo', function(req, res) {
     console.log(req.body);
     var date = format.asString('yyyy-MM-dd', new Date());
@@ -7442,6 +7454,55 @@ router.get('/getallearlygo/:pagesize/:page', function(req, res) {
                     });
 
                 })
+        })
+});
+router.get('/getnewtelcount', (req, res) => {
+    knex.select()
+        .from('enquirydata')
+        .where('adminexeStatus', "new")
+        .then(function(result) {
+            res.json(result.length);
+        })
+});
+router.post('/getnewappocount', (req, res) => {
+    console.log("empid", req.body.empid)
+    knex.select()
+        .from('enquirydata')
+        .where('executiveStatus', "new")
+        .where('executiveid', req.body.empid)
+        .then(function(result) {
+            res.json(result.length);
+        })
+});
+router.post('/teldataopenstatus', function(req, res) {
+    var date = format.asString('yyyy-MM-dd', new Date());
+    // console.log(req.body)
+    knex('enquirydata')
+        .where({ adminexeStatus: 'new' })
+        .update({
+            updateddate: date,
+            adminexeStatus: 'opened',
+            adminid: req.body.empid,
+            adminname: req.body.empname,
+            // executiveStatus: 'new'
+        })
+        .then(function(result) {
+            res.json('Updated Successfully');
+        })
+});
+router.post('/appointmentopenstatus', function(req, res) {
+    // var date = format.asString('yyyy-MM-dd', new Date());
+    // console.log(req.body)
+    knex('enquirydata')
+        .where({ executiveStatus: 'new' })
+        .where({ executiveid: req.body.empid })
+        .update({
+            // updateddate: date,
+            executiveStatus: 'opened'
+        })
+        .then(function(result) {
+            console.log(result)
+            res.json('Updated Successfully');
         })
 });
 module.exports = router

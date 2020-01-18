@@ -20,7 +20,7 @@ export class MemberService{
             alert("Invalid Email Or Password");
         
             window.location.reload();
-            
+             
 
           }
   else{
@@ -87,8 +87,8 @@ export class MemberService{
       }
       bankstatementcam(value) {
         console.log(value);
-        return this.http.post( "https://bank.mindfin.co.in/member/bankstatementcam",value);
-        // return this.http.post(uri, value)
+        return this.http.post("https://bank.mindfin.co.in/member/bankstatementcam",value);
+        
       }
       itrcam(value) {
         console.log(value);

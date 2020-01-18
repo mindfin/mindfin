@@ -6,6 +6,7 @@ import { SuperadminService } from '../../superadmin.service';
 import { PageEvent, MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { SampleService } from '../../sample.service';
 import {MatDialog,MAT_DIALOG_DATA,MatDialogConfig} from '@angular/material';
+import { DefaultLayoutComponent } from '../../containers';
 
 // export interface DialogData {
 // this.model;
@@ -23,7 +24,9 @@ export class ExeTeledatalistComponent  {
   dataSource;
 
   constructor(private route:ActivatedRoute, private router:Router,
-    private commonservice:CommonService, private service:SuperadminService,private excelservice:SampleService,public dialog: MatDialog) { }
+    private commonservice:CommonService, private service:SuperadminService,
+    private excelservice:SampleService,public dialog: MatDialog,
+    public defaultlayout: DefaultLayoutComponent) { }
     coins:any;
    @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
@@ -42,9 +45,16 @@ sdate;
 emp = 2;
 idvalue;
 exeid:any;
-  ngOnInit() {
+val:any;
+  ngOnInit() {   
     this.isLoading = true;
     this.exeid = localStorage.getItem("id");
+    this.val={empid:this.exeid}
+    this.commonservice.appointmentopenstatus(this.val).subscribe(res=>{
+      this.defaultlayout.ngOnInit();
+      console.log(res);
+     });
+
     this.commonservice.getEnquirylistexe(this.postsPerPage, this.currentPage,this.exeid);
     this.commonservice
     .getEnquirylistexeDetails()
@@ -60,6 +70,8 @@ exeid:any;
       this.dataSource.sort = this.sort;
     // console.log(this.dataSource.sort);
     });
+    
+   
   
       }
 

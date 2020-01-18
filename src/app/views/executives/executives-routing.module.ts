@@ -35,7 +35,7 @@ const routes: Routes = [
         }
       },
       {
-        path: 'exeteledatalist/:id',
+        path: 'exeteledatalist1/:id',
         component: ExeWiseTeledatalistComponent,
         data: {
           title: 'Telecaller Data List'

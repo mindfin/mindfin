@@ -3,9 +3,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService } from '../../common.service';
 import { SuperadminService } from '../../superadmin.service';
 
-import { PageEvent, MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
+import { PageEvent, MatTableDataSource, MatSort, MatPaginator, MatDialogRef } from '@angular/material';
 import { SampleService } from '../../sample.service';
 import {MatDialog,MAT_DIALOG_DATA,MatDialogConfig} from '@angular/material';
+import { DefaultLayoutComponent } from '../../containers';
 
 // export interface DialogData {
 // this.model;
@@ -23,7 +24,9 @@ export class AdminTeledatalistComponent  {
   dataSource;
 
   constructor(private route:ActivatedRoute, private router:Router,
-    private commonservice:CommonService, private service:SuperadminService,private excelservice:SampleService,public dialog: MatDialog) { }
+    private commonservice:CommonService, private service:SuperadminService,
+    private excelservice:SampleService,public dialog: MatDialog,
+    public defaultlayout: DefaultLayoutComponent) { }
     coins:any;
    @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
@@ -44,6 +47,8 @@ exeid:any;
 array:any;
 sdate:any;
 edate:any;
+empid:any;
+empname:any;
   ngOnInit() {
     this.isLoading = true;  
     this.route.params.subscribe(params=>{
@@ -66,6 +71,13 @@ edate:any;
       // console.log(this.dataSource.sort);
       });
     });
+    this.empid = localStorage.getItem("id");
+    this.empname = localStorage.getItem("empname");
+    var emp= {empid: this.empid, empname: this.empname };
+    this.commonservice.teldataopenstatus(emp).subscribe(res=>{
+      this.defaultlayout.ngOnInit();
+      console.log(res);
+     });
   }
 
   applyFilter(filterValue: string) {
@@ -169,7 +181,8 @@ export class AssignDialogContent{
 
 
   constructor(@Inject(MAT_DIALOG_DATA) public data:any,
-  private commonservice: CommonService ,private route: ActivatedRoute, private router: Router,) {}
+  private commonservice: CommonService ,private route: ActivatedRoute, private router: Router,
+  public dialogRef: MatDialogRef<AssignDialogContent>) {}
 element:any;
 //   constructor(
 //     @Inject(MAT_DIALOG_DATA) public data: any
@@ -184,7 +197,12 @@ ngOnInit() {
 assignexe(obj){
    console.log(obj);
   //  console.log(obj1);
-  this.commonservice.assignexe(obj);
+  this.commonservice.assignexe(obj).subscribe(res => {
+    console.log(res);
+    this.dialogRef.close();
+    window.location.reload();
+  });
+  
  }
  refresh(): void {
   window.location.reload();

@@ -8,6 +8,7 @@ import { PageEvent, MatTableDataSource, MatSort, MatPaginator } from '@angular/m
 // import { Memberlist } from '../../../../models/booking.model';
 import { SampleService } from '../../sample.service';
 import {MatDialog,MAT_DIALOG_DATA,MatDialogConfig} from '@angular/material';
+import { DefaultLayoutComponent } from '../../containers';
 
 // export interface DialogData {
 // this.model;
@@ -25,7 +26,9 @@ export class EarlygolistComponent  {
   dataSource;
 
   constructor(private route: ActivatedRoute, private router: Router,
-    private commonservice: CommonService, private service: SuperadminService, private excelservice: SampleService, public dialog: MatDialog) { }
+    private commonservice: CommonService, private service: SuperadminService,
+     private excelservice: SampleService, public dialog: MatDialog,
+     public defaultlayout: DefaultLayoutComponent) { }
   coins: any;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -48,6 +51,7 @@ export class EarlygolistComponent  {
     this.empname = localStorage.getItem("empname");
     var emp= {empid: this.empid, empname: this.empname };
     this.commonservice.earlygoopenstatus(emp).subscribe(res=>{
+      this.defaultlayout.ngOnInit();
       console.log(res);
      });
 

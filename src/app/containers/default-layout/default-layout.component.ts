@@ -55,6 +55,8 @@ export class DefaultLayoutComponent {
   fetchData7;
   fetchData8;
   fetchData9;
+  fetchData10;
+  fetchData11;
   reason;
   half;
   other;
@@ -64,6 +66,7 @@ export class DefaultLayoutComponent {
   postsPerPage = 5;
   pageSizeOptions = [5, 10, 20];
   comment;
+  val:any;
 
   constructor(private router: Router, private service: CommonService, private dialog: MatDialog) {
 
@@ -108,6 +111,14 @@ export class DefaultLayoutComponent {
     });
     this.service.getweblead().subscribe(res => {
       this.fetchData7 = res;
+    });
+    this.service.getnewtelcount().subscribe(res => {
+      this.fetchData11 = res;
+    });
+    this.val={empid:this.memberid}
+    this.service.getnewappocount(this.val).subscribe(res => {
+      this.fetchData10 = res;
+      console.log(this.fetchData10)
     });
     this.service.getearlygocount().subscribe(res => {
       this.fetchData8 = res;
@@ -155,7 +166,8 @@ export class SugboxDialogContent {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
     private commonservice: CommonService, private route: ActivatedRoute, private router: Router,
-    public dialogRef: MatDialogRef<SugboxDialogContent> ) { }
+    public dialogRef: MatDialogRef<SugboxDialogContent>) { }
+    
   element: any;
   empid: any;
   empname: any;
@@ -169,7 +181,8 @@ export class SugboxDialogContent {
     console.log(this.value1);
     this.commonservice.suggbox(this.value1)
       .subscribe(res => {
-        alert("Suggestion / consensu / complaint sent Successfully");
+        alert("Suggestion / concern / complaint sent Successfully");
+        
         this.dialogRef.close();
       })
   }
@@ -277,6 +290,7 @@ export class ConvenienceDialogContent {
       .subscribe(res => {
         alert("Convenience sent Successfully");
         this.dialogRef.close();
+        
       })
   }
   refresh(): void {

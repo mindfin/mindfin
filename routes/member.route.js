@@ -83,114 +83,168 @@ const upload = multer({
     fileFilter: fileFilter,
 });
 
+// const storage = multer.diskStorage({
+//     destination: function(req, file, cb) {
+//         cb(null, './src/assets/President/');
+//     },
+//     filename: function(req, file, cb) {
+
+//         cb(null, Date.now() + "" + file.originalname);
+
+
+//     }
+
+// })
+
+// const fileFilter = (req, file, cb) => {
+//     if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'application/pdf' || file.mimetype === 'text/csv' || file.mimetype === 'application/vnd.ms-excel' || file.mimetype === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || 'application/octet-stream' || 'application/zip') {
+//         cb(null, true);
+//     } else {
+//         cb(null, false);
+//     }
+// };
+
+// const upload = multer({
+//     storage: storage,
+//     limits: {
+//         fileSize: 1024 * 1024 * 5
+//     },
+//     fileFilter: fileFilter
+// });
 router.post('/image-upload', upload.any(), (req, res) => {
     console.log(req.files)
     return res.json({ 'imageUrl': req.files });
 });
 
+// router.post('/bankstatementcam', (req, res) => {
+
+
+//     console.log(req.body.bankstatement);
+
+//     // Enter your storage account name and shared key
+//     const account = "mindfinfiles";
+//     const accountKey = "4NrEY0vfXnyvJVohjkXXcBLZDfYnCCUqO/HfnaTnhmiYAYxj0n9cbVRvheeNcvdEwJFnh4DhA1Uf7Uxbcq4ocw==";
+//     var containerClient;
+//     var blobClient;
+//     var downloaded;
+//     var downloadBlockBlobResponse;
+//     let pdfParser = new PDFParser();
+//     // Use StorageSharedKeyCredential with storage account and account key
+//     // StorageSharedKeyCredential is only avaiable in Node.js runtime, not in browsers
+//     const sharedKeyCredential = new StorageSharedKeyCredential(account, accountKey);
+//     const blobServiceClient = new BlobServiceClient(
+//         `https://${account}.blob.core.windows.net`,
+//         sharedKeyCredential
+//     )
+//     const containerName = "mindfin-docment-scan";
+//     const blobName = req.body.bankstatement[0].blobName;
+
+//     async function main() {
+//         containerClient = blobServiceClient.getContainerClient(containerName);
+//         blobClient = containerClient.getBlobClient(blobName);
+//         // console.log("blob name ", blobClient);
+//         downloadBlockBlobResponse = await blobClient.download();
+//         localStorage.setItem('azurefile', downloadBlockBlobResponse);
+//         downloaded = await streamToString(downloadBlockBlobResponse.readableStreamBody);
+//         // console.log("Downloaded blob content:", downloaded);
+
+
+//         // [Node.js only] A helper method used to read a Node.js readable stream into string
+//         async function streamToString(readableStream) {
+//             return new Promise((resolve, reject) => {
+//                 const chunks = [];
+//                 readableStream.on("data", (data) => {
+//                     chunks.push(data.toString());
+//                 });
+//                 readableStream.on("end", () => {
+//                     resolve(chunks.join(""));
+//                 });
+//                 readableStream.on("error", reject);
+//             });
+//         }
+//         let pdfParser = new PDFParser(this, 1);
+//         // Load the pdf document
+//         pdfParser.loadPDF(`${containerClient.getBlobClient(blobName)}`);
+//         pdfParser.on("pdfParser_dataReady", (pdfData) => {
+//             // The raw PDF data in text form
+//             const raw = pdfParser.getRawTextContent().replace(/\r\n/g, " ");
+//             console.log(raw);
+//             // Return the parsed data
+//             // resolve({
+//             //     name: /Name\s(.*?)Address/i.exec(raw)[1].trim(),
+//             //     address: /Address\s(.*?)Phone/i.exec(raw)[1].trim(),
+//             //     phone: /Phone\s(.*?)Birthday/i.exec(raw)[1].trim(),
+//             //     birthday: /Birthday\s(.*?)Email\sAddress/i.exec(raw)[1].trim(),
+//             //     emailAddress: /Email\sAddress\s(.*?)Blood\stype/i.exec(raw)[1].trim(),
+//             //     bloodType: /Blood\stype\s(.*?)Height/i.exec(raw)[1].trim(),
+//             //     height: /Height\s(.*?)Weight/i.exec(raw)[1].trim(),
+//             //     weight: /Weight\s(.*?)--/i.exec(raw)[1].trim()
+//             // });
+
+//         });
+//         // (async() => {
+//         //     // Set up the pdf parser
+//         //     let pdfParser = new PDFParser(this, 1);
+//         //     // Load the pdf document
+//         //     pdfParser.loadPDF(blobClient);
+//         //     // Parsed the statement
+//         //     let statement = await new Promise(async(resolve, reject) => {
+//         //         // On data ready
+//         //         pdfParser.on("pdfParser_dataReady", (pdfData) => {
+//         //             // The raw PDF data in text form
+//         //             const raw = pdfParser.getRawTextContent().replace(/\r\n/g, " ");
+//         //             console.log(raw);
+//         //             // Return the parsed data
+//         //             // resolve({
+//         //             //     name: /Name\s(.*?)Address/i.exec(raw)[1].trim(),
+//         //             //     address: /Address\s(.*?)Phone/i.exec(raw)[1].trim(),
+//         //             //     phone: /Phone\s(.*?)Birthday/i.exec(raw)[1].trim(),
+//         //             //     birthday: /Birthday\s(.*?)Email\sAddress/i.exec(raw)[1].trim(),
+//         //             //     emailAddress: /Email\sAddress\s(.*?)Blood\stype/i.exec(raw)[1].trim(),
+//         //             //     bloodType: /Blood\stype\s(.*?)Height/i.exec(raw)[1].trim(),
+//         //             //     height: /Height\s(.*?)Weight/i.exec(raw)[1].trim(),
+//         //             //     weight: /Weight\s(.*?)--/i.exec(raw)[1].trim()
+//         //             // });
+
+//         //         });
+//         //     });
+//         //     // Add the patient to the patients array
+//         //     // patients.push(patient);
+
+//         //     // }));
+
+//         //     // Save the extracted information to a json file
+//         //     // fs.writeFileSync("patients.json", JSON.stringify(patients));
+//         // })();
+//     }
+
+//     main();
+// });
+
 router.post('/bankstatementcam', (req, res) => {
+    // console.log(req.bady.bankstatement)
+    var request = require('request');
+    var PDFParser = require("pdf2json");
+    var pdfUrl = "https://mindfinfiles.blob.core.windows.net/mindfin-docment-scan/" + req.body.bankstatement[0].blobName;
+    console.log(pdfUrl);
+    var pdfParser = new PDFParser();
 
+    var pdfPipe = request({ url: pdfUrl, encoding: null }).pipe(pdfParser);
+    console.log(pdfPipe)
+    pdfPipe.on("pdfParser_dataError", err => console.error(err));
+    pdfPipe.on("pdfParser_dataReady", pdf => {
+        // let pdf = pdfParser.getAllFieldsTypes();
+        // console.log("First console", pdfParser.getAllFieldsTypes())
+        // console.log("Second console", pdfParser.getMergedTextBlocksIfNeeded())
 
-    console.log(req.body.bankstatement);
-
-    // Enter your storage account name and shared key
-    const account = "mindfinfiles";
-    const accountKey = "4NrEY0vfXnyvJVohjkXXcBLZDfYnCCUqO/HfnaTnhmiYAYxj0n9cbVRvheeNcvdEwJFnh4DhA1Uf7Uxbcq4ocw==";
-    var containerClient;
-    var blobClient;
-    var downloaded;
-    var downloadBlockBlobResponse;
-    let pdfParser = new PDFParser();
-    // Use StorageSharedKeyCredential with storage account and account key
-    // StorageSharedKeyCredential is only avaiable in Node.js runtime, not in browsers
-    const sharedKeyCredential = new StorageSharedKeyCredential(account, accountKey);
-    const blobServiceClient = new BlobServiceClient(
-        `https://${account}.blob.core.windows.net`,
-        sharedKeyCredential
-    )
-    const containerName = "mindfin-docment-scan";
-    const blobName = req.body.bankstatement[0].blobName;
-
-    async function main() {
-        containerClient = blobServiceClient.getContainerClient(containerName);
-        blobClient = containerClient.getBlobClient(blobName);
-        // console.log("blob name ", blobClient);
-        downloadBlockBlobResponse = await blobClient.download();
-        downloaded = await streamToString(downloadBlockBlobResponse.readableStreamBody);
-        // console.log("Downloaded blob content:", downloaded);
-
-
-        // [Node.js only] A helper method used to read a Node.js readable stream into string
-        async function streamToString(readableStream) {
-            return new Promise((resolve, reject) => {
-                const chunks = [];
-                readableStream.on("data", (data) => {
-                    chunks.push(data.toString());
-                });
-                readableStream.on("end", () => {
-                    resolve(chunks.join(""));
-                });
-                readableStream.on("error", reject);
-            });
+        //get text on a particular page
+        for (let page of pdf.formImage.Pages) {
+            console.log("First console", pdfParser.getAllFieldsTypes())
+            console.log("texts in ", page.Text);
         }
-        let pdfParser = new PDFParser(this, 1);
-        // Load the pdf document
-        pdfParser.loadPDF(`${containerClient.getBlobClient(blobName)}`);
-        pdfParser.on("pdfParser_dataReady", (pdfData) => {
-            // The raw PDF data in text form
-            const raw = pdfParser.getRawTextContent().replace(/\r\n/g, " ");
-            console.log(raw);
-            // Return the parsed data
-            // resolve({
-            //     name: /Name\s(.*?)Address/i.exec(raw)[1].trim(),
-            //     address: /Address\s(.*?)Phone/i.exec(raw)[1].trim(),
-            //     phone: /Phone\s(.*?)Birthday/i.exec(raw)[1].trim(),
-            //     birthday: /Birthday\s(.*?)Email\sAddress/i.exec(raw)[1].trim(),
-            //     emailAddress: /Email\sAddress\s(.*?)Blood\stype/i.exec(raw)[1].trim(),
-            //     bloodType: /Blood\stype\s(.*?)Height/i.exec(raw)[1].trim(),
-            //     height: /Height\s(.*?)Weight/i.exec(raw)[1].trim(),
-            //     weight: /Weight\s(.*?)--/i.exec(raw)[1].trim()
-            // });
-
-        });
-        // (async() => {
-        //     // Set up the pdf parser
-        //     let pdfParser = new PDFParser(this, 1);
-        //     // Load the pdf document
-        //     pdfParser.loadPDF(blobClient);
-        //     // Parsed the statement
-        //     let statement = await new Promise(async(resolve, reject) => {
-        //         // On data ready
-        //         pdfParser.on("pdfParser_dataReady", (pdfData) => {
-        //             // The raw PDF data in text form
-        //             const raw = pdfParser.getRawTextContent().replace(/\r\n/g, " ");
-        //             console.log(raw);
-        //             // Return the parsed data
-        //             // resolve({
-        //             //     name: /Name\s(.*?)Address/i.exec(raw)[1].trim(),
-        //             //     address: /Address\s(.*?)Phone/i.exec(raw)[1].trim(),
-        //             //     phone: /Phone\s(.*?)Birthday/i.exec(raw)[1].trim(),
-        //             //     birthday: /Birthday\s(.*?)Email\sAddress/i.exec(raw)[1].trim(),
-        //             //     emailAddress: /Email\sAddress\s(.*?)Blood\stype/i.exec(raw)[1].trim(),
-        //             //     bloodType: /Blood\stype\s(.*?)Height/i.exec(raw)[1].trim(),
-        //             //     height: /Height\s(.*?)Weight/i.exec(raw)[1].trim(),
-        //             //     weight: /Weight\s(.*?)--/i.exec(raw)[1].trim()
-        //             // });
-
-        //         });
-        //     });
-        //     // Add the patient to the patients array
-        //     // patients.push(patient);
-
-        //     // }));
-
-        //     // Save the extracted information to a json file
-        //     // fs.writeFileSync("patients.json", JSON.stringify(patients));
-        // })();
-    }
-
-    main();
-});
 
 
+        pdfParser.destroy();
+    });
+})
 module.exports = router;
