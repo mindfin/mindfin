@@ -26,6 +26,7 @@ export class TeledataComponent {
   fetchData: any;
   fetchDataa: any;
   fetchData1: any;
+  fetchData2: any;
   value1: any;
   dob: any;
   teleid: any;
@@ -44,6 +45,10 @@ export class TeledataComponent {
     this.commonservice.getadminexecutivelist().subscribe(res => {
       console.log(res);
       this.fetchData1 = res;
+    });
+    this.commonservice.getbanklist().subscribe(res => {
+      console.log(res);
+      this.fetchData2 = res;
     });
     this.teleid = localStorage.getItem("id");
     console.log(this.teleid);

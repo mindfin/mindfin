@@ -1,0 +1,17 @@
+<div class="row">
+    <div *ngFor="let item of fetchData" class="col-md-3">
+        <div class="card border-success text-center">
+            <div class="card-body text-success">
+                <h5 class="card-title">{{item.notificationSubject}}</h5>
+                <p class="card-text">{{item.notification}}</p>
+                <img *ngIf="item.notificationImg != undefined" alt="notificationImg" class="img-popup-source" src="https://mindfinfiles.blob.core.windows.net/mindfin-backend/{{item.notificationImg}}" />
+
+                <br>
+                <a class="btn" role="button " style="cursor: pointer; margin:auto;display:block" title="Received Date">
+                    <h6 class="card-text text-success"><i class="fa fa-clock-o"></i> {{item.createdDate | date:'dd/MM/yyyy'}}</h6>
+                </a>
+
+            </div>
+        </div>
+    </div>
+</div>

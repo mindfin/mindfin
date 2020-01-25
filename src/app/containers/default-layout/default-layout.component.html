@@ -1,380 +1,424 @@
 <app-header [fixed]="true" [navbarBrandFull]="{src: 'assets/images/logo1.png', width: 130, height: 80, alt: 'Mindfin Logo'}" [navbarBrandMinimized]="{src: 'assets/images/head.png', width: 50, height: 50, alt: 'mindfin Logo'}" [sidebarToggler]="'lg'" [asideMenuToggler]="'lg'">
 
     <ul class="nav navbar-nav ml-auto">
-        <li class="nav-item dropdown d-md-down-none" *ngIf="abc==='SUPERADMIN'" dropdown placement="bottom right">
-            <a class="nav-link" title="Reports" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" dropdownToggle (click)="false">
+        <li class="nav-item  d-md-down-none ">
+            <a class="nav-link " role="button " [routerLink]="[ '/notification/empnotification'] " title="Notifications "><img src="/assets/images/notification.png" alt="notification" height="30px " width="30px ">
+                <span class="badge badge-danger ">{{fetchData12}}</span>
+            </a>
+        </li>
 
-                <img src="/assets/images/report.png" class="Reports" height="40px" width="40px" />
+        <li class="nav-item  d-md-down-none" *ngIf="abc==='SUPERADMIN'" dropdown placement="bottom right">
+            <a class="nav-link" title="Admin Settings" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" dropdownToggle (click)="false">
 
-                <span *ngIf="fetchData9 !==0" class="badge  badge-danger">{{fetchData9}}</span>
+                <img src="/assets/images/admin.png" height="50px" width="50px" />
             </a>
             <div class="dropdown-menu dropdown-menu-right" *dropdownMenu aria-labelledby="simple-dropdown">
-                <div class="dropdown-header text-center"><strong>Reports</strong></div>
-                <a *ngIf="abc==='SUPERADMIN'" class="dropdown-item" role="button" [routerLink]="['/account/leaveapp']" title="New Leave Application">
-
-                    <img src="/assets/images/leave.png" alt="leave" height="25px" width="25px"> New Leave Application
-                    <span *ngIf="fetchData6 !==0" class="badge  badge-danger">{{fetchData6}}</span>
+                <div class="dropdown-header text-center"><strong>Add</strong></div>
+                <a *ngIf="abc==='SUPERADMIN'" class="dropdown-item" role="button" [routerLink]="['/notification/addnotification']" title="Add Notifications ">
+                    <img src="/assets/images/addnotification.png " alt="Add Notifications " height="25px " width="25px "> Add Notifications
                 </a>
-                <a *ngIf="abc==='SUPERADMIN'" class="dropdown-item" role="button" [routerLink]="['/account/suggestion']" title="New Suggestion Box">
-
-                    <img src="/assets/images/suggestionbox.png" alt="suggestion" height="25px" width="25px"> New Suggestion
-                    <span *ngIf="fetchData4 !==0" class="badge  badge-danger">{{fetchData4}}</span>
+                <!-- <a *ngIf="abc==='SUPERADMIN' " class="dropdown-item " role="button " [routerLink]="[ '/notification/assigntodo'] " title="Assign To Do ">
+                    <img src="/assets/images/addtodo.png " alt="Assign To Do " height="25px " width="25px "> Assign To Do
+                </a> -->
+                <div class="dropdown-header text-center"><strong>VIew</strong></div>
+                <a *ngIf="abc==='SUPERADMIN'" class="dropdown-item" role="button" [routerLink]="['/notification/viewnotification']" title="View Notifications ">
+                    <img src="/assets/images/viewnoti.png " alt="Add Notifications " height="25px " width="25px "> View Sent Notifications
                 </a>
-                <a *ngIf="abc==='SUPERADMIN'" class="dropdown-item" role="button" [routerLink]="['/account/conveniencs']" title="New Conveniences">
+                <!-- <a *ngIf="abc==='SUPERADMIN' " class="dropdown-item " role="button " [routerLink]="[ '/notification/assigntodo'] " title="Assign To Do ">
+                    <img src="/assets/images/addtodo.png " alt="Assign To Do " height="25px " width="25px "> View To Do
+                </a> -->
+            </div>
+        </li>
+        <li class="nav-item  d-md-down-none " *ngIf="abc==='SUPERADMIN' " dropdown placement="bottom right ">
+            <a class="nav-link " title="Reports " data-toggle="dropdown " href="# " role="button " aria-haspopup="true " aria-expanded="false " dropdownToggle (click)="false ">
 
-                    <img src="/assets/images/Bill.png" alt="Convenience" height="25px" width="25px"> New Conveniences
-                    <span *ngIf="fetchData5 !==0" class="badge  badge-danger">{{fetchData5}}</span>
+                <img src="/assets/images/report.png " class="Reports " height="40px " width="40px " />
+
+                <span *ngIf="fetchData9 !==0 " class="badge badge-danger ">{{fetchData9}}</span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right " *dropdownMenu aria-labelledby="simple-dropdown ">
+                <div class="dropdown-header text-center "><strong>Reports</strong></div>
+                <a *ngIf="abc==='SUPERADMIN' " class="dropdown-item " role="button " [routerLink]="[ '/account/leaveapp'] " title="New Leave Application ">
+
+                    <img src="/assets/images/leave.png " alt="leave " height="25px " width="25px "> New Leave Application
+                    <span *ngIf="fetchData6 !==0 " class="badge badge-danger ">{{fetchData6}}</span>
                 </a>
-                <a *ngIf="abc==='SUPERADMIN'" class="dropdown-item" role="button" [routerLink]="['/reports/websitelead']" title="New Web Lead">
+                <a *ngIf="abc==='SUPERADMIN' " class="dropdown-item " role="button " [routerLink]="[ '/account/suggestion'] " title="New Suggestion Box ">
 
-                    <img src="/assets/images/weblead.png" alt="Convenience" height="25px" width="25px"> Web Lead
-                    <span *ngIf="fetchData7 !==0" class="badge  badge-danger">{{fetchData7}}</span>
+                    <img src="/assets/images/suggestionbox.png " alt="suggestion " height="25px " width="25px "> New Suggestion
+                    <span *ngIf="fetchData4 !==0 " class="badge badge-danger ">{{fetchData4}}</span>
                 </a>
-                <a *ngIf="abc==='SUPERADMIN'" class="dropdown-item" role="button" [routerLink]="['/account/viewEarlygo']" title="New Direct Appointment">
+                <a *ngIf="abc==='SUPERADMIN' " class="dropdown-item " role="button " [routerLink]="[ '/account/conveniencs'] " title="New Conveniences ">
 
-                    <img src="/assets/images/appointments.png" alt="Direct Appointment" height="25px" width="25px"> Direct Appointment
-                    <span *ngIf="fetchData8 !==0" class="badge  badge-danger">{{fetchData8}}</span>
+                    <img src="/assets/images/Bill.png " alt="Convenience " height="25px " width="25px "> New Conveniences
+                    <span *ngIf="fetchData5 !==0 " class="badge badge-danger ">{{fetchData5}}</span>
+                </a>
+                <a *ngIf="abc==='SUPERADMIN' " class="dropdown-item " role="button " [routerLink]="[ '/reports/websitelead'] " title="New Web Lead ">
+
+                    <img src="/assets/images/weblead.png " alt="Convenience " height="25px " width="25px "> Web Lead
+                    <span *ngIf="fetchData7 !==0 " class="badge badge-danger ">{{fetchData7}}</span>
+                </a>
+                <a *ngIf="abc==='SUPERADMIN' " class="dropdown-item " role="button " [routerLink]="[ '/account/viewEarlygo'] " title="New Direct Appointment ">
+
+                    <img src="/assets/images/appointments.png " alt="Direct Appointment " height="25px " width="25px "> Direct Appointment
+                    <span *ngIf="fetchData8 !==0 " class="badge badge-danger ">{{fetchData8}}</span>
                 </a>
             </div>
         </li>
-        <li class="nav-item mycss d-md-down-none" *ngIf="abc==='ACCOUNTANT'">
-            <a class="nav-link" role="button" [routerLink]="['/account/conveniencs']" title="New Conveniences"><img src="/assets/images/Bill.png" alt="Convenience" height="25px" width="25px">
-                <span *ngIf="fetchData5 !==0" class="badge  badge-danger">{{fetchData5}}</span>
+        <li class="nav-item  d-md-down-none " *ngIf="abc==='ACCOUNTANT' ">
+            <a class="nav-link " role="button " [routerLink]="[ '/account/conveniencs'] " title="New Conveniences "><img src="/assets/images/Bill.png " alt="Convenience " height="25px " width="25px ">
+                <span *ngIf="fetchData5 !==0 " class="badge badge-danger ">{{fetchData5}}</span>
             </a>
         </li>
-        <li class="nav-item mycss d-md-down-none" *ngIf="abc==='EXECUTIVE' && isadmin!=='Admin'">
-            <a class="nav-link" role="button" [routerLink]="['/executives/exeteledatalist']" title="New Appointments"><img src="/assets/images/assign.png" alt="Appointment Assign" height="25px" width="25px">
-                <span *ngIf="fetchData10 !==0" class="badge  badge-danger">{{fetchData10}}</span>
+        <li class="nav-item  d-md-down-none " *ngIf="abc==='EXECUTIVE' && isadmin!=='Admin' ">
+            <a class="nav-link " role="button " [routerLink]="[ '/executives/exeteledatalist'] " title="New Appointments "><img src="/assets/images/assign.png " alt="Appointment Assign " height="25px " width="25px ">
+                <span *ngIf="fetchData10 !==0 " class="badge badge-danger ">{{fetchData10}}</span>
             </a>
         </li>
-        <li class="nav-item mycss d-md-down-none" *ngIf="abc==='EXECUTIVE' && isadmin==='Admin'">
-            <a class="nav-link" role="button" [routerLink]="['/executives/admindata']" title="New TeleData"><img src="/assets/images/phone.png" alt="TeleData" height="25px" width="25px">
-                <span *ngIf="fetchData11 !==0" class="badge  badge-danger">{{fetchData11}}</span>
+        <li class="nav-item  d-md-down-none " *ngIf="abc==='EXECUTIVE' && isadmin==='Admin' ">
+            <a class="nav-link " role="button " [routerLink]="[ '/executives/admindata'] " title="New TeleData "><img src="/assets/images/phone.png " alt="TeleData " height="25px " width="25px ">
+                <span *ngIf="fetchData11 !==0 " class="badge badge-danger ">{{fetchData11}}</span>
             </a>
         </li>
 
-        <li class="nav-item dropdown" dropdown placement="bottom right">
-            <a class="nav-link" title="{{fetchData.name}}" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" dropdownToggle (click)="false">
-                <img src="https://mindfinfiles.blob.core.windows.net/mindfin-backend/{{fetchData.cimage}}" class="myimg" height="40px" width="40px" /><span class="nav-item mycss d-md-down-none">{{fetchData.name}}</span>
+
+        <li class="nav-item dropdown " dropdown placement="bottom right ">
+            <a class="nav-link " title="{{fetchData.name}} " data-toggle="dropdown " href="# " role="button " aria-haspopup="true " aria-expanded="false " dropdownToggle (click)="false ">
+                <img src="https://mindfinfiles.blob.core.windows.net/mindfin-backend/{{fetchData.cimage}} " class="myimg " height="50px " width="50px " /><span class="nav-item mycss d-md-down-none card-text text-info"><b>{{fetchData.name}}</b></span>
             </a>
-            <div class="dropdown-menu dropdown-menu-right" *dropdownMenu aria-labelledby="simple-dropdown">
-                <div class="dropdown-header text-center"><strong>Account Settings</strong></div>
-                <a class="dropdown-item btn" [routerLink]="['/member/home']"><img src="https://mindfinfiles.blob.core.windows.net/mindfin-backend/{{fetchData.cimage}}" class="myimg" alt="emp" height="30px" width="30px">{{fetchData.name}}
+            <div class="dropdown-menu dropdown-menu-right " *dropdownMenu aria-labelledby="simple-dropdown ">
+                <div class="dropdown-header text-center "><strong>Settings</strong></div>
+                <a class="dropdown-item " style="cursor: pointer;" (click)="convens() "><img src="/assets/images/Bill.png " class="myimg " alt="emp " height="30px " width="30px "> Conveniences
                 </a>
-                <a class="dropdown-item" (click)="convens()"><img src="/assets/images/Bill.png" class="myimg" alt="emp" height="30px" width="30px"> Conveniences</a>
-                <a class="dropdown-item" (click)="sugbox()"><img src="/assets/images/suggestionbox.png" class="myimg" alt="emp" height="30px" width="30px"> Suggestion Box</a>
-                <a class="dropdown-item" (click)="leaveapp()"><img src="/assets/images/leave.png" class="myimg" alt="emp" height="30px" width="30px"> Leave Application</a>
-                <a class="dropdown-item" (click)="logout()"><img src="/assets/images/logout.png" class="myimg" alt="emp" height="30px" width="30px"> Logout</a>
+                <a class="dropdown-item " style="cursor: pointer;" (click)="sugbox() "><img src="/assets/images/suggestionbox.png " class="myimg " alt="emp " height="30px " width="30px "> Suggestion Box</a>
+                <a class="dropdown-item " style="cursor: pointer;" (click)="leaveapp() "><img src="/assets/images/leave.png " class="myimg " alt="emp " height="30px " width="30px "> Leave Application
+                </a>
+                <a class="dropdown-item " style="cursor: pointer;" (click)="logout() "><img src="/assets/images/logout.png " class="myimg " alt="emp " height="30px " width="30px "> Logout
+                </a>
             </div>
 
         </li>
         <!-- <li </li> -->
     </ul>
 </app-header>
-<div class="app-body">
-    <app-sidebar [fixed]="true" [display]="'lg'" *ngIf="abc==='SUPERADMIN'">
-        <app-sidebar-nav [navItems]="navItems" [perfectScrollbar] [disabled]="sidebarMinimized" style="background:url('assets/images/123.jpg')!important;background-repeat: no-repeat!important;background-size:cover!important;">
+<div class="app-body ">
+    <app-sidebar [fixed]="true " [display]=" 'lg' " *ngIf="abc==='SUPERADMIN' ">
+        <app-sidebar-nav [navItems]="navItems " [perfectScrollbar] [disabled]="sidebarMinimized " style="background:url( 'assets/images/123.jpg')!important;background-repeat: no-repeat!important;background-size:cover!important; ">
         </app-sidebar-nav>
         <app-sidebar-minimizer></app-sidebar-minimizer>
     </app-sidebar>
-    <app-sidebar [fixed]="true" [display]="'lg'" *ngIf="abc==='EXECUTIVE' && isadmin==='Admin'">
-        <app-sidebar-nav [navItems]="navItems8" [perfectScrollbar] [disabled]="sidebarMinimized" style="background:url('assets/images/123.jpg')!important;background-repeat: no-repeat!important;background-size:cover!important;">
+    <app-sidebar [fixed]="true " [display]=" 'lg' " *ngIf="abc==='EXECUTIVE' && isadmin==='Admin' ">
+        <app-sidebar-nav [navItems]="navItems8 " [perfectScrollbar] [disabled]="sidebarMinimized " style="background:url( 'assets/images/123.jpg')!important;background-repeat: no-repeat!important;background-size:cover!important; ">
         </app-sidebar-nav>
         <app-sidebar-minimizer></app-sidebar-minimizer>
     </app-sidebar>
-    <app-sidebar [fixed]="true" [display]="'lg'" *ngIf="abc==='EXECUTIVE' && isadmin!=='Admin'">
-        <app-sidebar-nav [navItems]="navItems1" [perfectScrollbar] [disabled]="sidebarMinimized" style="background:url('assets/images/123.jpg')!important;background-repeat: no-repeat!important;background-size:cover!important;">
+    <app-sidebar [fixed]="true " [display]=" 'lg' " *ngIf="abc==='EXECUTIVE' && isadmin!=='Admin' ">
+        <app-sidebar-nav [navItems]="navItems1 " [perfectScrollbar] [disabled]="sidebarMinimized " style="background:url( 'assets/images/123.jpg')!important;background-repeat: no-repeat!important;background-size:cover!important; ">
         </app-sidebar-nav>
         <app-sidebar-minimizer></app-sidebar-minimizer>
     </app-sidebar>
-    <app-sidebar [fixed]="true" [display]="'lg'" *ngIf="abc==='TELECALLER'">
-        <app-sidebar-nav [navItems]="navItems2" [perfectScrollbar] [disabled]="sidebarMinimized" style="background:url('assets/images/123.jpg')!important;background-repeat: no-repeat!important;background-size:cover!important;">
-        </app-sidebar-nav>
-        <app-sidebar-minimizer></app-sidebar-minimizer>
-    </app-sidebar>
-
-    <app-sidebar [fixed]="true" [display]="'lg'" *ngIf="abc==='DATA ENTRY'">
-        <app-sidebar-nav [navItems]="navItems3" [perfectScrollbar] [disabled]="sidebarMinimized" style="background:url('assets/images/123.jpg')!important;background-repeat: no-repeat!important;background-size:cover!important;">
+    <app-sidebar [fixed]="true " [display]=" 'lg' " *ngIf="abc==='TELECALLER' ">
+        <app-sidebar-nav [navItems]="navItems2 " [perfectScrollbar] [disabled]="sidebarMinimized " style="background:url( 'assets/images/123.jpg')!important;background-repeat: no-repeat!important;background-size:cover!important; ">
         </app-sidebar-nav>
         <app-sidebar-minimizer></app-sidebar-minimizer>
     </app-sidebar>
 
-    <app-sidebar [fixed]="true" [display]="'lg'" *ngIf="abc==='ACCOUNTANT'">
-        <app-sidebar-nav [navItems]="navItems5" [perfectScrollbar] [disabled]="sidebarMinimized" style="background:url('assets/images/123.jpg')!important;background-repeat: no-repeat!important;background-size:cover!important;">
+    <app-sidebar [fixed]="true " [display]=" 'lg' " *ngIf="abc==='DATA ENTRY' ">
+        <app-sidebar-nav [navItems]="navItems3 " [perfectScrollbar] [disabled]="sidebarMinimized " style="background:url( 'assets/images/123.jpg')!important;background-repeat: no-repeat!important;background-size:cover!important; ">
         </app-sidebar-nav>
         <app-sidebar-minimizer></app-sidebar-minimizer>
     </app-sidebar>
-    <app-sidebar [fixed]="true" [display]="'lg'" *ngIf="abc==='LOGIN'">
-        <app-sidebar-nav [navItems]="navItems6" [perfectScrollbar] [disabled]="sidebarMinimized" style="background:url('assets/images/123.jpg')!important;background-repeat: no-repeat!important;background-size:cover!important;">
+
+    <app-sidebar [fixed]="true " [display]=" 'lg' " *ngIf="abc==='ACCOUNTANT' ">
+        <app-sidebar-nav [navItems]="navItems5 " [perfectScrollbar] [disabled]="sidebarMinimized " style="background:url( 'assets/images/123.jpg')!important;background-repeat: no-repeat!important;background-size:cover!important; ">
         </app-sidebar-nav>
         <app-sidebar-minimizer></app-sidebar-minimizer>
     </app-sidebar>
-    <app-sidebar [fixed]="true" [display]="'lg'" *ngIf="abc==='BACKEND'">
-        <app-sidebar-nav [navItems]="navItems7" [perfectScrollbar] [disabled]="sidebarMinimized" style="background:url('assets/images/123.jpg')!important;background-repeat: no-repeat!important;background-size:cover!important;">
+    <app-sidebar [fixed]="true " [display]=" 'lg' " *ngIf="abc==='LOGIN' ">
+        <app-sidebar-nav [navItems]="navItems6 " [perfectScrollbar] [disabled]="sidebarMinimized " style="background:url( 'assets/images/123.jpg')!important;background-repeat: no-repeat!important;background-size:cover!important; ">
         </app-sidebar-nav>
         <app-sidebar-minimizer></app-sidebar-minimizer>
     </app-sidebar>
-    <app-sidebar [fixed]="true" [display]="'lg'" *ngIf="abc==='ADMIN'">
-        <app-sidebar-nav [navItems]="navItems9" [perfectScrollbar] [disabled]="sidebarMinimized" style="background:url('assets/images/123.jpg')!important;background-repeat: no-repeat!important;background-size:cover!important;">
+    <app-sidebar [fixed]="true " [display]=" 'lg' " *ngIf="abc==='BACKEND' ">
+        <app-sidebar-nav [navItems]="navItems7 " [perfectScrollbar] [disabled]="sidebarMinimized " style="background:url( 'assets/images/123.jpg')!important;background-repeat: no-repeat!important;background-size:cover!important; ">
         </app-sidebar-nav>
         <app-sidebar-minimizer></app-sidebar-minimizer>
     </app-sidebar>
-    <app-sidebar [fixed]="true" [display]="'lg'" *ngIf="abc==='CUSTOMER'">
-        <app-sidebar-nav [navItems]="navItems4" [perfectScrollbar] [disabled]="sidebarMinimized" style="background:url('assets/images/123.jpg')!important;background-repeat: no-repeat!important;background-size:cover!important;">
+    <app-sidebar [fixed]="true " [display]=" 'lg' " *ngIf="abc==='ADMIN' ">
+        <app-sidebar-nav [navItems]="navItems9 " [perfectScrollbar] [disabled]="sidebarMinimized " style="background:url( 'assets/images/123.jpg')!important;background-repeat: no-repeat!important;background-size:cover!important; ">
+        </app-sidebar-nav>
+        <app-sidebar-minimizer></app-sidebar-minimizer>
+    </app-sidebar>
+    <app-sidebar [fixed]="true " [display]=" 'lg' " *ngIf="abc==='CUSTOMER' ">
+        <app-sidebar-nav [navItems]="navItems4 " [perfectScrollbar] [disabled]="sidebarMinimized " style="background:url( 'assets/images/123.jpg')!important;background-repeat: no-repeat!important;background-size:cover!important; ">
         </app-sidebar-nav>
         <app-sidebar-minimizer></app-sidebar-minimizer>
     </app-sidebar>
     <!-- Main content -->
-    <main class="main">
+    <main class="main ">
         <!-- Breadcrumb -->
-        <ol class="breadcrumb">
+        <ol class="breadcrumb ">
             <app-breadcrumb></app-breadcrumb>
             <!-- Breadcrumb Menu-->
-            <!-- <li class="breadcrumb-menu d-md-down-none">
-                <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-                    <a class="btn" href="#"><i class="icon-speech"></i></a>
-                    <a class="btn" [routerLink]="['/dashboard']"><i class="icon-graph"></i> &nbsp;Dashboard</a>
-                    <a class="btn" href="#"><i class="icon-settings"></i> &nbsp;Settings</a>
+            <!-- <li class="breadcrumb-menu d-md-down-none ">
+                <div class="btn-group " role="group " aria-label="Button group with nested dropdown ">
+                    <a class="btn " href="# "><i class="icon-speech "></i></a>
+                    <a class="btn " [routerLink]="[ '/dashboard'] "><i class="icon-graph "></i> &nbsp;Dashboard</a>
+                    <a class="btn " href="# "><i class="icon-settings "></i> &nbsp;Settings</a>
                 </div>
             </li> -->
         </ol>
-        <div class="container-fluid">
+        <div class="container-fluid ">
             <router-outlet></router-outlet>
         </div>
         <!-- /.container-fluid -->
     </main>
-    <app-aside [fixed]="true" [display]="false" [ngClass]="'test'">
+    <app-aside [fixed]="true " [display]="false " [ngClass]=" 'test' ">
         <tabset>
             <tab>
                 <ng-template tabHeading>
-                    <a role="button" title="Leave Application Status"><img src="/assets/images/leave.png" alt="leave" height="25px" width="25px"></a>
-                </ng-template>
-                <div class="list-group list-group-accent">
-                    <div class="list-group-item list-group-item-accent-secondary bg-light text-center font-weight-bold text-muted text-uppercase small">
-                        Leave Application Status </div>
+                    <a role="button " title="More Settings "><img src="/assets/images/alerts.png " alt="More Settings " height="25px " width="25px "></a>
 
-                    <div *ngFor='let pro of fetchData1'>
 
-                        <div class="list-group-item list-group-item-accent-info list-group-item-divider" *ngIf="pro.status ==='Pending' ; else Opened; ">
-                            <small class="text-muted mr-3"><i class="fa fa-calendar-times-o"></i> {{pro.leaveFrom}} -
-                                {{pro.leaveTo}}</small>
-                            <small class="text-muted"><i class="fa fa-clock-o"></i>  {{pro.noDays}}day ago</small>
-                            <div><strong>{{pro.reason}}</strong></div>
-                        </div>
 
-                        <ng-template #Opened>
-                            <div class="list-group-item list-group-item-accent-warning list-group-item-divider" *ngIf="pro.status ==='Opened' ; else Approved;">
-                                <small class="text-muted mr-3"><i class="fa fa-calendar-times-o"></i> {{pro.leaveFrom}}
-                                    - {{pro.leaveTo}}</small>
-                                <small class="text-muted"><i class="fa fa-clock-o"></i>  {{pro.noDays}}day ago</small>
-                                <div><strong>{{pro.reason}}</strong></div>
-                            </div>
-                        </ng-template>
-                        <ng-template #Approved>
-                            <div class="list-group-item list-group-item-accent-success list-group-item-divider" *ngIf="pro.status==='Approved' ; else Reject;">
-                                <small class="text-muted mr-3"><i class="fa fa-calendar-times-o"></i> {{pro.leaveFrom}}
-                                    - {{pro.leaveTo}}</small>
-                                <small class="text-muted"><i class="fa fa-clock-o"></i>  {{pro.noDays}}day ago</small>
-                                <div><strong>{{pro.reason}}</strong></div>
-                            </div>
-                        </ng-template>
-                        <ng-template #Reject>
-                            <div class="list-group-item list-group-item-accent-danger list-group-item-divider" *ngIf="pro.status==='Reject'">
-                                <small class="text-muted mr-3"><i class="fa fa-calendar-times-o"></i> {{pro.leaveFrom}}
-                                    - {{pro.leaveTo}}</small>
-                                <small class="text-muted"><i class="fa fa-clock-o"></i>  {{pro.noDays}}day ago</small>
-                                <div><strong>{{pro.reason}}</strong></div>
-                            </div>
-                        </ng-template>
-                    </div>
-                    <div class="list-group-item text-center list-group-item-divider">
-                        <a class="btn badge-info" [routerLink]="['/member/indileavapp']"><i class="fa fa-eye"></i>
-                            &nbsp;View All</a>
-                    </div>
-
-                    <div class="list-group-item  list-group-item-divider">
-                        <small class="badge badge-info "> Applied </small>
-                        <small class="badge badge-warning"> Opened </small>
-                        <small class="badge badge-success"> Approved </small>
-                        <small class="badge badge-danger"> Rejected </small>
-                    </div>
-                </div>
-            </tab>
-            <tab>
-                <ng-template tabHeading>
-                    <a role="button" title="Convenience Status"><img src="/assets/images/Bill.png" alt="Convenience" height="25px" width="25px"></a>
-                </ng-template>
-                <div class="list-group list-group-accent">
-                    <div class="list-group-item list-group-item-accent-secondary bg-light text-center font-weight-bold text-muted text-uppercase small">
-                        Convenience Status</div>
-                    <div *ngFor='let pro1 of fetchData2'>
-
-                        <div class="list-group-item list-group-item-accent-info list-group-item-divider" *ngIf="pro1.status ==='Pending' ; else Opened; ">
-                            <div class="avatar float-right">
-                                <img class="img-avatar" src="https://mindfinfiles.blob.core.windows.net/mindfin-backend/{{pro1.conImg}}" alt="Convenienceimg">
-                            </div>
-                            <div><strong>{{pro1.categories}}</strong></div>
-                            <!-- <small class="text-muted mr-3 float-right"><i class="fa fa-th-list"></i>  {{pro1.appliedDate}}</small> -->
-                        </div>
-
-                        <ng-template #Opened>
-                            <div class="list-group-item list-group-item-accent-warning list-group-item-divider" *ngIf="pro1.status ==='Opened' ; else Approved;">
-                                <div class="avatar float-right">
-                                    <img class="img-avatar" src="https://mindfinfiles.blob.core.windows.net/mindfin-backend/{{pro1.conImg}}" alt="Convenienceimg">
-                                </div>
-                                <div><strong>{{pro1.categories}}</strong></div>
-                                <!-- <small class="text-muted mr-3 float-right"><i class="fa fa-th-list"></i>  {{pro1.appliedDate}}</small> -->
-                            </div>
-                        </ng-template>
-                        <ng-template #Approved>
-                            <div class="list-group-item list-group-item-accent-success list-group-item-divider" *ngIf="pro1.status==='Approved' ; else Reject;">
-                                <div class="avatar float-right">
-                                    <img class="img-avatar" src="https://mindfinfiles.blob.core.windows.net/mindfin-backend/{{pro1.conImg}}" alt="Convenienceimg">
-                                </div>
-                                <div><strong>{{pro1.categories}}</strong></div>
-                                <!-- <small class="text-muted mr-3 float-right"><i class="fa fa-th-list"></i>  {{pro1.appliedDate}}</small> -->
-                            </div>
-                        </ng-template>
-                        <ng-template #Reject>
-                            <div class="list-group-item list-group-item-accent-danger list-group-item-divider" *ngIf="pro1.status==='Reject'">
-                                <div class="avatar float-right">
-                                    <img class="img-avatar" src="https://mindfinfiles.blob.core.windows.net/mindfin-backend/{{pro1.conImg}}" alt="Convenienceimg">
-                                </div>
-                                <div><strong>{{pro1.categories}}</strong></div>
-                                <!-- <small class="text-muted mr-3 float-right"><i class="fa fa-th-list"></i>  {{pro1.appliedDate}}</small> -->
-                            </div>
-                        </ng-template>
-                    </div>
-                    <div class="list-group-item text-center list-group-item-divider">
-                        <a class="btn badge-info" [routerLink]="['/member/indiconve']"><i class="fa fa-eye"></i>
-                            &nbsp;View All</a>
-                    </div>
-
-                    <div class="list-group-item  list-group-item-divider">
-                        <small class="badge badge-info "> Applied </small>
-                        <small class="badge badge-warning"> Opened </small>
-                        <small class="badge badge-success"> Approved </small>
-                        <small class="badge badge-danger"> Rejected </small>
-                    </div>
-                </div>
-            </tab>
-            <tab>
-                <ng-template tabHeading>
-                    <a role="button" title="Suggestion Status"><img src="/assets/images/suggestionbox.png" alt="Suggestion" height="25px" width="25px"></a>
-                </ng-template>
-                <div class="list-group list-group-accent">
-                    <div class="list-group-item list-group-item-accent-secondary bg-light text-center font-weight-bold text-muted text-uppercase small">
-                        Suggestion Status</div>
-                    <div *ngFor='let pro2 of fetchData3'>
-
-                        <div class="list-group-item list-group-item-accent-info list-group-item-divider" *ngIf="pro2.status ==='Pending' ; else Opened; ">
-                            <div><strong>{{pro2.suggestion}}</strong></div>
-                        </div>
-
-                        <ng-template #Opened>
-                            <div class="list-group-item list-group-item-accent-warning list-group-item-divider" *ngIf="pro2.status ==='Opened' ; else Approved;">
-                                <div><strong>{{pro2.suggestion}}</strong></div>
-                            </div>
-                        </ng-template>
-                        <ng-template #Approved>
-                            <div class="list-group-item list-group-item-accent-success list-group-item-divider" *ngIf="pro2.status==='Approved' ; else Reject;">
-                                <div><strong>{{pro2.suggestion}}</strong></div>
-                            </div>
-                        </ng-template>
-                        <ng-template #Reject>
-                            <div class="list-group-item list-group-item-accent-danger list-group-item-divider" *ngIf="pro2.status==='Reject'">
-                                <div><strong>{{pro2.suggestion}}</strong></div>
-                            </div>
-                        </ng-template>
-                    </div>
-                    <div class="list-group-item text-center list-group-item-divider">
-                        <a class="btn badge-info" [routerLink]="['/member/indiSuggest']"><i class="fa fa-eye"></i>
-                            &nbsp;View All</a>
-                    </div>
-
-                    <div class="list-group-item  list-group-item-divider">
-                        <small class="badge badge-info "> Sent </small>
-                        <small class="badge badge-warning"> Opened </small>
-                        <small class="badge badge-success"> Approved </small>
-                        <small class="badge badge-danger"> Rejected </small>
-                    </div>
-                </div>
-
-            </tab>
-            <tab>
-                <ng-template tabHeading>
-                    <a role="button" title="More Settings"><img src="/assets/images/alerts.png" alt="More Settings" height="25px" width="25px"></a>
                 </ng-template>
                 <!-- Events display code -->
-                <div class="list-group list-group-accent">
-                    <div class="list-group-item list-group-item-accent-secondary bg-light text-center font-weight-bold text-muted text-uppercase small">
+                <div class="list-group list-group-accent ">
+                    <div class="list-group-item list-group-item-accent-secondary bg-light text-center font-weight-bold text-muted text-uppercase small ">
                         More Settings</div>
                 </div>
-                <div class="p-3 list-group-item list-group-item-divider font-weight-bold text-center">
-                    <a role="button" title="Profile Setting">
-                        <div class="float-left">
-                            <div class="avatar">
-                                <img src="https://mindfinfiles.blob.core.windows.net/mindfin-backend/{{fetchData.cimage}}" alt="profile Setting" height="30px" width="30px">
+                <div class="p-3 list-group-item list-group-item-divider font-weight-bold text-center ">
+                    <a class="card-text text-info" style="cursor: pointer; text-decoration: none" role="button " title="Profile Setting" [routerLink]="[ '/notification/profilesettings'] ">
+                        <div class="float-left ">
+                            <div class="avatar ">
+                                <img src="https://mindfinfiles.blob.core.windows.net/mindfin-backend/{{fetchData.cimage}} " alt="profile Setting " height="30px " width="30px ">
                             </div>
                         </div>
-                        <!-- <a role="button" title="Upcoming Event" [routerLink]="['/account/suggestion']">Upcoming Events</a> -->
                         Profile Setting
                     </a>
                 </div>
-                <div class="p-3 list-group-item list-group-item-divider font-weight-bold text-center">
+                <div class="p-3 list-group-item list-group-item-divider font-weight-bold text-center ">
 
-                    <a role="button" title="Late In or Early Go" [routerLink]="['/account/lego']">
-                        <div class="float-left">
-                            <div class="avatar">
-                                <img src="/assets/images/appointments.png" alt="Direct Appointment" height="30px" width="30px">
+                    <a class="card-text text-info" style="cursor: pointer; text-decoration: none" role="button " title="Late In or Early Go " [routerLink]="[ '/account/lego'] ">
+                        <div class="float-left ">
+                            <div class="avatar ">
+                                <img src="/assets/images/appointments.png " alt="Direct Appointment " height="30px " width="30px ">
                             </div>
                         </div>
                         Late In Or Early Out
                     </a>
-                    <!-- <a role="button" title="Late and Early Go ">Late & Early Go</a> -->
+                    <!-- <a role="button " title="Late and Early Go ">Late & Early Go</a> -->
                 </div>
-                <div class="p-3 list-group-item list-group-item-divider font-weight-bold text-center">
-                    <a role="button" title="Upcoming Event">
-                        <div class="float-left">
-                            <div class="avatar">
-                                <img src="/assets/images/event.png" alt="upcoming Events" height="30px" width="30px">
+                <div class="p-3 list-group-item list-group-item-divider font-weight-bold text-center ">
+                    <a class="card-text text-info" style="cursor: pointer; text-decoration: none" [routerLink]="[ '/notification/empnotification']" role=" button " title="Notifications ">
+                        <div class="float-left ">
+                            <div class="avatar ">
+                                <img src="/assets/images/notification.png " alt="notification " height="30px " width="30px ">
                             </div>
                         </div>
-                        <!-- <a role="button" title="Upcoming Event" [routerLink]="['/account/suggestion']">Upcoming Events</a> -->
-                        Upcoming Events
-                    </a>
-                </div>
-
-                <div class="p-3 list-group-item list-group-item-divider font-weight-bold text-center">
-                    <a role="button" title="Notifications">
-                        <div class="float-left">
-                            <div class="avatar">
-                                <img src="/assets/images/notification.png" alt="notification" height="30px" width="30px">
-                            </div>
-                        </div>
-                        <!-- <a role="button" title="Upcoming Event" [routerLink]="['/account/suggestion']">Upcoming Events</a> -->
+                        <!-- <a role="button " title="Upcoming Event " [routerLink]="[ '/account/suggestion'] ">Upcoming Events</a> -->
                         Notifications
+                        <div class="float-right ">
+                            <span class="badge badge-danger ">{{fetchData12}}</span>
+                        </div>
                     </a>
                 </div>
-                <div class="p-3 list-group-item list-group-item-divider font-weight-bold text-center">
-                    <a role="button" title="todo">
-                        <div class="float-left">
-                            <div class="avatar">
-                                <img src="/assets/images/todo.png" alt="todolist" height="30px" width="30px">
+                <div class="p-3 list-group-item list-group-item-divider font-weight-bold text-center ">
+                    <a class="card-text text-info " style="cursor: pointer; text-decoration: none " [routerLink]="[ '/notification/assigntodo']" role="button " title="todo ">
+                        <div class="float-left ">
+                            <div class="avatar ">
+                                <img src="/assets/images/todo.png " alt="todolist " height="30px " width="30px ">
                             </div>
                         </div>
-                        <!-- <a role="button" title="Upcoming Event" [routerLink]="['/account/suggestion']">Upcoming Events</a> -->
+                        <!-- <a role="button " title="Upcoming Event " [routerLink]="[ '/account/suggestion'] ">Upcoming Events</a> -->
                         TO Do List
+                        <div class="float-right ">
+                            <span class="badge badge-danger ">{{fetchData13}}</span>
+                        </div>
+
+                    </a>
+                </div>
+                <div class="p-3 list-group-item list-group-item-divider font-weight-bold text-center ">
+                    <a class="card-text text-info" style="cursor: pointer; text-decoration: none" role="button " title="Calendar">
+                        <div class="float-left ">
+                            <div class="avatar ">
+                                <img src="/assets/images/event.png " alt="upcoming Events " height="30px " width="30px ">
+                            </div>
+                        </div>
+                        <!-- <a role="button " title="Upcoming Event " [routerLink]="[ '/account/suggestion'] ">Upcoming Events</a> -->
+                        Calendar
                     </a>
                 </div>
             </tab>
+            <tab>
+                <ng-template tabHeading>
+                    <a role="button " title="Leave Application Status "><img src="/assets/images/leave.png " alt="leave " height="25px " width="25px "></a>
+                </ng-template>
+                <div class="list-group list-group-accent ">
+                    <div class="list-group-item list-group-item-accent-secondary bg-light text-center font-weight-bold text-muted text-uppercase small ">
+                        Leave Application Status </div>
+
+                    <div *ngFor='let pro of fetchData1'>
+
+                        <div class="list-group-item list-group-item-accent-info list-group-item-divider " *ngIf="pro.status==='Pending' ; else Opened; ">
+                            <small class="text-muted mr-3 "><i class="fa fa-calendar-times-o "></i> {{pro.leaveFrom}} -
+                                {{pro.leaveTo}}</small>
+                            <small class="text-muted "><i class="fa fa-clock-o "></i>  {{pro.noDays}}day ago</small>
+                            <div><strong>{{pro.reason}}</strong></div>
+                        </div>
+
+                        <ng-template #Opened>
+                            <div class="list-group-item list-group-item-accent-warning list-group-item-divider " *ngIf="pro.status==='Opened' ; else Approved; ">
+                                <small class="text-muted mr-3 "><i
+                                        class="fa fa-calendar-times-o "></i> {{pro.leaveFrom}}
+                                    - {{pro.leaveTo}}</small>
+                                <small class="text-muted "><i class="fa fa-clock-o "></i>  {{pro.noDays}}day ago</small>
+                                <div><strong>{{pro.reason}}</strong></div>
+                            </div>
+                        </ng-template>
+                        <ng-template #Approved>
+                            <div class="list-group-item list-group-item-accent-success list-group-item-divider " *ngIf="pro.status==='Approved' ; else Reject; ">
+                                <small class="text-muted mr-3 "><i
+                                        class="fa fa-calendar-times-o "></i> {{pro.leaveFrom}}
+                                    - {{pro.leaveTo}}</small>
+                                <small class="text-muted "><i class="fa fa-clock-o "></i>  {{pro.noDays}}day ago</small>
+                                <div><strong>{{pro.reason}}</strong></div>
+                            </div>
+                        </ng-template>
+                        <ng-template #Reject>
+                            <div class="list-group-item list-group-item-accent-danger list-group-item-divider " *ngIf="pro.status==='Reject' ">
+                                <small class="text-muted mr-3 "><i
+                                        class="fa fa-calendar-times-o "></i> {{pro.leaveFrom}}
+                                    - {{pro.leaveTo}}</small>
+                                <small class="text-muted "><i class="fa fa-clock-o "></i>  {{pro.noDays}}day ago</small>
+                                <div><strong>{{pro.reason}}</strong></div>
+                            </div>
+                        </ng-template>
+                    </div>
+                    <div class="list-group-item text-center list-group-item-divider ">
+                        <a class="btn badge-info " [routerLink]="[ '/member/indileavapp'] "><i class="fa fa-eye "></i>
+                            &nbsp;View All</a>
+                    </div>
+
+                    <div class="list-group-item list-group-item-divider ">
+                        <small class="badge badge-info "> Applied </small>
+                        <small class="badge badge-warning "> Opened </small>
+                        <small class="badge badge-success "> Approved </small>
+                        <small class="badge badge-danger "> Rejected </small>
+                    </div>
+                </div>
+            </tab>
+            <tab>
+                <ng-template tabHeading>
+                    <a role="button " title="Convenience Status "><img src="/assets/images/Bill.png " alt="Convenience " height="25px " width="25px "></a>
+                </ng-template>
+                <div class="list-group list-group-accent ">
+                    <div class="list-group-item list-group-item-accent-secondary bg-light text-center font-weight-bold text-muted text-uppercase small ">
+                        Convenience Status</div>
+                    <div *ngFor='let pro1 of fetchData2'>
+
+                        <div class="list-group-item list-group-item-accent-info list-group-item-divider " *ngIf="pro1.status==='Pending' ; else Opened; ">
+                            <div class="avatar float-right ">
+                                <img class="img-avatar " src="https://mindfinfiles.blob.core.windows.net/mindfin-backend/{{pro1.conImg}} " alt="Convenienceimg ">
+                            </div>
+                            <div><strong>{{pro1.categories}}</strong></div>
+                            <!-- <small class="text-muted mr-3 float-right "><i class="fa fa-th-list "></i>  {{pro1.appliedDate}}</small> -->
+                        </div>
+
+                        <ng-template #Opened>
+                            <div class="list-group-item list-group-item-accent-warning list-group-item-divider " *ngIf="pro1.status==='Opened' ; else Approved; ">
+                                <div class="avatar float-right ">
+                                    <img class="img-avatar " src="https://mindfinfiles.blob.core.windows.net/mindfin-backend/{{pro1.conImg}} " alt="Convenienceimg ">
+                                </div>
+                                <div><strong>{{pro1.categories}}</strong></div>
+                                <!-- <small class="text-muted mr-3 float-right "><i class="fa fa-th-list "></i>  {{pro1.appliedDate}}</small> -->
+                            </div>
+                        </ng-template>
+                        <ng-template #Approved>
+                            <div class="list-group-item list-group-item-accent-success list-group-item-divider " *ngIf="pro1.status==='Approved' ; else Reject; ">
+                                <div class="avatar float-right ">
+                                    <img class="img-avatar " src="https://mindfinfiles.blob.core.windows.net/mindfin-backend/{{pro1.conImg}} " alt="Convenienceimg ">
+                                </div>
+                                <div><strong>{{pro1.categories}}</strong></div>
+                                <!-- <small class="text-muted mr-3 float-right "><i class="fa fa-th-list "></i>  {{pro1.appliedDate}}</small> -->
+                            </div>
+                        </ng-template>
+                        <ng-template #Reject>
+                            <div class="list-group-item list-group-item-accent-danger list-group-item-divider " *ngIf="pro1.status==='Reject' ">
+                                <div class="avatar float-right ">
+                                    <img class="img-avatar " src="https://mindfinfiles.blob.core.windows.net/mindfin-backend/{{pro1.conImg}} " alt="Convenienceimg ">
+                                </div>
+                                <div><strong>{{pro1.categories}}</strong></div>
+                                <!-- <small class="text-muted mr-3 float-right "><i class="fa fa-th-list "></i>  {{pro1.appliedDate}}</small> -->
+                            </div>
+                        </ng-template>
+                    </div>
+                    <div class="list-group-item text-center list-group-item-divider ">
+                        <a class="btn badge-info " [routerLink]="[ '/member/indiconve'] "><i class="fa fa-eye "></i>
+                            &nbsp;View All</a>
+                    </div>
+
+                    <div class="list-group-item list-group-item-divider ">
+                        <small class="badge badge-info "> Applied </small>
+                        <small class="badge badge-warning "> Opened </small>
+                        <small class="badge badge-success "> Approved </small>
+                        <small class="badge badge-danger "> Rejected </small>
+                    </div>
+                </div>
+            </tab>
+            <tab>
+                <ng-template tabHeading>
+                    <a role="button " title="Suggestion Status "><img src="/assets/images/suggestionbox.png " alt="Suggestion " height="25px " width="25px "></a>
+                </ng-template>
+                <div class="list-group list-group-accent ">
+                    <div class="list-group-item list-group-item-accent-secondary bg-light text-center font-weight-bold text-muted text-uppercase small ">
+                        Suggestion Status</div>
+                    <div *ngFor='let pro2 of fetchData3'>
+
+                        <div class="list-group-item list-group-item-accent-info list-group-item-divider " *ngIf="pro2.status==='Pending' ; else Opened; ">
+                            <div><strong>{{pro2.suggestion}}</strong></div>
+                        </div>
+
+                        <ng-template #Opened>
+                            <div class="list-group-item list-group-item-accent-warning list-group-item-divider " *ngIf="pro2.status==='Opened' ; else Approved; ">
+                                <div><strong>{{pro2.suggestion}}</strong></div>
+                            </div>
+                        </ng-template>
+                        <ng-template #Approved>
+                            <div class="list-group-item list-group-item-accent-success list-group-item-divider " *ngIf="pro2.status==='Approved' ; else Reject; ">
+                                <div><strong>{{pro2.suggestion}}</strong></div>
+                            </div>
+                        </ng-template>
+                        <ng-template #Reject>
+                            <div class="list-group-item list-group-item-accent-danger list-group-item-divider " *ngIf="pro2.status==='Reject' ">
+                                <div><strong>{{pro2.suggestion}}</strong></div>
+                            </div>
+                        </ng-template>
+                    </div>
+                    <div class="list-group-item text-center list-group-item-divider ">
+                        <a class="btn badge-info " [routerLink]="[ '/member/indiSuggest'] "><i class="fa fa-eye "></i>
+                            &nbsp;View All</a>
+                    </div>
+
+                    <div class="list-group-item list-group-item-divider ">
+                        <small class="badge badge-info "> Sent </small>
+                        <small class="badge badge-warning "> Opened </small>
+                        <small class="badge badge-success "> Approved </small>
+                        <small class="badge badge-danger "> Rejected </small>
+                    </div>
+                </div>
+
+            </tab>
+
 
         </tabset>
+        <span class="badge badge-danger ">{{fetchData4}}</span>
     </app-aside>
 </div>
-<div class="foot">
+<div class="foot ">
     <app-footer>
-        <span>&copy; 2020 <a href="https://www.mindfin.co.in/" target="_blank" style="text-decoration:none;">Mindfin Ser
+        <span>&copy; 2020 <a href="https://www.mindfin.co.in/ " target="_blank " style="text-decoration:none; ">Mindfin
+                Ser
                 Pvt. Ltd.</a></span>
     </app-footer>
 </div>

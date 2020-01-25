@@ -60,6 +60,9 @@ export class BackendComponent implements OnInit {
 
 
   ngOnInit() {
+    this.empid = localStorage.getItem("id");
+    this.empname = localStorage.getItem("empname");
+    
     this.commonservice.getexecutivelist().subscribe(res => {
       this.fetchData = [];
       console.log(res);
@@ -195,8 +198,7 @@ export class BackendComponent implements OnInit {
 
   submitForm(value) {
     console.log(value);
-    this.empid = localStorage.getItem("id");
-    this.empname = localStorage.getItem("empname");
+    
     this.abc = this.model.executiveid.split(",", 2);
     this.value1 = {
       value: value, empid: this.empid, empname: this.empname, abc: this.abc,

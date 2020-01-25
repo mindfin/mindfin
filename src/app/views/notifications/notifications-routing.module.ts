@@ -1,8 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-
-
-
+import { ProfileSettingComponent } from './profilesettings.component';
+import { AddNotificationComponent } from './addnotification.component';
+import { AssignToDoComponent } from './assigntodo.component';
+import { ViewNotificationComponent } from './viewnotification.component';
+import { EmpNotificationComponent } from './empnotification.component';
+import { SeenByComponent } from './seenby_dialog';
 const routes: Routes = [
   {
     path: '',
@@ -10,27 +13,48 @@ const routes: Routes = [
       title: 'Notifications'
     },
     children: [
-      // {
-      //   path: 'alerts',
-      //   component:,
-      //   data: {
-      //     title: 'Alerts'
-      //   }
-      // },
-      // {
-      //   path: 'badges',
-      //   component: ,
-      //   data: {
-      //     title: 'Badges'
-      //   }
-      // },
-      // {
-      //   path: 'modals',
-      //   component: ,
-      //   data: {
-      //     title: 'Modals'
-      //   }
-      // }
+      {
+        path: 'profilesettings',
+        component:ProfileSettingComponent,
+        data: {
+          title: 'Profile'
+        }
+      },
+      {
+        path: 'addnotification',
+        component: AddNotificationComponent,
+        data: {
+          title: 'Add Notification'
+        }
+      },
+      {
+        path: 'assigntodo',
+        component: AssignToDoComponent,
+        data: {
+          title: 'To Do List'
+        }
+      },
+      {
+        path: 'viewnotification',
+        component: ViewNotificationComponent,
+        data: {
+          title: 'View Notification'
+        }
+      },
+      {
+        path: 'empnotification',
+        component: EmpNotificationComponent,
+        data: {
+          title: 'View Notification'
+        }
+      },
+      {
+        path: 'seenby/:id',
+        component: SeenByComponent,
+        data: {
+          title: 'Seen By '
+        }
+      },
     ]
   }
 ];

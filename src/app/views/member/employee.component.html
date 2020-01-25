@@ -83,7 +83,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-header"><b>ACCOUNT DETAILS</b></div>
+                    <!-- <div class="card-header"><b>ACCOUNT DETAILS</b></div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-sm-6">
@@ -99,19 +99,15 @@
                                 <label><b>BRANCH</b></label>
                                 <input [(ngModel)]="model.branch" type="text" class="form-control" name="branch" #branch="ngModel">
                             </div>
-                            <!-- <div class="col-sm-6">
-                                <label><b>EMPLOYEE NUMBER</b></label>
-                                <input [(ngModel)]="model.empno" type="text" class="form-control" name="empno" #empno="ngModel"> -->
-
-                            <!-- </div> -->
+                            
                         </div>
-                    </div>
+                    </div> -->
                     <div class="card-header"><b> USER TYPE
                         </b>
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-sm-4">
+                            <div class="col-sm-3">
                                 <label><b>EMPLOYEE TYPE</b><code>(*)</code></label>
                                 <select class="form-control" name="idusertype" [(ngModel)]="model.idusertype" required #idusertype="ngModel">
                                     <option *ngFor="let item of fetchData" [value]="item.idusertype">{{item.user}}
@@ -123,7 +119,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-3">
                                 <label><b>DESIGNATION</b><code>(*)</code></label>
                                 <input [(ngModel)]="model.designation" type="text" class="form-control" name="designation" required #bdesignation="ngModel">
                                 <div class="alert" *ngIf="bdesignation.errors && (bdesignation.dirty || bdesignation.touched)">
@@ -132,16 +128,15 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-3">
                                 <label><b>JOINING DATE</b><code>(*)</code>
                                 </label>
                                 <input class="form-group" [(ngModel)]="model.joiningdate" name="joiningdate" type="text" placeholder="MM/DD/YYYY" class="form-control" bsDatepicker>
 
-                                <!-- <mat-form-field>
-                                    <input matInput #ref [matDatepicker]="picker4" [(ngModel)]="model.joiningdate" name="joiningdate" placeholder="mm/dd/yyyy">
-                                    <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
-                                    <mat-datepicker #picker4></mat-datepicker>
-                                </mat-form-field> -->
+                            </div>
+                            <div class="col-sm-3">
+                                <label><b>BRANCH</b></label>
+                                <input [(ngModel)]="model.branch" type="text" class="form-control" name="branch" #branch="ngModel">
                             </div>
                         </div>
                     </div>

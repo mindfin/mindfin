@@ -41,30 +41,19 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { HttpClientModule } from '@angular/common/http';
-// import { ProjectComponent } from './project/project.component';
-//import { ProductComponent } from './views/product/product.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-// import { AddadminComponent } from './views/addadmin/addadmin.component';
-// import { MemberlistComponent } from './views/booking/memberlist.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-// import { ViewreceiptComponent } from './views/viewreceipt/viewreceipt.component';
-// import { PresidentComponent } from './views/superadmin/president.component';
 import { MatDatepicker, MatDatepickerModule, MatNativeDateModule, MatFormFieldModule, 
   MatInputModule, MatProgressSpinnerModule, MatBadgeModule, MatButtonModule, MatButtonToggleModule} from '@angular/material';
 import { CommonService } from './common.service';
 import{ SampleService } from './sample.service';
 import { HttpModule, Http } from '@angular/http';
 import { MemberService } from './member.service';
-
 import { MemberloginComponent } from './views/login/memberlogin.component';
-// import { CertificateComponent } from './views/receipt/certificate.component';
-// import { AffidivateComponent } from './views/receipt/affidivate.component';
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive'; // this includes the core NgIdleModule but includes keepalive providers for easy wireup
 import { MomentModule } from 'angular2-moment'; // optional, provides moment-style pipes for date formatting
 import { SuperadminService } from './superadmin.service';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
-// import { ViewsComponent } from './views/views.component';
-
 @NgModule({
   imports: [
     HttpClientModule,
@@ -82,7 +71,6 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     HttpClientModule,
     MatFormFieldModule,
     MatInputModule,
-    // ViewreceiptModule,
     MatDatepickerModule,
     MatNativeDateModule,
     MatButtonModule,
@@ -108,13 +96,6 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     P500Component,
     LoginComponent,
     MemberloginComponent,
-    // ViewsComponent,
-    // SuperadminComponent,
-    // RegisterComponent,
-    // ViewreceiptComponent,
-    // PresidentComponent,
-    // AffidivateComponent,
-    // CertificateComponent
   ],
   providers: [{
     provide: LocationStrategy,
@@ -122,7 +103,6 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     
   },CommonService,SuperadminService
   ,SampleService,MemberService
-  //MemberService,SuperadminService
 ],
   bootstrap: [ AppComponent ],
   entryComponents: [SugboxDialogContent,ConvenienceDialogContent,LeaveAppDialogContent

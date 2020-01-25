@@ -27,6 +27,7 @@ export class TeledataEditComponent {
   fetchData: any;
   fetchDataa: any;
   fetchData1: any;
+  fetchData2: any;
   value2: any;
   dob: any;
   teleid: any;
@@ -37,7 +38,10 @@ export class TeledataEditComponent {
     //   console.log(res);
     //   this.fetchData = res;
     // });
-
+    this.commonservice.getbanklist().subscribe(res => {
+      console.log(res);
+      this.fetchData2 = res;
+    });
     this.commonservice.getloanlist().subscribe(res => {
       console.log(res);
       this.fetchDataa = res;

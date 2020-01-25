@@ -94,6 +94,10 @@
                                 <th *matHeaderCellDef mat-sort-header>STATUS</th>
                                 <td *matCellDef="let element"> {{element.status}} </td>
                             </ng-container>
+                            <ng-container matColumnDef="bank">
+                                <th *matHeaderCellDef mat-sort-header>APPROACHED BANK</th>
+                                <td *matCellDef="let element"> {{element.approchedBank}} </td>
+                            </ng-container>
                             <ng-container matColumnDef="comment">
                                 <th *matHeaderCellDef mat-sort-header>APPOINTMENT</th>
                                 <td *matCellDef="let element"> {{element.comment}} </td>

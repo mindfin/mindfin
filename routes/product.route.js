@@ -1288,14 +1288,13 @@ router.get('/viewcustomerid/:pagesize/:page/:id', (req, res, next) => {
     const pageSize = req.params.pagesize;
     const currentPage = req.params.page;
     const skip = (pageSize * (currentPage - 1));
-    // router.get('/viewcustomerid',function(req,res){
-    //   //console.log(req.body);
-    //   //console.log(req.params);
     knex.select()
         .from('customer', 'applybank')
         .join('applybank', 'applybank.idcustomer', 'customer.idcustomer')
         .where('customer.status', 'APPROVED')
         .where('applybank.executiveid', req.params.id)
+        .groupBy('customer.cname')
+        .orderBy('customer.idcustomer', 'desc')
         .limit(pageSize).offset(skip)
         .then(function(result) {
             knex.select()
@@ -1303,17 +1302,15 @@ router.get('/viewcustomerid/:pagesize/:page/:id', (req, res, next) => {
                 .join('applybank', 'applybank.idcustomer', 'customer.idcustomer')
                 .where('customer.status', 'APPROVED')
                 .where('applybank.executiveid', req.params.id)
-
-            // .count({a:'customer.idcustomer'})
-            .then(function(re) {
-                //console.log(re);
-                //console.log(result);
-                res.status(200).json({
-                    message: "Memberlists fetched",
-                    posts: result,
-                    maxPosts: re.length
-                });
-            })
+                .groupBy('customer.cname')
+                .orderBy('customer.idcustomer', 'desc')
+                .then(function(re) {
+                    res.status(200).json({
+                        message: "Memberlists fetched",
+                        posts: result,
+                        maxPosts: re.length
+                    });
+                })
         })
 })
 
@@ -1492,6 +1489,10 @@ router.post('/editemployee', (req, res) => {
     var cimage;
     var pimage;
     var aimage;
+    var appointmentLetter;
+    var appointmentLetter_org;
+    var cucount;
+    var dcount;
     console.log(doj);
 
     if (req.body.cimg == undefined) {
@@ -1513,6 +1514,26 @@ router.post('/editemployee', (req, res) => {
     } else {
         aimage = req.body.aimg[0].blobName;
         console.log(aimage);
+    }
+    if (req.body.appletimg == undefined) {
+        appointmentLetter = req.body.value.appointmentLetter;
+        appointmentLetter_org = req.body.value.appointmentLetter_org;
+    } else {
+        appointmentLetter = req.body.appletimg[0].blobName;
+        appointmentLetter_org = req.body.appletimg[0].originalname
+        console.log(aimage);
+    }
+    if (req.body.value.downloadCount == undefined && req.body.appletimg == undefined) {
+        dcount = undefined;
+    } else if (req.body.value.downloadCount == undefined && req.body.appletimg != undefined) {
+        dcount = '0'
+    } else {
+        dcount = req.body.value.downloadCount
+    }
+    if (req.body.value.cimgUploadCount == undefined) {
+        cucount = '0';
+    } else {
+        cucount = req.body.value.cimgUploadCount
     }
     knex('employee')
         .where({ idemployee: req.body.idemployeee })
@@ -1538,7 +1559,12 @@ router.post('/editemployee', (req, res) => {
             updateddate: nowdate,
             empno: req.body.value.empno,
             designation: req.body.value.designation,
-            createdby: req.body.createdby
+            createdby: req.body.createdby,
+            appointmentLetter: appointmentLetter,
+            appointmentLetter_org: appointmentLetter_org,
+            basicPay: req.body.value.basicPay,
+            downloadCount: dcount,
+            cimgUploadCount: cucount
         })
         .then(function(result) {
             //console.log(result); 
@@ -1925,7 +1951,8 @@ router.post('/addenquiry', (req, res) => {
             comment: req.body.value.comment,
             updateddate: localTime,
             turnover: req.body.value.turnover,
-            adminexeStatus: "new"
+            adminexeStatus: "new",
+            approchedBank: req.body.value.approchedBank
         })
         .then(function(result) {
             //console.log(result); 
@@ -4333,7 +4360,9 @@ router.post('/updateenquiry', (req, res) => {
             // adminid: req.body.adminid,
             comment: req.body.comment,
             updateddate: localTime,
-            turnover: req.body.turnover
+            turnover: req.body.turnover,
+            approchedBank: req.body.approchedBank
+
 
         })
         .then(function(result) {
@@ -4528,6 +4557,8 @@ router.get('/casecount/:obj', (req, res) => {
         .join('applybank', 'applybank.idcustomer', 'customer.idcustomer')
         .where('customer.status', 'APPROVED')
         .where('applybank.executiveid', req.params.obj)
+        .groupBy('customer.cname')
+        .orderBy('customer.idcustomer', 'desc')
         .then(function(result) {
             console.log(result.length);
             res.json(result.length);
@@ -7505,4 +7536,299 @@ router.post('/appointmentopenstatus', function(req, res) {
             res.json('Updated Successfully');
         })
 });
-module.exports = router
+router.post('/downloadCount', (req, res) => {
+    // console.log(req.params);
+    var count = req.body.downloadCount
+    var dcount = count + 1;
+    knex('employee')
+        .where('employee.idemployee', req.body.idemployee)
+        .update({
+            downloadCount: dcount
+        })
+        .then(function(result) {
+            res.json('Employee Updated Successfully');
+        })
+});
+router.post('/cimageUpload', (req, res) => {
+    // console.log(req.params);
+    var cimage;
+
+    if (req.body.cimgupload == undefined) {
+        cimage = req.body.empid.cimage;
+
+    } else {
+        cimage = req.body.cimgupload[0].blobName;
+        console.log("BlobName  " + cimage);
+    }
+    knex('employee')
+        .where('employee.idemployee', req.body.empid.idemployee)
+        .update({
+            cimage: cimage,
+            cimgUploadCount: '1'
+        })
+        .then(function(result) {
+            res.json('Employee Updated Successfully');
+        })
+});
+router.get('/getemployee', function(req, res) {
+    knex.select()
+        .from('employee')
+        .join('usertype', 'usertype.idusertype', 'employee.iduser')
+        .where('employee.status ', 'active')
+        .then(function(result) {
+            //console.log(result);
+            res.json(result);
+        })
+});
+router.post('/individualNotification', (req, res) => {
+    var notificationImg;
+    const createddate = format.asString('yyyy-MM-dd', new Date());
+    if (req.body.notificationImg == undefined) {
+        notificationImg = req.body.value.notificationImg;
+        notificationImg_org = req.body.value.notificationImg_org
+
+    } else {
+        notificationImg = req.body.notificationImg[0].blobName;
+        notificationImg_org = req.body.notificationImg[0].originalname;
+        console.log("BlobName  " + notificationImg);
+    }
+    knex('sendernotifications')
+        .insert({
+            createdDate: createddate,
+            senderID: req.body.empid,
+            senderName: req.body.empname,
+            notificationSubject: req.body.value.notificationSubject,
+            notification: req.body.value.notification,
+            notificationImg: notificationImg,
+            notificationImg_org: notificationImg_org,
+            senderStatus: 'sent',
+        })
+        .then(function(id) {
+            const ids = id.toString();
+            knex('receivernotification')
+                .insert({
+                    senderNotificationID: ids,
+                    receiverID: req.body.abc[0],
+                    receiverName: req.body.abc[1],
+                    receiverStatus: 'received',
+                }).then(function(re) {
+                    res.json('Notification Sent Successfully');
+                })
+        })
+});
+router.get('/getteleemp', function(req, res) {
+    knex.select()
+        .from('employee')
+        .join('usertype', 'usertype.idusertype', 'employee.iduser')
+        .where('usertype.user ', 'TELECALLER')
+        .where('employee.status ', 'active')
+        .then(function(result) {
+            //console.log(result);
+            res.json(result);
+        })
+});
+router.get('/getbackendemp', function(req, res) {
+    knex.select()
+        .from('employee')
+        .join('usertype', 'usertype.idusertype', 'employee.iduser')
+        .where('usertype.user ', 'BACKEND')
+        .where('employee.status ', 'active')
+        .then(function(result) {
+            //console.log(result);
+            res.json(result);
+        })
+});
+router.get('/getaccemp', function(req, res) {
+    knex.select()
+        .from('employee')
+        .join('usertype', 'usertype.idusertype', 'employee.iduser')
+        .where('usertype.user ', 'ACCOUNTANT')
+        .where('employee.status ', 'active')
+        .then(function(result) {
+            //console.log(result);
+            res.json(result);
+        })
+});
+router.get('/getdataentrtemp', function(req, res) {
+    knex.select()
+        .from('employee')
+        .join('usertype', 'usertype.idusertype', 'employee.iduser')
+        .where('usertype.user ', 'DATAENTRY')
+        .where('employee.status ', 'active')
+        .then(function(result) {
+            //console.log(result);
+            res.json(result);
+        })
+});
+router.post('/generalNotification', (req, res) => {
+    var notificationImg;
+    const createddate = format.asString('yyyy-MM-dd', new Date());
+    var config = req.body.abc;
+    if (req.body.notificationImg == undefined) {
+        notificationImg = req.body.value.notificationImg;
+        notificationImg_org = req.body.value.notificationImg_org
+
+    } else {
+        notificationImg = req.body.notificationImg[0].blobName;
+        notificationImg_org = req.body.notificationImg[0].originalname;
+        console.log("BlobName  " + notificationImg);
+    }
+    knex('sendernotifications')
+        .insert({
+            createdDate: createddate,
+            senderID: req.body.empid,
+            senderName: req.body.empname,
+            notificationSubject: req.body.value.notificationSubject,
+            notification: req.body.value.notification,
+            notificationImg: notificationImg,
+            notificationImg_org: notificationImg_org,
+            senderStatus: 'sent',
+        })
+        .then(function(id) {
+            const ids = id.toString();
+            if (config == undefined || config == 'undefined') {
+                res.json("Not Inserted");
+                console.log("empty data")
+            } else {
+                // const vbs1 = JSON.parse(config);
+                for (var j = 0; j < config.length; j++) {
+                    var empid = config[j].idemployee
+                    var empname = config[j].name
+                    knex('receivernotification')
+                        .insert({
+                            senderNotificationID: ids,
+                            receiverID: empid,
+                            receiverName: empname,
+                            receiverStatus: 'received',
+                        }).then(function(re) {
+
+                        })
+                }
+            }
+            res.json('Notification Sent Successfully');
+        })
+});
+router.get('/getGroupNotification', (req, res) => {
+    knex.select('sendernotifications.*', 'receivernotification.*')
+        .from('sendernotifications')
+        .join('receivernotification', 'receivernotification.senderNotificationID', 'sendernotifications.senderNotificationID')
+        .groupBy('receivernotification.senderNotificationID')
+        .orderBy('sendernotifications.senderNotificationID', 'desc')
+        .where('sendernotifications.senderStatus ', 'sent')
+        .then(function(result) {
+            //console.log(result);
+            res.json(result);
+        })
+});
+router.get('/getEmployeeNotification/:id', (req, res) => {
+    knex.select('sendernotifications.*', 'receivernotification.*')
+        .from('sendernotifications')
+        .join('receivernotification', 'receivernotification.senderNotificationID', 'sendernotifications.senderNotificationID')
+        .groupBy('receivernotification.senderNotificationID')
+        .orderBy('sendernotifications.senderNotificationID', 'desc')
+        .where('sendernotifications.senderStatus ', 'sent')
+        .where('receivernotification.receiverStatus ', 'seen')
+        .where('receivernotification.receiverID', req.params.id)
+        .then(function(result) {
+            //console.log(result);
+            res.json(result);
+        })
+});
+router.post('/getnewnotification', (req, res) => {
+    // console.log("empid", req.body.empid)
+    knex.select()
+        .from('receivernotification')
+        .where('receivernotification.receiverStatus ', 'received')
+        .where('receivernotification.receiverID', req.body.empid)
+        .then(function(result) {
+            res.json(result.length);
+        })
+});
+router.post('/opennotification', (req, res) => {
+    var date = format.asString('yyyy-MM-dd', new Date());
+    console.log(req.body)
+    knex('receivernotification')
+        .where('receivernotification.receiverStatus ', 'received')
+        .where('receivernotification.receiverID', req.body.empid)
+        .update({
+            openedDate: date,
+            receiverStatus: "seen",
+        })
+        .then(function(result) {
+            res.json('Updated Successfully');
+        })
+});
+router.post('/deleteNotification', function(req, res) {
+    console.log(req.body)
+    var date3 = format.asString('yyyy-MM-dd', new Date());
+    knex('sendernotifications')
+        .where({ senderNotificationID: req.body.id })
+        .update({
+            senderStatus: "inactive",
+            updatedDate: moment().format(date3)
+        }).then(function(result) {
+            //console.log(result); 
+            res.json('Notification Deleted Successfully');
+        })
+});
+router.get('/getSeenBy/:id', (req, res) => {
+    knex.select('receivernotification.*')
+        .from('receivernotification')
+        // .join('receivernotification', 'receivernotification.senderNotificationID', 'sendernotifications.senderNotificationID')
+        .orderBy('receivernotification.receiverNotficationID', 'desc')
+        .where('receivernotification.senderNotificationID ', req.params.id)
+        .then(function(result) {
+            //console.log(result);
+            res.json(result);
+        })
+});
+router.post('/gettodolist', (req, res) => {
+    // console.log("empid", req.body.empid)
+    knex.select()
+        .from('todolist')
+        .where('todolist.status ', 'open')
+        .where('todolist.createdBy', req.body.empid)
+        .then(function(result) {
+            res.json(result.length);
+        })
+});
+router.post('/addToDo', function(req, res) {
+    var date = format.asString('yyyy-MM-dd', new Date());
+    knex('todolist')
+        .insert({
+            createdDate: date,
+            title: req.body.value.title,
+            Description: req.body.value.desc,
+            createdBy: req.body.empid,
+            createdByName: req.body.empname,
+            status: 'open'
+        }).then(function(result) {
+            res.json('suggestion sent Successfully')
+            console.log(result);
+        })
+});
+router.post('/gettodo', (req, res) => {
+    // console.log("empid", req.body.empid)
+    knex.select()
+        .from('todolist')
+        .where('todolist.status ', 'open')
+        .where('todolist.createdBy', req.body.empid)
+        .orderBy('todolist.todoID', 'desc')
+        .then(function(result) {
+            res.json(result);
+        })
+});
+router.get('/closetodo/:id', function(req, res) {
+    // console.log(req.body)
+    var date3 = format.asString('yyyy-MM-dd', new Date());
+    knex('todolist')
+        .where({ todoID: req.params.id })
+        .update({
+            status: "close",
+            closeDate: moment().format(date3)
+        }).then(function(result) {
+            //console.log(result); 
+            res.json(' To DO closed Successfully');
+        })
+});
+module.exports = router;

@@ -1,0 +1,23 @@
+<div class="row">
+    <h6 class="text-success">
+        <b>To Do    </b><button type="button" class="btn btn-success" (click)="openToDoialog()">Create </button>
+    </h6>
+</div>
+
+<div class="row">
+    <div *ngFor="let item of fetchData" class="col-md-3">
+        <div class="card border-success text-center">
+            <div class="card-body text-success">
+                <h5 class="card-title">{{item.title}}</h5>
+                <p class="card-text">{{item.Description}}</p>
+                <button type="button" class="btn btn-primary" style="cursor: pointer; margin:auto;display:block" (click)="closetodo(item.todoID)"> <i class="fa fa-times-circle"></i> Close To Do</button>
+
+                <br>
+
+                <h6 class="card-text text-success" style="cursor: pointer; margin:auto;display:block"><i class="fa fa-clock-o"></i> {{item.createdDate | date:'dd/MM/yyyy'}}</h6>
+
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -6,7 +6,7 @@ export const navItems2 = [
   },
   {
     name: 'My Profile',
-    url: '/member/home',
+    url: '/notification/profilesettings',
     icon: 'fa fa-address-book-o',
  
   },

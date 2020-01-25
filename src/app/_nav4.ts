@@ -1,7 +1,7 @@
 export const navItems4 = [
     {
       name: 'My Profile',
-      url: '/member/customerprofile',
+      url: '/notification/profilesettings',
       icon: 'icon-home',
       // badge: {
       //   variant: 'info',

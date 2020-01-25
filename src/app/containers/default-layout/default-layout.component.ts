@@ -57,6 +57,8 @@ export class DefaultLayoutComponent {
   fetchData9;
   fetchData10;
   fetchData11;
+  fetchData12;
+  fetchData13;
   reason;
   half;
   other;
@@ -119,6 +121,14 @@ export class DefaultLayoutComponent {
     this.service.getnewappocount(this.val).subscribe(res => {
       this.fetchData10 = res;
       console.log(this.fetchData10)
+    });
+    this.service.getnewnotification(this.val).subscribe(res => {
+      this.fetchData12 = res;
+      console.log(this.fetchData12)
+    });
+    this.service.gettodolist(this.val).subscribe(res => {
+      this.fetchData13 = res;
+      console.log(this.fetchData13)
     });
     this.service.getearlygocount().subscribe(res => {
       this.fetchData8 = res;

@@ -41,9 +41,8 @@ export class EditemployeeComponent {
   cimagfilePath: any;
   pimagfilePath: any;
   aimagfilePath: any;
+  appiletterPath:any;
   selectedFiles: any;
-  selectedFiles1: any;
-  selectedFiles2: any;
   currentFileUpload: any;
   imagePath: any;
   selectedFile: FileSnippet;
@@ -54,6 +53,7 @@ export class EditemployeeComponent {
   imageURL$: string;
   createdby: any;
   myfields: any = [];
+  appletter:any
 
 
   ngOnInit() {
@@ -65,6 +65,9 @@ export class EditemployeeComponent {
         this.model = res[0];
         this.model.iduser = this.model['idemployee'];
         console.log(this.model.iduser);
+        console.log(this.model.appointmentLetter);
+        localStorage.setItem('appointmentletter',this.model.appointmentLetter)
+        this.appletter= localStorage.getItem("appointmentletter")
       });
     })
 
@@ -142,6 +145,23 @@ export class EditemployeeComponent {
       }
     )
   }
+  public onFileSelect3(event) {
+    // this.processFile(event)
+    let formData = new FormData();
+    this.selectedFiles = event.target.files;
+    this.currentFileUpload = this.selectedFiles.item(0);
+    console.log(this.currentFileUpload);
+    formData.append('appointment', this.currentFileUpload, this.currentFileUpload.name);
+    this.imagePath = formData;
+    console.log(this.imagePath);
+    this.imageChangeFlag = true;
+    this.commonservice.uploadImage(this.imagePath).subscribe(
+      async (data) => {
+        this.appiletterPath = await this.getImageURL(data)
+        console.log(this.appiletterPath);
+      }
+    )
+  }
   async getImageURL(data) {
     return this.imageURL = await data.imageUrl;
   }
@@ -151,7 +171,8 @@ export class EditemployeeComponent {
     this.createdby = localStorage.getItem("id")
     this.value1 = {
       value: value, createdby: this.createdby, idemployeee: this.idvalue,
-      cimg: this.cimagfilePath, pimg: this.pimagfilePath, aimg: this.aimagfilePath
+      cimg: this.cimagfilePath, pimg: this.pimagfilePath, aimg: this.aimagfilePath,
+      appletimg:this.appiletterPath
     };
     console.log(this.value1);
     this.commonservice.editemployee(this.value1);
