@@ -3,8 +3,8 @@
     <ul class="nav navbar-nav ml-auto">
 
         <li class="nav-item  d-md-down-none ">
-            <a class="nav-link " role="button " [routerLink]="[ '/notification/empnotification'] " title="Notifications "><img src="/assets/images/notification.png" alt="notification" height="30px " width="30px ">
-                <span class="badge badge-danger ">{{fetchData12}}</span>
+            <a class="nav-link " role="button " [routerLink]="[ '/notification/empnotification'] " title="Notifications "><img src="/assets/images/viewnoti.png" alt="notification" height="50px" width="50px">
+                <span *ngIf="fetchData12 !==0 " class="badge badge-danger ">{{fetchData12}}</span>
             </a>
         </li>
 
@@ -18,16 +18,12 @@
                 <a *ngIf="abc==='SUPERADMIN'" class="dropdown-item" role="button" [routerLink]="['/notification/addnotification']" title="Add Notifications ">
                     <img src="/assets/images/addnotification.png " alt="Add Notifications " height="25px " width="25px "> Add Notifications
                 </a>
-                <!-- <a *ngIf="abc==='SUPERADMIN' " class="dropdown-item " role="button " [routerLink]="[ '/notification/assigntodo'] " title="Assign To Do ">
-                    <img src="/assets/images/addtodo.png " alt="Assign To Do " height="25px " width="25px "> Assign To Do
-                </a> -->
-                <div class="dropdown-header text-center"><strong>VIew</strong></div>
+
+                <div class="dropdown-header text-center"><strong>View</strong></div>
                 <a *ngIf="abc==='SUPERADMIN'" class="dropdown-item" role="button" [routerLink]="['/notification/viewnotification']" title="View Notifications ">
                     <img src="/assets/images/viewnoti.png " alt="Add Notifications " height="25px " width="25px "> View Sent Notifications
                 </a>
-                <!-- <a *ngIf="abc==='SUPERADMIN' " class="dropdown-item " role="button " [routerLink]="[ '/notification/assigntodo'] " title="Assign To Do ">
-                    <img src="/assets/images/addtodo.png " alt="Assign To Do " height="25px " width="25px "> View To Do
-                </a> -->
+
             </div>
         </li>
         <li class="nav-item  d-md-down-none " *ngIf="abc==='SUPERADMIN' " dropdown placement="bottom right ">
@@ -72,12 +68,12 @@
             </a>
         </li>
         <li class="nav-item  d-md-down-none " *ngIf="abc==='EXECUTIVE' && isadmin!=='Admin' ">
-            <a class="nav-link " role="button " [routerLink]="[ '/executives/exeteledatalist'] " title="New Appointments "><img src="/assets/images/assign.png " alt="Appointment Assign " height="25px " width="25px ">
+            <a class="nav-link " role="button " [routerLink]="[ '/executives/exeteledatalist'] " title="New Appointments "><img src="/assets/images/assign.png " alt="Appointment Assign " height="50px" width="50px">
                 <span *ngIf="fetchData10 !==0 " class="badge badge-danger ">{{fetchData10}}</span>
             </a>
         </li>
         <li class="nav-item  d-md-down-none " *ngIf="abc==='EXECUTIVE' && isadmin==='Admin' ">
-            <a class="nav-link " role="button " [routerLink]="[ '/executives/admindata'] " title="New TeleData "><img src="/assets/images/phone.png " alt="TeleData " height="25px " width="25px ">
+            <a class="nav-link " role="button " [routerLink]="[ '/executives/admindata'] " title="New TeleData "><img src="/assets/images/phone.png " alt="TeleData " height="40px" width="40px">
                 <span *ngIf="fetchData11 !==0 " class="badge badge-danger ">{{fetchData11}}</span>
             </a>
         </li>

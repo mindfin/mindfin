@@ -2,6 +2,7 @@ module.exports = {
     development: {
         client: 'mysql',
         connection: {
+
             host: 'localhost',
             user: 'mindfin',
             password: 'mindfin!@#$%',

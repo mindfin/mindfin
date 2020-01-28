@@ -1,11 +1,11 @@
 <div class="row">
     <div *ngFor="let item of fetchData" class="col-md-3">
-        <div class="card border-success text-center">
-            <div class="card-body text-success">
+        <div class="card border-success text-center scrollbar" id="style-4">
+            <div class="card-body text-success ">
                 <h5 class="card-title">{{item.notificationSubject}}</h5>
                 <p class="card-text">{{item.notification}}</p>
-                <img *ngIf="item.notificationImg != undefined" alt="notificationImg" class="img-popup-source" src="https://mindfinfiles.blob.core.windows.net/mindfin-backend/{{item.notificationImg}}" />
-
+                <img *ngIf="item.notificationImg != undefined" alt="notificationImg" class="zoom" src="https://mindfinfiles.blob.core.windows.net/mindfin-backend/{{item.notificationImg}}" />
+                <br>
                 <br>
                 <div class="row">
                     <div class="col-md-6">
@@ -24,3 +24,28 @@
         </div>
     </div>
 </div>
+<style>
+    .scrollbar {
+        max-height: 14rem;
+        background: #F5F5F5;
+        overflow-y: auto;
+    }
+    
+    #style-4::-webkit-scrollbar {
+        width: 5px;
+    }
+    
+    #style-4::-webkit-scrollbar-thumb {
+        background-color: #F90;
+        background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent)
+    }
+    
+    .zoom {
+        transition: transform .5s;
+        width: 200px;
+    }
+    
+    .zoom:hover {
+        transform: scale(2);
+    }
+</style>

@@ -5,7 +5,7 @@
     <div class="col-md-3 col-sm-12 col-xs-12 user-profil-part">
         <div class="row ">
             <div class="col-md-12 col-md-12-sm-12 col-xs-12 user-image text-center">
-                <img src="https://mindfinfiles.blob.core.windows.net/mindfin-backend/{{fetchData.cimage}}" class="rounded-circle">
+                <img src="https://mindfinfiles.blob.core.windows.net/mindfin-backend/{{fetchData.cimage}}" class="rounded-circle zoom">
 
                 <button id="button" *ngIf="fetchData.cimgUploadCount == 0" class="btn btn-success rounded-circle follow" onclick="document.getElementById('file-input').click();"><i class="fa fa-camera"
                         aria-hidden="true"></i></button>
@@ -272,6 +272,14 @@
         padding: 20px 0px 10px 15px;
         background-color: #FFFFFF;
     }
+    
+    .zoom {
+        transition: transform .5s;
+        /* width: 200px; */
+    }
+    
+    .zoom:hover {
+        transform: scale(2);
+        z-index: 1;
+    }
 </style>
-<script>
-</script>
