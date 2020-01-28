@@ -30,9 +30,9 @@ export class CommonService {
   constructor(private http: HttpClient, private router: Router, private idle: Idle, private keepalive: Keepalive) {
     // sets an idle timeout of 5 seconds, for testing purposes.
 
-    idle.setIdle(3600);
+    idle.setIdle(86400);
     // sets a timeout period of 5 seconds. after 10 seconds of inactivity, the user will be considered timed out.
-    idle.setTimeout(50);
+    idle.setTimeout(32400);
     // sets the default interrupts, in this case, things like clicks, scrolls, touches to the document
     idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
 
@@ -47,7 +47,7 @@ export class CommonService {
     idle.onTimeoutWarning.subscribe((countdown) => this.idleState = 'You will time out in ' + countdown + ' seconds!');
 
     // sets the ping interval to 15 seconds
-    keepalive.interval(3600);
+    keepalive.interval(32400);
 
     keepalive.onPing.subscribe(() => this.lastPing = new Date());
 
@@ -96,7 +96,7 @@ export class CommonService {
         localStorage.setItem('id', res[0]['idemployee']);
         localStorage.setItem('empname', res[0]['name']);
         localStorage.setItem('role', 'ADMIN');
-        this.router.navigate(["/member/home"]);
+        this.router.navigate(["/notification/profilesettings"]);
       }
       else if (res[0].user == 'EXECUTIVE' && res[0].designation == 'Admin') {
         console.log('EXECUTIVE')
@@ -104,7 +104,7 @@ export class CommonService {
         localStorage.setItem('empname', res[0]['name']);
         localStorage.setItem('desc', res[0]['designation']);
         localStorage.setItem('role', 'EXECUTIVE');
-        this.router.navigate(["/member/home"]);
+        this.router.navigate(["/notification/profilesettings"]);
       }
       else if (res[0].user == 'EXECUTIVE' && res[0].designation != 'Admin') {
         console.log('exec')
@@ -148,7 +148,7 @@ export class CommonService {
         localStorage.setItem('id', res[0]['idemployee']);
         localStorage.setItem('empname', res[0]['name']);
         localStorage.setItem('role', 'ACCOUNTANT');
-        this.router.navigate(["/member/home"]);
+        this.router.navigate(["/notification/profilesettingse"]);
       }
       else if (res[0].user == 'SUB VENDOR') {
         console.log('account')
@@ -169,9 +169,7 @@ export class CommonService {
         localStorage.setItem('custname', res[0]['name']);
         localStorage.setItem('role', 'CUSTOMER');
         this.router.navigate(["/member/customerprofile"]);
-        // localStorage.setItem('id',res[0]['idemployee']);
-        // localStorage.setItem('role','TELECALLER');
-        // this.router.navigate(["/dashboard/telecaller"]);
+       
       }
     });
   }
@@ -2710,5 +2708,9 @@ export class CommonService {
     const uri = "https://bank.mindfin.co.in/callapi/closetodo/" + value;
     return this.http.get(uri);
     
+  }
+  public getemailSettings() {
+    const uri = "https://bank.mindfin.co.in/callapi/getemailSettings";
+    return this.http.get(uri);
   }
 }

@@ -5,11 +5,11 @@ export const navItems9 = [
     icon: 'fa fa-tachometer',
   },
 
-  // {
-  //   name: 'Document Cam',
-  //   url: '/notification/profilesettings',
-  //   icon: 'fa fa-eye',
-  // },
+  {
+    name: 'Document Cam',
+    url: '/documentcam/documentcam',
+    icon: 'fa fa-eye',
+  },
   // {
   //   name: 'Upload Statement',
   //   url: '/documentcam/uploadfile',

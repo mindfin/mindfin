@@ -1,6 +1,7 @@
 <app-header [fixed]="true" [navbarBrandFull]="{src: 'assets/images/logo1.png', width: 130, height: 80, alt: 'Mindfin Logo'}" [navbarBrandMinimized]="{src: 'assets/images/head.png', width: 50, height: 50, alt: 'mindfin Logo'}" [sidebarToggler]="'lg'" [asideMenuToggler]="'lg'">
 
     <ul class="nav navbar-nav ml-auto">
+
         <li class="nav-item  d-md-down-none ">
             <a class="nav-link " role="button " [routerLink]="[ '/notification/empnotification'] " title="Notifications "><img src="/assets/images/notification.png" alt="notification" height="30px " width="30px ">
                 <span class="badge badge-danger ">{{fetchData12}}</span>

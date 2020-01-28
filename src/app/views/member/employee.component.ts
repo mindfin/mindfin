@@ -52,7 +52,8 @@ export class EmployeeComponent {
   imageURL: string;
   imageURL$: string;
   myfields: any = [];
-fetchData3;
+fetchData3:any;
+fetchData4:any;
   ngOnInit() {
     this.commonservice.getuserlist().subscribe(res => {
       console.log(res);
@@ -61,6 +62,11 @@ fetchData3;
     this.commonservice.getpasswords().subscribe(res=>{
       console.log(res);
       this.fetchData3 =res;
+
+    })
+    this.commonservice.getemailSettings().subscribe(res=>{
+      console.log(res);
+      this.fetchData4 =res;
 
     })
   }
@@ -131,12 +137,9 @@ fetchData3;
   submitForm(value) {
     console.log(value);
     this.createdby = localStorage.getItem("id")
-    // var password = 'mindfin@123'
-    // const encryptedString = sha1(password);
-
     this.value1 = { value: value, createdby: this.createdby,
        cimg: this.cimagfilePath, pimg: this.pimagfilePath, aimg: this.aimagfilePath,
-       password:this.fetchData3
+       password:this.fetchData3,emails:this.fetchData4
       };
     console.log(this.value1);
     this.commonservice.employeeadd(this.value1)
