@@ -18,7 +18,7 @@ import {MatDialog,MAT_DIALOG_DATA,MatDialogConfig} from '@angular/material';
 })
 export class TeledatalistComponent  {
 
-  displayedColumns: string[] = ['date','id','name','mobile','email','bankname','comment','turnover'];
+  displayedColumns: string[] = ['date','id','name','mobile','email','bankname','comment','turnover','edit'];
   samples:any;
   dataSource;
 
