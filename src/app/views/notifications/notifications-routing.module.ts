@@ -6,6 +6,7 @@ import { AssignToDoComponent } from './assigntodo.component';
 import { ViewNotificationComponent } from './viewnotification.component';
 import { EmpNotificationComponent } from './empnotification.component';
 import { SeenByComponent } from './seenby_dialog';
+import { EventCalendarComponent } from './eventcalendar.component';
 const routes: Routes = [
   {
     path: '',
@@ -53,6 +54,13 @@ const routes: Routes = [
         component: SeenByComponent,
         data: {
           title: 'Seen By '
+        }
+      },
+      {
+        path: 'events',
+        component: EventCalendarComponent,
+        data: {
+          title: 'Mindfin Calendar '
         }
       },
     ]

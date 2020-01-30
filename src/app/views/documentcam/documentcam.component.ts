@@ -107,5 +107,6 @@ export class DocumentCamComponent implements OnInit {
   refresh(): void {
     window.location.reload();
   }
+  
 
 }

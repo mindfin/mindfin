@@ -17,6 +17,10 @@ import { AssignToDoComponent, CreateToDoDialogContent } from './assigntodo.compo
 import { ViewNotificationComponent, DeleteNotificationDialogContent } from './viewnotification.component';
 import { EmpNotificationComponent } from './empnotification.component';
 import { SeenByComponent } from './seenby_dialog';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { EventCalendarComponent } from './eventcalendar.component';
+import { DemoUtilsModule } from '../demo-utils/module';
 
 @NgModule({
   imports: [
@@ -42,10 +46,16 @@ import { SeenByComponent } from './seenby_dialog';
     NgxPrintModule,
     BsDatepickerModule.forRoot(),
     AlertModule.forRoot(),
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory
+    }),
+    DemoUtilsModule
   ],
   declarations: [ProfileSettingComponent,AddNotificationComponent,AssignToDoComponent,ViewNotificationComponent,
-    EmpNotificationComponent,DeleteNotificationDialogContent,SeenByComponent,CreateToDoDialogContent],
+    EmpNotificationComponent,DeleteNotificationDialogContent,SeenByComponent,CreateToDoDialogContent,
+    EventCalendarComponent],
     entryComponents: [DeleteNotificationDialogContent,CreateToDoDialogContent
     ]
 })

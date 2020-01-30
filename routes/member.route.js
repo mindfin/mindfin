@@ -7,7 +7,8 @@ const { BlobServiceClient, StorageSharedKeyCredential } = require("@azure/storag
 const MulterAzureStorage = require('multer-azure-blob-storage').MulterAzureStorage;
 const knex = require('../knex/knex.js');
 var defaultImg = 'admin.png';
-const PDFParser = require("pdf2json");
+var request = require('request');
+var PDFParser = require("pdf2json");
 
 
 router.post('/checkcurrentpwd', (req, res, next) => {
@@ -58,43 +59,14 @@ router.post('/changepwd', function(req, res) {
             }
         });
 });
-const azureStorage = new MulterAzureStorage({
-    connectionString: 'DefaultEndpointsProtocol=https;AccountName=mindfinfiles;AccountKey=4NrEY0vfXnyvJVohjkXXcBLZDfYnCCUqO/HfnaTnhmiYAYxj0n9cbVRvheeNcvdEwJFnh4DhA1Uf7Uxbcq4ocw==;EndpointSuffix=core.windows.net',
-    accessKey: '4NrEY0vfXnyvJVohjkXXcBLZDfYnCCUqO/HfnaTnhmiYAYxj0n9cbVRvheeNcvdEwJFnh4DhA1Uf7Uxbcq4ocw==',
-    accountName: 'mindfinfiles',
-    containerName: 'mindfin-docment-scan',
-    containerAccessLevel: 'blob',
-    urlExpirationTime: 60,
-});
-
-const fileFilter = (req, file, cb) => {
-    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'application/pdf' || file.mimetype === 'text/csv' || file.mimetype === 'application/vnd.ms-excel' || file.mimetype === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || 'application/octet-stream' || 'application/zip') {
-        cb(null, true);
-    } else {
-        cb(null, false);
-    }
-};
-
-const upload = multer({
-    storage: azureStorage,
-    limits: {
-        fileSize: 150 * 1024 * 1024
-    },
-    fileFilter: fileFilter,
-});
-
-// const storage = multer.diskStorage({
-//     destination: function(req, file, cb) {
-//         cb(null, './src/assets/President/');
-//     },
-//     filename: function(req, file, cb) {
-
-//         cb(null, Date.now() + "" + file.originalname);
-
-
-//     }
-
-// })
+// const azureStorage = new MulterAzureStorage({
+//     connectionString: 'DefaultEndpointsProtocol=https;AccountName=mindfinfiles;AccountKey=4NrEY0vfXnyvJVohjkXXcBLZDfYnCCUqO/HfnaTnhmiYAYxj0n9cbVRvheeNcvdEwJFnh4DhA1Uf7Uxbcq4ocw==;EndpointSuffix=core.windows.net',
+//     accessKey: '4NrEY0vfXnyvJVohjkXXcBLZDfYnCCUqO/HfnaTnhmiYAYxj0n9cbVRvheeNcvdEwJFnh4DhA1Uf7Uxbcq4ocw==',
+//     accountName: 'mindfinfiles',
+//     containerName: 'mindfin-docment-scan',
+//     containerAccessLevel: 'blob',
+//     urlExpirationTime: 60,
+// });
 
 // const fileFilter = (req, file, cb) => {
 //     if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'application/pdf' || file.mimetype === 'text/csv' || file.mimetype === 'application/vnd.ms-excel' || file.mimetype === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || 'application/octet-stream' || 'application/zip') {
@@ -105,146 +77,137 @@ const upload = multer({
 // };
 
 // const upload = multer({
-//     storage: storage,
+//     storage: azureStorage,
 //     limits: {
-//         fileSize: 1024 * 1024 * 5
+//         fileSize: 150 * 1024 * 1024
 //     },
-//     fileFilter: fileFilter
+//     fileFilter: fileFilter,
 // });
+
+const storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, './President/');
+    },
+    filename: function(req, file, cb) {
+
+        cb(null, 'documentcam.pdf');
+
+
+    }
+
+})
+
+const fileFilter = (req, file, cb) => {
+    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'application/pdf' || file.mimetype === 'text/csv' || file.mimetype === 'application/vnd.ms-excel' || file.mimetype === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || 'application/octet-stream' || 'application/zip') {
+        cb(null, true);
+    } else {
+        cb(null, false);
+    }
+};
+
+const upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: 1024 * 1024 * 5
+    },
+    fileFilter: fileFilter
+});
+
 router.post('/image-upload', upload.any(), (req, res) => {
     console.log(req.files)
     return res.json({ 'imageUrl': req.files });
 });
 
 // router.post('/bankstatementcam', (req, res) => {
+//     // console.log(req.bady.bankstatement)
 
+//     var pdfUrl = "https://mindfinfiles.blob.core.windows.net/mindfin-docment-scan/" + req.body.bankstatement[0].blobName;
+//     console.log(pdfUrl);
+//     var pdfParser = new PDFParser();
 
-//     console.log(req.body.bankstatement);
+//     var pdfPipe = request({ url: pdfUrl, encoding: null }).pipe(pdfParser);
+//     // console.log(pdfPipe)
+//     pdfPipe.on("pdfParser_dataError", err => console.error(err));
+//     pdfPipe.on("pdfParser_dataReady", pdf => {
+//         console.log("First console", pdfParser.getAllFieldsTypes())
+//         console.log("Second console", pdfParser.getMergedTextBlocksIfNeeded())
+//             // let count1;
+//             // //get text on a particular page
+//             // for (let page of pdf.formImage.Pages) {
+//             //     // console.log("First console", pdfParser.getAllFieldsTypes())
 
-//     // Enter your storage account name and shared key
-//     const account = "mindfinfiles";
-//     const accountKey = "4NrEY0vfXnyvJVohjkXXcBLZDfYnCCUqO/HfnaTnhmiYAYxj0n9cbVRvheeNcvdEwJFnh4DhA1Uf7Uxbcq4ocw==";
-//     var containerClient;
-//     var blobClient;
-//     var downloaded;
-//     var downloadBlockBlobResponse;
-//     let pdfParser = new PDFParser();
-//     // Use StorageSharedKeyCredential with storage account and account key
-//     // StorageSharedKeyCredential is only avaiable in Node.js runtime, not in browsers
-//     const sharedKeyCredential = new StorageSharedKeyCredential(account, accountKey);
-//     const blobServiceClient = new BlobServiceClient(
-//         `https://${account}.blob.core.windows.net`,
-//         sharedKeyCredential
-//     )
-//     const containerName = "mindfin-docment-scan";
-//     const blobName = req.body.bankstatement[0].blobName;
+//         //     count1 += page.Text;
+//         // }
 
-//     async function main() {
-//         containerClient = blobServiceClient.getContainerClient(containerName);
-//         blobClient = containerClient.getBlobClient(blobName);
-//         // console.log("blob name ", blobClient);
-//         downloadBlockBlobResponse = await blobClient.download();
-//         localStorage.setItem('azurefile', downloadBlockBlobResponse);
-//         downloaded = await streamToString(downloadBlockBlobResponse.readableStreamBody);
-//         // console.log("Downloaded blob content:", downloaded);
-
-
-//         // [Node.js only] A helper method used to read a Node.js readable stream into string
-//         async function streamToString(readableStream) {
-//             return new Promise((resolve, reject) => {
-//                 const chunks = [];
-//                 readableStream.on("data", (data) => {
-//                     chunks.push(data.toString());
-//                 });
-//                 readableStream.on("end", () => {
-//                     resolve(chunks.join(""));
-//                 });
-//                 readableStream.on("error", reject);
-//             });
-//         }
-//         let pdfParser = new PDFParser(this, 1);
-//         // Load the pdf document
-//         pdfParser.loadPDF(`${containerClient.getBlobClient(blobName)}`);
-//         pdfParser.on("pdfParser_dataReady", (pdfData) => {
-//             // The raw PDF data in text form
-//             const raw = pdfParser.getRawTextContent().replace(/\r\n/g, " ");
-//             console.log(raw);
-//             // Return the parsed data
-//             // resolve({
-//             //     name: /Name\s(.*?)Address/i.exec(raw)[1].trim(),
-//             //     address: /Address\s(.*?)Phone/i.exec(raw)[1].trim(),
-//             //     phone: /Phone\s(.*?)Birthday/i.exec(raw)[1].trim(),
-//             //     birthday: /Birthday\s(.*?)Email\sAddress/i.exec(raw)[1].trim(),
-//             //     emailAddress: /Email\sAddress\s(.*?)Blood\stype/i.exec(raw)[1].trim(),
-//             //     bloodType: /Blood\stype\s(.*?)Height/i.exec(raw)[1].trim(),
-//             //     height: /Height\s(.*?)Weight/i.exec(raw)[1].trim(),
-//             //     weight: /Weight\s(.*?)--/i.exec(raw)[1].trim()
-//             // });
-
-//         });
-//         // (async() => {
-//         //     // Set up the pdf parser
-//         //     let pdfParser = new PDFParser(this, 1);
-//         //     // Load the pdf document
-//         //     pdfParser.loadPDF(blobClient);
-//         //     // Parsed the statement
-//         //     let statement = await new Promise(async(resolve, reject) => {
-//         //         // On data ready
-//         //         pdfParser.on("pdfParser_dataReady", (pdfData) => {
-//         //             // The raw PDF data in text form
-//         //             const raw = pdfParser.getRawTextContent().replace(/\r\n/g, " ");
-//         //             console.log(raw);
-//         //             // Return the parsed data
-//         //             // resolve({
-//         //             //     name: /Name\s(.*?)Address/i.exec(raw)[1].trim(),
-//         //             //     address: /Address\s(.*?)Phone/i.exec(raw)[1].trim(),
-//         //             //     phone: /Phone\s(.*?)Birthday/i.exec(raw)[1].trim(),
-//         //             //     birthday: /Birthday\s(.*?)Email\sAddress/i.exec(raw)[1].trim(),
-//         //             //     emailAddress: /Email\sAddress\s(.*?)Blood\stype/i.exec(raw)[1].trim(),
-//         //             //     bloodType: /Blood\stype\s(.*?)Height/i.exec(raw)[1].trim(),
-//         //             //     height: /Height\s(.*?)Weight/i.exec(raw)[1].trim(),
-//         //             //     weight: /Weight\s(.*?)--/i.exec(raw)[1].trim()
-//         //             // });
-
-//         //         });
-//         //     });
-//         //     // Add the patient to the patients array
-//         //     // patients.push(patient);
-
-//         //     // }));
-
-//         //     // Save the extracted information to a json file
-//         //     // fs.writeFileSync("patients.json", JSON.stringify(patients));
-//         // })();
-//     }
-
-//     main();
-// });
-
+//         // console.log(count1)
+//         pdfParser.destroy();
+//     });
+// })
 router.post('/bankstatementcam', (req, res) => {
+    // let pdfParser = new PDFParser();
+
+    // pdfParser.on("pdfParser_dataError", errData => console.error(errData.parserError));
+    // pdfParser.on("pdfParser_dataReady", pdfData => {
+    //     // fs.writeFile("./pdf2json/test/F1040EZ.json", JSON.stringify(pdfData));
+    //     const raw = pdfParser.getRawTextContent().replace(/\r\n/g, " ");
+    //     console.log(raw);
+    // });
+    // var pdf = ("./President/" + req.body.bankstatement[0].filename)
+    // console.log(pdf)
+    // pdfParser.loadPDF("./President/documentcam.pdf");
+
+
     // console.log(req.bady.bankstatement)
-    var request = require('request');
-    var PDFParser = require("pdf2json");
-    var pdfUrl = "https://mindfinfiles.blob.core.windows.net/mindfin-docment-scan/" + req.body.bankstatement[0].blobName;
-    console.log(pdfUrl);
-    var pdfParser = new PDFParser();
 
-    var pdfPipe = request({ url: pdfUrl, encoding: null }).pipe(pdfParser);
-    console.log(pdfPipe)
-    pdfPipe.on("pdfParser_dataError", err => console.error(err));
-    pdfPipe.on("pdfParser_dataReady", pdf => {
-        // let pdf = pdfParser.getAllFieldsTypes();
-        // console.log("First console", pdfParser.getAllFieldsTypes())
-        // console.log("Second console", pdfParser.getMergedTextBlocksIfNeeded())
+    // Get all the filenames from the President folder
+    const files = fs.readdirSync("President");
 
-        //get text on a particular page
-        for (let page of pdf.formImage.Pages) {
-            console.log("First console", pdfParser.getAllFieldsTypes())
-            console.log("texts in ", page.Text);
-        }
+    // All of the parse President
+    let President = [];
+
+    // Make a IIFE so we can run asynchronous code
+    (async() => {
+
+        // Await all of the President to be passed
+        // For each file in the President folder
+        await Promise.all(files.map(async(file) => {
+
+            // Set up the pdf parser
+            let pdfParser = new PDFParser(this, 1);
+            console.log(file);
+            // Load the pdf document
+            // pdfParser.loadPDF(`President/${file}` + req.body.bankstatement[0].filename);
+            pdfParser.loadPDF(`President/${file}`);
 
 
-        pdfParser.destroy();
-    });
-})
+            // Parsed the document
+            let document = await new Promise(async(resolve, reject) => {
+
+                // On data ready
+                pdfParser.on("pdfParser_dataReady", (pdfData) => {
+
+                    // The raw PDF data in text form
+                    const raw = pdfParser.getRawTextContent();
+                    console.log(raw);
+                    fs.unlink('./President/documentcam.pdf', function(err) {
+                        if (err) return console.log(err);
+                        console.log('file deleted successfully');
+                    });
+                    // Return the parsed data
+                    resolve({
+                        data: raw
+                    });
+                });
+            });
+            // Add the document to the President array
+            President.push(document);
+
+        }));
+        console.log(President)
+            // Save the extracted information to a json file
+        return res.json(JSON.stringify(President));
+    })();
+
+});
+
 module.exports = router;
