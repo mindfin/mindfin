@@ -78,6 +78,7 @@ empname:any;
       this.defaultlayout.ngOnInit();
       console.log(res);
      });
+     
   }
 
   applyFilter(filterValue: string) {
@@ -140,10 +141,10 @@ getreport(obj) {
   console.log(obj);
   this.isLoading = true;
   console.log(obj)
-  localStorage.setItem("startdate", obj.startdate);
-  localStorage.setItem("enddate", obj.enddate);
-  this.sdate = localStorage.getItem("startdate");
-  this.edate = localStorage.getItem("enddate");
+  localStorage.setItem("startdate", obj.startdate[0]);
+    localStorage.setItem("enddate", obj.startdate[1]);
+    this.sdate = localStorage.getItem("startdate");
+    this.edate = localStorage.getItem("enddate");
   this.commonservice.getDataEnquirylist1(this.postsPerPage, this.currentPage, this.sdate, this.edate,this.exeid);
   this.commonservice
     .getDataEnquirylistDetails1()
@@ -187,8 +188,24 @@ element:any;
 //   constructor(
 //     @Inject(MAT_DIALOG_DATA) public data: any
 //  ) { }
+@ViewChild(MatSort) sort: MatSort;
+fetchData:any;
 fetchData1:any;
+exeid;
+totalPosts = 0;
+postsPerPage = 500;
+currentPage = 1;
+pageSizeOptions = [ 500, 800, 1000];
+isLoading = false;
+dataSource;
+samples:any;
+value1:any;
 ngOnInit() {
+   this.commonservice.getemailSettings().subscribe(res=>{
+      console.log(res);
+      this.fetchData =res;
+
+    })
   this.commonservice.getexecutivelist().subscribe(res => {
     console.log(res);
     this.fetchData1 = res;
@@ -197,10 +214,28 @@ ngOnInit() {
 assignexe(obj){
    console.log(obj);
   //  console.log(obj1);
-  this.commonservice.assignexe(obj).subscribe(res => {
+  this.value1={value:obj, emails:this.fetchData}
+  this.commonservice.assignexe(this.value1).subscribe(res => {
     console.log(res);
     this.dialogRef.close();
-    window.location.reload();
+
+    this.exeid=localStorage.getItem("id");
+    // this.idvalue = params['id'];
+    this.commonservice.getEnquirylistexe1(this.postsPerPage, this.currentPage,this.exeid);
+    this.commonservice
+    .getEnquirylistexeDetails1()
+     .subscribe((postData: {posts: SuperadminService[], postCount: number})=> {
+      
+        this.totalPosts = postData.postCount;
+        this.dataSource = new MatTableDataSource(postData.posts);
+        // this.dataSource = new (postData.posts);
+        this.samples = postData.posts;
+        this.isLoading = false;
+      // console.log(postData.posts);
+      // console.log(postData.postCount);     
+      this.dataSource.sort = this.sort;
+    // console.log(this.dataSource.sort);
+    });
   });
   
  }

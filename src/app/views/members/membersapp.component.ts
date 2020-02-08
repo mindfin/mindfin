@@ -15,7 +15,7 @@ import {MatDialog,MAT_DIALOG_DATA,MatDialogConfig} from '@angular/material';
   selector: 'app-home',
   templateUrl: './membersapp.component.html',
 })
-export class MembersappComponent  {
+export class MembersappComponent  { 
 	// private notifier: NotifierService;
 
   displayedColumns: string[] = ['date','aging','name','cname','addbank','Approval','Assign','topup'];

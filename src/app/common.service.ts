@@ -148,7 +148,7 @@ export class CommonService {
         localStorage.setItem('id', res[0]['idemployee']);
         localStorage.setItem('empname', res[0]['name']);
         localStorage.setItem('role', 'ACCOUNTANT');
-        this.router.navigate(["/notification/profilesettingse"]);
+        this.router.navigate(["/notification/profilesettings"]);
       }
       else if (res[0].user == 'SUB VENDOR') {
         console.log('account')
@@ -173,7 +173,7 @@ export class CommonService {
       }
     });
   }
-
+ 
 
 
 
@@ -503,8 +503,9 @@ export class CommonService {
   }
 
   viewcustomerid(postsPerPage: number, currentPage: number, idvalue: String) {
-    // console.log(id);
+   
     const queryParams = `/${postsPerPage}/${currentPage}/${idvalue}`;
+    console.log(queryParams);
     this.http
       .get<{ message: string; posts: any; maxPosts: number }>(
         "https://bank.mindfin.co.in/callapi/viewcustomerid" + queryParams
@@ -2034,8 +2035,6 @@ export class CommonService {
         });
       });
   }
-
-
   getEnquirylistexeDetails1() {
     return this.postsUpdated.asObservable();
   }
@@ -2712,5 +2711,378 @@ export class CommonService {
   public getemailSettings() {
     const uri = "https://bank.mindfin.co.in/callapi/getemailSettings";
     return this.http.get(uri);
+  }
+  addEvent(value){
+    console.log(value);
+    const uri = "https://bank.mindfin.co.in/callapi/addEvent";
+    return this.http.post(uri, value);
+  }
+  getEvent(){
+      const uri = "https://bank.mindfin.co.in/callapi/getEvent";
+  const res= this.http.get(uri);
+   console.log(res);
+    return res;
+  }
+  deleteEvent(value){
+    console.log(value);
+    const uri = "https://bank.mindfin.co.in/callapi/deleteEvent";
+    return this.http.post(uri, value);
+  }
+  enquiryapprovecount(id) {
+    const uri = "https://bank.mindfin.co.in/callapi/enquiryapprovecount/" + id;
+    return this.http.get(uri);
+  }
+  enquirydisbursecount(id) {
+    const uri = "https://bank.mindfin.co.in/callapi/enquirydisbursecount/" + id;
+    return this.http.get(uri);
+  }
+  enquiryrejectcount(id) {
+    const uri = "https://bank.mindfin.co.in/callapi/enquiryrejectcount/" + id;
+    return this.http.get(uri);
+  }
+  getEnquiryDisburslistDetails(postsPerPage: number, currentPage: number, id) {
+    const queryParams = `/${postsPerPage}/${currentPage}/${id}`;
+    this.http
+      .get<{ message: string; posts: any; maxPosts: number }>(
+        "https://bank.mindfin.co.in/callapi/getEnquiryDisburslistDetailsDetails" + queryParams
+      )
+      .pipe(
+        map(postData => {
+          //console.log('');
+          return {
+            posts: postData.posts,
+
+            maxPosts: postData.maxPosts
+          };
+        })
+      )
+      .subscribe(transformedPostData => {
+        this.posts = transformedPostData.posts;
+        this.postsUpdated.next({
+          posts: [...this.posts],
+          postCount: transformedPostData.maxPosts
+        });
+      });
+  }
+  getEnquiryDisburslistDetailsDetails() {
+    return this.postsUpdated.asObservable();
+  }
+  getEnquiryApprovedlist(postsPerPage: number, currentPage: number, id) {
+    const queryParams = `/${postsPerPage}/${currentPage}/${id}`;
+    this.http
+      .get<{ message: string; posts: any; maxPosts: number }>(
+        "https://bank.mindfin.co.in/callapi/getEnquiryApprovedlist" + queryParams
+      )
+      .pipe(
+        map(postData => {
+          //console.log('');
+          return {
+            posts: postData.posts,
+
+            maxPosts: postData.maxPosts
+          };
+        })
+      )
+      .subscribe(transformedPostData => {
+        this.posts = transformedPostData.posts;
+        this.postsUpdated.next({
+          posts: [...this.posts],
+          postCount: transformedPostData.maxPosts
+        });
+      });
+  }
+  getEnquiryApprovedlistDetails() {
+    return this.postsUpdated.asObservable();
+  }
+  getEnquiryRejectlist(postsPerPage: number, currentPage: number, id) {
+    const queryParams = `/${postsPerPage}/${currentPage}/${id}`;
+    this.http
+      .get<{ message: string; posts: any; maxPosts: number }>(
+        "https://bank.mindfin.co.in/callapi/getEnquiryRejectlist" + queryParams
+      )
+      .pipe(
+        map(postData => {
+          //console.log('');
+          return {
+            posts: postData.posts,
+
+            maxPosts: postData.maxPosts
+          };
+        })
+      )
+      .subscribe(transformedPostData => {
+        this.posts = transformedPostData.posts;
+        this.postsUpdated.next({
+          posts: [...this.posts],
+          postCount: transformedPostData.maxPosts
+        });
+      });
+  }
+  getEnquiryRejectlistDetails() {
+    return this.postsUpdated.asObservable();
+  }
+  notopenedlist(value) {
+    console.log(value);
+    const uri = "https://bank.mindfin.co.in/callapi/notopenedlist";
+    return this.http.post(uri, value);
+  }
+  filepickedlist(value) {
+    console.log(value);
+    const uri = "https://bank.mindfin.co.in/callapi/filepickedlist";
+    return this.http.post(uri, value);
+  }
+  contactedlist(value) {
+    console.log(value);
+    const uri = "https://bank.mindfin.co.in/callapi/contactedlist";
+    return this.http.post(uri, value);
+  }
+  loginlist(value) {
+    console.log(value);
+    const uri = "https://bank.mindfin.co.in/callapi/loginlist";
+    return this.http.post(uri, value);
+  }
+  wiplist(value) {
+    console.log(value);
+    const uri = "https://bank.mindfin.co.in/callapi/wiplist";
+    return this.http.post(uri, value);
+  }
+  approvedlist(value) {
+    console.log(value);
+    const uri = "https://bank.mindfin.co.in/callapi/approvedlist";
+    return this.http.post(uri, value);
+  }
+  disbursedlist(value) {
+    console.log(value);
+    const uri = "https://bank.mindfin.co.in/callapi/disbursedlist";
+    return this.http.post(uri, value);
+  }
+  rejectlist(value) {
+    console.log(value);
+    const uri = "https://bank.mindfin.co.in/callapi/rejectlist";
+    return this.http.post(uri, value);
+  }
+
+  getEnquiryApprovelistexe(postsPerPage: number, currentPage: number, id) {
+    const queryParams = `/${postsPerPage}/${currentPage}/${id}`;
+    this.http
+      .get<{ message: string; posts: any; maxPosts: number }>(
+        "https://bank.mindfin.co.in/callapi/getEnquiryApprovelistexe" + queryParams
+      )
+      .pipe(
+        map(postData => {
+          //console.log('');
+          return {
+            posts: postData.posts,
+
+            maxPosts: postData.maxPosts
+          };
+        })
+      )
+      .subscribe(transformedPostData => {
+        this.posts = transformedPostData.posts;
+        this.postsUpdated.next({
+          posts: [...this.posts],
+          postCount: transformedPostData.maxPosts
+        });
+      });
+  }
+  getEnquiryApprovelistexeDetails() {
+    return this.postsUpdated.asObservable();
+  }
+
+  getEnquirycontactedlistexe(postsPerPage: number, currentPage: number, id) {
+    const queryParams = `/${postsPerPage}/${currentPage}/${id}`;
+    this.http
+      .get<{ message: string; posts: any; maxPosts: number }>(
+        "https://bank.mindfin.co.in/callapi/getEnquirycontactedlistexe" + queryParams
+      )
+      .pipe(
+        map(postData => {
+          //console.log('');
+          return {
+            posts: postData.posts,
+
+            maxPosts: postData.maxPosts
+          };
+        })
+      )
+      .subscribe(transformedPostData => {
+        this.posts = transformedPostData.posts;
+        this.postsUpdated.next({
+          posts: [...this.posts],
+          postCount: transformedPostData.maxPosts
+        });
+      });
+  }
+  getEnquirycontactedlistexeDetails() {
+    return this.postsUpdated.asObservable();
+  }
+  getEnquirydisburselistexe(postsPerPage: number, currentPage: number, id) {
+    const queryParams = `/${postsPerPage}/${currentPage}/${id}`;
+    this.http
+      .get<{ message: string; posts: any; maxPosts: number }>(
+        "https://bank.mindfin.co.in/callapi/getEnquirydisburselistexe" + queryParams
+      )
+      .pipe(
+        map(postData => {
+          //console.log('');
+          return {
+            posts: postData.posts,
+
+            maxPosts: postData.maxPosts
+          };
+        })
+      )
+      .subscribe(transformedPostData => {
+        this.posts = transformedPostData.posts;
+        this.postsUpdated.next({
+          posts: [...this.posts],
+          postCount: transformedPostData.maxPosts
+        });
+      });
+  }
+  getEnquirydisburselistexeDetails() {
+    return this.postsUpdated.asObservable();
+  }
+  getEnquiryfilepicklistexe(postsPerPage: number, currentPage: number, id) {
+    const queryParams = `/${postsPerPage}/${currentPage}/${id}`;
+    this.http
+      .get<{ message: string; posts: any; maxPosts: number }>(
+        "https://bank.mindfin.co.in/callapi/getEnquiryfilepicklistexe" + queryParams
+      )
+      .pipe(
+        map(postData => {
+          //console.log('');
+          return {
+            posts: postData.posts,
+
+            maxPosts: postData.maxPosts
+          };
+        })
+      )
+      .subscribe(transformedPostData => {
+        this.posts = transformedPostData.posts;
+        this.postsUpdated.next({
+          posts: [...this.posts],
+          postCount: transformedPostData.maxPosts
+        });
+      });
+  }
+  getEnquiryfilepicklistexeDetails() {
+    return this.postsUpdated.asObservable();
+  }
+  getEnquiryloginlistexe(postsPerPage: number, currentPage: number, id) {
+    const queryParams = `/${postsPerPage}/${currentPage}/${id}`;
+    this.http
+      .get<{ message: string; posts: any; maxPosts: number }>(
+        "https://bank.mindfin.co.in/callapi/getEnquiryloginlistexe" + queryParams
+      )
+      .pipe(
+        map(postData => {
+          //console.log('');
+          return {
+            posts: postData.posts,
+
+            maxPosts: postData.maxPosts
+          };
+        })
+      )
+      .subscribe(transformedPostData => {
+        this.posts = transformedPostData.posts;
+        this.postsUpdated.next({
+          posts: [...this.posts],
+          postCount: transformedPostData.maxPosts
+        });
+      });
+  }
+  getEnquiryloginlistexeDetails() {
+    return this.postsUpdated.asObservable();
+  }
+  getEnquirynotopenlistexe(postsPerPage: number, currentPage: number, id) {
+    const queryParams = `/${postsPerPage}/${currentPage}/${id}`;
+    this.http
+      .get<{ message: string; posts: any; maxPosts: number }>(
+        "https://bank.mindfin.co.in/callapi/getEnquirynotopenlistexe" + queryParams
+      )
+      .pipe(
+        map(postData => {
+          //console.log('');
+          return {
+            posts: postData.posts,
+
+            maxPosts: postData.maxPosts
+          };
+        })
+      )
+      .subscribe(transformedPostData => {
+        this.posts = transformedPostData.posts;
+        this.postsUpdated.next({
+          posts: [...this.posts],
+          postCount: transformedPostData.maxPosts
+        });
+      });
+  }
+  getEnquirynotopenlistexeDetails() {
+    return this.postsUpdated.asObservable();
+  }
+  getEnquiryrejectlistexe(postsPerPage: number, currentPage: number, id) {
+    const queryParams = `/${postsPerPage}/${currentPage}/${id}`;
+    this.http
+      .get<{ message: string; posts: any; maxPosts: number }>(
+        "https://bank.mindfin.co.in/callapi/getEnquiryrejectlistexe" + queryParams
+      )
+      .pipe(
+        map(postData => {
+          //console.log('');
+          return {
+            posts: postData.posts,
+
+            maxPosts: postData.maxPosts
+          };
+        })
+      )
+      .subscribe(transformedPostData => {
+        this.posts = transformedPostData.posts;
+        this.postsUpdated.next({
+          posts: [...this.posts],
+          postCount: transformedPostData.maxPosts
+        });
+      });
+  }
+  getEnquiryrejectlistexeDetails() {
+    return this.postsUpdated.asObservable();
+  }
+  getEnquirywiplistexe(postsPerPage: number, currentPage: number, id) {
+    const queryParams = `/${postsPerPage}/${currentPage}/${id}`;
+    this.http
+      .get<{ message: string; posts: any; maxPosts: number }>(
+        "https://bank.mindfin.co.in/callapi/getEnquirywiplistexe" + queryParams
+      )
+      .pipe(
+        map(postData => {
+          //console.log('');
+          return {
+            posts: postData.posts,
+
+            maxPosts: postData.maxPosts
+          };
+        })
+      )
+      .subscribe(transformedPostData => {
+        this.posts = transformedPostData.posts;
+        this.postsUpdated.next({
+          posts: [...this.posts],
+          postCount: transformedPostData.maxPosts
+        });
+      });
+  }
+  getEnquirywiplistexeDetails() {
+    return this.postsUpdated.asObservable();
+  }
+  notify(obj) {
+    console.log(obj);
+    // const queryParams = `/${obj}/${obj1}`;
+    const uri = "https://bank.mindfin.co.in/callapi/notify";
+    return this.http.post(uri, obj)
   }
 }

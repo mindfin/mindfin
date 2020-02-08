@@ -15,6 +15,14 @@ import { ExecutivetopuplistComponent } from './executivetopuplist.component';
 import { AdminTeledatalistComponent } from './adminteledatalist.component';
 import { AdminTeledataEditComponent } from './adminteledataedit.component';
 import { AssignExeComponent } from './assignexe.component';
+import { AdminTeledataRejectlistComponent } from './adminteledatarejectlist.component';
+import { AdminTeledataDisburslistComponent } from './adminteledatadisbursedlist.component';
+import { AdminTeledataLoginlistComponent } from './adminteledataloginlist.component';
+import { AdminTeledataWIPlistComponent } from './adminteledatawiplist.component';
+import { AdminTeledataContactedlistComponent } from './adminteledatacontactedlist.component';
+import { AdminTeledataFilePickedlistComponent } from './adminteledatafilepickedlist.component';
+import { AdminTeledataNotOpenedlistComponent } from './adminteledatanotopenlist.component';
+import { AdminTeledataApprovelistComponent } from './adminteledataapprovelist.component';
 
 
 
@@ -110,6 +118,62 @@ const routes: Routes = [
         component:AssignExeComponent,
         data:{
           title:'Assigned list'
+        }
+      },
+      {
+        path: 'rejectdatalist',
+        component:AdminTeledataRejectlistComponent,
+        data:{
+          title:'Reject list'
+        }
+      },
+      {
+        path: 'disbursedatalist',
+        component:AdminTeledataDisburslistComponent,
+        data:{
+          title:'Disburse list'
+        }
+      },
+      {
+        path: 'approvedatalist',
+        component:AdminTeledataApprovelistComponent,
+        data:{
+          title:'Approved list'
+        }
+      },
+      {
+        path: 'logindatalist',
+        component:AdminTeledataLoginlistComponent,
+        data:{
+          title:'Login list'
+        }
+      },
+      {
+        path: 'wipdatalist',
+        component:AdminTeledataWIPlistComponent,
+        data:{
+          title:'WIP list'
+        }
+      },
+      {
+        path: 'contacteddatalist',
+        component:AdminTeledataContactedlistComponent,
+        data:{
+          title:'Contacted list'
+        }
+      },
+      {
+        path: 'filepickeddatalist',
+        component:AdminTeledataFilePickedlistComponent,
+        data:{
+          title:'File Picked list'
+        }
+      },
+      {
+        path: 'notopendatalist',
+        component:AdminTeledataNotOpenedlistComponent,
+        data:{
+          title:'Assign list not opened'
         }
       },
   //   ]

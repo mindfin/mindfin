@@ -20,6 +20,8 @@ import { SeenByComponent } from './seenby_dialog';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { EventCalendarComponent } from './eventcalendar.component';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { AddEventCalendarComponent } from './addeventcalendar.component'; 
 import { DemoUtilsModule } from '../demo-utils/module';
 
 @NgModule({
@@ -44,18 +46,19 @@ import { DemoUtilsModule } from '../demo-utils/module';
     CollapseModule,
     TabsModule,
     NgxPrintModule,
-    BsDatepickerModule.forRoot(),
     AlertModule.forRoot(),
     ModalModule.forRoot(),
+    BsDatepickerModule.forRoot(),
     CalendarModule.forRoot({
       provide: DateAdapter,
       useFactory: adapterFactory
     }),
+    NgbModalModule,
     DemoUtilsModule
   ],
   declarations: [ProfileSettingComponent,AddNotificationComponent,AssignToDoComponent,ViewNotificationComponent,
     EmpNotificationComponent,DeleteNotificationDialogContent,SeenByComponent,CreateToDoDialogContent,
-    EventCalendarComponent],
+    EventCalendarComponent,AddEventCalendarComponent],
     entryComponents: [DeleteNotificationDialogContent,CreateToDoDialogContent
     ]
 })

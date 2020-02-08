@@ -28,22 +28,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6">
-                                <label><b>MOBILE NUMBER</b><code>(*)</code></label>
-                                <input minlength="10" maxlength="10" [(ngModel)]="model.mobile" type="text" class="form-control" name="mobile" required #mobile="ngModel">
-                                <div *ngIf="mobile.errors &&(mobile.dirty || mobile.touched)">
-                                    <div class="alert" [hidden]="!mobile.errors?.pattern">
-                                        Invalid Mobile No.
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <label><b> ALTERNATE MOBILE</b></label>
-                                <input minlength="10" maxlength="10" [(ngModel)]="model.altmobile" type="text" class="form-control" name="altmobile" #altmobile="ngModel">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label><b> GENDER</b><code>(*)</code></label><br>
                                 <input type="radio" value="male" name="gender" [(ngModel)]="model.gender" #gender="ngModel"> MALE
                                 <input type="radio" value="female" name="gender" [(ngModel)]="model.gender" #gender="ngModel"> FEMALE
@@ -53,12 +38,27 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-4">
+                                <label><b>MOBILE NUMBER</b><code>(*)</code></label>
+                                <input minlength="10" maxlength="10" [(ngModel)]="model.mobile" type="text" class="form-control" name="mobile" required #mobile="ngModel">
+                                <div *ngIf="mobile.errors &&(mobile.dirty || mobile.touched)">
+                                    <div class="alert" [hidden]="!mobile.errors?.pattern">
+                                        Invalid Mobile No.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label><b> ALTERNATE MOBILE</b></label>
+                                <input minlength="10" maxlength="10" [(ngModel)]="model.altmobile" type="text" class="form-control" name="altmobile" #altmobile="ngModel">
+                            </div>
+
+
+                        </div>
+                        <div class="row">
                             <div class="col-md-6">
                                 <label><b>ADDRESS</b></label>
                                 <textarea class="form-control" [(ngModel)]="model.address" class="form-control" name="address" #address="ngModel"></textarea>
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="col-sm-6">
                                 <label><b>LOAN TYPE</b><code>(*)</code></label><br>
                                 <select class="form-control" name="applytype" [(ngModel)]="model.applytype" required #applytype="ngModel">
@@ -71,6 +71,8 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="col-sm-6">
                                 <label><b>TURN OVER</b><code>(*)</code></label><br>
                                 <input class="form-control" [(ngModel)]="model.turnover" class="form-control" name="turnover" required #turnover="ngModel">
@@ -80,6 +82,14 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-sm-6">
+                                <label><b>Own House</b><code>(*)</code></label><br>
+                                <input type="radio" value="Is There" name="ohp" [(ngModel)]="model.ownHouse" #ownHouse="ngModel"> Is There
+                                <input type="radio" value="Is Not There" name="ohp" [(ngModel)]="model.ownHouse" #ownHouse="ngModel"> Is Not There
+
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-sm-6">
                                 <label><b>RESPECTIVE EXECUTIVE</b><code>(*)</code></label><br>
                                 <select class="form-control" name="executive" [(ngModel)]="model.executive" required #executive="ngModel">
@@ -92,7 +102,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="col-sm-6">
                                 <label><b>APPROACHED BANK </b><code>(*)</code></label><br>
                                 <select style="padding-right: 95px;" class="form-control" name="approchedBank" [(ngModel)]="model.approchedBank" required #approchedBank="ngModel">
@@ -107,6 +116,8 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="col-sm-6">
                                 <label><b>STATUS</b><code>(*)</code></label><br>
                                 <select class="form-control" name="status" [(ngModel)]="model.status" required #status="ngModel">

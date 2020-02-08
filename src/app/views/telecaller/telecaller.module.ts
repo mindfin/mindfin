@@ -9,6 +9,9 @@ import { CdkTableModule } from '@angular/cdk/table'
 import { TelecallerRoutingModule } from './telecaller-routing.module';
 import { TeledataComponent } from './teledata.component';
 import { TeledatalistComponent } from './teledatalist.component';
+import { TeleDisbursdatalistComponent } from './teledisbuseddatalist.component';
+import { TeleApproveddatalistComponent } from './teleapproveddatalist.component';
+import { TeleRejectdatalistComponent } from './telerejectdatalist.component';
 
 
 
@@ -43,7 +46,8 @@ import { TeledatalistComponent } from './teledatalist.component';
     TelecallerRoutingModule,
     ModalModule.forRoot()
   ],
-  declarations: [TeledataComponent,TeledatalistComponent],
+  declarations: [TeledataComponent,TeledatalistComponent,TeleDisbursdatalistComponent,TeleApproveddatalistComponent,
+    TeleRejectdatalistComponent],
   entryComponents: [
   ]
 })

@@ -14,11 +14,13 @@ import {
   format
 } from 'date-fns';
 import { Observable } from 'rxjs';
+import { colors } from '../demo-utils/colors';
 
-interface Film {
-  id: number;
+interface calendar {
   title: string;
-  release_date: string;
+  start: string;
+  primary: string;
+  secondary: string;
 }
 
 function getTimezoneOffsetString(date: Date): string {
@@ -42,55 +44,40 @@ export class EventCalendarComponent implements OnInit {
 
   viewDate: Date = new Date();
 
-  events$: Observable<Array<CalendarEvent<{ film: Film }>>>;
+  events$: Observable<Array<CalendarEvent<{ film: calendar }>>>;
 
   activeDayIsOpen: boolean = false;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
     this.fetchEvents();
   }
 
   fetchEvents(): void {
-    const getStart: any = {
-      month: startOfMonth,
-      week: startOfWeek,
-      day: startOfDay
-    }[this.view];
-
-    const getEnd: any = {
-      month: endOfMonth,
-      week: endOfWeek,
-      day: endOfDay
-    }[this.view];
-
-    const params = new HttpParams()
-      .set(
-        'primary_release_date.gte',
-        format(getStart(this.viewDate), 'yyyy-MM-dd')
-      )
-      .set(
-        'primary_release_date.lte',
-        format(getEnd(this.viewDate), 'yyyy-MM-dd')
-      )
-      .set('api_key', '0ec33936a68018857d727958dca1424f');
-
-    this.events$ = this.http
-      .get('https://api.themoviedb.org/3/discover/movie', { params })
+    
+  this.http
+      .get('https://bank.mindfin.co.in/callapi/getEvent')
       .pipe(
-        map(({ results }: { results: Film[] }) => {
-          return results.map((film: Film) => {
+        map(({ results }: { results: calendar[] }) => {
+          console.log('test1', results)
+          return results.map((film: calendar) => {
+            console.log('test2')
             return {
               title: film.title,
               start: new Date(
-                film.release_date + getTimezoneOffsetString(this.viewDate)
+                film.start + getTimezoneOffsetString(this.viewDate)
               ),
-              // color: colors.yellow,
-              allDay: true,
-              meta: {
-                film
-              }
+              // end: new Date(
+              //   film.end + getTimezoneOffsetString(this.viewDate)
+              // ),
+              color:
+              {
+                primary: film.primary,
+                secondary: film.secondary
+              },
+              draggable: false,
+              
             };
           });
         })
@@ -102,7 +89,7 @@ export class EventCalendarComponent implements OnInit {
     events
   }: {
     date: Date;
-    events: Array<CalendarEvent<{ film: Film }>>;
+    events: Array<CalendarEvent<{ film: calendar }>>;
   }): void {
     if (isSameMonth(date, this.viewDate)) {
       if (
@@ -117,10 +104,10 @@ export class EventCalendarComponent implements OnInit {
     }
   }
 
-  eventClicked(event: CalendarEvent<{ film: Film }>): void {
-    window.open(
-      // `https://www.themoviedb.org/movie/${event.meta.film.id}`,
-      // '_blank'
-    );
-  }
+  // eventClicked(event: CalendarEvent<{ film: Film }>): void {
+  //   window.open(
+  //     `https://www.themoviedb.org/movie/${event.meta.film.id}`,
+  //     '_blank'
+  //   );
+  // }
 }

@@ -19,6 +19,15 @@ import { ExecutivetopuplistComponent } from './executivetopuplist.component';
 import { AdminTeledatalistComponent, AssignDialogContent } from './adminteledatalist.component';
 import { AdminTeledataEditComponent } from './adminteledataedit.component';
 import { AssignExeComponent } from './assignexe.component';
+import { AdminTeledataRejectlistComponent } from './adminteledatarejectlist.component';
+import { AdminTeledataDisburslistComponent } from './adminteledatadisbursedlist.component';
+import { AdminTeledataApprovelistComponent } from './adminteledataapprovelist.component';
+import { AdminTeledataWIPlistComponent } from './adminteledatawiplist.component';
+import { AdminTeledataLoginlistComponent } from './adminteledataloginlist.component';
+import { AdminTeledataContactedlistComponent } from './adminteledatacontactedlist.component';
+import { AdminTeledataFilePickedlistComponent } from './adminteledatafilepickedlist.component';
+import { AdminTeledataNotOpenedlistComponent } from './adminteledatanotopenlist.component';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 
 
@@ -50,12 +59,17 @@ import { AssignExeComponent } from './assignexe.component';
     MatTableModule,
     MatDialogModule,
     ExecutivesRoutingModule,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    BsDatepickerModule.forRoot()
   ],
   declarations: [ExecutiveComponent,ExeWiseTeledatalistComponent,ExeTeledatalistComponent,
     TeledataEditComponent,DailyRoutineComponent,DailyRoutineviewComponent,
     DailyRoutineEditComponent,CustomerComponent,EdialogContent,ExecutivetopuplistComponent,
-    AdminTeledatalistComponent,AdminTeledataEditComponent,AssignDialogContent,AssignExeComponent ],
+    AdminTeledatalistComponent,AdminTeledataEditComponent,AssignDialogContent,AssignExeComponent,
+    AdminTeledataRejectlistComponent,AdminTeledataDisburslistComponent,AdminTeledataApprovelistComponent,
+    AdminTeledataWIPlistComponent,AdminTeledataLoginlistComponent,AdminTeledataContactedlistComponent,
+    AdminTeledataFilePickedlistComponent,AdminTeledataNotOpenedlistComponent
+   ],
 
   entryComponents: [CustomerComponent,EdialogContent,AssignDialogContent
   ]

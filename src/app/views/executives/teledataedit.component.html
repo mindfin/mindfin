@@ -111,8 +111,12 @@
                                 <label><b>STATUS</b><code>(*)</code></label><br>
                                 <select class="form-control" name="status" [(ngModel)]="model.status" required #status="ngModel">
                                   <option value="REQUIRED">REQUIRED</option>
-                                  <option value="NOT REQUIRED">NOT REQUIRED</option>
-                                  <option value="LATER">LATER</option>
+                                  <option value="CONTACTED">CONTACTED</option>
+                                  <option value="FILE PICKED">FILE PICKED</option>
+                                  <option value="LOGIN">LOGIN</option>
+                                  <option value="WORK IN PROGRESS">WORK IN PROGRESS</option>
+                                  <option value="APPROVED">APPROVED</option>
+                                  <option value="DISBURSED">DISBURSED</option>
                                   <option value="REJECTED">REJECTED</option>
                               </select>
                                 <div class="alert" *ngIf="status.errors && (status.dirty || status.touched)">

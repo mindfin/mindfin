@@ -7,6 +7,7 @@ import { ViewNotificationComponent } from './viewnotification.component';
 import { EmpNotificationComponent } from './empnotification.component';
 import { SeenByComponent } from './seenby_dialog';
 import { EventCalendarComponent } from './eventcalendar.component';
+import { AddEventCalendarComponent } from './addeventcalendar.component';
 const routes: Routes = [
   {
     path: '',
@@ -59,6 +60,13 @@ const routes: Routes = [
       {
         path: 'events',
         component: EventCalendarComponent,
+        data: {
+          title: 'Mindfin Calendar '
+        }
+      },
+      {
+        path: 'addevents',
+        component: AddEventCalendarComponent,
         data: {
           title: 'Mindfin Calendar '
         }

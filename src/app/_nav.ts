@@ -1,13 +1,13 @@
 export const navItems = [
   {
 
-    name: 'DASHBOARD',
+    name: 'Dashboard',
     url: '/dashboard',
     icon: 'fa fa-tachometer',
   },
 
   {
-    name: 'CUSTOMERS',
+    name: 'Customer',
     url: '/addcustomer',
     icon: 'icon-user',
     children: [
@@ -63,7 +63,7 @@ export const navItems = [
   },
 
   {
-    name: 'WEBSITE',
+    name: 'Website',
     url: '/website',
     icon: 'fa fa-globe',
     children: [
@@ -93,7 +93,7 @@ export const navItems = [
     ]
   },
   {
-    name: 'EMPLOYEE',
+    name: 'Employee',
     url: '/employee',
     icon: 'fa fa-briefcase',
     children: [
@@ -122,7 +122,7 @@ export const navItems = [
     ]
   },
   {
-    name: 'ACCOUNTS',
+    name: 'Accounts',
     url: '/employee',
     icon: 'fa fa-money',
     children: [
@@ -152,7 +152,7 @@ export const navItems = [
 
 
   {
-    name: 'SETTINGS',
+    name: 'Settings',
     url: '/receipt',
     icon: 'icon-wrench',
     children: [
@@ -221,7 +221,7 @@ export const navItems = [
     ]
   },
   {
-    name: 'REPORT',
+    name: 'Report',
     url: '/receipt',
     icon: 'fa fa-bug',
     children: [

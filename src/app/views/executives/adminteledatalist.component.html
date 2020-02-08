@@ -21,21 +21,8 @@
                                             <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
                                         </mat-form-field>
                                     </div>
-                                    <div class="col-lg-3">
-                                        <mat-form-field color="primary">
-                                            <mat-label>FROM (MM/DD/YYYY)</mat-label>
-                                            <input matInput [matDatepicker]="picker1" [(ngModel)]="model.startdate" name="startdate">
-                                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                                            <mat-datepicker #picker1></mat-datepicker>
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <mat-form-field color="accent">
-                                            <mat-label>TO (MM/DD/YYYY)</mat-label>
-                                            <input matInput [matDatepicker]="picker2" [(ngModel)]="model.enddate" name="enddate">
-                                            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                                            <mat-datepicker #picker2 color="primary"></mat-datepicker>
-                                        </mat-form-field>
+                                    <div class="col-lg-4">
+                                        <input class="form-group" [(ngModel)]="model.startdate" name="startdate" type="text" placeholder="From (MM/DD/YYYY) - To(MM/DD/YYYY)" class="form-control" bsDaterangepicker [bsConfig]="{ isAnimated: true }">
                                     </div>
                                     <div class="col-lg-3">
                                         <button class="btn btn-primary" (click)="getreport(model)">Get Data</button>

@@ -605,21 +605,21 @@ router.get('/viewcustomerid/:pagesize/:page/:id', (req, res, next) => {
     const currentPage = req.params.page;
     const skip = (pageSize * (currentPage - 1));
     knex.select('customer.*', 'applybank.*')
-        .from('customer', 'applybank')
+        .from('customer')
         .join('applybank', 'applybank.idcustomer', 'customer.idcustomer')
-        .where('customer.status', 'APPROVED')
         .where('applybank.executiveid', req.params.id)
+        .where('customer.status', 'APPROVED')
         .groupBy('applybank.idcustomer')
-        .orderBy('customer.idcustomer', 'desc')
+        .orderBy('applybank.idapplybank', 'desc')
         .limit(pageSize).offset(skip)
         .then(function(result) {
             knex.select('customer.*', 'applybank.*')
-                .from('customer', 'applybank')
+                .from('customer')
                 .join('applybank', 'applybank.idcustomer', 'customer.idcustomer')
-                .where('customer.status', 'APPROVED')
                 .where('applybank.executiveid', req.params.id)
+                .where('customer.status', 'APPROVED')
                 .groupBy('applybank.idcustomer')
-                .orderBy('customer.idcustomer', 'desc')
+                .orderBy('applybank.idapplybank', 'desc')
                 .then(function(re) {
                     res.status(200).json({
                         message: "Memberlists fetched",
@@ -1105,7 +1105,8 @@ router.post('/addenquiry', (req, res) => {
             updateddate: localTime,
             turnover: req.body.value.turnover,
             adminexeStatus: "new",
-            approchedBank: req.body.value.approchedBank
+            approchedBank: req.body.value.approchedBank,
+            ownHouse: req.body.value.ohp
         })
         .then(function(result) {
             ////console.log(result); 
@@ -2847,8 +2848,7 @@ router.get('/getEnquirylistexe/:pagesize/:page/:id', (req, res, next) => {
         .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
         .join('employee', 'employee.idemployee', 'enquirydata.teleid')
         .where('enquirydata.executiveid', req.params.id)
-
-    .orderBy('enquirydata.idenquiry', 'desc')
+        .orderBy('enquirydata.idenquiry', 'desc')
         .limit(pageSize).offset(skip)
         .then(function(result) {
             // //console.log(res);
@@ -3007,8 +3007,8 @@ router.get('/approvalmember/:obj/:obj1', function(req, res) {
 });
 router.get('/casecount/:obj', (req, res) => {
 
-    knex.select()
-        .from('customer', 'applybank')
+    knex.select('customer.*', 'applybank.*')
+        .from('customer')
         .join('applybank', 'applybank.idcustomer', 'customer.idcustomer')
         .where('customer.status', 'APPROVED')
         .where('applybank.executiveid', req.params.obj)
@@ -4430,21 +4430,554 @@ router.get('/getDataEnquirylist1/:pagesize/:page/:sdate/:edate/:eid', (req, res,
 router.post('/assignexe', function(req, res) {
     // //console.log(req.params.obj);
     // //console.log(req.params.obj1);
-    var abc = req.body.executive.split(",", 2);
+    var abc = req.body.value.executive.split(",", 2);
+    var empname = abc[1];
     var date1 = moment.utc().format('YYYY-MM-DD HH:mm:ss');
     var localTime = moment.utc(date1).toDate();
     knex('enquirydata')
-        .where('idenquiry', req.body.idenquiry)
+        .where('idenquiry', req.body.value.idenquiry)
         .update({
             assignedTime: localTime,
             executiveid: abc[0],
-            executivename: abc[1],
+            executivename: empname,
             adminexeStatus: 'assigned',
             executiveStatus: 'new'
-        }).then(function(result) {
-            //console.log(result);
-            res.json('Updated Successfully');
         })
+        .then(function(result) {
+            res.json('Employee Added Successfully');
+            const output = `<html style="width:100%;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;padding:0;Margin:0;">
+
+            <head>
+                <meta charset="UTF-8">
+                <meta content="width=device-width, initial-scale=1" name="viewport">
+                <!--[if (mso 16)]>
+                <style type="text/css">
+                a {text-decoration: none;}
+                </style>
+                <![endif]-->
+                <!--[if gte mso 9]><style>sup { font-size: 100% !important; }</style><![endif]-->
+                <style type="text/css">
+                    @media only screen and (max-width:600px) {
+                        p,
+                        ul li,
+                        ol li,
+                        a {
+                            font-size: 12px!important;
+                            line-height: 150%!important
+                        }
+                        h1 {
+                            font-size: 30px!important;
+                            text-align: center;
+                            line-height: 120%!important
+                        }
+                        h2 {
+                            font-size: 26px!important;
+                            text-align: center;
+                            line-height: 120%!important
+                        }
+                        h3 {
+                            font-size: 20px!important;
+                            text-align: center;
+                            line-height: 120%!important
+                        }
+                        .es-menu td a {
+                            font-size: 10px!important
+                        }
+                        .es-header-body p,
+                        .es-header-body ul li,
+                        .es-header-body ol li,
+                        .es-header-body a {
+                            font-size: 10px!important
+                        }
+                        .es-footer-body p,
+                        .es-footer-body ul li,
+                        .es-footer-body ol li,
+                        .es-footer-body a {
+                            font-size: 12px!important
+                        }
+                        .es-infoblock p,
+                        .es-infoblock ul li,
+                        .es-infoblock ol li,
+                        .es-infoblock a {
+                            font-size: 12px!important
+                        }
+                        *[class="gmail-fix"] {
+                            display: none!important
+                        }
+                        .es-m-txt-c {
+                            text-align: center!important
+                        }
+                        .es-m-txt-r {
+                            text-align: right!important
+                        }
+                        .es-m-txt-l {
+                            text-align: left!important
+                        }
+                        .es-m-txt-r img,
+                        .es-m-txt-c img,
+                        .es-m-txt-l img {
+                            display: inline!important
+                        }
+                        .es-button-border {
+                            display: block!important
+                        }
+                        a.es-button {
+                            font-size: 20px!important;
+                            display: block!important;
+                            border-left-width: 0px!important;
+                            border-right-width: 0px!important
+                        }
+                        .es-btn-fw {
+                            border-width: 10px 0px!important;
+                            text-align: center!important
+                        }
+                        .es-adaptive table,
+                        .es-btn-fw,
+                        .es-btn-fw-brdr,
+                        .es-left,
+                        .es-right {
+                            width: 100%!important
+                        }
+                        .es-content table,
+                        .es-header table,
+                        .es-footer table,
+                        .es-content,
+                        .es-footer,
+                        .es-header {
+                            width: 100%!important;
+                            max-width: 600px!important
+                        }
+                        .es-adapt-td {
+                            display: block!important;
+                            width: 100%!important
+                        }
+                        .adapt-img {
+                            width: 100%!important;
+                            height: auto!important
+                        }
+                        .es-m-p0 {
+                            padding: 0px!important
+                        }
+                        .es-m-p0r {
+                            padding-right: 0px!important
+                        }
+                        .es-m-p0l {
+                            padding-left: 0px!important
+                        }
+                        .es-m-p0t {
+                            padding-top: 0px!important
+                        }
+                        .es-m-p0b {
+                            padding-bottom: 0!important
+                        }
+                        .es-m-p20b {
+                            padding-bottom: 20px!important
+                        }
+                        .es-mobile-hidden,
+                        .es-hidden {
+                            display: none!important
+                        }
+                        .es-desk-hidden {
+                            display: table-row!important;
+                            width: auto!important;
+                            overflow: visible!important;
+                            float: none!important;
+                            max-height: inherit!important;
+                            line-height: inherit!important
+                        }
+                        .es-desk-menu-hidden {
+                            display: table-cell!important
+                        }
+                        table.es-table-not-adapt,
+                        .esd-block-html table {
+                            width: auto!important
+                        }
+                        table.es-social td {
+                            display: inline-block!important
+                        }
+                        table.es-social {
+                            display: inline-block!important
+                        }
+                    }
+                    
+                    #outlook a {
+                        padding: 0;
+                    }
+                    
+                    .ExternalClass {
+                        width: 100%;
+                    }
+                    
+                    .ExternalClass,
+                    .ExternalClass p,
+                    .ExternalClass span,
+                    .ExternalClass font,
+                    .ExternalClass td,
+                    .ExternalClass div {
+                        line-height: 100%;
+                    }
+                    
+                    .es-button {
+                        mso-style-priority: 100!important;
+                        text-decoration: none!important;
+                    }
+                    
+                    a[x-apple-data-detectors] {
+                        color: inherit!important;
+                        text-decoration: none!important;
+                        font-size: inherit!important;
+                        font-family: inherit!important;
+                        font-weight: inherit!important;
+                        line-height: inherit!important;
+                    }
+                    
+                    .es-desk-hidden {
+                        display: none;
+                        float: left;
+                        overflow: hidden;
+                        width: 0;
+                        max-height: 0;
+                        line-height: 0;
+                        mso-hide: all;
+                    }
+                </style>
+            </head>
+            
+            <body style="width:100%;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;padding:0;Margin:0;">
+                <div class="es-wrapper-color" style="background-color:#CCCCCC;">
+                    <!--[if gte mso 9]>
+                        <v:background xmlns:v="urn:schemas-microsoft-com:vml" fill="t">
+                            <v:fill type="tile" color="#cccccc"></v:fill>
+                        </v:background>
+                    <![endif]-->
+                    <table class="es-wrapper" width="100%" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;padding:0;Margin:0;width:100%;height:100%;background-repeat:repeat;background-position:center top;">
+                        <tbody>
+                            <tr style="border-collapse:collapse;">
+                                <td valign="top" style="padding:0;Margin:0;">
+                                    <table cellpadding="0" cellspacing="0" class="es-content" align="center" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;table-layout:fixed !important;width:100%;">
+                                        <tbody>
+                                            <tr style="border-collapse:collapse;">
+                                                <td class="es-adaptive" align="center" style="padding:0;Margin:0;">
+                                                    <table class="es-content-body" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:#EFEFEF;" width="720" cellspacing="0" cellpadding="0" bgcolor="#efefef" align="center">
+                                                        <tbody>
+                                                            <tr style="border-collapse:collapse;">
+                                                                <td align="left" style="padding:0;Margin:0;">
+                                                                    <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
+                                                                        <tbody>
+                                                                            <tr style="border-collapse:collapse;">
+                                                                                <td width="720" align="center" valign="top" style="padding:0;Margin:0;">
+                                                                                    <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
+                                                                                        <tbody>
+                                                                                            <tr style="border-collapse:collapse;">
+                                                                                                <td align="left" style="padding:0;Margin:0;">
+                                                                                                    <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:13px;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:20px;color:#666666;"><br></p>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <table cellpadding="0" cellspacing="0" class="es-header" align="center" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;table-layout:fixed !important;width:100%;background-color:transparent;background-repeat:repeat;background-position:center top;">
+                                        <tbody>
+                                            <tr style="border-collapse:collapse;">
+                                                <td align="center" style="padding:0;Margin:0;">
+                                                    <table class="es-header-body" width="720" cellspacing="0" cellpadding="0" align="center" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:#FFFFFF;">
+                                                        <tbody>
+                                                            <tr style="border-collapse:collapse;">
+                                                                <td align="left" style="Margin:0;padding-top:10px;padding-bottom:10px;padding-left:10px;padding-right:10px;">
+                                                                    <table width="100%" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
+                                                                        <tbody>
+                                                                            <tr style="border-collapse:collapse;">
+                                                                                <td width="700" valign="top" align="center" style="padding:0;Margin:0;">
+                                                                                    <table width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
+                                                                                        <tbody>
+                                                                                            <tr style="border-collapse:collapse;">
+                                                                                                <td align="center" style="padding:0;Margin:0;">
+                                                                                                    <a href="https://mindfin.co.in" target="_blank" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;font-size:14px;text-decoration:underline;color:#CCCCCC;"><img src="https://mindfinfiles.blob.core.windows.net/mindfin-backend/logo.jpg" alt="Smart home logo" title="Smart home logo" width="109" style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;"></a>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+                                                            <tr style="border-collapse:collapse;">
+                                                                <td style="padding:0;Margin:0;padding-left:5px;padding-right:5px;background-color:#0B5394;" bgcolor="#4a7eb0" align="left">
+                                                                    <table width="100%" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
+                                                                        <tbody>
+                                                                            <tr style="border-collapse:collapse;">
+                                                                                <td width="710" valign="top" align="center" style="padding:0;Margin:0;">
+                                                                                    <table width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
+                                                                                        <tbody>
+                                                                                            <tr style="border-collapse:collapse;">
+                                                                                                <td style="padding:0;Margin:0;">
+                                                                                                    <table class="es-menu" width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
+                                                                                                        <tbody>
+                                                                                                            <tr class="images" style="border-collapse:collapse;">
+                                                                                                                <td style="Margin:0;padding-left:5px;padding-right:5px;padding-top:0px;padding-bottom:7px;border:0;" width="100%" bgcolor="transparent" align="center"><img src="" alt="" title="" height="0" style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;"></td>
+                                                                                                            </tr>
+                                                                                                        </tbody>
+                                                                                                    </table>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <table class="es-content" cellspacing="0" cellpadding="0" align="center" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;table-layout:fixed !important;width:100%;">
+                                        <tbody>
+                                            <tr style="border-collapse:collapse;">
+                                                <td align="center" style="padding:0;Margin:0;">
+                                                    <table class="es-content-body" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:#FFFFFF;" width="720" cellspacing="0" cellpadding="0" bgcolor="#ffffff" align="center">
+                                                        <tbody>
+                                                            <tr style="border-collapse:collapse;">
+                                                                <td align="left" style="Margin:0;padding-top:20px;padding-bottom:20px;padding-left:40px;padding-right:40px;">
+                                                                    <table width="100%" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
+                                                                        <tbody>
+                                                                            <tr style="border-collapse:collapse;">
+                                                                                <td width="640" valign="top" align="center" style="padding:0;Margin:0;">
+                                                                                    <table width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
+                                                                                        <tbody>
+                                                                                            <tr style="border-collapse:collapse;">
+                                                                                                <td align="left" style="padding:0;Margin:0;">
+                                                                                                    <h1 style="Margin:0;line-height:36px;mso-line-height-rule:exactly;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;font-size:30px;font-style:normal;font-weight:normal;color:#4A7EB0;">Case Assigned&nbsp;</h1>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            <tr style="border-collapse:collapse;">
+                                                                                                <td align="left" style="padding:0;Margin:0;padding-top:5px;padding-bottom:20px;">
+                                                                                                    <table width="5%" height="100%" cellspacing="0" cellpadding="0" border="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
+                                                                                                        <tbody>
+                                                                                                            <tr style="border-collapse:collapse;">
+                                                                                                                <td style="padding:0;Margin:0px;border-bottom:2px solid #999999;background:rgba(0, 0, 0, 0) none repeat scroll 0% 0%;height:1px;width:100%;margin:0px;"></td>
+                                                                                                            </tr>
+                                                                                                        </tbody>
+                                                                                                    </table>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            <tr style="border-collapse:collapse;">
+                                                                                                <td align="left" style="padding:0;Margin:0;padding-bottom:10px;">
+                                                                                                    <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:13px;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:20px;color:#666666;"><span style="font-size:16px;line-height:24px;">Hi Manu,</span></p>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            <tr style="border-collapse:collapse;">
+                                                                                                <td align="left" style="padding:0;Margin:0;">
+                                                                                                    <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:13px;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:20px;color:#666666;">I hereby would like to inform you that the <strong>case:</strong><span style="color:#FFD700;"><strong>` + req.body.value.name + `</strong></span> is assigned to<span style="color:#FFD700;"><strong>&nbsp;` + empname + `</strong></span>&nbsp;
+                                                                                                        Enquiry list given by <span style="color:#FFD700;"><strong>` + req.body.value.ename + `</strong></span> turnover is <span style="color:#FFD700;"><strong>` + req.body.value.turnover + `</strong></span> and own House <span style="color:#FFD700;"><strong>` + req.body.value.ownHouse + `</strong></span>. </p>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            <tr style="border-collapse:collapse;">
+                                                                                                <td align="left" style="padding:0;Margin:0;">
+                                                                                                    <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:13px;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:20px;color:#666666;"><br></p>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+            
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <table cellpadding="0" cellspacing="0" class="es-footer" align="center" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;table-layout:fixed !important;width:100%;background-color:transparent;background-repeat:repeat;background-position:center top;">
+                                        <tbody>
+                                            <tr style="border-collapse:collapse;">
+                                                <td align="center" style="padding:0;Margin:0;">
+                                                    <table class="es-footer-body" width="720" cellspacing="0" cellpadding="0" align="center" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:#EFEFEF;">
+                                                        <tbody>
+                                                            <tr style="border-collapse:collapse;">
+                                                                <td align="left" bgcolor="#ffffff" style="padding:20px;Margin:0;background-color:#FFFFFF;">
+                                                                    <!--[if mso]><table width="680" cellpadding="0" cellspacing="0"><tr><td width="242"><![endif]-->
+                                                                    <table class="es-left" cellspacing="0" cellpadding="0" align="left" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:left;">
+                                                                        <tbody>
+                                                                            <tr style="border-collapse:collapse;">
+                                                                                <td class="es-m-p0r es-m-p20b" width="222" align="center" style="padding:0;Margin:0;">
+                                                                                    <table width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
+                                                                                        <tbody>
+                                                                                            <tr style="border-collapse:collapse;">
+                                                                                                <td esdev-links-color="#333333" align="left" class="es-m-txt-с es-m-txt-l" style="padding:0;Margin:0;padding-bottom:10px;">
+                                                                                                    <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:13px;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:20px;color:#0066FF;"><strong>Thanks And Regards</strong></p>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </td>
+                                                                                <td class="es-hidden" width="20" style="padding:0;Margin:0;"></td>
+                                                                            </tr>
+            
+                                                                            <tr style="border-collapse:collapse;">
+                                                                                <td class="es-m-p0r es-m-p20b" width="222" align="center" style="padding:0;Margin:0;">
+                                                                                    <table width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
+                                                                                        <tbody>
+                                                                                            <tr style="border-collapse:collapse;">
+                                                                                                <td class="es-m-txt-l" esdev-links-color="#333333" align="left" style="padding:0;Margin:0;">
+                                                                                                    <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:13px;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:13px;color:#333333;"><strong>&nbsp;Mindfin Admin</strong><br>+91 9513040055<br><br>No. 10, 1st Floor,<br>Krishna Block, 1st Main <br>Road,Seshadripuram,<br>Bangalore- 560020<br><br></p>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </td>
+                                                                                <td class="es-hidden" width="20" style="padding:0;Margin:0;"></td>
+                                                                            </tr>
+                                                                            <tr style="border-collapse:collapse;">
+                                                                                <td class="es-m-p0r es-m-p20b" width="222" align="center" style="padding:0;Margin:0;">
+                                                                                    <table width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
+                                                                                        <tbody>
+                                                                                            <tr style="border-collapse:collapse;">
+                                                                                                <td class="es-m-p0l" align="left" style="padding:0;Margin:0;padding-bottom:10px;">
+                                                                                                    <a href="https://mindfin.co.in" target="_blank" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;font-size:13px;text-decoration:underline;color:#333333;"><img src="https://mindfinfiles.blob.core.windows.net/mindfin-backend/logo.jpg" alt="" width="103" style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;"></a>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </td>
+                                                                                <td class="es-hidden" width="20" style="padding:0;Margin:0;"></td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                    <!--[if mso]></td><td width="209"><![endif]-->
+                                                                    <table class="es-left" cellspacing="0" cellpadding="0" align="left" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:left;">
+                                                                        <tbody>
+                                                                            <tr style="border-collapse:collapse;">
+                                                                                <td class="es-m-p0r es-m-p20b" width="209" align="center" style="padding:0;Margin:0;">
+                                                                                    <table width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
+                                                                                        <tbody>
+                                                                                            <tr class="es-mobile-hidden" style="border-collapse:collapse;">
+                                                                                                <td align="left" style="padding:0;Margin:0;">
+                                                                                                    <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:13px;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:20px;color:#333333;"><br><br></p>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                    <!--[if mso]></td><td width="20"></td><td width="209"><![endif]-->
+                                                                    <table class="es-right" cellspacing="0" cellpadding="0" align="right" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:right;">
+                                                                        <tbody>
+                                                                            <tr style="border-collapse:collapse;">
+                                                                                <td class="es-m-p0r es-m-p20b" width="209" align="center" style="padding:0;Margin:0;">
+                                                                                    <table width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
+                                                                                        <tbody>
+                                                                                            <tr class="es-mobile-hidden" style="border-collapse:collapse;">
+                                                                                                <td align="left" style="padding:0;Margin:0;">
+                                                                                                    <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:13px;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:20px;color:#333333;"><br></p>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                    <!--[if mso]></td></tr></table><![endif]-->
+                                                                </td>
+                                                            </tr>
+                                                            <tr style="border-collapse:collapse;">
+                                                                <td align="left" style="padding:0;Margin:0;padding-bottom:15px;padding-left:20px;padding-right:20px;">
+                                                                    <table width="100%" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
+                                                                        <tbody>
+                                                                            <tr style="border-collapse:collapse;">
+                                                                                <td width="680" valign="top" align="center" style="padding:0;Margin:0;">
+                                                                                    <table width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
+                                                                                        <tbody>
+                                                                                            <tr style="border-collapse:collapse;">
+                                                                                                <td esdev-links-color="#333333" align="left" style="padding:0;Margin:0;">
+                                                                                                    <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:12px;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:18px;color:#333333;"></p>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            
+            
+            </body>
+            
+            </html>`;
+
+            let transporter = nodemailer.createTransport({
+                host: req.body.emails[0].hostmail,
+                port: 587,
+                transportMethod: 'SMTP',
+                // secure: false, // true for 465, false for other ports
+                auth: {
+                    user: req.body.emails[0].emailuser, // gmail id
+                    pass: req.body.emails[0].emailpassword // gmail password
+                },
+                tls: {
+                    rejectUnauthorized: false
+                }
+            });
+            // setup email data with unicode symbols
+            let mailOptions = {
+                from: req.body.emails[0].fromemail1,
+                to: req.body.emails[0].bcc, // list of receivers
+                // cc: req.body.emails[0].cc,
+                // bcc: req.body.emails[0].bcc,
+                subject: req.body.value.name + "assigned ", //"Project Payment Update From", // Subject line
+                text: 'Hello world?', // plain text body
+                html: output // html body
+            };
+            // send mail with defined transport object
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    return //console.log(error);
+                }
+                //console.log('Message sent: %s', info.messageId);
+                //console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+                // res.render('contact', { msg: 'Email has been sent' });
+            });
+
+
+
+        })
+
 });
 router.get('/getContactformlist/:pagesize/:page', (req, res, next) => {
     const pageSize = req.params.pagesize;
@@ -5087,7 +5620,7 @@ router.post('/addemployee', (req, res) => {
                                                                     <table width="100%" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
                                                                         <tr style="border-collapse:collapse;">
                                                                             <td align="center" style="padding:0;Margin:0;">
-                                                                                <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:12px;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:12px;color:#666666;">This login password&nbsp; was sent&nbsp;from <a href="https://bank.mindfin.co.in/#/login" target="_blank">bank.mindfin.co.in </a></p>
+                                                                                <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:12px;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:12px;color:#666666;">This login password&nbsp; was sent&nbsp;from <a href="` + req.body.emails[0].mloginlink + `" target="_blank">bank.mindfin.co.in </a></p>
                                                                             </td>
                                                                         </tr>
                                                                     </table>
@@ -5185,10 +5718,581 @@ router.post('/leaveapp', function(req, res) {
             empID: req.body.empid,
             empName: req.body.empname,
             status: 'Pending'
-        }).then(function(result) {
-            res.json('suggestion sent Successfully')
-                //console.log(result);
         })
+        .then(function(result) {
+            res.json('leave application sent Successfully');
+            const output = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+            <html xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:v="urn:schemas-microsoft-com:vml">
+            
+            <head>
+                <!--[if gte mso 9]><xml><o:OfficeDocumentSettings><o:AllowPNG/><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml><![endif]-->
+                <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+                <meta content="width=device-width" name="viewport" />
+                <!--[if !mso]><!-->
+                <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css" />
+                <!--<![endif]-->
+                <style type="text/css">
+                    body {
+                        margin: 0;
+                        padding: 0;
+                    }
+                    
+                    table,
+                    td,
+                    tr {
+                        vertical-align: top;
+                        border-collapse: collapse;
+                    }
+                    
+                    * {
+                        line-height: inherit;
+                    }
+                    
+                    a[x-apple-data-detectors=true] {
+                        color: inherit !important;
+                        text-decoration: none !important;
+                    }
+                </style>
+                <style id="media-query" type="text/css">
+                    @media (max-width: 640px) {
+                        .block-grid,
+                        .col {
+                            min-width: 320px !important;
+                            max-width: 100% !important;
+                            display: block !important;
+                        }
+                        .block-grid {
+                            width: 100% !important;
+                        }
+                        .col {
+                            width: 100% !important;
+                        }
+                        .col>div {
+                            margin: 0 auto;
+                        }
+                        img.fullwidth,
+                        img.fullwidthOnMobile {
+                            max-width: 100% !important;
+                        }
+                        .no-stack .col {
+                            min-width: 0 !important;
+                            display: table-cell !important;
+                        }
+                        .no-stack.two-up .col {
+                            width: 50% !important;
+                        }
+                        .no-stack .col.num4 {
+                            width: 33% !important;
+                        }
+                        .no-stack .col.num8 {
+                            width: 66% !important;
+                        }
+                        .no-stack .col.num4 {
+                            width: 33% !important;
+                        }
+                        .no-stack .col.num3 {
+                            width: 25% !important;
+                        }
+                        .no-stack .col.num6 {
+                            width: 50% !important;
+                        }
+                        .no-stack .col.num9 {
+                            width: 75% !important;
+                        }
+                        .video-block {
+                            max-width: none !important;
+                        }
+                        .mobile_hide {
+                            min-height: 0px;
+                            max-height: 0px;
+                            max-width: 0px;
+                            display: none;
+                            overflow: hidden;
+                            font-size: 0px;
+                        }
+                        .desktop_hide {
+                            display: block !important;
+                            max-height: none !important;
+                        }
+                    }
+                </style>
+            </head>
+            
+            <body class="clean-body" style="margin: 0; padding: 0; -webkit-text-size-adjust: 100%; background-color: #FFFFFF;">
+                <!--[if IE]><div class="ie-browser"><![endif]-->
+                <table bgcolor="#FFFFFF" cellpadding="0" cellspacing="0" class="nl-container" role="presentation" style="table-layout: fixed; vertical-align: top; min-width: 320px; Margin: 0 auto; border-spacing: 0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #FFFFFF; width: 100%;"
+                    valign="top" width="100%">
+                    <tbody>
+                        <tr style="vertical-align: top;" valign="top">
+                            <td style="word-break: break-word; vertical-align: top;" valign="top">
+                                <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center" style="background-color:#FFFFFF"><![endif]-->
+                                <div style="background-color:transparent;">
+                                    <div class="block-grid" style="Margin: 0 auto; min-width: 320px; max-width: 620px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: transparent;">
+                                        <div style="border-collapse: collapse;display: table;width: 100%;background-color:transparent;">
+                                            <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:620px"><tr class="layout-full-width" style="background-color:transparent"><![endif]-->
+                                            <!--[if (mso)|(IE)]><td align="center" width="620" style="background-color:transparent;width:620px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;"><![endif]-->
+                                            <div class="col num12" style="min-width: 320px; max-width: 620px; display: table-cell; vertical-align: top; width: 620px;">
+                                                <div style="width:100% !important;">
+                                                    <!--[if (!mso)&(!IE)]><!-->
+                                                    <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
+                                                        <!--<![endif]-->
+                                                        <div align="center" class="img-container center" style="padding-right: 0px;padding-left: 0px;">
+                                                            <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr style="line-height:0px"><td style="padding-right: 0px;padding-left: 0px;" align="center"><![endif]--><img align="center" alt="Image" border="0" class="center" src="https://mindfinfiles.blob.core.windows.net/mindfin-backend/logo.jpg" style="text-decoration: none; -ms-interpolation-mode: bicubic; border: 0; height: auto; width: 100%; max-width: 248px; display: block;"
+                                                                title="Image" width="248" />
+                                                            <!--[if mso]></td></tr></table><![endif]-->
+                                                        </div>
+                                                        <!--[if (!mso)&(!IE)]><!-->
+                                                    </div>
+                                                    <!--<![endif]-->
+                                                </div>
+                                            </div>
+                                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                                            <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="background-color:transparent;">
+                                    <div class="block-grid" style="Margin: 0 auto; min-width: 320px; max-width: 620px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: transparent;">
+                                        <div style="border-collapse: collapse;display: table;width: 100%;background-color:transparent;">
+                                            <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:620px"><tr class="layout-full-width" style="background-color:transparent"><![endif]-->
+                                            <!--[if (mso)|(IE)]><td align="center" width="620" style="background-color:transparent;width:620px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:0px;"><![endif]-->
+                                            <div class="col num12" style="min-width: 320px; max-width: 620px; display: table-cell; vertical-align: top; width: 620px;">
+                                                <div style="width:100% !important;">
+                                                    <!--[if (!mso)&(!IE)]><!-->
+                                                    <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:0px; padding-right: 0px; padding-left: 0px;">
+                                                        <!--<![endif]-->
+                                                        <table border="0" cellpadding="0" cellspacing="0" class="divider" role="presentation" style="table-layout: fixed; vertical-align: top; border-spacing: 0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; min-width: 100%; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;"
+                                                            valign="top" width="100%">
+                                                            <tbody>
+                                                                <tr style="vertical-align: top;" valign="top">
+                                                                    <td class="divider_inner" style="word-break: break-word; vertical-align: top; min-width: 100%; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; padding-top: 10px; padding-right: 10px; padding-bottom: 15px; padding-left: 10px;" valign="top">
+                                                                        <table align="center" border="0" cellpadding="0" cellspacing="0" class="divider_content" role="presentation" style="table-layout: fixed; vertical-align: top; border-spacing: 0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-top: 1px solid #222222; width: 100%;"
+                                                                            valign="top" width="100%">
+                                                                            <tbody>
+                                                                                <tr style="vertical-align: top;" valign="top">
+                                                                                    <td style="word-break: break-word; vertical-align: top; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;" valign="top"><span></span></td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        <!--[if (!mso)&(!IE)]><!-->
+                                                    </div>
+                                                    <!--<![endif]-->
+                                                </div>
+                                            </div>
+                                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                                            <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="background-color:transparent;">
+                                    <div class="block-grid" style="Margin: 0 auto; min-width: 320px; max-width: 620px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: transparent;">
+                                        <div style="border-collapse: collapse;display: table;width: 100%;background-color:transparent;">
+                                            <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:620px"><tr class="layout-full-width" style="background-color:transparent"><![endif]-->
+                                            <!--[if (mso)|(IE)]><td align="center" width="620" style="background-color:transparent;width:620px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:10px;"><![endif]-->
+                                            <div class="col num12" style="min-width: 320px; max-width: 620px; display: table-cell; vertical-align: top; width: 620px;">
+                                                <div style="width:100% !important;">
+                                                    <!--[if (!mso)&(!IE)]><!-->
+                                                    <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:10px; padding-right: 0px; padding-left: 0px;">
+                                                        <!--<![endif]-->
+                                                        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 5px; font-family: Tahoma, Verdana, sans-serif"><![endif]-->
+                                                        <div style="color:#000000;font-family:Lato, Tahoma, Verdana, Segoe, sans-serif;line-height:1.2;padding-top:10px;padding-right:10px;padding-bottom:5px;padding-left:10px;">
+                                                            <div style="font-size: 12px; line-height: 1.2; color: #000000; font-family: Lato, Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: 14px;">
+                                                                <p style="font-size: 14px; line-height: 1.2; word-break: break-word; text-align: left; mso-line-height-alt: 17px; margin: 0;"><strong><span style="font-size: 18px;">Hello Team,</span></strong></p>
+                                                            </div>
+                                                        </div>
+                                                        <!--[if mso]></td></tr></table><![endif]-->
+                                                        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 25px; font-family: Tahoma, Verdana, sans-serif"><![endif]-->
+                                                        <div style="color:#71777D;font-family:Lato, Tahoma, Verdana, Segoe, sans-serif;line-height:1.2;padding-top:10px;padding-right:10px;padding-bottom:25px;padding-left:10px;">
+                                                            <div style="font-size: 12px; line-height: 1.2; font-family: Lato, Tahoma, Verdana, Segoe, sans-serif; color: #71777D; mso-line-height-alt: 14px;">
+                                                                <p style="font-size: 14px; line-height: 1.2; word-break: break-word; text-align: left; font-family: Lato, Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: 17px; margin: 0;">I would you like to inform that ( <strong>` + req.body.empname + `</strong>) is applied leave  as mentioned in below lists.</p>
+                                                            </div>
+                                                        </div>
+                                                        <!--[if mso]></td></tr></table><![endif]-->
+                                                        <!--[if (!mso)&(!IE)]><!-->
+                                                    </div>
+                                                    <!--<![endif]-->
+                                                </div>
+                                            </div>
+                                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                                            <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="background-color:transparent;">
+                                    <div class="block-grid mixed-two-up" style="Margin: 0 auto; min-width: 320px; max-width: 620px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: #FFFFFF;">
+                                        <div style="border-collapse: collapse;display: table;width: 100%;background-color:#FFFFFF;">
+                                            <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:620px"><tr class="layout-full-width" style="background-color:#FFFFFF"><![endif]-->
+                                            <!--[if (mso)|(IE)]><td align="center" width="413" style="background-color:#FFFFFF;width:413px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:15px; padding-bottom:0px;"><![endif]-->
+                                            <div class="col num8" style="display: table-cell; vertical-align: top; min-width: 320px; max-width: 408px; width: 413px;">
+                                                <div style="width:100% !important;">
+                                                    <!--[if (!mso)&(!IE)]><!-->
+                                                    <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:15px; padding-bottom:0px; padding-right: 0px; padding-left: 0px;">
+                                                        <!--<![endif]-->
+                                                        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 20px; padding-left: 20px; padding-top: 10px; padding-bottom: 10px; font-family: Tahoma, Verdana, sans-serif"><![endif]-->
+                                                        <div style="color:#000000;font-family:Lato, Tahoma, Verdana, Segoe, sans-serif;line-height:1.2;padding-top:10px;padding-right:20px;padding-bottom:10px;padding-left:20px;">
+                                                            <div style="font-size: 12px; line-height: 1.2; color: #000000; font-family: Lato, Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: 14px;">
+                                                                <p style="font-size: 14px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 17px; margin: 0;"><strong><span style="color: #000000; font-size: 14px;"><a rel="noopener" style="text-decoration: none; color: #000000;" target="_blank">From</a></span></strong></p>
+                                                            </div>
+                                                        </div>
+                                                        <!--[if mso]></td></tr></table><![endif]-->
+                                                        <!--[if (!mso)&(!IE)]><!-->
+                                                    </div>
+                                                    <!--<![endif]-->
+                                                </div>
+                                            </div>
+                                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                                            <!--[if (mso)|(IE)]></td><td align="center" width="206" style="background-color:#FFFFFF;width:206px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:15px; padding-bottom:0px;"><![endif]-->
+                                            <div class="col num4" style="display: table-cell; vertical-align: top; max-width: 320px; min-width: 204px; width: 206px;">
+                                                <div style="width:100% !important;">
+                                                    <!--[if (!mso)&(!IE)]><!-->
+                                                    <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:15px; padding-bottom:0px; padding-right: 0px; padding-left: 0px;">
+                                                        <!--<![endif]-->
+                                                        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 20px; padding-left: 20px; padding-top: 10px; padding-bottom: 10px; font-family: Tahoma, Verdana, sans-serif"><![endif]-->
+                                                        <div style="color:#000000;font-family:Lato, Tahoma, Verdana, Segoe, sans-serif;line-height:1.2;padding-top:10px;padding-right:20px;padding-bottom:10px;padding-left:20px;">
+                                                            <div style="font-size: 12px; line-height: 1.2; color: #000000; font-family: Lato, Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: 14px;">
+                                                                <p style="font-size: 14px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 17px; margin: 0;">` + from + `</p>
+                                                            </div>
+                                                        </div>
+                                                        <!--[if mso]></td></tr></table><![endif]-->
+                                                        <!--[if (!mso)&(!IE)]><!-->
+                                                    </div>
+                                                    <!--<![endif]-->
+                                                </div>
+                                            </div>
+                                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                                            <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="background-color:transparent;">
+                                    <div class="block-grid mixed-two-up" style="Margin: 0 auto; min-width: 320px; max-width: 620px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: #FFFFFF;">
+                                        <div style="border-collapse: collapse;display: table;width: 100%;background-color:#FFFFFF;">
+                                            <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:620px"><tr class="layout-full-width" style="background-color:#FFFFFF"><![endif]-->
+                                            <!--[if (mso)|(IE)]><td align="center" width="413" style="background-color:#FFFFFF;width:413px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:15px; padding-bottom:0px;"><![endif]-->
+                                            <div class="col num8" style="display: table-cell; vertical-align: top; min-width: 320px; max-width: 408px; width: 413px;">
+                                                <div style="width:100% !important;">
+                                                    <!--[if (!mso)&(!IE)]><!-->
+                                                    <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:15px; padding-bottom:0px; padding-right: 0px; padding-left: 0px;">
+                                                        <!--<![endif]-->
+                                                        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 20px; padding-left: 20px; padding-top: 10px; padding-bottom: 10px; font-family: Tahoma, Verdana, sans-serif"><![endif]-->
+                                                        <div style="color:#000000;font-family:Lato, Tahoma, Verdana, Segoe, sans-serif;line-height:1.2;padding-top:10px;padding-right:20px;padding-bottom:10px;padding-left:20px;">
+                                                            <div style="font-size: 12px; line-height: 1.2; color: #000000; font-family: Lato, Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: 14px;">
+                                                                <p style="font-size: 14px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 17px; margin: 0;"><strong>TO</strong></p>
+                                                            </div>
+                                                        </div>
+                                                        <!--[if mso]></td></tr></table><![endif]-->
+                                                        <!--[if (!mso)&(!IE)]><!-->
+                                                    </div>
+                                                    <!--<![endif]-->
+                                                </div>
+                                            </div>
+                                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                                            <!--[if (mso)|(IE)]></td><td align="center" width="206" style="background-color:#FFFFFF;width:206px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:15px; padding-bottom:0px;"><![endif]-->
+                                            <div class="col num4" style="display: table-cell; vertical-align: top; max-width: 320px; min-width: 204px; width: 206px;">
+                                                <div style="width:100% !important;">
+                                                    <!--[if (!mso)&(!IE)]><!-->
+                                                    <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:15px; padding-bottom:0px; padding-right: 0px; padding-left: 0px;">
+                                                        <!--<![endif]-->
+                                                        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 20px; padding-left: 20px; padding-top: 10px; padding-bottom: 10px; font-family: Tahoma, Verdana, sans-serif"><![endif]-->
+                                                        <div style="color:#000000;font-family:Lato, Tahoma, Verdana, Segoe, sans-serif;line-height:1.2;padding-top:10px;padding-right:20px;padding-bottom:10px;padding-left:20px;">
+                                                            <div style="font-size: 12px; line-height: 1.2; color: #000000; font-family: Lato, Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: 14px;">
+                                                                <p style="font-size: 14px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 17px; margin: 0;">` + to + `</p>
+                                                            </div>
+                                                        </div>
+                                                        <!--[if mso]></td></tr></table><![endif]-->
+                                                        <!--[if (!mso)&(!IE)]><!-->
+                                                    </div>
+                                                    <!--<![endif]-->
+                                                </div>
+                                            </div>
+                                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                                            <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="background-color:transparent;">
+                                    <div class="block-grid mixed-two-up" style="Margin: 0 auto; min-width: 320px; max-width: 620px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: #FFFFFF;">
+                                        <div style="border-collapse: collapse;display: table;width: 100%;background-color:#FFFFFF;">
+                                            <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:620px"><tr class="layout-full-width" style="background-color:#FFFFFF"><![endif]-->
+                                            <!--[if (mso)|(IE)]><td align="center" width="413" style="background-color:#FFFFFF;width:413px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:0px;"><![endif]-->
+                                            <div class="col num8" style="display: table-cell; vertical-align: top; min-width: 320px; max-width: 408px; width: 413px;">
+                                                <div style="width:100% !important;">
+                                                    <!--[if (!mso)&(!IE)]><!-->
+                                                    <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:0px; padding-right: 0px; padding-left: 0px;">
+                                                        <!--<![endif]-->
+                                                        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 20px; padding-left: 20px; padding-top: 10px; padding-bottom: 10px; font-family: Tahoma, Verdana, sans-serif"><![endif]-->
+                                                        <div style="color:#000000;font-family:Lato, Tahoma, Verdana, Segoe, sans-serif;line-height:1.2;padding-top:10px;padding-right:20px;padding-bottom:10px;padding-left:20px;">
+                                                            <div style="font-size: 12px; line-height: 1.2; color: #000000; font-family: Lato, Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: 14px;">
+                                                                <p style="font-size: 14px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 17px; margin: 0;"><strong>Reason</strong></p>
+                                                            </div>
+                                                        </div>
+                                                        <!--[if mso]></td></tr></table><![endif]-->
+                                                        <!--[if (!mso)&(!IE)]><!-->
+                                                    </div>
+                                                    <!--<![endif]-->
+                                                </div>
+                                            </div>
+                                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                                            <!--[if (mso)|(IE)]></td><td align="center" width="206" style="background-color:#FFFFFF;width:206px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:0px;"><![endif]-->
+                                            <div class="col num4" style="display: table-cell; vertical-align: top; max-width: 320px; min-width: 204px; width: 206px;">
+                                                <div style="width:100% !important;">
+                                                    <!--[if (!mso)&(!IE)]><!-->
+                                                    <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:0px; padding-right: 0px; padding-left: 0px;">
+                                                        <!--<![endif]-->
+                                                        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 20px; padding-left: 20px; padding-top: 10px; padding-bottom: 10px; font-family: Tahoma, Verdana, sans-serif"><![endif]-->
+                                                        <div style="color:#000000;font-family:Lato, Tahoma, Verdana, Segoe, sans-serif;line-height:1.2;padding-top:10px;padding-right:20px;padding-bottom:10px;padding-left:20px;">
+                                                            <div style="font-size: 12px; line-height: 1.2; color: #000000; font-family: Lato, Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: 14px;">
+                                                                <p style="font-size: 14px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 17px; margin: 0;">` + req.body.value.reason + `</p>
+                                                            </div>
+                                                        </div>
+                                                        <!--[if mso]></td></tr></table><![endif]-->
+                                                        <!--[if (!mso)&(!IE)]><!-->
+                                                    </div>
+                                                    <!--<![endif]-->
+                                                </div>
+                                            </div>
+                                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                                            <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="background-color:transparent;">
+                                    <div class="block-grid" style="Margin: 0 auto; min-width: 320px; max-width: 620px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: transparent;">
+                                        <div style="border-collapse: collapse;display: table;width: 100%;background-color:transparent;">
+                                            <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:620px"><tr class="layout-full-width" style="background-color:transparent"><![endif]-->
+                                            <!--[if (mso)|(IE)]><td align="center" width="620" style="background-color:transparent;width:620px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;"><![endif]-->
+                                            <div class="col num12" style="min-width: 320px; max-width: 620px; display: table-cell; vertical-align: top; width: 620px;">
+                                                <div style="width:100% !important;">
+                                                    <!--[if (!mso)&(!IE)]><!-->
+                                                    <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
+                                                        <!--<![endif]-->
+                                                        <table border="0" cellpadding="0" cellspacing="0" class="divider" role="presentation" style="table-layout: fixed; vertical-align: top; border-spacing: 0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; min-width: 100%; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;"
+                                                            valign="top" width="100%">
+                                                            <tbody>
+                                                                <tr style="vertical-align: top;" valign="top">
+                                                                    <td class="divider_inner" style="word-break: break-word; vertical-align: top; min-width: 100%; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px;" valign="top">
+                                                                        <table align="center" border="0" cellpadding="0" cellspacing="0" class="divider_content" role="presentation" style="table-layout: fixed; vertical-align: top; border-spacing: 0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-top: 1px dotted #CCCCCC; width: 100%;"
+                                                                            valign="top" width="100%">
+                                                                            <tbody>
+                                                                                <tr style="vertical-align: top;" valign="top">
+                                                                                    <td style="word-break: break-word; vertical-align: top; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;" valign="top"><span></span></td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        <!--[if (!mso)&(!IE)]><!-->
+                                                    </div>
+                                                    <!--<![endif]-->
+                                                </div>
+                                            </div>
+                                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                                            <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="background-color:transparent;">
+                                    <div class="block-grid mixed-two-up" style="Margin: 0 auto; min-width: 320px; max-width: 620px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: #FFFFFF;">
+                                        <div style="border-collapse: collapse;display: table;width: 100%;background-color:#FFFFFF;">
+                                            <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:620px"><tr class="layout-full-width" style="background-color:#FFFFFF"><![endif]-->
+                                            <!--[if (mso)|(IE)]><td align="center" width="413" style="background-color:#FFFFFF;width:413px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:0px;"><![endif]-->
+                                            <div class="col num8" style="display: table-cell; vertical-align: top; min-width: 320px; max-width: 408px; width: 413px;">
+                                                <div style="width:100% !important;">
+                                                    <!--[if (!mso)&(!IE)]><!-->
+                                                    <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:0px; padding-right: 0px; padding-left: 0px;">
+                                                        <!--<![endif]-->
+                                                        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 20px; padding-left: 20px; padding-top: 5px; padding-bottom: 5px; font-family: Tahoma, Verdana, sans-serif"><![endif]-->
+                                                        <div style="color:#000000;font-family:Lato, Tahoma, Verdana, Segoe, sans-serif;line-height:1.2;padding-top:5px;padding-right:20px;padding-bottom:5px;padding-left:20px;">
+                                                            <div style="line-height: 1.2; font-size: 12px; color: #000000; font-family: Lato, Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: 14px;">
+                                                                <p style="line-height: 1.2; word-break: break-word; mso-line-height-alt: NaNpx; margin: 0;"><strong>No of Days</strong></p>
+                                                            </div>
+                                                        </div>
+                                                        <!--[if mso]></td></tr></table><![endif]-->
+                                                        <!--[if (!mso)&(!IE)]><!-->
+                                                    </div>
+                                                    <!--<![endif]-->
+                                                </div>
+                                            </div>
+                                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                                            <!--[if (mso)|(IE)]></td><td align="center" width="206" style="background-color:#FFFFFF;width:206px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:0px;"><![endif]-->
+                                            <div class="col num4" style="display: table-cell; vertical-align: top; max-width: 320px; min-width: 204px; width: 206px;">
+                                                <div style="width:100% !important;">
+                                                    <!--[if (!mso)&(!IE)]><!-->
+                                                    <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:0px; padding-right: 0px; padding-left: 0px;">
+                                                        <!--<![endif]-->
+                                                        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 20px; padding-left: 20px; padding-top: 5px; padding-bottom: 5px; font-family: Tahoma, Verdana, sans-serif"><![endif]-->
+                                                        <div style="color:#000000;font-family:Lato, Tahoma, Verdana, Segoe, sans-serif;line-height:1.2;padding-top:5px;padding-right:20px;padding-bottom:5px;padding-left:20px;">
+                                                            <div style="font-size: 12px; line-height: 1.2; color: #000000; font-family: Lato, Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: 14px;">
+                                                                <p style="font-size: 14px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 17px; margin: 0;">` + NOD + `</p>
+                                                            </div>
+                                                        </div>
+                                                        <!--[if mso]></td></tr></table><![endif]-->
+                                                        <!--[if (!mso)&(!IE)]><!-->
+                                                    </div>
+                                                    <!--<![endif]-->
+                                                </div>
+                                            </div>
+                                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                                            <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="background-color:transparent;">
+                                    <div class="block-grid" style="Margin: 0 auto; min-width: 320px; max-width: 620px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: transparent;">
+                                        <div style="border-collapse: collapse;display: table;width: 100%;background-color:transparent;">
+                                            <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:620px"><tr class="layout-full-width" style="background-color:transparent"><![endif]-->
+                                            <!--[if (mso)|(IE)]><td align="center" width="620" style="background-color:transparent;width:620px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:0px; padding-bottom:5px;"><![endif]-->
+                                            <div class="col num12" style="min-width: 320px; max-width: 620px; display: table-cell; vertical-align: top; width: 620px;">
+                                                <div style="width:100% !important;">
+                                                    <!--[if (!mso)&(!IE)]><!-->
+                                                    <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:0px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
+                                                        <!--<![endif]-->
+                                                        <table border="0" cellpadding="0" cellspacing="0" class="divider" role="presentation" style="table-layout: fixed; vertical-align: top; border-spacing: 0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; min-width: 100%; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;"
+                                                            valign="top" width="100%">
+                                                            <tbody>
+                                                                <tr style="vertical-align: top;" valign="top">
+                                                                    <td class="divider_inner" style="word-break: break-word; vertical-align: top; min-width: 100%; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; padding-top: 15px; padding-right: 10px; padding-bottom: 15px; padding-left: 10px;" valign="top">
+                                                                        <table align="center" border="0" cellpadding="0" cellspacing="0" class="divider_content" role="presentation" style="table-layout: fixed; vertical-align: top; border-spacing: 0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-top: 1px dotted #CCCCCC; width: 100%;"
+                                                                            valign="top" width="100%">
+                                                                            <tbody>
+                                                                                <tr style="vertical-align: top;" valign="top">
+                                                                                    <td style="word-break: break-word; vertical-align: top; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;" valign="top"><span></span></td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        <!--[if (!mso)&(!IE)]><!-->
+                                                    </div>
+                                                    <!--<![endif]-->
+                                                </div>
+                                            </div>
+                                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                                            <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="background-color:transparent;">
+                                    <div class="block-grid" style="Margin: 0 auto; min-width: 320px; max-width: 620px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: transparent;">
+                                        <div style="border-collapse: collapse;display: table;width: 100%;background-color:transparent;">
+                                            <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:620px"><tr class="layout-full-width" style="background-color:transparent"><![endif]-->
+                                            <!--[if (mso)|(IE)]><td align="center" width="620" style="background-color:transparent;width:620px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:0px;"><![endif]-->
+                                            <div class="col num12" style="min-width: 320px; max-width: 620px; display: table-cell; vertical-align: top; width: 620px;">
+                                                <div style="width:100% !important;">
+                                                    <!--[if (!mso)&(!IE)]><!-->
+                                                    <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:0px; padding-right: 0px; padding-left: 0px;">
+                                                        <!--<![endif]-->
+            
+                                                        <table border="0" cellpadding="0" cellspacing="0" class="divider" role="presentation" style="table-layout: fixed; vertical-align: top; border-spacing: 0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; min-width: 100%; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;"
+                                                            valign="top" width="100%">
+                                                            <tbody>
+                                                                <tr style="vertical-align: top;" valign="top">
+                                                                    <td class="divider_inner" style="word-break: break-word; vertical-align: top; min-width: 100%; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; padding-top: 15px; padding-right: 10px; padding-bottom: 15px; padding-left: 10px;" valign="top">
+                                                                        <table align="center" border="0" cellpadding="0" cellspacing="0" class="divider_content" role="presentation" style="table-layout: fixed; vertical-align: top; border-spacing: 0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-top: 1px dotted #CCCCCC; width: 100%;"
+                                                                            valign="top" width="100%">
+                                                                            <tbody>
+                                                                                <tr style="vertical-align: top;" valign="top">
+                                                                                    <td style="word-break: break-word; vertical-align: top; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;" valign="top"><span></span></td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        <!--[if (!mso)&(!IE)]><!-->
+                                                    </div>
+                                                    <!--<![endif]-->
+                                                </div>
+                                            </div>
+                                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                                            <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="background-color:transparent;">
+                                    <div class="block-grid" style="Margin: 0 auto; min-width: 320px; max-width: 620px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: transparent;">
+                                        <div style="border-collapse: collapse;display: table;width: 100%;background-color:transparent;">
+                                            <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:620px"><tr class="layout-full-width" style="background-color:transparent"><![endif]-->
+                                            <!--[if (mso)|(IE)]><td align="center" width="620" style="background-color:transparent;width:620px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;"><![endif]-->
+                                            <div class="col num12" style="min-width: 320px; max-width: 620px; display: table-cell; vertical-align: top; width: 620px;">
+                                                <div style="width:100% !important;">
+                                                    <!--[if (!mso)&(!IE)]><!-->
+                                                    <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
+                                                        <!--<![endif]-->
+                                                        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Tahoma, Verdana, sans-serif"><![endif]-->
+                                                        <div style="color:#555555;font-family:Lato, Tahoma, Verdana, Segoe, sans-serif;line-height:1.2;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
+                                                            <div style="font-size: 12px; line-height: 1.2; font-family: Lato, Tahoma, Verdana, Segoe, sans-serif; color: #555555; mso-line-height-alt: 14px;">
+                                                                <p style="font-size: 12px; line-height: 1.2; text-align: center; word-break: break-word; font-family: Lato, Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: 14px; margin: 0;"><span style="font-size: 12px;">Copyright © 2020 Mindfin ser. All rights reserved. </span></p>
+                                                            </div>
+                                                        </div>
+                                                        <!--[if mso]></td></tr></table><![endif]-->
+                                                        <!--[if (!mso)&(!IE)]><!-->
+                                                    </div>
+                                                    <!--<![endif]-->
+                                                </div>
+                                            </div>
+                                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                                            <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!--[if (IE)]></div><![endif]-->
+            </body>
+            
+            </html>`;
+
+            let transporter = nodemailer.createTransport({
+                host: req.body.emails[0].hostmail,
+                port: 587,
+                transportMethod: 'SMTP',
+                // secure: false, // true for 465, false for other ports
+                auth: {
+                    user: req.body.emails[0].emailuser, // gmail id
+                    pass: req.body.emails[0].emailpassword // gmail password
+                },
+                tls: {
+                    rejectUnauthorized: false
+                }
+            });
+            // setup email data with unicode symbols
+            let mailOptions = {
+                from: req.body.emails[0].fromemail1,
+                to: req.body.emails[0].bcc, // list of receivers
+                cc: req.body.emails[0].cc,
+                bcc: req.body.emails[0].fromemail2,
+                subject: req.body.empname + ' Leave Application ', //"Project Payment Update From", // Subject line
+                text: 'Hello world?', // plain text body
+                html: output // html body
+            };
+            // send mail with defined transport object
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    return //console.log(error);
+                }
+                //console.log('Message sent: %s', info.messageId);
+                //console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+                // res.render('contact', { msg: 'Email has been sent' });
+            });
+
+
+
+        })
+
 });
 
 router.post('/conves', function(req, res) {
@@ -6170,4 +7274,1170 @@ router.get('/enquirycount/:id', (req, res) => {
             res.json(result.length);
         })
 })
+router.post('/addEvent', (req, res) => {
+    var date = format.asString('yyyy-MM-dd', new Date());
+    var start = format.asString('yyyy-MM-dd', new Date(req.body.value.start));
+    var end = format.asString('yyyy-MM-dd', new Date(req.body.value.end));
+    knex('calendar')
+        .insert({
+            title: req.body.value.title,
+            start: start,
+            end: end,
+            primary: req.body.abc[0],
+            secondary: req.body.abc[1],
+            draggable: "false",
+            createdDate: date,
+            createdBy: req.body.empid,
+            createdByName: req.body.empname,
+            status: 'active',
+            color: req.body.abc[2]
+        })
+        .then(function(result) {
+            //console.log(result);
+            res.json('customer document Added Successfully');
+        })
+
+});
+router.get('/getEvent', (req, res) => {
+    knex.select()
+        .from('calendar')
+        .where('calendar.status ', 'active')
+        // .where('todolist.createdBy', req.body.empid)
+        .orderBy('calendar.eventID', 'desc')
+        .then(function(result) {
+            res.json(result);
+            // console.log(result)
+        })
+});
+
+
+router.get('/mappedgetEvent', (req, res) => {
+    knex.select()
+        .from('calendar')
+        .where('calendar.status ', 'active')
+        // .where('todolist.createdBy', req.body.empid)
+        .orderBy('calendar.eventID', 'desc')
+        .then(function(result) {
+            res.json(result);
+            console.log(result);
+        })
+});
+router.post('/deleteEvent', function(req, res) {
+    var date3 = format.asString('yyyy-MM-dd', new Date());
+    knex('calendar')
+        .where({ eventID: req.body.eventID })
+        .update({
+            status: "close",
+            updatedDate: moment().format(date3)
+        }).then(function(result) {
+            res.json(' Event Deleted Successfully');
+        })
+});
+router.get('/enquiryapprovecount/:id', (req, res) => {
+    //console.log(req.params.id);
+    knex.select()
+        .from('enquirydata')
+        .where({ teleid: req.params.id })
+        .where({ status: 'APPROVED' })
+        .then(function(result) {
+            //console.log(result.length);
+            res.json(result.length);
+        })
+})
+router.get('/enquirydisbursecount/:id', (req, res) => {
+    //console.log(req.params.id);
+    knex.select()
+        .from('enquirydata')
+        .where({ teleid: req.params.id })
+        .where({ status: 'DISBURSED' })
+        .then(function(result) {
+            //console.log(result.length);
+            res.json(result.length);
+        })
+})
+router.get('/enquiryrejectcount/:id', (req, res) => {
+    //console.log(req.params.id);
+    knex.select()
+        .from('enquirydata')
+        .where({ teleid: req.params.id })
+        .where({ status: 'REJECTED' })
+        .then(function(result) {
+            //console.log(result.length);
+            res.json(result.length);
+        })
+})
+router.get('/getEnquiryApprovedlist/:pagesize/:page/:id', (req, res, next) => {
+    const pageSize = req.params.pagesize;
+    const currentPage = req.params.page;
+    const skip = (pageSize * (currentPage - 1));
+    knex.select('enquirydata.*', 'loantype.loantype', 'employee.dob')
+        .from('enquirydata')
+        .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
+        .join('employee', 'employee.idemployee', 'enquirydata.teleid')
+        .where('enquirydata.teleid', req.params.id)
+        .where('enquirydata.status', 'APPROVED')
+        .orderBy('enquirydata.idenquiry', 'desc')
+        .limit(pageSize).offset(skip)
+        .then(function(result) {
+            knex.select()
+                .from('enquirydata')
+                .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
+                .join('employee', 'employee.idemployee', 'enquirydata.teleid')
+                .where('enquirydata.teleid', req.params.id)
+                .where('enquirydata.status', 'APPROVED')
+                .orderBy('enquirydata.idenquiry', 'desc')
+                .then(function(re) {
+                    res.status(200).json({
+                        message: "Memberlists fetched",
+                        posts: result,
+                        maxPosts: re.length
+                    });
+                })
+        })
+})
+router.get('/getEnquiryRejectlist/:pagesize/:page/:id', (req, res, next) => {
+    const pageSize = req.params.pagesize;
+    const currentPage = req.params.page;
+    const skip = (pageSize * (currentPage - 1));
+    knex.select('enquirydata.*', 'loantype.loantype', 'employee.dob')
+        .from('enquirydata')
+        .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
+        .join('employee', 'employee.idemployee', 'enquirydata.teleid')
+        .where('enquirydata.teleid', req.params.id)
+        .where('enquirydata.status', 'REJECTED')
+        .orderBy('enquirydata.idenquiry', 'desc')
+        .limit(pageSize).offset(skip)
+        .then(function(result) {
+            knex.select()
+                .from('enquirydata')
+                .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
+                .join('employee', 'employee.idemployee', 'enquirydata.teleid')
+                .where('enquirydata.teleid', req.params.id)
+                .where('enquirydata.status', 'REJECTED')
+                .orderBy('enquirydata.idenquiry', 'desc')
+                .then(function(re) {
+                    res.status(200).json({
+                        message: "Memberlists fetched",
+                        posts: result,
+                        maxPosts: re.length
+                    });
+                })
+        })
+})
+router.get('/getEnquiryDisburslistDetailsDetails/:pagesize/:page/:id', (req, res, next) => {
+    const pageSize = req.params.pagesize;
+    const currentPage = req.params.page;
+    const skip = (pageSize * (currentPage - 1));
+    knex.select('enquirydata.*', 'loantype.loantype', 'employee.dob')
+        .from('enquirydata')
+        .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
+        .join('employee', 'employee.idemployee', 'enquirydata.teleid')
+        .where('enquirydata.teleid', req.params.id)
+        .where('enquirydata.status', 'DISBURSED')
+        .orderBy('enquirydata.idenquiry', 'desc')
+        .limit(pageSize).offset(skip)
+        .then(function(result) {
+            knex.select()
+                .from('enquirydata')
+                .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
+                .join('employee', 'employee.idemployee', 'enquirydata.teleid')
+                .where('enquirydata.teleid', req.params.id)
+                .where('enquirydata.status', 'DISBURSED')
+                .orderBy('enquirydata.idenquiry', 'desc')
+                .then(function(re) {
+                    res.status(200).json({
+                        message: "Memberlists fetched",
+                        posts: result,
+                        maxPosts: re.length
+                    });
+                })
+        })
+});
+router.post('/notopenedlist', (req, res) => {
+    knex.select()
+        .from('enquirydata')
+        .where('adminid', req.body.empid)
+        .where('executiveStatus', "new")
+        .then(function(result) {
+            res.json(result.length);
+        })
+});
+router.post('/filepickedlist', (req, res) => {
+    knex.select()
+        .from('enquirydata')
+        .where('adminid', req.body.empid)
+        .where('status', "FILE PICKED")
+        .then(function(result) {
+            res.json(result.length);
+        })
+});
+router.post('/contactedlist', (req, res) => {
+    knex.select()
+        .from('enquirydata')
+        .where('adminid', req.body.empid)
+        .where('status', "CONTACTED")
+        .then(function(result) {
+            res.json(result.length);
+        })
+});
+router.post('/loginlist', (req, res) => {
+    knex.select()
+        .from('enquirydata')
+        .where('adminid', req.body.empid)
+        .where('status', "LOGIN")
+        .then(function(result) {
+            res.json(result.length);
+        })
+});
+router.post('/wiplist', (req, res) => {
+    knex.select()
+        .from('enquirydata')
+        .where('adminid', req.body.empid)
+        .where('status', "WORK IN PROGRESS")
+        .then(function(result) {
+            res.json(result.length);
+        })
+});
+router.post('/approvedlist', (req, res) => {
+    knex.select()
+        .from('enquirydata')
+        .where('adminid', req.body.empid)
+        .where('status', "APPROVED")
+        .then(function(result) {
+            res.json(result.length);
+        })
+});
+router.post('/disbursedlist', (req, res) => {
+    knex.select()
+        .from('enquirydata')
+        .where('adminid', req.body.empid)
+        .where('status', "DISBURSED")
+        .then(function(result) {
+            res.json(result.length);
+        })
+});
+router.post('/rejectlist', (req, res) => {
+    knex.select()
+        .from('enquirydata')
+        .where('adminid', req.body.empid)
+        .where('status', "REJECTED")
+        .then(function(result) {
+            res.json(result.length);
+        })
+});
+router.get('/getEnquiryApprovelistexe/:pagesize/:page/:id', (req, res, next) => {
+    const pageSize = req.params.pagesize;
+    const currentPage = req.params.page;
+    const skip = (pageSize * (currentPage - 1));
+    // //console.log(req.params.id);
+    var date3 = format.asString('MM/dd/yyyy', new Date());
+    var ddd = moment().format(date3);
+    var d = new Date(ddd);
+    var e = d.getDate();
+    var m = d.getMonth() + 1;
+    var y = d.getFullYear() + ',' + m + ',' + e;
+    knex.select('enquirydata.*', 'loantype.loantype', 'employee.name as ename')
+        .from('enquirydata')
+        .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
+        .join('employee', 'employee.idemployee', 'enquirydata.teleid')
+        .where('enquirydata.adminid', req.params.id)
+        .where('enquirydata.status', 'APPROVED')
+        .orderBy('enquirydata.idenquiry', 'desc')
+        .limit(pageSize).offset(skip)
+        .then(function(result) {
+            // //console.log(res);
+            var a = result.length
+            for (i = 0; i < a; i++) {
+                var d1 = new Date(result[i].updateddate);
+                var e1 = d1.getDate();
+                var m1 = d1.getMonth() + 1;
+                var y1 = d1.getFullYear() + ',' + m1 + ',' + e1;
+                var date1 = new Date(y);
+                var date4 = new Date(y1);
+                var diff = new DateDiff(date1, date4);
+                var opt = diff.days();
+                //console.log(opt);
+                result[i].opt = opt;
+            }
+            knex.select()
+                .from('enquirydata')
+                .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
+                .join('employee', 'employee.idemployee', 'enquirydata.teleid')
+                .where('enquirydata.status', 'APPROVED')
+                .where('enquirydata.adminid', req.params.id)
+                .orderBy('enquirydata.idenquiry', 'desc')
+                .then(function(re) {
+
+                    res.status(200).json({
+                        message: "Memberlists fetched",
+                        posts: result,
+                        maxPosts: re.length
+                    });
+                })
+        })
+});
+
+router.get('/getEnquirycontactedlistexe/:pagesize/:page/:id', (req, res, next) => {
+    const pageSize = req.params.pagesize;
+    const currentPage = req.params.page;
+    const skip = (pageSize * (currentPage - 1));
+    // //console.log(req.params.id);
+    var date3 = format.asString('MM/dd/yyyy', new Date());
+    var ddd = moment().format(date3);
+    var d = new Date(ddd);
+    var e = d.getDate();
+    var m = d.getMonth() + 1;
+    var y = d.getFullYear() + ',' + m + ',' + e;
+    knex.select('enquirydata.*', 'loantype.loantype', 'employee.name as ename')
+        .from('enquirydata')
+        .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
+        .join('employee', 'employee.idemployee', 'enquirydata.teleid')
+        .where('enquirydata.adminid', req.params.id)
+        .where('enquirydata.status', 'CONTACTED')
+        .orderBy('enquirydata.idenquiry', 'desc')
+        .limit(pageSize).offset(skip)
+        .then(function(result) {
+            // //console.log(res);
+            var a = result.length
+            for (i = 0; i < a; i++) {
+                var d1 = new Date(result[i].updateddate);
+                var e1 = d1.getDate();
+                var m1 = d1.getMonth() + 1;
+                var y1 = d1.getFullYear() + ',' + m1 + ',' + e1;
+                var date1 = new Date(y);
+                var date4 = new Date(y1);
+                var diff = new DateDiff(date1, date4);
+                var opt = diff.days();
+                //console.log(opt);
+                result[i].opt = opt;
+            }
+            knex.select()
+                .from('enquirydata')
+                .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
+                .join('employee', 'employee.idemployee', 'enquirydata.teleid')
+                .where('enquirydata.status', 'CONTACTED')
+                .where('enquirydata.adminid', req.params.id)
+                .orderBy('enquirydata.idenquiry', 'desc')
+                .then(function(re) {
+
+                    res.status(200).json({
+                        message: "Memberlists fetched",
+                        posts: result,
+                        maxPosts: re.length
+                    });
+                })
+        })
+});
+router.get('/getEnquirydisburselistexe/:pagesize/:page/:id', (req, res, next) => {
+    const pageSize = req.params.pagesize;
+    const currentPage = req.params.page;
+    const skip = (pageSize * (currentPage - 1));
+    // //console.log(req.params.id);
+    var date3 = format.asString('MM/dd/yyyy', new Date());
+    var ddd = moment().format(date3);
+    var d = new Date(ddd);
+    var e = d.getDate();
+    var m = d.getMonth() + 1;
+    var y = d.getFullYear() + ',' + m + ',' + e;
+    knex.select('enquirydata.*', 'loantype.loantype', 'employee.name as ename')
+        .from('enquirydata')
+        .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
+        .join('employee', 'employee.idemployee', 'enquirydata.teleid')
+        .where('enquirydata.adminid', req.params.id)
+        .where('enquirydata.status', 'DISBURSED')
+        .orderBy('enquirydata.idenquiry', 'desc')
+        .limit(pageSize).offset(skip)
+        .then(function(result) {
+            // //console.log(res);
+            var a = result.length
+            for (i = 0; i < a; i++) {
+                var d1 = new Date(result[i].updateddate);
+                var e1 = d1.getDate();
+                var m1 = d1.getMonth() + 1;
+                var y1 = d1.getFullYear() + ',' + m1 + ',' + e1;
+                var date1 = new Date(y);
+                var date4 = new Date(y1);
+                var diff = new DateDiff(date1, date4);
+                var opt = diff.days();
+                //console.log(opt);
+                result[i].opt = opt;
+            }
+            knex.select()
+                .from('enquirydata')
+                .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
+                .join('employee', 'employee.idemployee', 'enquirydata.teleid')
+                .where('enquirydata.status', 'DISBURSED')
+                .where('enquirydata.adminid', req.params.id)
+                .orderBy('enquirydata.idenquiry', 'desc')
+                .then(function(re) {
+
+                    res.status(200).json({
+                        message: "Memberlists fetched",
+                        posts: result,
+                        maxPosts: re.length
+                    });
+                })
+        })
+});
+router.get('/getEnquiryfilepicklistexe/:pagesize/:page/:id', (req, res, next) => {
+    const pageSize = req.params.pagesize;
+    const currentPage = req.params.page;
+    const skip = (pageSize * (currentPage - 1));
+    // //console.log(req.params.id);
+    var date3 = format.asString('MM/dd/yyyy', new Date());
+    var ddd = moment().format(date3);
+    var d = new Date(ddd);
+    var e = d.getDate();
+    var m = d.getMonth() + 1;
+    var y = d.getFullYear() + ',' + m + ',' + e;
+    knex.select('enquirydata.*', 'loantype.loantype', 'employee.name as ename')
+        .from('enquirydata')
+        .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
+        .join('employee', 'employee.idemployee', 'enquirydata.teleid')
+        .where('enquirydata.adminid', req.params.id)
+        .where('enquirydata.status', 'FILE PICKED')
+        .orderBy('enquirydata.idenquiry', 'desc')
+        .limit(pageSize).offset(skip)
+        .then(function(result) {
+            // //console.log(res);
+            var a = result.length
+            for (i = 0; i < a; i++) {
+                var d1 = new Date(result[i].updateddate);
+                var e1 = d1.getDate();
+                var m1 = d1.getMonth() + 1;
+                var y1 = d1.getFullYear() + ',' + m1 + ',' + e1;
+                var date1 = new Date(y);
+                var date4 = new Date(y1);
+                var diff = new DateDiff(date1, date4);
+                var opt = diff.days();
+                //console.log(opt);
+                result[i].opt = opt;
+            }
+            knex.select()
+                .from('enquirydata')
+                .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
+                .join('employee', 'employee.idemployee', 'enquirydata.teleid')
+                .where('enquirydata.status', 'FILE PICKED')
+                .where('enquirydata.adminid', req.params.id)
+                .orderBy('enquirydata.idenquiry', 'desc')
+                .then(function(re) {
+
+                    res.status(200).json({
+                        message: "Memberlists fetched",
+                        posts: result,
+                        maxPosts: re.length
+                    });
+                })
+        })
+});
+router.get('/getEnquiryloginlistexe/:pagesize/:page/:id', (req, res, next) => {
+    const pageSize = req.params.pagesize;
+    const currentPage = req.params.page;
+    const skip = (pageSize * (currentPage - 1));
+    // //console.log(req.params.id);
+    var date3 = format.asString('MM/dd/yyyy', new Date());
+    var ddd = moment().format(date3);
+    var d = new Date(ddd);
+    var e = d.getDate();
+    var m = d.getMonth() + 1;
+    var y = d.getFullYear() + ',' + m + ',' + e;
+    knex.select('enquirydata.*', 'loantype.loantype', 'employee.name as ename')
+        .from('enquirydata')
+        .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
+        .join('employee', 'employee.idemployee', 'enquirydata.teleid')
+        .where('enquirydata.adminid', req.params.id)
+        .where('enquirydata.status', 'LOGIN')
+        .orderBy('enquirydata.idenquiry', 'desc')
+        .limit(pageSize).offset(skip)
+        .then(function(result) {
+            // //console.log(res);
+            var a = result.length
+            for (i = 0; i < a; i++) {
+                var d1 = new Date(result[i].updateddate);
+                var e1 = d1.getDate();
+                var m1 = d1.getMonth() + 1;
+                var y1 = d1.getFullYear() + ',' + m1 + ',' + e1;
+                var date1 = new Date(y);
+                var date4 = new Date(y1);
+                var diff = new DateDiff(date1, date4);
+                var opt = diff.days();
+                //console.log(opt);
+                result[i].opt = opt;
+            }
+            knex.select()
+                .from('enquirydata')
+                .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
+                .join('employee', 'employee.idemployee', 'enquirydata.teleid')
+                .where('enquirydata.status', 'LOGIN')
+                .where('enquirydata.adminid', req.params.id)
+                .orderBy('enquirydata.idenquiry', 'desc')
+                .then(function(re) {
+
+                    res.status(200).json({
+                        message: "Memberlists fetched",
+                        posts: result,
+                        maxPosts: re.length
+                    });
+                })
+        })
+});
+router.get('/getEnquirynotopenlistexe/:pagesize/:page/:id', (req, res, next) => {
+    const pageSize = req.params.pagesize;
+    const currentPage = req.params.page;
+    const skip = (pageSize * (currentPage - 1));
+    // //console.log(req.params.id);
+    var date3 = format.asString('MM/dd/yyyy', new Date());
+    var ddd = moment().format(date3);
+    var d = new Date(ddd);
+    var e = d.getDate();
+    var m = d.getMonth() + 1;
+    var y = d.getFullYear() + ',' + m + ',' + e;
+    knex.select('enquirydata.*', 'loantype.loantype', 'employee.name as ename')
+        .from('enquirydata')
+        .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
+        .join('employee', 'employee.idemployee', 'enquirydata.teleid')
+        .where('enquirydata.adminid', req.params.id)
+        .where('executiveStatus', "new")
+        .orderBy('enquirydata.idenquiry', 'desc')
+        .limit(pageSize).offset(skip)
+        .then(function(result) {
+            // //console.log(res);
+            var a = result.length
+            for (i = 0; i < a; i++) {
+                var d1 = new Date(result[i].assignedTime);
+                var e1 = d1.getDate();
+                var m1 = d1.getMonth() + 1;
+                var y1 = d1.getFullYear() + ',' + m1 + ',' + e1;
+                var date1 = new Date(y);
+                var date4 = new Date(y1);
+                var diff = new DateDiff(date1, date4);
+                var opt = diff.days();
+                //console.log(opt);
+                result[i].opt = opt;
+            }
+            knex.select()
+                .from('enquirydata')
+                .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
+                .join('employee', 'employee.idemployee', 'enquirydata.teleid')
+                .where('executiveStatus', "new")
+                .where('enquirydata.adminid', req.params.id)
+                .orderBy('enquirydata.idenquiry', 'desc')
+                .then(function(re) {
+
+                    res.status(200).json({
+                        message: "Memberlists fetched",
+                        posts: result,
+                        maxPosts: re.length
+                    });
+                })
+        })
+});
+router.get('/getEnquiryrejectlistexe/:pagesize/:page/:id', (req, res, next) => {
+    const pageSize = req.params.pagesize;
+    const currentPage = req.params.page;
+    const skip = (pageSize * (currentPage - 1));
+    // //console.log(req.params.id);
+    var date3 = format.asString('MM/dd/yyyy', new Date());
+    var ddd = moment().format(date3);
+    var d = new Date(ddd);
+    var e = d.getDate();
+    var m = d.getMonth() + 1;
+    var y = d.getFullYear() + ',' + m + ',' + e;
+    knex.select('enquirydata.*', 'loantype.loantype', 'employee.name as ename')
+        .from('enquirydata')
+        .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
+        .join('employee', 'employee.idemployee', 'enquirydata.teleid')
+        .where('enquirydata.adminid', req.params.id)
+        .where('enquirydata.status', 'REJECTED')
+        .orderBy('enquirydata.idenquiry', 'desc')
+        .limit(pageSize).offset(skip)
+        .then(function(result) {
+            // //console.log(res);
+            var a = result.length
+            for (i = 0; i < a; i++) {
+                var d1 = new Date(result[i].updateddate);
+                var e1 = d1.getDate();
+                var m1 = d1.getMonth() + 1;
+                var y1 = d1.getFullYear() + ',' + m1 + ',' + e1;
+                var date1 = new Date(y);
+                var date4 = new Date(y1);
+                var diff = new DateDiff(date1, date4);
+                var opt = diff.days();
+                //console.log(opt);
+                result[i].opt = opt;
+            }
+            knex.select()
+                .from('enquirydata')
+                .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
+                .join('employee', 'employee.idemployee', 'enquirydata.teleid')
+                .where('enquirydata.status', 'REJECTED')
+                .where('enquirydata.adminid', req.params.id)
+                .orderBy('enquirydata.idenquiry', 'desc')
+                .then(function(re) {
+
+                    res.status(200).json({
+                        message: "Memberlists fetched",
+                        posts: result,
+                        maxPosts: re.length
+                    });
+                })
+        })
+});
+router.get('/getEnquirywiplistexe/:pagesize/:page/:id', (req, res, next) => {
+    const pageSize = req.params.pagesize;
+    const currentPage = req.params.page;
+    const skip = (pageSize * (currentPage - 1));
+    // //console.log(req.params.id);
+    var date3 = format.asString('MM/dd/yyyy', new Date());
+    var ddd = moment().format(date3);
+    var d = new Date(ddd);
+    var e = d.getDate();
+    var m = d.getMonth() + 1;
+    var y = d.getFullYear() + ',' + m + ',' + e;
+    knex.select('enquirydata.*', 'loantype.loantype', 'employee.name as ename')
+        .from('enquirydata')
+        .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
+        .join('employee', 'employee.idemployee', 'enquirydata.teleid')
+        .where('enquirydata.adminid', req.params.id)
+        .where('enquirydata.status', 'WORK IN PROGRESS')
+        .orderBy('enquirydata.idenquiry', 'desc')
+        .limit(pageSize).offset(skip)
+        .then(function(result) {
+            // //console.log(res);
+            var a = result.length
+            for (i = 0; i < a; i++) {
+                var d1 = new Date(result[i].updateddate);
+                var e1 = d1.getDate();
+                var m1 = d1.getMonth() + 1;
+                var y1 = d1.getFullYear() + ',' + m1 + ',' + e1;
+                var date1 = new Date(y);
+                var date4 = new Date(y1);
+                var diff = new DateDiff(date1, date4);
+                var opt = diff.days();
+                //console.log(opt);
+                result[i].opt = opt;
+            }
+            knex.select()
+                .from('enquirydata')
+                .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
+                .join('employee', 'employee.idemployee', 'enquirydata.teleid')
+                .where('enquirydata.status', 'WORK IN PROGRESS')
+                .where('enquirydata.adminid', req.params.id)
+                .orderBy('enquirydata.idenquiry', 'desc')
+                .then(function(re) {
+
+                    res.status(200).json({
+                        message: "Memberlists fetched",
+                        posts: result,
+                        maxPosts: re.length
+                    });
+                })
+        })
+});
+router.post('/notify', function(req, res) {
+    // //console.log(req.params.obj);
+    // //console.log(req.params.obj1);
+
+    var date1 = moment.utc().format('YYYY-MM-DD HH:mm:ss');
+    var localTime = moment.utc(date1).toDate();
+    knex('enquirydata')
+        .where('idenquiry', req.body.value.idenquiry)
+        .update({
+            remindDate: localTime,
+        })
+        .then(function(result) {
+            res.json('remainder Added Successfully');
+            knex('sendernotifications')
+                .insert({
+                    createdDate: localTime,
+                    senderID: req.body.value.adminid,
+                    senderName: req.body.value.adminname,
+                    notification: "I hereby would like to inform you that the case:" + req.body.value.name + "still in the status of" + req.body.value.status + "If failed to update the case will be removed from your enquiry list.",
+                    notificationSubject: "Case Remainder",
+                    notificationImg: undefined,
+                    notificationImg_org: undefined,
+                    senderStatus: 'sent',
+                })
+                .then(function(id) {
+                    const ids = id.toString();
+                    knex('receivernotification')
+                        .insert({
+                            senderNotificationID: ids,
+                            receiverID: req.body.value.executiveid,
+                            receiverName: req.body.value.executivename,
+                            receiverStatus: 'received',
+                        }).then(function(re) {
+                            // res.json('Notification Sent Successfully');
+                            const output = `<html style="width:100%;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;padding:0;Margin:0;"><head>
+            <meta charset="UTF-8">
+            <meta content="width=device-width, initial-scale=1" name="viewport">
+            <!--[if (mso 16)]>
+            <style type="text/css">
+            a {text-decoration: none;}
+            </style>
+            <![endif]-->
+            <!--[if gte mso 9]><style>sup { font-size: 100% !important; }</style><![endif]-->
+            <style type="text/css">
+                @media only screen and (max-width:600px) {
+                    p,
+                    ul li,
+                    ol li,
+                    a {
+                        font-size: 12px!important;
+                        line-height: 150%!important
+                    }
+                    h1 {
+                        font-size: 30px!important;
+                        text-align: center;
+                        line-height: 120%!important
+                    }
+                    h2 {
+                        font-size: 26px!important;
+                        text-align: center;
+                        line-height: 120%!important
+                    }
+                    h3 {
+                        font-size: 20px!important;
+                        text-align: center;
+                        line-height: 120%!important
+                    }
+                    .es-menu td a {
+                        font-size: 10px!important
+                    }
+                    .es-header-body p,
+                    .es-header-body ul li,
+                    .es-header-body ol li,
+                    .es-header-body a {
+                        font-size: 10px!important
+                    }
+                    .es-footer-body p,
+                    .es-footer-body ul li,
+                    .es-footer-body ol li,
+                    .es-footer-body a {
+                        font-size: 12px!important
+                    }
+                    .es-infoblock p,
+                    .es-infoblock ul li,
+                    .es-infoblock ol li,
+                    .es-infoblock a {
+                        font-size: 12px!important
+                    }
+                    *[class="gmail-fix"] {
+                        display: none!important
+                    }
+                    .es-m-txt-c {
+                        text-align: center!important
+                    }
+                    .es-m-txt-r {
+                        text-align: right!important
+                    }
+                    .es-m-txt-l {
+                        text-align: left!important
+                    }
+                    .es-m-txt-r img,
+                    .es-m-txt-c img,
+                    .es-m-txt-l img {
+                        display: inline!important
+                    }
+                    .es-button-border {
+                        display: block!important
+                    }
+                    a.es-button {
+                        font-size: 20px!important;
+                        display: block!important;
+                        border-left-width: 0px!important;
+                        border-right-width: 0px!important
+                    }
+                    .es-btn-fw {
+                        border-width: 10px 0px!important;
+                        text-align: center!important
+                    }
+                    .es-adaptive table,
+                    .es-btn-fw,
+                    .es-btn-fw-brdr,
+                    .es-left,
+                    .es-right {
+                        width: 100%!important
+                    }
+                    .es-content table,
+                    .es-header table,
+                    .es-footer table,
+                    .es-content,
+                    .es-footer,
+                    .es-header {
+                        width: 100%!important;
+                        max-width: 600px!important
+                    }
+                    .es-adapt-td {
+                        display: block!important;
+                        width: 100%!important
+                    }
+                    .adapt-img {
+                        width: 100%!important;
+                        height: auto!important
+                    }
+                    .es-m-p0 {
+                        padding: 0px!important
+                    }
+                    .es-m-p0r {
+                        padding-right: 0px!important
+                    }
+                    .es-m-p0l {
+                        padding-left: 0px!important
+                    }
+                    .es-m-p0t {
+                        padding-top: 0px!important
+                    }
+                    .es-m-p0b {
+                        padding-bottom: 0!important
+                    }
+                    .es-m-p20b {
+                        padding-bottom: 20px!important
+                    }
+                    .es-mobile-hidden,
+                    .es-hidden {
+                        display: none!important
+                    }
+                    .es-desk-hidden {
+                        display: table-row!important;
+                        width: auto!important;
+                        overflow: visible!important;
+                        float: none!important;
+                        max-height: inherit!important;
+                        line-height: inherit!important
+                    }
+                    .es-desk-menu-hidden {
+                        display: table-cell!important
+                    }
+                    table.es-table-not-adapt,
+                    .esd-block-html table {
+                        width: auto!important
+                    }
+                    table.es-social td {
+                        display: inline-block!important
+                    }
+                    table.es-social {
+                        display: inline-block!important
+                    }
+                }
+                
+                #outlook a {
+                    padding: 0;
+                }
+                
+                .ExternalClass {
+                    width: 100%;
+                }
+                
+                .ExternalClass,
+                .ExternalClass p,
+                .ExternalClass span,
+                .ExternalClass font,
+                .ExternalClass td,
+                .ExternalClass div {
+                    line-height: 100%;
+                }
+                
+                .es-button {
+                    mso-style-priority: 100!important;
+                    text-decoration: none!important;
+                }
+                
+                a[x-apple-data-detectors] {
+                    color: inherit!important;
+                    text-decoration: none!important;
+                    font-size: inherit!important;
+                    font-family: inherit!important;
+                    font-weight: inherit!important;
+                    line-height: inherit!important;
+                }
+                
+                .es-desk-hidden {
+                    display: none;
+                    float: left;
+                    overflow: hidden;
+                    width: 0;
+                    max-height: 0;
+                    line-height: 0;
+                    mso-hide: all;
+                }
+            </style>
+        </head>
+        
+        <body style="width:100%;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;padding:0;Margin:0;">
+            <div class="es-wrapper-color" style="background-color:#CCCCCC;">
+                <!--[if gte mso 9]>
+                    <v:background xmlns:v="urn:schemas-microsoft-com:vml" fill="t">
+                        <v:fill type="tile" color="#cccccc"></v:fill>
+                    </v:background>
+                <![endif]-->
+                <table class="es-wrapper" width="100%" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;padding:0;Margin:0;width:100%;height:100%;background-repeat:repeat;background-position:center top;">
+                    <tbody><tr style="border-collapse:collapse;">
+                        <td valign="top" style="padding:0;Margin:0;">
+                            <table cellpadding="0" cellspacing="0" class="es-content" align="center" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;table-layout:fixed !important;width:100%;">
+                                <tbody><tr style="border-collapse:collapse;">
+                                    <td class="es-adaptive" align="center" style="padding:0;Margin:0;">
+                                        <table class="es-content-body" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:#EFEFEF;" width="720" cellspacing="0" cellpadding="0" bgcolor="#efefef" align="center">
+                                            <tbody><tr style="border-collapse:collapse;">
+                                                <td align="left" style="padding:0;Margin:0;">
+                                                    <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
+                                                        <tbody><tr style="border-collapse:collapse;">
+                                                            <td width="720" align="center" valign="top" style="padding:0;Margin:0;">
+                                                                <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
+                                                                    <tbody><tr style="border-collapse:collapse;">
+                                                                        <td align="left" style="padding:0;Margin:0;">
+                                                                            <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:13px;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:20px;color:#666666;"><br></p>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody></table>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody></table>
+                                                </td>
+                                            </tr>
+                                        </tbody></table>
+                                    </td>
+                                </tr>
+                            </tbody></table>
+                            <table cellpadding="0" cellspacing="0" class="es-header" align="center" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;table-layout:fixed !important;width:100%;background-color:transparent;background-repeat:repeat;background-position:center top;">
+                                <tbody><tr style="border-collapse:collapse;">
+                                    <td align="center" style="padding:0;Margin:0;">
+                                        <table class="es-header-body" width="720" cellspacing="0" cellpadding="0" align="center" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:#FFFFFF;">
+                                            <tbody><tr style="border-collapse:collapse;">
+                                                <td align="left" style="Margin:0;padding-top:10px;padding-bottom:10px;padding-left:10px;padding-right:10px;">
+                                                    <table width="100%" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
+                                                        <tbody><tr style="border-collapse:collapse;">
+                                                            <td width="700" valign="top" align="center" style="padding:0;Margin:0;">
+                                                                <table width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
+                                                                    <tbody><tr style="border-collapse:collapse;">
+                                                                        <td align="center" style="padding:0;Margin:0;">
+                                                                            <a href="https://mindfin.co.in" target="_blank" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;font-size:14px;text-decoration:underline;color:#CCCCCC;"><img src="https://mindfinfiles.blob.core.windows.net/mindfin-backend/logo.jpg" alt="Smart home logo" title="Smart home logo" width="109" style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;" height="46"></a>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody></table>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody></table>
+                                                </td>
+                                            </tr>
+                                            <tr style="border-collapse:collapse;">
+                                                <td style="padding:0;Margin:0;padding-left:5px;padding-right:5px;background-color:#4A7EB0;" bgcolor="#4a7eb0" align="left">
+                                                    <table width="100%" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
+                                                        <tbody><tr style="border-collapse:collapse;">
+                                                            <td width="710" valign="top" align="center" style="padding:0;Margin:0;">
+                                                                <table width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
+                                                                    <tbody><tr style="border-collapse:collapse;">
+                                                                        <td style="padding:0;Margin:0;">
+                                                                            <table class="es-menu" width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
+                                                                                <tbody><tr class="images" style="border-collapse:collapse;">
+                                                                                    <td style="Margin:0;padding-left:5px;padding-right:5px;padding-top:0px;padding-bottom:7px;border:0;" width="100%" bgcolor="transparent" align="center"><img src="images/default-img.png" alt="" title="" height="0" width="0" style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;"></td>
+                                                                                </tr>
+                                                                            </tbody></table>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody></table>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody></table>
+                                                </td>
+                                            </tr>
+                                        </tbody></table>
+                                    </td>
+                                </tr>
+                            </tbody></table>
+                            <table class="es-content" cellspacing="0" cellpadding="0" align="center" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;table-layout:fixed !important;width:100%;">
+                                <tbody><tr style="border-collapse:collapse;">
+                                    <td align="center" style="padding:0;Margin:0;">
+                                        <table class="es-content-body" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:#FFFFFF;" width="720" cellspacing="0" cellpadding="0" bgcolor="#ffffff" align="center">
+                                            <tbody><tr style="border-collapse:collapse;">
+                                                <td align="left" style="Margin:0;padding-top:20px;padding-bottom:20px;padding-left:40px;padding-right:40px;">
+                                                    <table width="100%" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
+                                                        <tbody><tr style="border-collapse:collapse;">
+                                                            <td width="640" valign="top" align="center" style="padding:0;Margin:0;">
+                                                                <table width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
+                                                                    <tbody><tr style="border-collapse:collapse;">
+                                                                        <td align="left" style="padding:0;Margin:0;">
+                                                                            <h1 style="Margin:0;line-height:36px;mso-line-height-rule:exactly;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;font-size:30px;font-style:normal;font-weight:normal;color:#4A7EB0;">Case Reminder</h1>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr style="border-collapse:collapse;">
+                                                                        <td align="left" style="padding:0;Margin:0;padding-top:5px;padding-bottom:20px;">
+                                                                            <table width="5%" height="100%" cellspacing="0" cellpadding="0" border="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
+                                                                                <tbody><tr style="border-collapse:collapse;">
+                                                                                    <td style="padding:0;Margin:0px;border-bottom:2px solid #999999;background:rgba(0, 0, 0, 0) none repeat scroll 0% 0%;height:1px;width:100%;margin:0px;"></td>
+                                                                                </tr>
+                                                                            </tbody></table>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr style="border-collapse:collapse;">
+                                                                        <td align="left" style="padding:0;Margin:0;padding-bottom:10px;">
+                                                                            <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:13px;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:20px;color:#666666;"><span style="font-size:16px;line-height:24px;">Hi Manu,</span></p>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr style="border-collapse:collapse;">
+                                                                        <td align="left" style="padding:0;Margin:0;">
+                                                                            <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:13px;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:20px;color:#666666;">I hereby would like to inform you that the <strong>case: </strong> <span style="color:#FFD700;"><strong>` + req.body.value.name + `</strong></span> has been assigned to<span style="color:#FFD700;"><strong> ` + req.body.value.executivename + `</strong></span>                                                                        on<span style="color:#FFD700;"><strong> ` + req.body.value.assignedTime + `</strong></span> and the case is still in the <span style="color:#FFD700;"><strong>` + req.body.value.status + `</strong></span> state. If failed to update the&nbsp;case&nbsp;will
+                                                                                be removed from <span style="color:#FFD700;"><strong>` + req.body.value.executivename + `</strong></span> and the same will be reassign to another executive.</p>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr style="border-collapse:collapse;">
+                                                                        <td align="left" style="padding:0;Margin:0;">
+                                                                            <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:13px;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:20px;color:#666666;"><br></p>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody></table>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody></table>
+                                                </td>
+                                            </tr>
+        
+                                        </tbody></table>
+                                    </td>
+                                </tr>
+                            </tbody></table>
+                            <table cellpadding="0" cellspacing="0" class="es-footer" align="center" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;table-layout:fixed !important;width:100%;background-color:transparent;background-repeat:repeat;background-position:center top;">
+                                <tbody><tr style="border-collapse:collapse;">
+                                    <td align="center" style="padding:0;Margin:0;">
+                                        <table class="es-footer-body" width="720" cellspacing="0" cellpadding="0" align="center" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:#EFEFEF;">
+                                            <tbody><tr style="border-collapse:collapse;">
+                                                <td align="left" bgcolor="#ffffff" style="padding:20px;Margin:0;background-color:#FFFFFF;">
+                                                    <!--[if mso]><table width="680" cellpadding="0" cellspacing="0"><tr><td width="242"><![endif]-->
+                                                    <table class="es-left" cellspacing="0" cellpadding="0" align="left" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:left;">
+                                                        <tbody><tr style="border-collapse:collapse;">
+                                                            <td class="es-m-p0r es-m-p20b" width="222" align="center" style="padding:0;Margin:0;">
+                                                                <table width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
+                                                                    <tbody><tr style="border-collapse:collapse;">
+                                                                        <td esdev-links-color="#333333" align="left" class="es-m-txt-с es-m-txt-l" style="padding:0;Margin:0;padding-bottom:10px;">
+                                                                            <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:13px;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:20px;color:#0066FF;"><strong>Thanks And Regards</strong></p>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody></table>
+                                                            </td>
+                                                            <td class="es-hidden" width="20" style="padding:0;Margin:0;"></td>
+                                                        </tr>
+        
+                                                        <tr style="border-collapse:collapse;">
+                                                            <td class="es-m-p0r es-m-p20b" width="222" align="center" style="padding:0;Margin:0;">
+                                                                <table width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
+                                                                    <tbody><tr style="border-collapse:collapse;">
+                                                                        <td class="es-m-txt-l" esdev-links-color="#333333" align="left" style="padding:0;Margin:0;">
+                                                                            <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:13px;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:13px;color:#333333;"><strong>&nbsp;Mindfin Admin</strong><br>+91 9513040055<br><br>No. 10, 1st Floor,<br>Krishna Block, 1st Main<br> Road,Seshadripuram,<br>Bangalore- 560020 <br><br></p>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody></table>
+                                                            </td>
+                                                            <td class="es-hidden" width="20" style="padding:0;Margin:0;"></td>
+                                                        </tr>
+                                                        <tr style="border-collapse:collapse;">
+                                                            <td class="es-m-p0r es-m-p20b" width="222" align="center" style="padding:0;Margin:0;">
+                                                                <table width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
+                                                                    <tbody><tr style="border-collapse:collapse;">
+                                                                        <td class="es-m-p0l" align="left" style="padding:0;Margin:0;padding-bottom:10px;">
+                                                                            <a href="https://mindfin.co.in" target="_blank" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;font-size:13px;text-decoration:underline;color:#333333;"><img src="https://mindfinfiles.blob.core.windows.net/mindfin-backend/logo.jpg" alt="" width="103" style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;" height="43"></a>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody></table>
+                                                            </td>
+                                                            <td class="es-hidden" width="20" style="padding:0;Margin:0;"></td>
+                                                        </tr>
+                                                    </tbody></table>
+                                                    <!--[if mso]></td><td width="209"><![endif]-->
+                                                    <table class="es-left" cellspacing="0" cellpadding="0" align="left" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:left;">
+                                                        <tbody><tr style="border-collapse:collapse;">
+                                                            <td class="es-m-p0r es-m-p20b" width="209" align="center" style="padding:0;Margin:0;">
+                                                                <table width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
+                                                                    <tbody><tr class="es-mobile-hidden" style="border-collapse:collapse;">
+                                                                        <td align="left" style="padding:0;Margin:0;">
+                                                                            <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:13px;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:20px;color:#333333;"><br><br></p>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody></table>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody></table>
+                                                    <!--[if mso]></td><td width="20"></td><td width="209"><![endif]-->
+                                                    <table class="es-right" cellspacing="0" cellpadding="0" align="right" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:right;">
+                                                        <tbody><tr style="border-collapse:collapse;">
+                                                            <td class="es-m-p0r es-m-p20b" width="209" align="center" style="padding:0;Margin:0;">
+                                                                <table width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
+                                                                    <tbody><tr class="es-mobile-hidden" style="border-collapse:collapse;">
+                                                                        <td align="left" style="padding:0;Margin:0;">
+                                                                            <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:13px;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:20px;color:#333333;"><br></p>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody></table>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody></table>
+                                                    <!--[if mso]></td></tr></table><![endif]-->
+                                                </td>
+                                            </tr>
+                                            <tr style="border-collapse:collapse;">
+                                                <td align="left" style="padding:0;Margin:0;padding-bottom:15px;padding-left:20px;padding-right:20px;">
+                                                    <table width="100%" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
+                                                        <tbody><tr style="border-collapse:collapse;">
+                                                            <td width="680" valign="top" align="center" style="padding:0;Margin:0;">
+                                                                <table width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
+                                                                    <tbody><tr style="border-collapse:collapse;">
+                                                                        <td esdev-links-color="#333333" align="left" style="padding:0;Margin:0;">
+                                                                            <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:12px;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:18px;color:#333333;"></p>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody></table>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody></table>
+                                                </td>
+                                            </tr>
+                                        </tbody></table>
+                                    </td>
+                                </tr>
+                            </tbody></table>
+                        </td>
+                    </tr>
+                </tbody></table>
+            </div>
+        
+        
+        </body></html>`;
+
+                            let transporter = nodemailer.createTransport({
+                                host: req.body.emails[0].hostmail,
+                                port: 587,
+                                transportMethod: 'SMTP',
+                                // secure: false, // true for 465, false for other ports
+                                auth: {
+                                    user: req.body.emails[0].emailuser, // gmail id
+                                    pass: req.body.emails[0].emailpassword // gmail password
+                                },
+                                tls: {
+                                    rejectUnauthorized: false
+                                }
+                            });
+                            // setup email data with unicode symbols
+                            let mailOptions = {
+                                from: req.body.emails[0].fromemail1,
+                                to: req.body.emails[0].bcc, // list of receivers
+                                cc: req.body.emails[0].fromemail2,
+                                // bcc: req.body.emails[0].bcc,
+                                subject: req.body.value.name + " Remainder ", //"Project Payment Update From", // Subject line
+                                text: 'Hello world?', // plain text body
+                                html: output // html body
+                            };
+                            // send mail with defined transport object
+                            transporter.sendMail(mailOptions, (error, info) => {
+                                if (error) {
+                                    return //console.log(error);
+                                }
+                                //console.log('Message sent: %s', info.messageId);
+                                //console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+                                // res.render('contact', { msg: 'Email has been sent' });
+                            });
+                        })
+                })
+
+        })
+
+});
 module.exports = router;

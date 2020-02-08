@@ -511,7 +511,7 @@ export class SuperadminService {
   getCustomer(postsPerPage: number, currentPage: number) {
     const queryParams = `/${postsPerPage}/${currentPage}`;
     this.http
-      .get<{ message: string; posts: any; maxPosts: number }>(
+      .get<{ message: string; posts: any; maxPosts: number }>( 
         "https://bank.mindfin.co.in/callapi/customerlist" + queryParams
       )
       .pipe(

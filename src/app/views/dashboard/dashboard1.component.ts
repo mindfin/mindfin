@@ -25,62 +25,21 @@ export class Dashboard1Component implements OnInit {
     this.teleid = localStorage.getItem("id");
 
     this.service.enquirycount(this.teleid).subscribe(res=>{
-        console.log(res);
-        this.fetchData2 = res;
+        console.log(res); 
+        this.fetchData = res;
     });
-//     this.service.membercount().subscribe(res=>{
-//       console.log(res);
-//       this.noproject = res[0]['a'];
-//   });
-//   this.service.pendingcount().subscribe(res=>{
-//     console.log(res);
-//     if(res=='0'||res==undefined){
-//       console.log("hi");
-//       this.fetchData3 = 0;
-//     }else{
-//       console.log("hir");
-//     this.fetchData3 = res[0]['a'];
-//     }
-// });
-// this.service.rejectcount().subscribe(res=>{
-//   console.log(res);
-//   this.fetchData1 = res[0]['a'];
-// });
-
-  // this.service.piechart().subscribe(res=>{
-  //   console.log(res);
-  //   this.fetchData = res;
-
-    // for(var i=0;i<this.fetchData.length;i++){
-    //   this.data.push({
-    //     "y":this.fetchData[i].total,
-    //   "name":this.fetchData[i].user
-    //   })
-    // }
-    // console.log(this.data);
-    // let chart = new Canvasjs.Chart("chartContainer", {
-    //   theme: "light2",
-		// animationEnabled: true,
-		// exportEnabled: true,
-    //   title:{
-    //     text: "EMPLOYEE DETAILS"
-    //   },
-    //   data: [{
-    //     type: "pie",
-    //     showInLegend: true,
-    //     toolTipContent: "<b>{name}</b>: {y}",
-    //     indexLabel: "{name}",
-    //     dataPoints: this.data
-     
-    //   }
-    // ]
-
-    // });
-
-    // chart.render();
-  
-// });
-
+    this.service.enquiryapprovecount(this.teleid).subscribe(res=>{
+      console.log(res);
+      this.fetchData1 = res;
+  });
+  this.service.enquirydisbursecount(this.teleid).subscribe(res=>{
+    console.log(res);
+    this.fetchData2 = res;
+});
+this.service.enquiryrejectcount(this.teleid).subscribe(res=>{
+  console.log(res);
+  this.fetchData3 = res;
+});
 
 }
 }

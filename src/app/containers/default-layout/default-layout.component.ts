@@ -59,6 +59,13 @@ export class DefaultLayoutComponent {
   fetchData11;
   fetchData12;
   fetchData13;
+  fetchData14;
+  fetchData15;
+  fetchData16;
+  fetchData17;
+  fetchData18;
+  fetchData19;
+  fetchData20;
   reason;
   half;
   other;
@@ -68,7 +75,7 @@ export class DefaultLayoutComponent {
   postsPerPage = 5;
   pageSizeOptions = [5, 10, 20];
   comment;
-  val:any;
+  val: any;
 
   constructor(private router: Router, private service: CommonService, private dialog: MatDialog) {
 
@@ -88,9 +95,7 @@ export class DefaultLayoutComponent {
   ngOnInit() {
     this.memberid = localStorage.getItem("id");
     this.service.getemployeename(this.memberid).subscribe(res => {
-      // console.log(res);
       this.fetchData = res[0];
-      // console.log(this.fetchData);
     });
 
     this.service.gettopleave(this.postsPerPage, this.currentPage, this.memberid).subscribe(res => {
@@ -117,26 +122,35 @@ export class DefaultLayoutComponent {
     this.service.getnewtelcount().subscribe(res => {
       this.fetchData11 = res;
     });
-    this.val={empid:this.memberid}
+    this.val = { empid: this.memberid }
     this.service.getnewappocount(this.val).subscribe(res => {
       this.fetchData10 = res;
-      console.log(this.fetchData10)
     });
     this.service.getnewnotification(this.val).subscribe(res => {
       this.fetchData12 = res;
-      console.log(this.fetchData12)
     });
     this.service.gettodolist(this.val).subscribe(res => {
       this.fetchData13 = res;
-      console.log(this.fetchData13)
     });
     this.service.getearlygocount().subscribe(res => {
       this.fetchData8 = res;
-      console.log(this.fetchData8)
       console.log(this.fetchData9 = this.fetchData6 + this.fetchData4 + this.fetchData5 + this.fetchData7 + this.fetchData8);
-  
     });
-    // console.log(this.fetchData9 = this.fetchData6 + this.fetchData4 + this.fetchData5 + this.fetchData7 + this.fetchData8);
+    this.service.notopenedlist(this.val).subscribe(res => {
+      this.fetchData14 = res;
+    }); this.service.filepickedlist(this.val).subscribe(res => {
+      this.fetchData15 = res;
+    }); this.service.contactedlist(this.val).subscribe(res => {
+      this.fetchData16 = res;
+    }); this.service.loginlist(this.val).subscribe(res => {
+      this.fetchData17 = res;
+    }); this.service.wiplist(this.val).subscribe(res => {
+      this.fetchData18 = res;
+    }); this.service.approvedlist(this.val).subscribe(res => {
+      this.fetchData19 = res;
+      console.log(this.fetchData20 = this.fetchData11 + this.fetchData14 + this.fetchData15 + this.fetchData16 +
+        this.fetchData17 + this.fetchData18 + this.fetchData19);
+    });
   }
 
   sugbox() {
@@ -177,7 +191,7 @@ export class SugboxDialogContent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
     private commonservice: CommonService, private route: ActivatedRoute, private router: Router,
     public dialogRef: MatDialogRef<SugboxDialogContent>) { }
-    
+
   element: any;
   empid: any;
   empname: any;
@@ -192,7 +206,7 @@ export class SugboxDialogContent {
     this.commonservice.suggbox(this.value1)
       .subscribe(res => {
         alert("Suggestion / concern / complaint sent Successfully");
-        
+
         this.dialogRef.close();
       })
   }
@@ -217,11 +231,19 @@ export class LeaveAppDialogContent {
   empid: any;
   empname: any;
   value1: any;
+  fetchData:any;
+  ngOnInit(){
+    this.commonservice.getemailSettings().subscribe(res=>{
+      console.log(res);
+      this.fetchData =res;
+
+    })
+  }
   onSubmit(value) {
     console.log(value);
     this.empid = localStorage.getItem("id");
     this.empname = localStorage.getItem("empname");
-    this.value1 = { value: value, empid: this.empid, empname: this.empname };
+    this.value1 = { value: value, empid: this.empid, empname: this.empname,emails:this.fetchData };
     console.log(this.value1);
     this.commonservice.leaveapp(this.value1)
       .subscribe(res => {
@@ -244,7 +266,7 @@ export class ConvenienceDialogContent {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
     private commonservice: CommonService, private route: ActivatedRoute, private router: Router,
-    public dialogRef: MatDialogRef<ConvenienceDialogContent> ) { }
+    public dialogRef: MatDialogRef<ConvenienceDialogContent>) { }
   listing: any;
   listingData: any;
   show = false;
@@ -300,7 +322,7 @@ export class ConvenienceDialogContent {
       .subscribe(res => {
         alert("Convenience sent Successfully");
         this.dialogRef.close();
-        
+
       })
   }
   refresh(): void {
