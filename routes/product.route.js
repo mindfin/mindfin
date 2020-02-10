@@ -4958,9 +4958,9 @@ router.post('/assignexe', function(req, res) {
             let mailOptions = {
                 from: req.body.emails[0].fromemail1,
                 to: req.body.emails[0].bcc, // list of receivers
-                // cc: req.body.emails[0].cc,
+                cc: req.body.emails[0].fromemail2,
                 // bcc: req.body.emails[0].bcc,
-                subject: req.body.value.name + "assigned ", //"Project Payment Update From", // Subject line
+                subject: req.body.value.name + " Assigned ", //"Project Payment Update From", // Subject line
                 text: 'Hello world?', // plain text body
                 html: output // html body
             };
@@ -6274,7 +6274,7 @@ router.post('/leaveapp', function(req, res) {
                 from: req.body.emails[0].fromemail1,
                 to: req.body.emails[0].bcc, // list of receivers
                 cc: req.body.emails[0].cc,
-                bcc: req.body.emails[0].fromemail2,
+                // bcc: req.body.emails[0].fromemail2,
                 subject: req.body.empname + ' Leave Application ', //"Project Payment Update From", // Subject line
                 text: 'Hello world?', // plain text body
                 html: output // html body
@@ -7946,14 +7946,14 @@ router.post('/notify', function(req, res) {
             remindDate: localTime,
         })
         .then(function(result) {
-            res.json('remainder Added Successfully');
+            res.json('Reminder Added Successfully');
             knex('sendernotifications')
                 .insert({
                     createdDate: localTime,
                     senderID: req.body.value.adminid,
                     senderName: req.body.value.adminname,
                     notification: "I hereby would like to inform you that the case:" + req.body.value.name + "still in the status of" + req.body.value.status + "If failed to update the case will be removed from your enquiry list.",
-                    notificationSubject: "Case Remainder",
+                    notificationSubject: "Case Reminder",
                     notificationImg: undefined,
                     notificationImg_org: undefined,
                     senderStatus: 'sent',
@@ -8421,7 +8421,7 @@ router.post('/notify', function(req, res) {
                                 to: req.body.emails[0].bcc, // list of receivers
                                 cc: req.body.emails[0].fromemail2,
                                 // bcc: req.body.emails[0].bcc,
-                                subject: req.body.value.name + " Remainder ", //"Project Payment Update From", // Subject line
+                                subject: req.body.value.name + " Reminder ", //"Project Payment Update From", // Subject line
                                 text: 'Hello world?', // plain text body
                                 html: output // html body
                             };

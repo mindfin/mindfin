@@ -127,7 +127,7 @@ value1:any;
     this.value1={value:obj, emails:this.fetchData}
     this.commonservice.notify(this.value1).subscribe(res=>{
       console.log(res);
-      alert("Remainder sent Successfully");
+      alert("Reminder sent Successfully");
      this.ngOnInit();
 
     })

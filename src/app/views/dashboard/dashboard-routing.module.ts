@@ -22,7 +22,7 @@ const routes: Routes = [
     path: 'telecaller',
     component: Dashboard1Component,
     data: {
-      title: 'Telecaller Dashboard'
+      title: 'Telecaller Dashboard v2.0'
     }
   },
   {
