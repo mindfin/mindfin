@@ -608,7 +608,7 @@ router.get('/viewcustomerid/:pagesize/:page/:id', (req, res, next) => {
         .from('customer')
         .join('applybank', 'applybank.idcustomer', 'customer.idcustomer')
         .where('applybank.executiveid', req.params.id)
-        .where('customer.status', 'APPROVED')
+        // .where('customer.status', 'APPROVED')
         .groupBy('applybank.idcustomer')
         .orderBy('applybank.idapplybank', 'desc')
         .limit(pageSize).offset(skip)
@@ -617,7 +617,7 @@ router.get('/viewcustomerid/:pagesize/:page/:id', (req, res, next) => {
                 .from('customer')
                 .join('applybank', 'applybank.idcustomer', 'customer.idcustomer')
                 .where('applybank.executiveid', req.params.id)
-                .where('customer.status', 'APPROVED')
+                // .where('customer.status', 'APPROVED')
                 .groupBy('applybank.idcustomer')
                 .orderBy('applybank.idapplybank', 'desc')
                 .then(function(re) {
@@ -3010,7 +3010,7 @@ router.get('/casecount/:obj', (req, res) => {
     knex.select('customer.*', 'applybank.*')
         .from('customer')
         .join('applybank', 'applybank.idcustomer', 'customer.idcustomer')
-        .where('customer.status', 'APPROVED')
+        // .where('customer.status', 'APPROVED')
         .where('applybank.executiveid', req.params.obj)
         .groupBy('applybank.idcustomer')
         .then(function(result) {
