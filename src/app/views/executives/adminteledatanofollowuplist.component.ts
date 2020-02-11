@@ -15,9 +15,9 @@ import { DefaultLayoutComponent } from '../../containers';
 
 @Component({
   selector: 'app-home',
-  templateUrl: './adminteledataapprovelist.component.html',
+  templateUrl: './adminteledatanofollowuplist.component.html',
 })
-export class AdminTeledataApprovelistComponent {
+export class AdminTeledataNoFollowUplistComponent {
 
   displayedColumns: string[] = ['date', 'id', 'name','redate', 'mobile', 'email', 'address', 'bankname', 'bank', 'telename', 'comment',  'edit', 'assign'];
   samples: any;
@@ -56,9 +56,9 @@ export class AdminTeledataApprovelistComponent {
       // console.log(params['id']);
       this.exeid = localStorage.getItem("id");
       // this.idvalue = params['id'];
-      this.commonservice.getEnquiryApprovelistexe(this.postsPerPage, this.currentPage, this.exeid);
+      this.commonservice.getEnquirynofollowuplistexe(this.postsPerPage, this.currentPage, this.exeid);
       this.commonservice
-        .getEnquiryApprovelistexeDetails()
+        .getEnquirynofollowuplistexeDetails()
         .subscribe((postData: { posts: SuperadminService[], postCount: number }) => {
 
           this.totalPosts = postData.postCount;
@@ -88,7 +88,7 @@ export class AdminTeledataApprovelistComponent {
     this.currentPage = pageData.pageIndex + 1;
     this.postsPerPage = pageData.pageSize;
     console.log(this.postsPerPage);
-    this.commonservice.getEnquiryApprovelistexe(this.postsPerPage, this.currentPage, this.exeid);
+    this.commonservice.getEnquirynofollowuplistexe(this.postsPerPage, this.currentPage, this.exeid);
   }
 
   refresh(): void {
@@ -139,7 +139,7 @@ export class AdminTeledataApprovelistComponent {
       console.log(res);
       alert("Case Removed Successfully");
       this.openDialog(obj)
-
+  
     })
   }
   // getreport(obj) {
@@ -176,7 +176,7 @@ export class AdminTeledataApprovelistComponent {
     
       const dialogConfig = new MatDialogConfig();
       dialogConfig.data = {element};
-      this.dialog.open(AssignDialogContent1,dialogConfig
+      this.dialog.open(AssignDialogContent6,dialogConfig
     );
     console.log(dialogConfig );
     
@@ -188,12 +188,12 @@ export class AdminTeledataApprovelistComponent {
     templateUrl: 'assignexe-content.html',
   })
   
-  export class AssignDialogContent1{ 
+  export class AssignDialogContent6{ 
   
   
     constructor(@Inject(MAT_DIALOG_DATA) public data:any,
     private commonservice: CommonService ,private route: ActivatedRoute, private router: Router,
-    public dialogRef: MatDialogRef<AssignDialogContent1>) {}
+    public dialogRef: MatDialogRef<AssignDialogContent6>) {}
   element:any;
   //   constructor(
   //     @Inject(MAT_DIALOG_DATA) public data: any
@@ -231,9 +231,9 @@ export class AdminTeledataApprovelistComponent {
   
       this.exeid=localStorage.getItem("id");
       // this.idvalue = params['id'];
-      this.commonservice.getEnquiryApprovelistexe(this.postsPerPage, this.currentPage,this.exeid);
+      this.commonservice.getEnquirynofollowuplistexe(this.postsPerPage, this.currentPage,this.exeid);
       this.commonservice
-      .getEnquiryApprovelistexeDetails()
+      .getEnquirynofollowuplistexeDetails()
        .subscribe((postData: {posts: SuperadminService[], postCount: number})=> {
         
           this.totalPosts = postData.postCount;
@@ -253,4 +253,5 @@ export class AdminTeledataApprovelistComponent {
     window.location.reload();
   }
   }
+
 

@@ -110,23 +110,31 @@
         padding: 0;
         border-bottom: 1px solid #cccccc;
     }
+    
+    table,
+    th,
+    td {
+        border: 1px solid black;
+    }
+    
+    mat-spinner {
+        margin: auto;
+    }
 </style>
 <mat-spinner *ngIf="isLoading"></mat-spinner>
 <div class="animated fadeIn" [hidden]="isLoading">
     <div class="row">
-
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <i class="fa fa-align-justify"></i>Enquired Login Data List
+                    <i class="fa fa-align-justify"></i>Enquired No Follow Up Data List
                     <button style="float:right" (click)="exportAsXLSX()">
-            <i class="fa fa-file-excel-o" style="font-size:30px;color:blue"></i>
-          </button>
+                        <i class="fa fa-file-excel-o" style="font-size:30px;color:blue"></i>
+                    </button>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <div class="card-body">
-
                             <form>
                                 <div class="row">
                                     <div class="col-lg-3">
@@ -142,9 +150,7 @@
                                     </div> -->
                                 </div>
                             </form>
-
                         </div>
-
                         <table mat-table #table [dataSource]="dataSource" class="table table-striped responsive" matSort>
                             <ng-container matColumnDef="date">
                                 <th *matHeaderCellDef mat-sort-header>Enquired Date</th>
@@ -172,13 +178,13 @@
                                     {{element.assignedTime | date:'dd-MM-yyyy'}}<br />
                                 </td>
                             </ng-container>
+                            <ng-container matColumnDef="name">
+                                <th *matHeaderCellDef mat-sort-header>Approved Date</th>
+                                <td *matCellDef="let element"> {{element.updateddate | date:'dd-MM-yyyy'}} </td>
+                            </ng-container>
                             <ng-container matColumnDef="redate">
                                 <th *matHeaderCellDef mat-sort-header>Reminded Date</th>
                                 <td *matCellDef="let element"> {{element.remindDate | date:'dd-MM-yyyy'}} </td>
-                            </ng-container>
-                            <ng-container matColumnDef="name">
-                                <th *matHeaderCellDef mat-sort-header>Login Date</th>
-                                <td *matCellDef="let element"> {{element.updateddate | date:'dd-MM-yyyy'}} </td>
                             </ng-container>
                             <ng-container matColumnDef="email">
                                 <th *matHeaderCellDef mat-sort-header>Company Name</th>
@@ -231,14 +237,3 @@
         </div>
     </div>
 </div>
-<style>
-    table,
-    th,
-    td {
-        border: 1px solid black;
-    }
-    
-    mat-spinner {
-        margin: auto;
-    }
-</style>

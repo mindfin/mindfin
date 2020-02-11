@@ -19,15 +19,16 @@ import { ExecutivetopuplistComponent } from './executivetopuplist.component';
 import { AdminTeledatalistComponent, AssignDialogContent } from './adminteledatalist.component';
 import { AdminTeledataEditComponent } from './adminteledataedit.component';
 import { AssignExeComponent } from './assignexe.component';
-import { AdminTeledataRejectlistComponent } from './adminteledatarejectlist.component';
-import { AdminTeledataDisburslistComponent } from './adminteledatadisbursedlist.component';
-import { AdminTeledataApprovelistComponent } from './adminteledataapprovelist.component';
-import { AdminTeledataWIPlistComponent } from './adminteledatawiplist.component';
-import { AdminTeledataLoginlistComponent } from './adminteledataloginlist.component';
-import { AdminTeledataContactedlistComponent } from './adminteledatacontactedlist.component';
-import { AdminTeledataFilePickedlistComponent } from './adminteledatafilepickedlist.component';
-import { AdminTeledataNotOpenedlistComponent } from './adminteledatanotopenlist.component';
+import { AdminTeledataRejectlistComponent,AssignDialogContent8 } from './adminteledatarejectlist.component';
+import { AdminTeledataDisburslistComponent, AssignDialogContent3 } from './adminteledatadisbursedlist.component';
+import { AdminTeledataApprovelistComponent, AssignDialogContent1 } from './adminteledataapprovelist.component';
+import { AdminTeledataWIPlistComponent,AssignDialogContent9 } from './adminteledatawiplist.component';
+import { AdminTeledataLoginlistComponent, AssignDialogContent5 } from './adminteledataloginlist.component';
+import { AdminTeledataContactedlistComponent,AssignDialogContent2 } from './adminteledatacontactedlist.component';
+import { AdminTeledataFilePickedlistComponent, AssignDialogContent4 } from './adminteledatafilepickedlist.component';
+import { AdminTeledataNotOpenedlistComponent, AssignDialogContent7 } from './adminteledatanotopenlist.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { AdminTeledataNoFollowUplistComponent, AssignDialogContent6 } from './adminteledatanofollowuplist.component';
 
 
 
@@ -68,10 +69,15 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     AdminTeledatalistComponent,AdminTeledataEditComponent,AssignDialogContent,AssignExeComponent,
     AdminTeledataRejectlistComponent,AdminTeledataDisburslistComponent,AdminTeledataApprovelistComponent,
     AdminTeledataWIPlistComponent,AdminTeledataLoginlistComponent,AdminTeledataContactedlistComponent,
-    AdminTeledataFilePickedlistComponent,AdminTeledataNotOpenedlistComponent
+    AdminTeledataFilePickedlistComponent,AdminTeledataNotOpenedlistComponent,AdminTeledataNoFollowUplistComponent,
+    AssignDialogContent1,AssignDialogContent2,AssignDialogContent3,AssignDialogContent4,AssignDialogContent5,
+    AssignDialogContent6,AssignDialogContent7,AssignDialogContent8,AssignDialogContent9
    ],
 
-  entryComponents: [CustomerComponent,EdialogContent,AssignDialogContent
+  entryComponents: [CustomerComponent,EdialogContent,AssignDialogContent,AssignDialogContent1,AssignDialogContent2,
+    AssignDialogContent3,AssignDialogContent4,AssignDialogContent5,AssignDialogContent6,AssignDialogContent7,
+    AssignDialogContent8,AssignDialogContent9
+
   ]
 })
 export class ExecutivesModule { }

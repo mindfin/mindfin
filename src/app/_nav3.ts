@@ -7,11 +7,11 @@ export const navItems3 = [
         variant: 'info',
       }
     },
-    {
-      name: 'My Profile',
-      url: '/notification/profilesettings',
-      icon: 'fa fa-address-book-o',
-    },
+    // {
+    //   name: 'My Profile',
+    //   url: '/notification/profilesettings',
+    //   icon: 'fa fa-address-book-o',
+    // },
     {
       name: 'Check Customer',
       url: '/backend/checkcase',

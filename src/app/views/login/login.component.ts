@@ -5,7 +5,8 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-dashboard',
-  templateUrl: 'login.component.html',
+  templateUrl: 'newlogin.component.html',
+  // templateUrl: 'login.component.html',
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {

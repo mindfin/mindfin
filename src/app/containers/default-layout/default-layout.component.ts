@@ -66,6 +66,7 @@ export class DefaultLayoutComponent {
   fetchData18;
   fetchData19;
   fetchData20;
+  fetchData21;
   reason;
   half;
   other;
@@ -148,8 +149,11 @@ export class DefaultLayoutComponent {
       this.fetchData18 = res;
     }); this.service.approvedlist(this.val).subscribe(res => {
       this.fetchData19 = res;
+    });
+    this.service.nofallowup(this.val).subscribe(res => {
+      this.fetchData21 = res;
       console.log(this.fetchData20 = this.fetchData11 + this.fetchData14 + this.fetchData15 + this.fetchData16 +
-        this.fetchData17 + this.fetchData18 + this.fetchData19);
+        this.fetchData17 + this.fetchData18 + this.fetchData19+this.fetchData21);
     });
   }
 

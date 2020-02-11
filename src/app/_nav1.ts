@@ -4,12 +4,12 @@ export const navItems1 = [
     url: '/dashboard/executive',
     icon: 'fa fa-tachometer',
   },
-    {
-      name: 'My Profile',
-      url: '/notification/profilesettings',
-      icon: 'fa fa-address-book-o',
+    // {
+    //   name: 'My Profile',
+    //   url: '/notification/profilesettings',
+    //   icon: 'fa fa-address-book-o',
    
-    },
+    // },
     {
       name: 'Enquired list',
       url: '/executives/exeteledatalist',

@@ -3085,4 +3085,42 @@ export class CommonService {
     const uri = "https://bank.mindfin.co.in/callapi/notify";
     return this.http.post(uri, obj)
   }
+  removeCase(obj) {
+    console.log(obj);
+    // const queryParams = `/${obj}/${obj1}`;
+    const uri = "https://bank.mindfin.co.in/callapi/removeCase";
+    return this.http.post(uri, obj)
+  }
+  nofallowup(value) {
+    console.log(value);
+    const uri = "https://bank.mindfin.co.in/callapi/nofallowup";
+    return this.http.post(uri, value);
+  }
+  getEnquirynofollowuplistexe(postsPerPage: number, currentPage: number, id) {
+    const queryParams = `/${postsPerPage}/${currentPage}/${id}`;
+    this.http
+      .get<{ message: string; posts: any; maxPosts: number }>(
+        "https://bank.mindfin.co.in/callapi/getEnquirynofollowuplistexe" + queryParams
+      )
+      .pipe(
+        map(postData => {
+          //console.log('');
+          return {
+            posts: postData.posts,
+
+            maxPosts: postData.maxPosts
+          };
+        })
+      )
+      .subscribe(transformedPostData => {
+        this.posts = transformedPostData.posts;
+        this.postsUpdated.next({
+          posts: [...this.posts],
+          postCount: transformedPostData.maxPosts
+        });
+      });
+  }
+  getEnquirynofollowuplistexeDetails() {
+    return this.postsUpdated.asObservable();
+  }
 }

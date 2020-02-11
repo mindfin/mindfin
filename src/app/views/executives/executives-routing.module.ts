@@ -23,6 +23,7 @@ import { AdminTeledataContactedlistComponent } from './adminteledatacontactedlis
 import { AdminTeledataFilePickedlistComponent } from './adminteledatafilepickedlist.component';
 import { AdminTeledataNotOpenedlistComponent } from './adminteledatanotopenlist.component';
 import { AdminTeledataApprovelistComponent } from './adminteledataapprovelist.component';
+import { AdminTeledataNoFollowUplistComponent } from './adminteledatanofollowuplist.component';
 
 
 
@@ -174,6 +175,13 @@ const routes: Routes = [
         component:AdminTeledataNotOpenedlistComponent,
         data:{
           title:'Assign list not opened'
+        }
+      },
+      {
+        path: 'nofallowup',
+        component:AdminTeledataNoFollowUplistComponent,
+        data:{
+          title:'NO Follow Ups'
         }
       },
   //   ]

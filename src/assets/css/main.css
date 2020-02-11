@@ -20,16 +20,16 @@
 
 /* 
 .sidebar {
-    background: linear-gradient(to bottom, #187da0 0%, #20a8d8 100%)!important;
-    background: linear-gradient(to bottom, #ffffcc 0%, #ffbb99 100%)!important;
-    background: linear-gradient(to top left, #009999 0%, #ff9966 100%)!important;
-    background: linear-gradient(to bottom, #009999 0%, #99ccff 100%)!important;
+background: linear-gradient(to bottom, #187da0 0%, #20a8d8 100%)!important;
+background: linear-gradient(to bottom, #ffffcc 0%, #ffbb99 100%)!important;
+background: linear-gradient(to top left, #009999 0%, #ff9966 100%)!important;
+background: linear-gradient(to bottom, #009999 0%, #99ccff 100%)!important;
 } */
 
 .sidebar .sidebar-minimizer {
     position: relative;
     flex: 0 0 50px;
-    background: linear-gradient(to bottom, #6ca1ac 0%, #90cec9 100%)!important;
+    background: linear-gradient(to right, #f4ff02, #c0ff51, #91fd7d, #68f7a2, #4deebf, #00e0d5, #00d0e4, #00bee7, #00a2f5, #0082ff, #005afa, #1b12de);
     border: 0;
 }
 
@@ -50,13 +50,18 @@
 }
 
 @font-face {
-    font-family: Montserrat-Regular;
-    src: url('../fonts/montserrat/Montserrat-Regular.ttf');
+    font-family: Poppins-Regular;
+    src: url('../fonts/poppins/Poppins-Regular.ttf');
 }
 
 @font-face {
-    font-family: Montserrat-ExtraBold;
-    src: url('../fonts/montserrat/Montserrat-ExtraBold.ttf');
+    font-family: Poppins-Bold;
+    src: url('../fonts/poppins/Poppins-Bold.ttf');
+}
+
+@font-face {
+    font-family: Poppins-Medium;
+    src: url('../fonts/poppins/Poppins-Medium.ttf');
 }
 
 @font-face {
@@ -77,14 +82,14 @@
 body,
 html {
     height: 100%;
-    font-family: Montserrat-Regular, sans-serif;
+    font-family: Poppins-Regular, sans-serif;
 }
 
 
 /*---------------------------------------------*/
 
 a {
-    font-family: Montserrat-Regular;
+    font-family: Poppins-Regular;
     font-size: 14px;
     line-height: 1.7;
     color: #666666;
@@ -101,7 +106,7 @@ a:focus {
 
 a:hover {
     text-decoration: none;
-    color: #fff;
+    color: #57b846;
 }
 
 
@@ -117,7 +122,7 @@ h6 {
 }
 
 p {
-    font-family: Montserrat-Regular;
+    font-family: Poppins-Regular;
     font-size: 14px;
     line-height: 1.7;
     color: #666666;
@@ -234,10 +239,10 @@ iframe {
 [ Utility ]*/
 
 .txt1 {
-    font-family: Montserrat-Regular;
-    font-size: 16px;
-    color: #cccccc;
-    line-height: 1.4;
+    font-family: Poppins-Regular;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #999999;
 }
 
 .bo1 {
@@ -246,6 +251,13 @@ iframe {
 
 .hov1:hover {
     border-color: #d33f8d;
+}
+
+.txt2 {
+    font-family: Poppins-Regular;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #666666;
 }
 
 
@@ -269,34 +281,40 @@ iframe {
     justify-content: center;
     align-items: center;
     padding: 15px;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    position: relative;
-    z-index: 1;
-}
-
-.container-login100::before {
-    content: "";
-    display: block;
-    position: absolute;
-    z-index: -1;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    /* background: #005bea; */
-    /* background: -webkit-linear-gradient(bottom, #005bea, #00c6fb); */
-    /* background: -webkit-linear-gradient(bottom, #ea4d00, #0065fb); */
-    background: -o-linear-gradient(bottom, #005bea, #00c6fb);
-    background: -moz-linear-gradient(bottom, #005bea, #00c6fb);
-    background: linear-gradient(bottom, #005bea, #00c6fb);
-    opacity: 0.9;
+    /* background-image: url("/assets/images/banner.jpg"); */
+    background: linear-gradient(to right top, #f4ff02, #c0ff51, #91fd7d, #68f7a2, #4deebf, #00e0d5, #00d0e4, #00bee7, #00a2f5, #0082ff, #005afa, #1b12de);
+    background: -webkit-linear-gradient(-135deg, #f4ff02, #c0ff51, #91fd7d, #68f7a2, #4deebf, #00e0d5, #00d0e4, #00bee7, #00a2f5, #0082ff, #005afa, #1b12de);
+    background: -o-linear-gradient(-135deg, #f4ff02, #c0ff51, #91fd7d, #68f7a2, #4deebf, #00e0d5, #00d0e4, #00bee7, #00a2f5, #0082ff, #005afa, #1b12de);
+    background: -moz-linear-gradient(-135deg, #f4ff02, #c0ff51, #91fd7d, #68f7a2, #4deebf, #00e0d5, #00d0e4, #00bee7, #00a2f5, #0082ff, #005afa, #1b12de);
+    background: linear-gradient(-135deg, #f4ff02, #c0ff51, #91fd7d, #68f7a2, #4deebf, #00e0d5, #00d0e4, #00bee7, #00a2f5, #0082ff, #005afa, #1b12de);
 }
 
 .wrap-login100 {
-    width: 390px;
-    background: transparent;
+    width: 1080px;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 40px 130px 40px 130px;
+}
+
+
+/*------------------------------------------------------------------
+[  ]*/
+
+.login100-pic {
+    width: 316px;
+}
+
+.login100-pic img {
+    max-width: 150%;
+    margin: 50px;
 }
 
 
@@ -304,39 +322,18 @@ iframe {
 [  ]*/
 
 .login100-form {
-    width: 100%;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    width: 290px;
 }
 
 .login100-form-title {
-    font-family: Montserrat-ExtraBold;
+    font-family: Poppins-Bold;
     font-size: 24px;
-    color: #fff;
+    color: #333333;
     line-height: 1.2;
     text-align: center;
     width: 100%;
     display: block;
-}
-
-
-/*---------------------------------------------*/
-
-.login100-form-avatar {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    overflow: hidden;
-    margin: 0 auto;
-}
-
-.login100-form-avatar img {
-    width: 100%;
+    padding-bottom: 54px;
 }
 
 
@@ -346,19 +343,20 @@ iframe {
     position: relative;
     width: 100%;
     z-index: 1;
+    margin-bottom: 10px;
 }
 
 .input100 {
-    font-family: Montserrat-Bold;
+    font-family: Poppins-Medium;
     font-size: 15px;
-    line-height: 1.2;
-    color: #333333;
+    line-height: 1.5;
+    color: #666666;
     display: block;
     width: 100%;
-    background: #fff;
+    background: #e6e6e6;
     height: 50px;
     border-radius: 25px;
-    padding: 0 30px 0 53px;
+    padding: 0 30px 0 68px;
 }
 
 
@@ -399,7 +397,7 @@ iframe {
 
 .symbol-input100 {
     font-size: 15px;
-    color: #999999;
+    color: #ffffff;
     display: -webkit-box;
     display: -webkit-flex;
     display: -moz-box;
@@ -421,8 +419,8 @@ iframe {
 }
 
 .input100:focus+.focus-input100+.symbol-input100 {
-    color: #00c6fb;
-    padding-left: 23px;
+    color: #57b846;
+    padding-left: 28px;
 }
 
 
@@ -438,17 +436,19 @@ iframe {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    padding-top: 20px;
 }
 
 .login100-form-btn {
     font-family: Montserrat-Bold;
     font-size: 15px;
     line-height: 1.5;
-    color: #e0e0e0;
+    color: #fff;
+    text-transform: uppercase;
     width: 100%;
     height: 50px;
     border-radius: 25px;
-    background: #333333;
+    background: #57b846;
     display: -webkit-box;
     display: -webkit-flex;
     display: -moz-box;
@@ -461,92 +461,44 @@ iframe {
     -o-transition: all 0.4s;
     -moz-transition: all 0.4s;
     transition: all 0.4s;
-    position: relative;
-    z-index: 1;
-}
-
-.login100-form-btn::before {
-    content: "";
-    display: block;
-    position: absolute;
-    z-index: -1;
-    width: 100%;
-    height: 100%;
-    border-radius: 25px;
-    top: 0;
-    left: 0;
-    background: #e6e9ec;
-    /* background: -webkit-linear-gradient(left, #005bea, #00c6fb); */
-    /* background: -webkit-linear-gradient(bottom, #ea4d00, #0065fb); */
-    background: -o-linear-gradient(left, #005bea, #00c6fb);
-    background: -moz-linear-gradient(left, #005bea, #00c6fb);
-    background: linear-gradient(left, #005bea, #00c6fb);
-    -webkit-transition: all 0.4s;
-    -o-transition: all 0.4s;
-    -moz-transition: all 0.4s;
-    transition: all 0.4s;
-    opacity: 0;
 }
 
 .login100-form-btn:hover {
-    background: transparent;
-    color: #fff;
-}
-
-.login100-form-btn:hover:before {
-    opacity: 1;
+    background: #333333;
 }
 
 
 /*------------------------------------------------------------------
-[ Button sign in with ]*/
+[ Responsive ]*/
 
-.btn-face,
-.btn-google {
-    font-family: Raleway-Bold;
-    font-size: 16px;
-    line-height: 1.2;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: calc((100% - 10px) / 2);
-    height: 40px;
-    border-radius: 3px;
-    border: 1px solid #e6e6e6;
-    background-color: #fff;
-    -webkit-transition: all 0.4s;
-    -o-transition: all 0.4s;
-    -moz-transition: all 0.4s;
-    transition: all 0.4s;
+@media (max-width: 992px) {
+    .wrap-login100 {
+        padding: 177px 90px 33px 85px;
+    }
+    .login100-pic {
+        width: 35%;
+    }
+    .login100-form {
+        width: 50%;
+    }
 }
 
-.btn-face {
-    color: #3b5998;
+@media (max-width: 768px) {
+    .wrap-login100 {
+        padding: 100px 80px 33px 80px;
+    }
+    .login100-pic {
+        display: none;
+    }
+    .login100-form {
+        width: 100%;
+    }
 }
 
-.btn-face i {
-    font-size: 20px;
-    margin-right: 10px;
-    padding-bottom: 1px;
-}
-
-.btn-google {
-    color: #555555;
-}
-
-.btn-google img {
-    width: 19px;
-    margin-right: 10px;
-    padding-bottom: 1px;
-}
-
-.btn-face:hover,
-.btn-google:hover {
-    border-color: #d33f8d;
+@media (max-width: 576px) {
+    .wrap-login100 {
+        padding: 100px 15px 33px 15px;
+    }
 }
 
 
@@ -563,7 +515,7 @@ iframe {
     max-width: 70%;
     background-color: white;
     border: 1px solid #c80000;
-    border-radius: 14px;
+    border-radius: 13px;
     padding: 4px 25px 4px 10px;
     top: 50%;
     -webkit-transform: translateY(-50%);
@@ -573,7 +525,7 @@ iframe {
     transform: translateY(-50%);
     right: 8px;
     pointer-events: none;
-    font-family: Montserrat-Bold;
+    font-family: Poppins-Medium;
     color: #c80000;
     font-size: 13px;
     line-height: 1.4;
@@ -611,17 +563,5 @@ iframe {
     .alert-validate::before {
         visibility: visible;
         opacity: 1;
-    }
-}
-
-
-/*//////////////////////////////////////////////////////////////////
-[ responsive ]*/
-
-@media (max-width: 576px) {
-    .wrap-login100 {
-        padding-top: 80px;
-        padding-left: 15px;
-        padding-right: 15px;
     }
 }

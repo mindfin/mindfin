@@ -137,6 +137,16 @@ notify(obj) {
 
   })
 }
+removeCase(obj) {
+  console.log(obj);
+  this.value1={value:obj, emails:this.fetchData}
+  this.commonservice.removeCase(this.value1).subscribe(res=>{
+    console.log(res);
+    alert("Case Removed Successfully");
+    this.openDialog(obj)
+
+  })
+}
 // getreport(obj) {
 
 //   // this.commonservice.gettelereport(obj).subscribe(res=>{
@@ -166,6 +176,90 @@ notify(obj) {
 //     })
 // }
 
+openDialog(element) {
+  this.model=element;
+  
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {element};
+    this.dialog.open(AssignDialogContent7,dialogConfig
+  );
+  console.log(dialogConfig );
+  
+  }
 }
+
+@Component({
+  selector: 'dialog-content-example-dialog',
+  templateUrl: 'assignexe-content.html',
+})
+
+export class AssignDialogContent7{ 
+
+
+  constructor(@Inject(MAT_DIALOG_DATA) public data:any,
+  private commonservice: CommonService ,private route: ActivatedRoute, private router: Router,
+  public dialogRef: MatDialogRef<AssignDialogContent7>) {}
+element:any;
+//   constructor(
+//     @Inject(MAT_DIALOG_DATA) public data: any
+//  ) { }
+@ViewChild(MatSort) sort: MatSort;
+fetchData:any;
+fetchData1:any;
+exeid;
+totalPosts = 0;
+postsPerPage = 500;
+currentPage = 1;
+pageSizeOptions = [ 500, 800, 1000];
+isLoading = false;
+dataSource;
+samples:any;
+value1:any;
+ngOnInit() {
+   this.commonservice.getemailSettings().subscribe(res=>{
+      console.log(res);
+      this.fetchData =res;
+
+    })
+  this.commonservice.getexecutivelist().subscribe(res => {
+    console.log(res);
+    this.fetchData1 = res;
+  });
+}
+assignexe(obj){
+   console.log(obj);
+  //  console.log(obj1);
+  this.value1={value:obj, emails:this.fetchData}
+  this.commonservice.assignexe(this.value1).subscribe(res => {
+    console.log(res);
+    this.dialogRef.close();
+
+    this.exeid=localStorage.getItem("id");
+    // this.idvalue = params['id'];
+    this.commonservice.getEnquirynotopenlistexe(this.postsPerPage, this.currentPage,this.exeid);
+    this.commonservice
+    .getEnquirynotopenlistexeDetails()
+     .subscribe((postData: {posts: SuperadminService[], postCount: number})=> {
+      
+        this.totalPosts = postData.postCount;
+        this.dataSource = new MatTableDataSource(postData.posts);
+        // this.dataSource = new (postData.posts);
+        this.samples = postData.posts;
+        this.isLoading = false;
+      // console.log(postData.posts);
+      // console.log(postData.postCount);     
+      this.dataSource.sort = this.sort;
+    // console.log(this.dataSource.sort);
+    });
+  });
+  
+ }
+ refresh(): void {
+  window.location.reload();
+}
+}
+
+
+
 
 

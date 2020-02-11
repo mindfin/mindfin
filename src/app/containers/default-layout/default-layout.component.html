@@ -27,6 +27,13 @@
                     Not Opened
                     <span *ngIf="fetchData14 !==0 " class="badge badge-danger ">{{fetchData14}}</span>
                 </a>
+                <a *ngIf="abc==='EXECUTIVE' && isadmin==='Admin' " class="dropdown-item " role="button " [routerLink]="[ '/executives/nofallowup'] " title="No Fallow up ">
+                    <div class="float-left ">
+                        <img src="/assets/images/nofollow.png " alt="No Folloe Up" height="25px " width="25px ">
+                    </div>
+                    No Follow up
+                    <span *ngIf="fetchData14 !==0 " class="badge badge-danger ">{{fetchData21}}</span>
+                </a>
                 <a *ngIf="abc==='EXECUTIVE' && isadmin==='Admin' " class="dropdown-item " role="button " [routerLink]="[ '/executives/filepickeddatalist'] " title="File Picked ">
                     <div class="float-left ">
                         <img src="/assets/images/filepicked.png " alt="file pick " height="25px " width="25px ">

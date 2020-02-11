@@ -211,7 +211,7 @@
                             <ng-container matColumnDef="assign">
                                 <th *matHeaderCellDef mat-sort-header>Remove</th>
                                 <td *matCellDef="let element">
-                                    <button mat-raised-button color="warn" matBadgeColor="red">
+                                    <button mat-raised-button color="warn" matBadgeColor="red" (click)="removeCase(element);">
                                         Remove
                                     </button>
                                 </td>

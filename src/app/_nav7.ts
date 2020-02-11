@@ -5,12 +5,12 @@ export const navItems7 = [
     icon: 'fa fa-tachometer',
   },
 
-    {
-      name: 'My Profile',
-      url: '/notification/profilesettings',
-      icon: 'fa fa-address-book-o',
+    // {
+    //   name: 'My Profile',
+    //   url: '/notification/profilesettings',
+    //   icon: 'fa fa-address-book-o',
     
-    },
+    // },
     {
       name: 'Check Case Details',
       url: '/backend/checkcase',
