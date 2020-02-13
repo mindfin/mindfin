@@ -201,11 +201,19 @@ export class SugboxDialogContent {
   empname: any;
   value1: any;
   model: any;
+  fetchData:any;
+  ngOnInit(){
+    this.commonservice.getemailSettings().subscribe(res=>{
+      console.log(res);
+      this.fetchData =res;
+
+    })
+  }
   onSubmit(data) {
     console.log(data);
     this.empid = localStorage.getItem("id");
     this.empname = localStorage.getItem("empname");
-    this.value1 = { value: data, empid: this.empid, empname: this.empname };
+    this.value1 = { value: data, empid: this.empid, empname: this.empname,emails:this.fetchData  };
     console.log(this.value1);
     this.commonservice.suggbox(this.value1)
       .subscribe(res => {
@@ -293,7 +301,14 @@ export class ConvenienceDialogContent {
   empid: any;
   empname: any;
   value1: any;
+  fetchData:any;
+  ngOnInit(){
+    this.commonservice.getemailSettings().subscribe(res=>{
+      console.log(res);
+      this.fetchData =res;
 
+    })
+  }
   public onFileSelect(event) {
     // this.processFile(event)
     let formData = new FormData();
@@ -320,7 +335,7 @@ export class ConvenienceDialogContent {
     console.log(value);
     this.empid = localStorage.getItem("id");
     this.empname = localStorage.getItem("empname");
-    this.value1 = { value: value, empid: this.empid, empname: this.empname, catimg: this.filePath };
+    this.value1 = { value: value, empid: this.empid, empname: this.empname, catimg: this.filePath,emails:this.fetchData };
     console.log(this.value1);
     this.commonservice.conves(this.value1)
       .subscribe(res => {

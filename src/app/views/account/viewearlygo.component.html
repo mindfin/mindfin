@@ -26,7 +26,22 @@
                                 <th *matHeaderCellDef mat-sort-header>Employee Name</th>
                                 <td *matCellDef="let element" style="text-align:center;"> {{element.empName}} </td>
                             </ng-container>
-
+                            <ng-container matColumnDef="type">
+                                <th *matHeaderCellDef mat-sort-header>Applied Type</th>
+                                <td *matCellDef="let element" style="text-align:center;">
+                                    <div *ngIf="element.type==='Late In' ; else Opened; ">
+                                        <img src="/assets/images/in.png " height="40px " width="40px "> Late In
+                                    </div>
+                                    <ng-template #Opened>
+                                        <div *ngIf="element.type==='Early Go' ; else Approved; ">
+                                            <img src="/assets/images/out.png " height="40px " width="40px "> Early Go
+                                        </div>
+                                    </ng-template>
+                                    <ng-template #Approved>
+                                        -----
+                                    </ng-template>
+                                </td>
+                            </ng-container>
                             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                         </table>

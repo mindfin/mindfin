@@ -21,7 +21,7 @@ import { DefaultLayoutComponent } from '../../containers';
 })
 export class EarlygolistComponent  {
  
-  displayedColumns: string[] = ['name', 'mobile', 'email'];
+  displayedColumns: string[] = ['name', 'mobile', 'email','type'];
   samples: any;
   dataSource;
 

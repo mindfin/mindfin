@@ -32,9 +32,12 @@ export class EarlyGoComponent {
   model: any = {};
   fetchData: any;
   fetchData1: any;
+  ngOnInit(){
+    this.commonservice.getemailSettings().subscribe(res=>{
+      console.log(res);
+      this.fetchData =res;
 
-
-  ngOnInit() {
+    })
     this.empid = localStorage.getItem("id");
     this.empname = localStorage.getItem("empname");
     this.commonservice.getEarlygo(this.empid).subscribe(res => {
@@ -47,8 +50,9 @@ export class EarlyGoComponent {
   }
   onSubmit(obj) {
     console.log(obj);
-    this.value1 = { value: obj, empid: this.empid, empname: this.empname };
+    this.value1 = { value: obj, empid: this.empid, empname: this.empname,emails:this.fetchData  };
     this.commonservice.earlygo(this.value1).subscribe(res => {
+      alert("Applied Successfully");
       console.log(res);
       this.commonservice.getEarlygo(this.empid).subscribe(res => {
         console.log(res);
