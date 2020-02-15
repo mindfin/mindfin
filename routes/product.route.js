@@ -8287,6 +8287,7 @@ router.get('/getEvent', (req, res) => {
         .orderBy('calendar.eventID', 'desc')
         .then(function(result) {
             res.json(result);
+            // return result;
             // console.log(result)
         })
 });
@@ -8297,10 +8298,13 @@ router.get('/mappedgetEvent', (req, res) => {
         .from('calendar')
         .where('calendar.status ', 'active')
         // .where('todolist.createdBy', req.body.empid)
-        .orderBy('calendar.eventID', 'desc')
+        // .orderBy('calendar.eventID', 'desc')
         .then(function(result) {
+            // console.log(result);
+
+            // return result;
             res.json(result);
-            console.log(result);
+
         })
 });
 router.post('/deleteEvent', function(req, res) {

@@ -3,6 +3,7 @@
         <div class="col-md-7">
             Add events
         </div>
+
         <div class="col-md-5 ">
             <div class="btn-group pull-right">
                 <div class="btn btn-warning">
@@ -21,7 +22,7 @@
 </h3>
 <div class="row">
     <div class="col-md-12">
-        <form (ngSubmit)="addEvent(model)" #f="ngForm" novalidate>
+        <form (ngSubmit)="addEvent(model); f.form.reset()" #f="ngForm" novalidate>
 
             <div class="row">
                 <div class="col-md-3">

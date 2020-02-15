@@ -3123,4 +3123,13 @@ export class CommonService {
   getEnquirynofollowuplistexeDetails() {
     return this.postsUpdated.asObservable();
   }
+  mappedgetEvent(){
+    const uri = "https://bank.mindfin.co.in/callapi/mappedgetEvent";
+const res= this.http.get(uri);
+ console.log(res);
+  return res;
+}
+mappedgetEventDetails() {
+  return this.postsUpdated.asObservable();
+}
 }

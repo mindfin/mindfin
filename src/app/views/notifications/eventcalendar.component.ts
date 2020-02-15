@@ -1,96 +1,93 @@
-import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { map } from 'rxjs/operators';
-import { CalendarEvent, CalendarView } from 'angular-calendar';
+
+import { CommonService } from '../../common.service';
 import {
-  isSameMonth,
-  isSameDay,
-  startOfMonth,
-  endOfMonth,
-  startOfWeek,
-  endOfWeek,
+  Component,
+  ChangeDetectionStrategy,
+  ViewChild,
+  TemplateRef
+} from '@angular/core';
+import {
   startOfDay,
   endOfDay,
-  format
+  subDays,
+  addDays,
+  endOfMonth,
+  isSameDay,
+  isSameMonth,
+  addHours
 } from 'date-fns';
-import { Observable } from 'rxjs';
-import { colors } from '../demo-utils/colors';
+import { Subject } from 'rxjs';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import {
+  CalendarEvent,
+  CalendarEventAction,
+  CalendarEventTimesChangedEvent,
+  CalendarView
+} from 'angular-calendar';
 
-interface calendar {
-  title: string;
-  start: string;
-  primary: string;
-  secondary: string;
-}
-
-function getTimezoneOffsetString(date: Date): string {
-  const timezoneOffset = date.getTimezoneOffset();
-  const hoursOffset = String(
-    Math.floor(Math.abs(timezoneOffset / 60))
-  ).padStart(2, '0');
-  const minutesOffset = String(Math.abs(timezoneOffset % 60)).padEnd(2, '0');
-  const direction = timezoneOffset > 0 ? '-' : '+';
-
-  return `T00:00:00${direction}${hoursOffset}:${minutesOffset}`;
-}
+const colors: any = {
+  red: {
+    primary: '#ad2121',
+    secondary: '#FAE3E3'
+  },
+  blue: {
+    primary: '#1e90ff',
+    secondary: '#D1E8FF'
+  },
+  yellow: {
+    primary: '#e3bc08',
+    secondary: '#FDF1BA'
+  }
+};
 
 @Component({
   selector: 'mwl-demo-component',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  // styleUrls: ['styles.css'],
   templateUrl: 'eventcalendar.component.html'
 })
-export class EventCalendarComponent implements OnInit {
+export class EventCalendarComponent {
   view: CalendarView = CalendarView.Month;
+
+  CalendarView = CalendarView;
 
   viewDate: Date = new Date();
 
-  events$: Observable<Array<CalendarEvent<{ film: calendar }>>>;
-
+  refresh: Subject<any> = new Subject();
+  events: any;
+  items: any =[];
+  empid: any;
+  empname: any;
+  value1: any;
+  data: any;
   activeDayIsOpen: boolean = false;
+  constructor(private modal: NgbModal, private commonservice: CommonService) { }
+  ngOnInit() {
 
-  constructor(private http: HttpClient) { }
-
-  ngOnInit(): void {
-    this.fetchEvents();
-  }
-
-  fetchEvents(): void {
-    
-  this.http
-      .get('https://bank.mindfin.co.in/callapi/getEvent')
-      .pipe(
-        map(({ results }: { results: calendar[] }) => {
-          console.log('test1', results)
-          return results.map((film: calendar) => {
-            console.log('test2')
-            return {
-              title: film.title,
-              start: new Date(
-                film.start + getTimezoneOffsetString(this.viewDate)
-              ),
-              // end: new Date(
-              //   film.end + getTimezoneOffsetString(this.viewDate)
-              // ),
-              color:
-              {
-                primary: film.primary,
-                secondary: film.secondary
-              },
-              draggable: false,
-              
-            };
-          });
+    this.empid = localStorage.getItem("id");
+    this.empname = localStorage.getItem("empname");
+    this.commonservice.mappedgetEvent().subscribe(res => {
+      for (let i = 0; i < Object.keys(res).length; i++) {
+        // console.log(res[i]);
+        this.items.push({
+        // this.events.push({
+        // this.items = [{
+          start: startOfDay(new Date(res[i].start)),
+          end: endOfDay(new Date(res[i].end)),
+          title: res[i].title,
+          color: {
+            primary: res[i].primary,
+            secondary: res[i].secondary
+          },
+          draggable: false
+        // }]
         })
-      );
+      }
+      this.events = this.items;
+    })
   }
 
-  dayClicked({
-    date,
-    events
-  }: {
-    date: Date;
-    events: Array<CalendarEvent<{ film: calendar }>>;
-  }): void {
+  dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
     if (isSameMonth(date, this.viewDate)) {
       if (
         (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
@@ -99,15 +96,17 @@ export class EventCalendarComponent implements OnInit {
         this.activeDayIsOpen = false;
       } else {
         this.activeDayIsOpen = true;
-        this.viewDate = date;
       }
+      this.viewDate = date;
     }
   }
 
-  // eventClicked(event: CalendarEvent<{ film: Film }>): void {
-  //   window.open(
-  //     `https://www.themoviedb.org/movie/${event.meta.film.id}`,
-  //     '_blank'
-  //   );
-  // }
+  setView(view: CalendarView) {
+    this.view = view;
+  }
+
+  closeOpenMonthViewDay() {
+    this.activeDayIsOpen = false;
+  }
 }
+
