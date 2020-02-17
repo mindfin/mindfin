@@ -18,6 +18,7 @@ var implode = require('implode')
 var defaultImg = 'admin.png';
 var JSZip = require("jszip");
 var FileSaver = require('file-saver');
+var macaddress = require('macaddress');
 
 var now = new Date()
 
@@ -658,48 +659,56 @@ router.get('/approvedlist/:pagesize/:page', function(req, res) {
         })
 })
 router.post('/adminlogin', (req, res) => {
-    // let macAddresss;
-    // macaddress.one(function(err, mac) {
-    //     macAddresss = mac;
-    //     //macAddress: macAddresss ,'employee.macAddress': macAddresss,
-    // })
-    username = req.body.username;
-    const password = (sha1(req.body.password));
-    knex.select()
-        .from('employee')
-        .join('usertype', 'usertype.idusertype', 'employee.iduser')
-        .where(function() {
-            this.where({
-                    'employee.email': username,
-                    'employee.password': password,
-                    'employee.status': "active"
+
+    let macAddresss;
+    macaddress.one(function(err, mac) {
+            macAddresss = mac;
+            console.log("inside macaddress function", macAddresss)
+            username = req.body.username;
+            const password = (sha1(req.body.password));
+            knex.select()
+                .from('employee')
+                .join('usertype', 'usertype.idusertype', 'employee.iduser')
+                .where(function() {
+                    this.where({
+                            'employee.email': username,
+                            'employee.password': password,
+                            'employee.status': "active",
+                            'macAddress': macAddresss
+                        })
+                        .orWhere({
+                            'employee.mobile': username,
+                            'employee.password': password,
+                            'employee.status': "active",
+                            'macAddress': macAddresss
+                        })
+                        .orWhere({
+                            'employee.altmobile': username,
+                            'employee.password': password,
+                            'employee.status': "active",
+                            'macAddress': macAddresss
+                        })
                 })
-                .orWhere({
-                    'employee.mobile': username,
-                    'employee.password': password,
-                    'employee.status': "active"
-                })
-                .orWhere({
-                    'employee.altmobile': username,
-                    'employee.password': password,
-                    'employee.status': "active"
-                })
+
+            .then(function(result) {
+                //console.log(result);
+                if (result == '' || result == null || result == undefined) {
+                    knex.select()
+                        .from('customer')
+                        .where({ email: username, password: password })
+                        .then(function(re) {
+                            //console.log(re);
+                            re.user = "CUSTOMER";
+                            res.json(re);
+                        })
+                } else {
+                    res.json(result);
+                }
+            })
         })
-        .then(function(result) {
-            //console.log(result);
-            if (result == '' || result == null || result == undefined) {
-                knex.select()
-                    .from('customer')
-                    .where({ email: username, password: password })
-                    .then(function(re) {
-                        //console.log(re);
-                        re.user = "CUSTOMER";
-                        res.json(re);
-                    })
-            } else {
-                res.json(result);
-            }
-        })
+        // console.log("outside macaddress function", macAddresss)
+
+
 })
 router.get('/employeecount', (req, res) => {
     knex.select()

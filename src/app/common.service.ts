@@ -18,7 +18,6 @@ const EXCEL_EXTENSION = '.xlsx';
 import { TabHeadingDirective } from 'ngx-bootstrap/tabs';
 const commonurl = 'https://bank.mindfin.co.in';
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -74,6 +73,7 @@ export class CommonService {
   //login select
 
   login(loginvalue) {
+   
     const uri = "https://bank.mindfin.co.in/callapi/adminlogin/";
     this.http.post(uri, loginvalue).subscribe(res => {
       console.log(res);
