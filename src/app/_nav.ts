@@ -55,9 +55,9 @@ export const navItems = [
         icon: 'fa fa-thumbs-o-up'
       },
       {
-        name: 'Share Documents',
-        url: '/404',
-        icon: 'icon-user-following'
+        name: 'Download Documents',
+        url: '/members/download',
+        icon: 'fa fa-user-plus'
       },
     ]
   },

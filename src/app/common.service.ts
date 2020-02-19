@@ -69,11 +69,14 @@ export class CommonService {
       .subscribe(res => {
       });
   }
-
+  getMacAddress() {
+    const uri = 'https://bank.mindfin.co.in/callapi/getMacAddress';
+    return this.http.get(uri) 
+  }
   //login select
 
   login(loginvalue) {
-   
+    // console.log(loginvalue);
     const uri = "https://bank.mindfin.co.in/callapi/adminlogin/";
     this.http.post(uri, loginvalue).subscribe(res => {
       console.log(res);

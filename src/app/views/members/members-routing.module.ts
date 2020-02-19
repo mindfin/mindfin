@@ -23,7 +23,8 @@ import {SuccesstopuplistComponent} from './successtopuplist.component';
 import { CustStatusComponent } from './custstatus.component';
 import { ViewCustomerComponent } from './viewcustomer.component';
 import { BankRejectComponent } from './bankreject.component';
-import { CheckCaseWithDownloadComponent } from './checkcasewithdownload.component';
+import { CheckCaseDownloadComponent } from './checkcasewithdownload.component';
+import { AdminCheckCaseComponent } from './admincheckcase.component';
 const routes: Routes = [
   {
     
@@ -91,9 +92,16 @@ const routes: Routes = [
       },
       {
         path: 'checkcase',
-        component: CheckCaseWithDownloadComponent,
+        component: AdminCheckCaseComponent,
         data: {
           title: 'Check Case'
+        }
+      },
+      {
+        path: 'download',
+        component: CheckCaseDownloadComponent,
+        data: {
+          title: 'Download'
         }
       },
       // {

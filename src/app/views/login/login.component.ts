@@ -7,17 +7,19 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
   selector: 'app-dashboard',
   templateUrl: 'newlogin.component.html',
   // templateUrl: 'login.component.html',
-  styleUrls: ['./login.component.scss']
+  // styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
 
 
   registerForm: FormGroup;
   submittedError;
+  obj: any;
+  macAddress: any;
 
-  constructor(private router:Router,private service:CommonService
-    ,private formBuilder: FormBuilder){
-      // this.toastr.setRootViewContainerRef(vcr);
+  constructor(private router: Router, private service: CommonService
+    , private formBuilder: FormBuilder) {
+    // this.toastr.setRootViewContainerRef(vcr);
     // console.log(cookie.get('loginCPSession'));
     // if(cookie.get('loginCPSession')==null||cookie.get('loginCPSession')==''||cookie.get('loginCPSession')==undefined){
     //   router.navigate(['/login']);
@@ -26,38 +28,32 @@ export class LoginComponent implements OnInit {
     // }
 
   }
-
-  ngOnInit(){
-    // this.load();
+  ngOnInit() {
     this.registerForm = this.formBuilder.group({
       username: ['', [Validators.required]],
       password: ['', [Validators.required]]
-  });
+    });
+    this.service.getMacAddress().subscribe(res => {
+      console.log(res);
+      this.macAddress = res;
+    })
   }
-  // load() {
-  //   this.location.reload();
-  // }
-  obj:any;
-login(form){
-  
-  if (this.registerForm.invalid) {
-    console.log("hii");
-    this.submittedError = true;
-    return;
-}
-this.submittedError = false;
-// alert("Success");
-console.log(this.registerForm.value);
-  this.obj={
-    username:this.registerForm.value.username,
-    password:this.registerForm.value.password
+  login(form) {
+    console.log("System Mac Address is", this.macAddress)
+    if (this.registerForm.invalid) {
+      console.log("hii");
+      this.submittedError = true;
+      return;
+    }
+    this.submittedError = false;
+    // console.log(this.registerForm.value);
+    this.obj = {
+      username: this.registerForm.value.username,
+      password: this.registerForm.value.password,
+      macAddress: this.macAddress
+    }
+    this.service.login(this.obj);
   }
-  // console.log(this.obj);
-  this.service.login(this.obj);
-  // console.log(email);
-
-  // this.router.navigate(['/dashboard']);
-}
 }
 
 
@@ -78,7 +74,7 @@ console.log(this.registerForm.value);
 //   signup(email,pwd){
 //   // this.obj={
 //   //   company:company,country:country
-  
+
 //   // };
 
 // 	this.obj={
@@ -90,13 +86,13 @@ console.log(this.registerForm.value);
 
 
 //   console.log(this.obj);
-  
+
 //   this.service.login(this.obj);
-  
-  
-  
+
+
+
 //   }
- 
+
 
 
 

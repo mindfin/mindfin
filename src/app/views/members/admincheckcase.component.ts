@@ -10,10 +10,10 @@ export interface User {
   name: string;
 }
 @Component({
-  templateUrl: './checkcasewithdownload.component.html',
+  templateUrl: './admincheckcase.component.html',
 })
 
-export class CheckCaseDownloadComponent {
+export class AdminCheckCaseComponent {
   myControl = new FormControl();
   val: any = [];
   selectedFile: File = null;
@@ -44,21 +44,24 @@ export class CheckCaseDownloadComponent {
     // var idno=obj.idno;
     this.commonservice.checkcase(obj).subscribe(res => {
       console.log(res);
-      this.custid = res[0].idcustomer;
-      this.fetchData = res[0];
+      // this.custid = res[0].idcustomer;
+      this.fetchData = res;
     })
     // this.commonservice.backendeditemp(this.custid).subscribe(res=>{
     //   console.log(res);
     //   this.fetchData=res;
     //   })
 
-    // this.commonservice.getbackendviewbanklist(this.custid).subscribe(res => {
-    //   console.log(res);
-    //   this.fetchData1 = res;
-    // })
+   
   }
   downloadall(value){
     console.log(value)
     this.commonservice.downloadall(value);
   }
+  viewBank(value){
+  this.commonservice.getbackendviewbanklist(value).subscribe(res => {
+    console.log(res);
+    this.fetchData1 = res;
+  })
+}
 }

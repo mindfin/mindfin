@@ -29,7 +29,9 @@ import { NgModule } from '@angular/core';
 import { CustStatusComponent, RejectBankDialogContent } from './custstatus.component';
 import { ViewCustomerComponent } from './viewcustomer.component';
 import { BankRejectComponent } from './bankreject.component';
-import { CheckCaseWithDownloadComponent } from './checkcasewithdownload.component';
+import { CheckCaseDownloadComponent } from './checkcasewithdownload.component';
+import { AdminCheckCaseComponent } from './admincheckcase.component';
+;
 
 
 
@@ -43,7 +45,7 @@ import { CheckCaseWithDownloadComponent } from './checkcasewithdownload.componen
   ],
   declarations: [MembersappComponent,DialogContent,TopuplistComponent,TopupnotifyComponent,SuccesstopuplistComponent,
     EditcustomersComponent, BankdisburseComponent,TopuplistComponent,RejectBankDialogContent,CustStatusComponent
-    ,ViewCustomerComponent,BankRejectComponent,CheckCaseWithDownloadComponent
+    ,ViewCustomerComponent,BankRejectComponent,AdminCheckCaseComponent,CheckCaseDownloadComponent
     // BankRejectComponent,ApprovalDialogContent,CompletlistComponent,MembersComponent,RejectBankDialogContent,
     // BankapplyComponent,ViewcustomerComponent,BusinesslistComponent,ViewbankComponent,ApprovalComponent,
     // PdlistComponent,RejectDialogContent,ViewmemberComponent,MemberlistComponent,DisburstdialogContent,DisbustedComponent,

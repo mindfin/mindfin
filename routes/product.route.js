@@ -606,19 +606,17 @@ router.get('/viewcustomerid/:pagesize/:page/:id', (req, res, next) => {
     const currentPage = req.params.page;
     const skip = (pageSize * (currentPage - 1));
     knex.select('customer.*', 'applybank.*')
-        .from('customer')
-        .join('applybank', 'applybank.idcustomer', 'customer.idcustomer')
+        .from('applybank')
+        .join('customer', 'applybank.idcustomer', 'customer.idcustomer')
         .where('applybank.executiveid', req.params.id)
-        // .where('customer.status', 'APPROVED')
         .groupBy('applybank.idcustomer')
         .orderBy('applybank.idapplybank', 'desc')
         .limit(pageSize).offset(skip)
         .then(function(result) {
             knex.select('customer.*', 'applybank.*')
-                .from('customer')
-                .join('applybank', 'applybank.idcustomer', 'customer.idcustomer')
+                .from('applybank')
+                .join('customer', 'applybank.idcustomer', 'customer.idcustomer')
                 .where('applybank.executiveid', req.params.id)
-                // .where('customer.status', 'APPROVED')
                 .groupBy('applybank.idcustomer')
                 .orderBy('applybank.idapplybank', 'desc')
                 .then(function(re) {
@@ -658,53 +656,49 @@ router.get('/approvedlist/:pagesize/:page', function(req, res) {
                 })
         })
 })
-router.post('/adminlogin', (req, res) => {
-
+router.get('/getMacAddress', (req, res) => {
     let macAddresss;
     macaddress.one(function(err, mac) {
-            macAddresss = mac;
-            console.log("inside macaddress function", macAddresss)
-            username = req.body.username;
-            const password = (sha1(req.body.password));
-            knex.select()
-                .from('employee')
-                .join('usertype', 'usertype.idusertype', 'employee.iduser')
-                .where(function() {
-                    this.where({
-                            'employee.email': username,
-                            'employee.password': password,
-                            'employee.status': "active",
-                            'macAddress': macAddresss
-                        })
-                        .orWhere({
-                            'employee.mobile': username,
-                            'employee.password': password,
-                            'employee.status': "active",
-                            'macAddress': macAddresss
-                        })
-                        .orWhere({
-                            'employee.altmobile': username,
-                            'employee.password': password,
-                            'employee.status': "active",
-                            'macAddress': macAddresss
-                        })
-                })
+        macAddresss = mac;
+        console.log("inside macaddress function", macAddresss)
+        res.json(macAddresss);
+    })
+})
+router.post('/adminlogin', (req, res) => {
+    console.log(req.body)
+    const username = req.body.username;
+    const password = (sha1(req.body.password));
+    const macAddress = req.body.macAddress;
+    knex.select()
+        .from('employee')
+        .join('usertype', 'usertype.idusertype', 'employee.iduser')
+        .where('employee.status', "active")
+        .where('employee.password', password)
+        .where(function() {
+            this.where({ 'employee.email': username })
+                .orWhere({ 'employee.mobile': username })
+                .orWhere({ 'employee.altmobile': username })
+        })
+        .where(function() {
+            this.where({ 'employee.macAddress1': macAddress })
+                .orWhere({ 'employee.macAddress2': macAddress })
+                .orWhere({ 'employee.macAddress3': macAddress })
+        })
 
-            .then(function(result) {
-                //console.log(result);
-                if (result == '' || result == null || result == undefined) {
-                    knex.select()
-                        .from('customer')
-                        .where({ email: username, password: password })
-                        .then(function(re) {
-                            //console.log(re);
-                            re.user = "CUSTOMER";
-                            res.json(re);
-                        })
-                } else {
-                    res.json(result);
-                }
-            })
+    .then(function(result) {
+            //console.log(result);
+            if (result == '' || result == null || result == undefined) {
+                knex.select()
+                    .from('customer')
+                    .where({ email: username, password: password })
+                    .then(function(re) {
+                        //console.log(re);
+                        re.user = "CUSTOMER";
+                        res.json(re);
+                    })
+            } else {
+                res.json(result);
+            }
         })
         // console.log("outside macaddress function", macAddresss)
 
@@ -3016,14 +3010,11 @@ router.get('/approvalmember/:obj/:obj1', function(req, res) {
 });
 router.get('/casecount/:obj', (req, res) => {
 
-    knex.select('customer.*', 'applybank.*')
-        .from('customer')
-        .join('applybank', 'applybank.idcustomer', 'customer.idcustomer')
-        // .where('customer.status', 'APPROVED')
+    knex.select('applybank.*')
+        .from('applybank')
         .where('applybank.executiveid', req.params.obj)
         .groupBy('applybank.idcustomer')
         .then(function(result) {
-            //console.log(result.length);
             res.json(result.length);
         })
 });
@@ -4231,6 +4222,7 @@ router.post('/checkcase', function(req, res) {
             this.where({ aadharno: req.body.checkno })
                 .orWhere({ panno: req.body.checkno })
                 .orWhere({ mobile: req.body.checkno })
+                .orWhere({ cname: req.body.checkno })
         })
         .then(function(result) {
 
