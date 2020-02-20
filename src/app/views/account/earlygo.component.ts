@@ -6,7 +6,7 @@ import { SuperadminService } from '../../superadmin.service';
 import { CommonService } from '../../common.service';
 
 
-export interface User { 
+export interface User {
   name: string;
 }
 @Component({
@@ -25,24 +25,34 @@ export class EarlyGoComponent {
   array: any = [];
   array1: any = [];
   empid: any;
-  empname:any;
-  value1:any;
+  empname: any;
+  value1: any;
   constructor(private service: SuperadminService, private router: Router, private commonservice: CommonService) { }
 
   model: any = {};
   fetchData: any;
   fetchData1: any;
-  ngOnInit(){
-    this.commonservice.getemailSettings().subscribe(res=>{
+  value:any;
+  ngOnInit() {
+    this.commonservice.getemailSettings().subscribe(res => {
       console.log(res);
-      this.fetchData =res;
+      this.fetchData = res;
 
     })
     this.empid = localStorage.getItem("id");
     this.empname = localStorage.getItem("empname");
     this.commonservice.getEarlygo(this.empid).subscribe(res => {
-      console.log(res);
+      // console.log(res);
       this.fetchData1 = res;
+    })
+    this.value={empid:this.empid}
+    this.commonservice.getEarlyGoStatus(this.value).subscribe(res => {
+      console.log(res);
+      this.model.status = res['status'];
+    })
+    this.commonservice.getLateInStatus(this.value).subscribe(res => {
+      console.log(res);
+      this.model.status1 = res['status'];
     })
   }
   refresh() {
@@ -50,19 +60,16 @@ export class EarlyGoComponent {
   }
   onSubmit(obj) {
     console.log(obj);
-    this.value1 = { value: obj, empid: this.empid, empname: this.empname,emails:this.fetchData  };
+    this.value1 = { value: obj, empid: this.empid, empname: this.empname, emails: this.fetchData };
     this.commonservice.earlygo(this.value1).subscribe(res => {
       alert("Applied Successfully");
       console.log(res);
-      this.commonservice.getEarlygo(this.empid).subscribe(res => {
-        console.log(res);
-        this.fetchData1 = res;
-      })
+      this.ngOnInit();
     })
-        // this.commonservice.getbackendviewbanklist(this.custid).subscribe(res => {
+    // this.commonservice.getbackendviewbanklist(this.custid).subscribe(res => {
     //   console.log(res);
     //   this.fetchData1 = res;
     // })
   }
- 
+
 }

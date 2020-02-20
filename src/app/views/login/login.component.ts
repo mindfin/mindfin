@@ -37,6 +37,10 @@ export class LoginComponent implements OnInit {
       console.log(res);
       this.macAddress = res;
     })
+    this.service.getAllMacAddress().subscribe(res => {
+      console.log("all mac address",res);
+      // this.macAddress = res;
+    })
   }
   login(form) {
     console.log("System Mac Address is", this.macAddress)

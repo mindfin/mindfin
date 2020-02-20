@@ -73,6 +73,10 @@ export class CommonService {
     const uri = 'https://bank.mindfin.co.in/callapi/getMacAddress';
     return this.http.get(uri) 
   }
+  getAllMacAddress() {
+    const uri = 'https://bank.mindfin.co.in/callapi/getAllMacAddress';
+    return this.http.get(uri) 
+  }
   //login select
 
   login(loginvalue) {
@@ -3134,5 +3138,17 @@ const res= this.http.get(uri);
 }
 mappedgetEventDetails() {
   return this.postsUpdated.asObservable();
+}
+getEarlyGoStatus(obj) {
+  console.log(obj);
+  const uri = "https://bank.mindfin.co.in/callapi/getEarlyGoStatus";
+  return this.http.post(uri, obj);
+
+}
+getLateInStatus(obj) {
+  console.log(obj);
+  const uri = "https://bank.mindfin.co.in/callapi/getLateInStatus";
+  return this.http.post(uri, obj);
+
 }
 }

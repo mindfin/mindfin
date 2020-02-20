@@ -656,6 +656,14 @@ router.get('/approvedlist/:pagesize/:page', function(req, res) {
                 })
         })
 })
+router.get('/getAllMacAddress', (req, res) => {
+    let macAddresss;
+    macaddress.all(function(err, mac) {
+        macAddresss = mac
+        console.log("inside macaddress function", macAddresss)
+        res.json(macAddresss);
+    })
+})
 router.get('/getMacAddress', (req, res) => {
     let macAddresss;
     macaddress.one(function(err, mac) {
@@ -9996,5 +10004,56 @@ router.get('/getEnquirynofollowuplistexe/:pagesize/:page/:id', (req, res, next) 
                     });
                 })
         })
+});
+router.post('/getEarlyGoStatus', (req, res, next) => {
+    console.log(req.body);
+    var empid = req.body.empid;
+    var date = format.asString('yyyy-MM-dd', new Date());
+    var subquery = knex.select().from('earlygo').max('earlygo.earlyGoID').where(
+        'earlygo.type',
+        'Early Go');
+    // console.log(subquery)
+    knex.select()
+        .from('earlygo')
+        .whereIn('earlygo.earlyGoID', subquery)
+        .where({ empID: empid })
+        .then(function(result) {
+            console.log(result);
+            if (result[0] == '' || result[0] == undefined || result[0] == 0 || result[0] == null || result[0].appliedDate != date) {
+                console.log("hi")
+                res.json({ status: false, });
+            } else {
+                console.log("bye")
+                res.json({
+                    status: true,
+                });
+            }
+        });
+});
+router.post('/getLateInStatus', (req, res, next) => {
+    console.log(req.body);
+    var empid = req.body.empid;
+    var date = format.asString('yyyy-MM-dd', new Date());
+    var subquery = knex.select().from('earlygo').max('earlygo.earlyGoID').where(
+        'earlygo.type',
+        'Late In');
+    // console.log(subquery)
+    knex.select()
+        .from('earlygo')
+        .whereIn('earlygo.earlyGoID', subquery)
+        .where({ empID: empid })
+        // .where({ type: 'Late In' })
+        .then(function(result) {
+            console.log(result);
+            if (result[0] == '' || result[0] == undefined || result[0] == 0 || result[0] == null || result[0].appliedDate != date) {
+                console.log("hi")
+                res.json({ status: false, });
+            } else {
+                console.log("bye")
+                res.json({
+                    status: true,
+                });
+            }
+        });
 });
 module.exports = router;
