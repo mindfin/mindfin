@@ -105,6 +105,27 @@ export class SuggestionlistComponent  {
     console.log(dialogConfig );
     
     }
+    exportAsXLSX(): void {
+      console.log(this.samples);
+      let come = this.samples;
+      var a;
+      const fileName = "Sugggestion  "; 
+      for (let i = 0; i < come.length; i++) {
+        this.array.push({
+  
+          "Created Date": this.samples[i].appliedDate,
+          "Employee  Name":this.samples[i].empName,
+          "Reason": this.samples[i].suggestion,
+        });
+      }
+      console.log(this.array);
+  
+  
+      // console.log(this.array);   
+      this.excelservice.JSONToCSVConvertor(this.array, "Report", true, fileName);
+  
+  
+    }
 }
 @Component({
   selector: 'dialog-content-example-dialog',

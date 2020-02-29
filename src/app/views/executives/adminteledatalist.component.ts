@@ -44,7 +44,7 @@ isLoading = false;
 emp = 2;
 idvalue;
 exeid:any;
-array:any;
+array = [];
 sdate:any;
 edate:any;
 empid:any;

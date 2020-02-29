@@ -18,6 +18,7 @@ import { LeaveApplistComponent, EditLeavappContent } from './viewleaveapp.compon
 import { SuggestionlistComponent, EditsuggestionContent } from './viewsugge.component';
 import { EarlyGoComponent } from './earlygo.component';
 import { EarlygolistComponent } from './viewearlygo.component';
+import { EmployeeEarlygolistComponent } from './empviewearlygo.component';
 
 
 
@@ -49,7 +50,7 @@ import { EarlygolistComponent } from './viewearlygo.component';
   ],
   declarations: [ SubvendorComponent,CustomerlistComponent,EmpdialogContent,DisburselistComponent,
     Empdialog1Content,Empdialog2Content,ReloanComponent,ConveniencslistComponent,LeaveApplistComponent,SuggestionlistComponent,
-    EditConvContent,EditLeavappContent,EditsuggestionContent,EarlyGoComponent,EarlygolistComponent],
+    EditConvContent,EditLeavappContent,EditsuggestionContent,EarlyGoComponent,EarlygolistComponent,EmployeeEarlygolistComponent],
   entryComponents: [EmpdialogContent,CustomerlistComponent,Empdialog1Content,Empdialog2Content,
      EditConvContent,EditLeavappContent,EditsuggestionContent,DisburselistComponent,
   ],

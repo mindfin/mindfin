@@ -2568,8 +2568,10 @@ export class CommonService {
     console.log(value);
     return this.http.post(`https://bank.mindfin.co.in/callapi/earlygo`, value);
   }
-  getEarlygo(id) {
-    const uri = "https://bank.mindfin.co.in/callapi/getEarlygo/" + id;
+  getEarlygo(postsPerPage: number, currentPage: number,empid: number) {
+
+    const queryParams = `/${postsPerPage}/${currentPage}/${empid}`;
+    const uri = "https://bank.mindfin.co.in/callapi/getEarlygo/" + queryParams;
     return this.http.get(uri);
   }
   getearlygocount() {
@@ -2606,9 +2608,13 @@ export class CommonService {
   getallearlygoDetails() {
     return this.postsUpdated.asObservable();
   }
-  getnewtelcount() {
+  getadminnewtelcount() {
     const uri = "https://bank.mindfin.co.in/callapi/getnewtelcount";
     return this.http.get(uri);
+  }
+  getnewtelcount(value) {
+    const uri = "https://bank.mindfin.co.in/callapi/getnewtelcount1";
+    return this.http.post(uri,value);
   }
   getnewappocount(value) {
     console.log(value);
@@ -3150,5 +3156,333 @@ getLateInStatus(obj) {
   const uri = "https://bank.mindfin.co.in/callapi/getLateInStatus";
   return this.http.post(uri, obj);
 
+}
+adminnotopenedlist() {
+  const uri = "https://bank.mindfin.co.in/callapi/adminnotopenedlist";
+  return this.http.get(uri);
+}
+adminfilepickedlist() {
+  const uri = "https://bank.mindfin.co.in/callapi/adminfilepickedlist";
+  return this.http.get(uri, );
+}
+admincontactedlist() {
+  const uri = "https://bank.mindfin.co.in/callapi/admincontactedlist";
+  return this.http.get(uri);
+}
+adminloginlist() {
+  const uri = "https://bank.mindfin.co.in/callapi/adminloginlist";
+  return this.http.get(uri);
+}
+adminwiplist() {
+  const uri = "https://bank.mindfin.co.in/callapi/adminwiplist";
+  return this.http.get(uri);
+}
+adminapprovedlist() {
+  const uri = "https://bank.mindfin.co.in/callapi/adminapprovedlist";
+  return this.http.get(uri);
+}
+adminnofallowup() {
+  const uri = "https://bank.mindfin.co.in/callapi/adminnofallowup";
+  return this.http.get(uri);
+}
+empgetallearlygo(postsPerPage: number, currentPage: number,id:number) {
+  const queryParams = `/${postsPerPage}/${currentPage}/${id}`;
+  this.http
+    .get<{ message: string; posts: any; maxPosts: number }>(
+      "https://bank.mindfin.co.in/callapi/empgetallearlygo" + queryParams
+    )
+    .pipe(
+      map(postData => {
+        return {
+          posts: postData.posts,
+          maxPosts: postData.maxPosts
+        };
+      })
+    )
+    .subscribe(transformedPostData => {
+      this.posts = transformedPostData.posts;
+      this.postsUpdated.next({
+        posts: [...this.posts],
+        postCount: transformedPostData.maxPosts
+      });
+    });
+}
+
+empgetallearlygoDetails() {
+  return this.postsUpdated.asObservable();
+}
+
+getEnquiryApprovelistexe1(postsPerPage: number, currentPage: number) {
+  const queryParams = `/${postsPerPage}/${currentPage}`;
+  this.http
+    .get<{ message: string; posts: any; maxPosts: number }>(
+      "https://bank.mindfin.co.in/callapi/getEnquiryApprovelistexe1" + queryParams
+    )
+    .pipe(
+      map(postData => {
+        //console.log('');
+        return {
+          posts: postData.posts,
+
+          maxPosts: postData.maxPosts
+        };
+      })
+    )
+    .subscribe(transformedPostData => {
+      this.posts = transformedPostData.posts;
+      this.postsUpdated.next({
+        posts: [...this.posts],
+        postCount: transformedPostData.maxPosts
+      });
+    });
+}
+getEnquiryApprovelistexeDetails1() {
+  return this.postsUpdated.asObservable();
+}
+
+getEnquirycontactedlistexe1(postsPerPage: number, currentPage: number) {
+  const queryParams = `/${postsPerPage}/${currentPage}`;
+  this.http
+    .get<{ message: string; posts: any; maxPosts: number }>(
+      "https://bank.mindfin.co.in/callapi/getEnquirycontactedlistexe1" + queryParams
+    )
+    .pipe(
+      map(postData => {
+        //console.log('');
+        return {
+          posts: postData.posts,
+
+          maxPosts: postData.maxPosts
+        };
+      })
+    )
+    .subscribe(transformedPostData => {
+      this.posts = transformedPostData.posts;
+      this.postsUpdated.next({
+        posts: [...this.posts],
+        postCount: transformedPostData.maxPosts
+      });
+    });
+}
+getEnquirycontactedlistexeDetails1() {
+  return this.postsUpdated.asObservable();
+}
+getEnquirydisburselistexe1(postsPerPage: number, currentPage: number) {
+  const queryParams = `/${postsPerPage}/${currentPage}`;
+  this.http
+    .get<{ message: string; posts: any; maxPosts: number }>(
+      "https://bank.mindfin.co.in/callapi/getEnquirydisburselistexe1" + queryParams
+    )
+    .pipe(
+      map(postData => {
+        //console.log('');
+        return {
+          posts: postData.posts,
+
+          maxPosts: postData.maxPosts
+        };
+      })
+    )
+    .subscribe(transformedPostData => {
+      this.posts = transformedPostData.posts;
+      this.postsUpdated.next({
+        posts: [...this.posts],
+        postCount: transformedPostData.maxPosts
+      });
+    });
+}
+getEnquirydisburselistexeDetails1() {
+  return this.postsUpdated.asObservable();
+}
+getEnquiryfilepicklistexe1(postsPerPage: number, currentPage: number) {
+  const queryParams = `/${postsPerPage}/${currentPage}`;
+  this.http
+    .get<{ message: string; posts: any; maxPosts: number }>(
+      "https://bank.mindfin.co.in/callapi/getEnquiryfilepicklistexe1" + queryParams
+    )
+    .pipe(
+      map(postData => {
+        //console.log('');
+        return {
+          posts: postData.posts,
+
+          maxPosts: postData.maxPosts
+        };
+      })
+    )
+    .subscribe(transformedPostData => {
+      this.posts = transformedPostData.posts;
+      this.postsUpdated.next({
+        posts: [...this.posts],
+        postCount: transformedPostData.maxPosts
+      });
+    });
+}
+getEnquiryfilepicklistexeDetails1() {
+  return this.postsUpdated.asObservable();
+}
+getEnquiryloginlistexe1(postsPerPage: number, currentPage: number) {
+  const queryParams = `/${postsPerPage}/${currentPage}`;
+  this.http
+    .get<{ message: string; posts: any; maxPosts: number }>(
+      "https://bank.mindfin.co.in/callapi/getEnquiryloginlistexe1" + queryParams
+    )
+    .pipe(
+      map(postData => {
+        //console.log('');
+        return {
+          posts: postData.posts,
+
+          maxPosts: postData.maxPosts
+        };
+      })
+    )
+    .subscribe(transformedPostData => {
+      this.posts = transformedPostData.posts;
+      this.postsUpdated.next({
+        posts: [...this.posts],
+        postCount: transformedPostData.maxPosts
+      });
+    });
+}
+getEnquiryloginlistexeDetails1() {
+  return this.postsUpdated.asObservable();
+}
+getEnquirynotopenlistexe1(postsPerPage: number, currentPage: number) {
+  const queryParams = `/${postsPerPage}/${currentPage}`;
+  this.http
+    .get<{ message: string; posts: any; maxPosts: number }>(
+      "https://bank.mindfin.co.in/callapi/getEnquirynotopenlistexe1" + queryParams
+    )
+    .pipe(
+      map(postData => {
+        //console.log('');
+        return {
+          posts: postData.posts,
+
+          maxPosts: postData.maxPosts
+        };
+      })
+    )
+    .subscribe(transformedPostData => {
+      this.posts = transformedPostData.posts;
+      this.postsUpdated.next({
+        posts: [...this.posts],
+        postCount: transformedPostData.maxPosts
+      });
+    });
+}
+getEnquirynotopenlistexeDetails1() {
+  return this.postsUpdated.asObservable();
+}
+getEnquiryrejectlistexe1(postsPerPage: number, currentPage: number) {
+  const queryParams = `/${postsPerPage}/${currentPage}`;
+  this.http
+    .get<{ message: string; posts: any; maxPosts: number }>(
+      "https://bank.mindfin.co.in/callapi/getEnquiryrejectlistexe1" + queryParams
+    )
+    .pipe(
+      map(postData => {
+        //console.log('');
+        return {
+          posts: postData.posts,
+
+          maxPosts: postData.maxPosts
+        };
+      })
+    )
+    .subscribe(transformedPostData => {
+      this.posts = transformedPostData.posts;
+      this.postsUpdated.next({
+        posts: [...this.posts],
+        postCount: transformedPostData.maxPosts
+      });
+    });
+}
+getEnquiryrejectlistexeDetails1() {
+  return this.postsUpdated.asObservable();
+}
+getEnquirywiplistexe1(postsPerPage: number, currentPage: number) {
+  const queryParams = `/${postsPerPage}/${currentPage}`;
+  this.http
+    .get<{ message: string; posts: any; maxPosts: number }>(
+      "https://bank.mindfin.co.in/callapi/getEnquirywiplistexe1" + queryParams
+    )
+    .pipe(
+      map(postData => {
+        //console.log('');
+        return {
+          posts: postData.posts,
+
+          maxPosts: postData.maxPosts
+        };
+      })
+    )
+    .subscribe(transformedPostData => {
+      this.posts = transformedPostData.posts;
+      this.postsUpdated.next({
+        posts: [...this.posts],
+        postCount: transformedPostData.maxPosts
+      });
+    });
+}
+getEnquirywiplistexeDetails1() {
+  return this.postsUpdated.asObservable();
+}
+getEnquirynofollowuplistexe1(postsPerPage: number, currentPage: number) {
+  const queryParams = `/${postsPerPage}/${currentPage}`;
+  this.http
+    .get<{ message: string; posts: any; maxPosts: number }>(
+      "https://bank.mindfin.co.in/callapi/getEnquirynofollowuplistexe1" + queryParams
+    )
+    .pipe(
+      map(postData => {
+        //console.log('');
+        return {
+          posts: postData.posts,
+
+          maxPosts: postData.maxPosts
+        };
+      })
+    )
+    .subscribe(transformedPostData => {
+      this.posts = transformedPostData.posts;
+      this.postsUpdated.next({
+        posts: [...this.posts],
+        postCount: transformedPostData.maxPosts
+      });
+    });
+}
+getEnquirynofollowuplistexeDetails1() {
+  return this.postsUpdated.asObservable();
+}
+getadminEnquirylist(postsPerPage: number, currentPage: number) {
+  const queryParams = `/${postsPerPage}/${currentPage}`;
+  this.http
+    .get<{ message: string; posts: any; maxPosts: number }>(
+      "https://bank.mindfin.co.in/callapi/getadminEnquirylist" + queryParams
+    )
+    .pipe(
+      map(postData => {
+        //console.log('');
+        return {
+          posts: postData.posts,
+
+          maxPosts: postData.maxPosts
+        };
+      })
+    )
+    .subscribe(transformedPostData => {
+      this.posts = transformedPostData.posts;
+      this.postsUpdated.next({
+        posts: [...this.posts],
+        postCount: transformedPostData.maxPosts
+      });
+    });
+}
+
+
+getadminEnquirylistDetails() {
+  return this.postsUpdated.asObservable();
 }
 }

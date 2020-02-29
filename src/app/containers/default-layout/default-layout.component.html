@@ -6,6 +6,83 @@
                 <span *ngIf="fetchData12 !==0 " class="badge badge-danger ">{{fetchData12}}</span>
             </a>
         </li>
+        <li class="nav-item  d-md-down-none " *ngIf="abc==='SUPERADMIN'" dropdown placement="bottom right ">
+            <a class="nav-link " title="Status " data-toggle="dropdown " href="# " role="button " aria-haspopup="true " aria-expanded="false " dropdownToggle (click)="false ">
+                <img src="/assets/images/phone.png " class="Status " height="40px " width="40px " />
+                <span *ngIf="fetchData30 !==0 " class="badge badge-danger ">{{fetchData30}}</span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right " *dropdownMenu aria-labelledby="simple-dropdown ">
+                <div class="dropdown-header text-center "><strong>Status</strong></div>
+                <a *ngIf="abc==='SUPERADMIN'" class="dropdown-item " role="button " [routerLink]="[ '/reports/admindata'] " title="Required List ">
+                    <div class="float-left ">
+                        <img src="/assets/images/required.png " alt="required " height="25px " width="25px ">
+                    </div>
+                    Required
+                    <span *ngIf="fetchData22 !==0 " class="badge badge-danger ">{{fetchData22}}</span>
+                </a>
+                <a *ngIf="abc==='SUPERADMIN'" class="dropdown-item " role="button " [routerLink]="[ '/reports/notopendatalist'] " title="Executive Not Opened list ">
+                    <div class="float-left ">
+                        <img src="/assets/images/nores.png " alt="not opened " height="25px " width="25px ">
+                    </div>
+                    Not Opened
+                    <span *ngIf="fetchData23 !==0 " class="badge badge-danger ">{{fetchData23}}</span>
+                </a>
+                <a *ngIf="abc==='SUPERADMIN'" class="dropdown-item " role="button " [routerLink]="[ '/reports/nofallowup'] " title="No Fallow up ">
+                    <div class="float-left ">
+                        <img src="/assets/images/nofollow.png " alt="No Folloe Up" height="25px " width="25px ">
+                    </div>
+                    No Follow up
+                    <span *ngIf="fetchData29 !==0 " class="badge badge-danger ">{{fetchData29}}</span>
+                </a>
+                <a *ngIf="abc==='SUPERADMIN'" class="dropdown-item " role="button " [routerLink]="[ '/reports/filepickeddatalist'] " title="File Picked ">
+                    <div class="float-left ">
+                        <img src="/assets/images/filepicked.png " alt="file pick " height="25px " width="25px ">
+                    </div>
+                    File Picked
+                    <span *ngIf="fetchData29 !==0 " class="badge badge-danger ">{{fetchData29}}</span>
+                </a>
+                <a *ngIf="abc==='SUPERADMIN'" class="dropdown-item " role="button " [routerLink]="[ '/reports/contacteddatalist'] " title="Contacted ">
+                    <div class="float-left ">
+                        <img src="/assets/images/contacted.png " alt="contacted " height="25px " width="25px ">
+                    </div>
+                    Contacted
+                    <span *ngIf="fetchData25 !==0 " class="badge badge-danger ">{{fetchData25}}</span>
+                </a>
+                <a *ngIf="abc==='SUPERADMIN'" class="dropdown-item " role="button " [routerLink]="[ '/reports/logindatalist'] " title="Login ">
+                    <div class="float-left ">
+                        <img src="/assets/images/login.png " alt="Login " height="25px " width="25px ">
+                    </div>
+                    Login
+                    <span *ngIf="fetchData26 !==0 " class="badge badge-danger ">{{fetchData26}}</span>
+                </a>
+                <a *ngIf="abc==='SUPERADMIN'" class="dropdown-item " role="button " [routerLink]="[ '/reports/wipdatalist'] " title="Work in Progress ">
+                    <div class="float-left ">
+                        <img src="/assets/images/wip.png " alt="WIP " height="25px " width="25px ">
+                    </div>
+                    WIP
+                    <span *ngIf="fetchData27 !==0 " class="badge badge-danger ">{{fetchData27}}</span>
+                </a>
+                <a *ngIf="abc==='SUPERADMIN'" class="dropdown-item " role="button " [routerLink]="[ '/reports/approvedatalist'] " title="Approved ">
+                    <div class="float-left ">
+                        <img src="/assets/images/approved.png " alt="Approved " height="25px " width="25px ">
+                    </div>
+                    Approved
+                    <span *ngIf="fetchData28 !==0 " class="badge badge-danger ">{{fetchData28}}</span>
+                </a>
+                <a *ngIf="abc==='SUPERADMIN' " class="dropdown-item " role="button " [routerLink]="[ '/reports/disbursedatalist'] " title="Disbursed ">
+                    <div class="float-left ">
+                        <img src="/assets/images/disbursed.png " alt="Disbursed " height="25px " width="25px ">
+                    </div>
+                    Disbursed
+                </a>
+                <a *ngIf="abc==='SUPERADMIN'" class="dropdown-item " role="button " [routerLink]="[ '/reports/rejectdatalist'] " title="Rejected ">
+                    <div class="float-left ">
+                        <img src="/assets/images/rejected.png " alt="Rejected " height="25px " width="25px ">
+                    </div>
+                    Rejected
+                </a>
+            </div>
+        </li>
         <li class="nav-item  d-md-down-none " *ngIf="abc==='EXECUTIVE' && isadmin==='Admin' " dropdown placement="bottom right ">
             <a class="nav-link " title="Status " data-toggle="dropdown " href="# " role="button " aria-haspopup="true " aria-expanded="false " dropdownToggle (click)="false ">
                 <img src="/assets/images/phone.png " class="Status " height="40px " width="40px " />
@@ -32,7 +109,7 @@
                         <img src="/assets/images/nofollow.png " alt="No Folloe Up" height="25px " width="25px ">
                     </div>
                     No Follow up
-                    <span *ngIf="fetchData14 !==0 " class="badge badge-danger ">{{fetchData21}}</span>
+                    <span *ngIf="fetchData21 !==0 " class="badge badge-danger ">{{fetchData21}}</span>
                 </a>
                 <a *ngIf="abc==='EXECUTIVE' && isadmin==='Admin' " class="dropdown-item " role="button " [routerLink]="[ '/executives/filepickeddatalist'] " title="File Picked ">
                     <div class="float-left ">

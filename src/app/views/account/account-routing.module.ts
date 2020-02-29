@@ -12,6 +12,7 @@ import { LeaveApplistComponent } from './viewleaveapp.component';
 import { SuggestionlistComponent } from './viewsugge.component';
 import { EarlyGoComponent } from './earlygo.component';
 import { EarlygolistComponent } from './viewearlygo.component';
+import { EmployeeEarlygolistComponent } from './empviewearlygo.component';
 
 // import { BankComponent } from './bank.component';
 
@@ -88,6 +89,13 @@ const routes: Routes = [
       {
         path:'viewEarlygo',
         component:EarlygolistComponent,
+        data:{
+          title:'Late And Early Go Status'
+        }
+      },
+      {
+        path:'viewEmpEarlygo',
+        component:EmployeeEarlygolistComponent,
         data:{
           title:'Late And Early Go Status'
         }

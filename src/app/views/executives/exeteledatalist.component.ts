@@ -19,7 +19,7 @@ import { DefaultLayoutComponent } from '../../containers';
 })
 export class ExeTeledatalistComponent  {
 
-  displayedColumns: string[] = ['date','id','name','mobile','email','address','bankname','bank','turnover','telename','comment','edit'];
+  displayedColumns: string[] = ['date','assign','id','name','mobile','email','address','bankname','bank','turnover','telename','comment','edit'];
   samples:any;
   dataSource;
 

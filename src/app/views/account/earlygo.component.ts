@@ -33,6 +33,11 @@ export class EarlyGoComponent {
   fetchData: any;
   fetchData1: any;
   value:any;
+
+  currentPage = 1;
+  postsPerPage = 7;
+  pageSizeOptions = [7, 20, 30];
+
   ngOnInit() {
     this.commonservice.getemailSettings().subscribe(res => {
       console.log(res);
@@ -41,7 +46,7 @@ export class EarlyGoComponent {
     })
     this.empid = localStorage.getItem("id");
     this.empname = localStorage.getItem("empname");
-    this.commonservice.getEarlygo(this.empid).subscribe(res => {
+    this.commonservice.getEarlygo(this.postsPerPage, this.currentPage,this.empid).subscribe(res => {
       // console.log(res);
       this.fetchData1 = res;
     })

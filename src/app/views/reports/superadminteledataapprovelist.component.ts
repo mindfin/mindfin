@@ -15,11 +15,11 @@ import { DefaultLayoutComponent } from '../../containers';
 
 @Component({
   selector: 'app-home',
-  templateUrl: './adminteledatadisbursedlist.component.html',
+  templateUrl: './superadminteledataapprovelist.component.html',
 })
-export class AdminTeledataDisburslistComponent {
+export class SuperAdminTeledataApprovelistComponent {
 
-  displayedColumns: string[] = ['date', 'id', 'name','redate', 'mobile', 'email', 'address', 'bankname', 'bank', 'telename', 'comment', 'edit', 'assign'];
+  displayedColumns: string[] = ['date', 'id', 'name','redate', 'mobile', 'email', 'address', 'bankname', 'bank', 'telename', 'comment',  'edit', 'assign'];
   samples: any;
   dataSource;
 
@@ -32,8 +32,7 @@ export class AdminTeledataDisburslistComponent {
   @ViewChild(MatSort) sort: MatSort;
 
 
-  fetchData:any;
-value1:any;
+  fetchData: any;
   model: any = {};
   aa: any;
   // posts:Memberlist[] = [];
@@ -50,15 +49,16 @@ value1:any;
   edate: any;
   empid: any;
   empname: any;
+  value1:any;
   ngOnInit() {
     this.isLoading = true;
     this.route.params.subscribe(params => {
       // console.log(params['id']);
       this.exeid = localStorage.getItem("id");
       // this.idvalue = params['id'];
-      this.commonservice.getEnquirydisburselistexe(this.postsPerPage, this.currentPage, this.exeid);
+      this.commonservice.getEnquiryApprovelistexe1(this.postsPerPage, this.currentPage);
       this.commonservice
-        .getEnquirydisburselistexeDetails()
+        .getEnquiryApprovelistexeDetails()
         .subscribe((postData: { posts: SuperadminService[], postCount: number }) => {
 
           this.totalPosts = postData.postCount;
@@ -66,7 +66,7 @@ value1:any;
           // this.dataSource = new (postData.posts);
           this.samples = postData.posts;
           this.isLoading = false;
-          // console.log(postData.posts);
+          console.log(postData.posts);
           // console.log(postData.postCount);     
           this.dataSource.sort = this.sort;
           // console.log(this.dataSource.sort);
@@ -80,7 +80,7 @@ value1:any;
   }
 
   applyFilter(filterValue: string) {
-    console.log(filterValue);
+    console.log(filterValue); 
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
   onChangedPage(pageData: PageEvent) {
@@ -88,17 +88,19 @@ value1:any;
     this.currentPage = pageData.pageIndex + 1;
     this.postsPerPage = pageData.pageSize;
     console.log(this.postsPerPage);
-    this.commonservice.getEnquirydisburselistexe(this.postsPerPage, this.currentPage, this.exeid);
+    this.commonservice.getEnquiryApprovelistexe1(this.postsPerPage, this.currentPage);
   }
 
   refresh(): void {
     window.location.reload();
   }
+  
   exportAsXLSX(): void {
     console.log(this.samples);
     let come = this.samples;
     var a;
-    const fileName = "Enquired Disbursed Data";
+
+    const fileName = "Enquired Approved Data";
     for (let i = 0; i < come.length; i++) {
       this.array.push({
 
@@ -121,9 +123,9 @@ value1:any;
       });
     }
     console.log(this.array);
-    // console.log(this.array);   
     this.excelservice.JSONToCSVConvertor(this.array, "Report", true, fileName);
   }
+
   notify(obj) {
     console.log(obj);
     this.value1={value:obj, emails:this.fetchData}
@@ -153,10 +155,10 @@ value1:any;
   //   this.isLoading = true;
   //   console.log(obj)
   //   localStorage.setItem("startdate", obj.startdate[0]);
-  //     localStorage.setItem("enddate", obj.startdate[1]);
-  //     this.sdate = localStorage.getItem("startdate");
-  //     this.edate = localStorage.getItem("enddate");
-  //   this.commonservice.getDataEnquirylist1(this.postsPerPage, this.currentPage, this.sdate, this.edate,this.exeid);
+  //   localStorage.setItem("enddate", obj.startdate[1]);
+  //   this.sdate = localStorage.getItem("startdate");
+  //   this.edate = localStorage.getItem("enddate");
+  //   this.commonservice.getDataEnquirylist1(this.postsPerPage, this.currentPage, this.sdate, this.edate, this.exeid);
   //   this.commonservice
   //     .getDataEnquirylistDetails1()
   //     .subscribe((postData: { posts: SuperadminService[], postCount: number }) => {
@@ -172,12 +174,13 @@ value1:any;
   //       console.log(this.dataSource.sort);
   //     })
   // }
+
   openDialog(element) {
     this.model=element;
     
       const dialogConfig = new MatDialogConfig();
       dialogConfig.data = {element};
-      this.dialog.open(AssignDialogContent3,dialogConfig
+      this.dialog.open(AssignDialogContent1,dialogConfig
     );
     console.log(dialogConfig );
     
@@ -189,12 +192,12 @@ value1:any;
     templateUrl: 'assignexe-content.html',
   })
   
-  export class AssignDialogContent3{ 
+  export class AssignDialogContent1{ 
   
   
     constructor(@Inject(MAT_DIALOG_DATA) public data:any,
     private commonservice: CommonService ,private route: ActivatedRoute, private router: Router,
-    public dialogRef: MatDialogRef<AssignDialogContent3>) {}
+    public dialogRef: MatDialogRef<AssignDialogContent1>) {}
   element:any;
   //   constructor(
   //     @Inject(MAT_DIALOG_DATA) public data: any
@@ -232,9 +235,9 @@ value1:any;
   
       this.exeid=localStorage.getItem("id");
       // this.idvalue = params['id'];
-      this.commonservice.getEnquirydisburselistexe(this.postsPerPage, this.currentPage,this.exeid);
+      this.commonservice.getEnquiryApprovelistexe(this.postsPerPage, this.currentPage,this.exeid);
       this.commonservice
-      .getEnquirydisburselistexeDetails()
+      .getEnquiryApprovelistexeDetails()
        .subscribe((postData: {posts: SuperadminService[], postCount: number})=> {
         
           this.totalPosts = postData.postCount;
@@ -254,9 +257,4 @@ value1:any;
     window.location.reload();
   }
   }
-  
-  
-  
-  
-  
 

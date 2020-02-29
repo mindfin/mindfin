@@ -17,11 +17,11 @@ import { DefaultLayoutComponent } from '../../containers';
 
 @Component({
   selector: 'app-home',
-  templateUrl: './viewearlygo.component.html',
+  templateUrl: './empviewearlygo.component.html',
 })
-export class EarlygolistComponent  {
+export class EmployeeEarlygolistComponent  {
  
-  displayedColumns: string[] = ['name', 'mobile', 'email','type'];
+  displayedColumns: string[] = [ 'mobile', 'email','type'];
   samples: any;
   dataSource;
 
@@ -49,16 +49,10 @@ export class EarlygolistComponent  {
   ngOnInit() {
     this.empid = localStorage.getItem("id");
     this.empname = localStorage.getItem("empname");
-    var emp= {empid: this.empid, empname: this.empname };
-    this.commonservice.earlygoopenstatus(emp).subscribe(res=>{
-      this.defaultlayout.ngOnInit();
-      console.log(res);
-     });
-
-    this.isLoading = true;
-    this.commonservice.getallearlygo(this.postsPerPage, this.currentPage);
+        this.isLoading = true;
+    this.commonservice.empgetallearlygo(this.postsPerPage, this.currentPage,this.empid);
     this.commonservice
-      .getallearlygoDetails()
+      .empgetallearlygoDetails()
       .subscribe((postData: { posts: SuperadminService[], postCount: number }) => {
 
         this.totalPosts = postData.postCount;
@@ -83,7 +77,7 @@ export class EarlygolistComponent  {
     this.currentPage = pageData.pageIndex + 1;
     this.postsPerPage = pageData.pageSize;
     console.log(this.postsPerPage);
-    this.commonservice.getallearlygo(this.postsPerPage, this.currentPage);
+    this.commonservice.empgetallearlygo(this.postsPerPage, this.currentPage,this.empid);
   }
 
   data: any;

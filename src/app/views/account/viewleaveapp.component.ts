@@ -107,6 +107,30 @@ export class LeaveApplistComponent  {
     console.log(dialogConfig );
     
     }
+    exportAsXLSX(): void {
+      console.log(this.samples);
+      let come = this.samples;
+      var a;
+      const fileName = "Leave Applied  "; 
+      for (let i = 0; i < come.length; i++) {
+        this.array.push({
+  
+          "Created Date": this.samples[i].appliedDate,
+          "Employee  Name":this.samples[i].empName,
+          "From": this.samples[i].leaveFrom,
+          "To": this.samples[i].leaveTo,
+          "No Of Days": this.samples[i].noDays,
+          "Reason": this.samples[i].reason,
+        });
+      }
+      console.log(this.array);
+  
+  
+      // console.log(this.array);   
+      this.excelservice.JSONToCSVConvertor(this.array, "Report", true, fileName);
+  
+  
+    }
 }
 @Component({
   selector: 'dialog-content-example-dialog',

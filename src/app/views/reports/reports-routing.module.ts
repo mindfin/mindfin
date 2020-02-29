@@ -12,6 +12,16 @@ import { DatatelelistComponent } from './datatelelist.component';
 import { BackendCustomerReportComponent } from './backendcustomerreport.component';
 import { BackendBankReportComponent } from './backendbankreport.component';
 import { WebsiteLeadReportComponent } from './websitelead.component';
+import { SuperAdminTeledataApprovelistComponent } from './superadminteledataapprovelist.component';
+import { SuperAdminTeledataDisburslistComponent } from './superadminteledatadisbursedlist.component';
+import { SuperAdminTeledataRejectlistComponent } from './superadminteledatarejectlist.component';
+import { SuperAdminTeledataLoginlistComponent } from './superadminteledataloginlist.component';
+import { SuperAdminTeledataWIPlistComponent } from './superadminteledatawiplist.component';
+import { SuperAdminTeledataContactedlistComponent } from './superadminteledatacontactedlist.component';
+import { SuperAdminTeledataFilePickedlistComponent } from './superadminteledatafilepickedlist.component';
+import { SuperAdminTeledataNotOpenedlistComponent } from './superadminteledatanotopenlist.component';
+import { SuperAdminTeledataNoFollowUplistComponent } from './superadminteledatanofollowuplist.component';
+import { SuperAdminTeledatalistComponent } from './superadminteledatalist.component';
 
 
 
@@ -83,6 +93,76 @@ const routes: Routes = [
         component:WebsiteLeadReportComponent,
         data:{
           title:'Website Lead'
+        }
+      },
+      {
+        path: 'rejectdatalist',
+        component:SuperAdminTeledataRejectlistComponent,
+        data:{
+          title:'Reject list'
+        }
+      },
+      {
+        path: 'disbursedatalist',
+        component:SuperAdminTeledataDisburslistComponent,
+        data:{
+          title:'Disburse list'
+        }
+      },
+      {
+        path: 'approvedatalist',
+        component:SuperAdminTeledataApprovelistComponent,
+        data:{
+          title:'Approved list'
+        }
+      },
+      {
+        path: 'logindatalist',
+        component:SuperAdminTeledataLoginlistComponent,
+        data:{
+          title:'Login list'
+        }
+      },
+      {
+        path: 'wipdatalist',
+        component:SuperAdminTeledataWIPlistComponent,
+        data:{
+          title:'WIP list'
+        }
+      },
+      {
+        path: 'contacteddatalist',
+        component:SuperAdminTeledataContactedlistComponent,
+        data:{
+          title:'Contacted list'
+        }
+      },
+      {
+        path: 'filepickeddatalist',
+        component:SuperAdminTeledataFilePickedlistComponent,
+        data:{
+          title:'File Picked list'
+        }
+      },
+      {
+        path: 'notopendatalist',
+        component:SuperAdminTeledataNotOpenedlistComponent,
+        data:{
+          title:'Assign list not opened'
+        }
+      },
+      {
+        path: 'nofallowup',
+        component:SuperAdminTeledataNoFollowUplistComponent,
+        data:{
+          title:'NO Follow Ups'
+        }
+      },
+      {
+        path: 'admindata',
+        component:SuperAdminTeledatalistComponent,
+        data:{
+          title:'NO Follow Ups'
         }
       },
 

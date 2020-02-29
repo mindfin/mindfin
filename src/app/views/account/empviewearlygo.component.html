@@ -6,9 +6,7 @@
             <div class="card">
                 <div class="card-header">
                     <i class="fa fa-align-justify"></i> Direct Appointment Status
-                    <button style="float:right" (click)="exportAsXLSX()">
-                        <i class="fa fa-file-excel-o" style="font-size:30px;color:blue"></i>
-                      </button>
+
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -16,19 +14,19 @@
                             <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
                         </mat-form-field>
                         <table mat-table #table [dataSource]="dataSource" class="table table-striped responsive" matSort>
-                            <ng-container matColumnDef="name">
+                            <ng-container matColumnDef="mobile">
                                 <th *matHeaderCellDef mat-sort-header>Applied Date</th>
                                 <td *matCellDef="let element" style="text-align:center;"> {{element.appliedDate | date:'dd/MM/yyyy'}}<br/>
                                 </td>
                             </ng-container>
-                            <ng-container matColumnDef="mobile">
+                            <ng-container matColumnDef="email">
                                 <th *matHeaderCellDef mat-sort-header>Reason</th>
                                 <td *matCellDef="let element" style="text-align:center;"> {{element.reason}} </td>
                             </ng-container>
-                            <ng-container matColumnDef="email">
-                                <th *matHeaderCellDef mat-sort-header>Employee Name</th>
+                            <!-- <ng-container matColumnDef="name">
+                                <th *matHeaderCellDef mat-sort-header>Sl No</th>
                                 <td *matCellDef="let element" style="text-align:center;"> {{element.empName}} </td>
-                            </ng-container>
+                            </ng-container> -->
                             <ng-container matColumnDef="type">
                                 <th *matHeaderCellDef mat-sort-header>Applied Type</th>
                                 <td *matCellDef="let element" style="text-align:center;">

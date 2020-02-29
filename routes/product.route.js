@@ -600,34 +600,6 @@ router.get('/getexecutiveelist/:pagesize/:page', function(req, res) {
 
 })
 
-router.get('/viewcustomerid/:pagesize/:page/:id', (req, res, next) => {
-    //console.log(req.params);
-    const pageSize = req.params.pagesize;
-    const currentPage = req.params.page;
-    const skip = (pageSize * (currentPage - 1));
-    knex.select('customer.*', 'applybank.*')
-        .from('applybank')
-        .join('customer', 'applybank.idcustomer', 'customer.idcustomer')
-        .where('applybank.executiveid', req.params.id)
-        .groupBy('applybank.idcustomer')
-        .orderBy('applybank.idapplybank', 'desc')
-        .limit(pageSize).offset(skip)
-        .then(function(result) {
-            knex.select('customer.*', 'applybank.*')
-                .from('applybank')
-                .join('customer', 'applybank.idcustomer', 'customer.idcustomer')
-                .where('applybank.executiveid', req.params.id)
-                .groupBy('applybank.idcustomer')
-                .orderBy('applybank.idapplybank', 'desc')
-                .then(function(re) {
-                    res.status(200).json({
-                        message: "Memberlists fetched",
-                        posts: result,
-                        maxPosts: re.length
-                    });
-                })
-        })
-})
 
 router.get('/approvedlist/:pagesize/:page', function(req, res) {
     const pageSize = req.params.pagesize;
@@ -2859,7 +2831,7 @@ router.get('/getEnquirylistexe/:pagesize/:page/:id', (req, res, next) => {
         .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
         .join('employee', 'employee.idemployee', 'enquirydata.teleid')
         .where('enquirydata.executiveid', req.params.id)
-        .orderBy('enquirydata.idenquiry', 'desc')
+        .orderBy('enquirydata.assignedTime', 'desc')
         .limit(pageSize).offset(skip)
         .then(function(result) {
             // //console.log(res);
@@ -2869,7 +2841,7 @@ router.get('/getEnquirylistexe/:pagesize/:page/:id', (req, res, next) => {
                 .join('employee', 'employee.idemployee', 'enquirydata.teleid')
                 .where('enquirydata.executiveid', req.params.id)
 
-            .orderBy('enquirydata.idenquiry', 'desc')
+            .orderBy('enquirydata.assignedTime', 'desc')
                 .then(function(re) {
 
                     res.status(200).json({
@@ -3014,16 +2986,6 @@ router.get('/approvalmember/:obj/:obj1', function(req, res) {
         }).then(function(result) {
             // //console.log(result); 
             res.json('Approved custome Successfully');
-        })
-});
-router.get('/casecount/:obj', (req, res) => {
-
-    knex.select('applybank.*')
-        .from('applybank')
-        .where('applybank.executiveid', req.params.obj)
-        .groupBy('applybank.idcustomer')
-        .then(function(result) {
-            res.json(result.length);
         })
 });
 router.get('/topupcount/:obj', (req, res) => {
@@ -7853,13 +7815,15 @@ router.post('/earlygo', function(req, res) {
 
         })
 });
-router.get('/getEarlygo/:id', (req, res) => {
-    // //console.log(req.params);
-
+router.get('/getEarlygo//:pagesize/:page/:empid', (req, res, next) => {
+    const pageSize = req.params.pagesize;
+    const currentPage = req.params.page;
+    const skip = (pageSize * (currentPage - 1));
     knex.select()
         .from('earlygo')
-        .where('earlygo.empID', req.params.id)
+        .where('earlygo.empID', req.params.empid)
         .orderBy('earlygo.earlyGoID', 'desc')
+        .limit(pageSize).offset(skip)
         .then(function(result) {
             res.json(result);
         })
@@ -7910,6 +7874,15 @@ router.get('/getallearlygo/:pagesize/:page', function(req, res) {
 router.get('/getnewtelcount', (req, res) => {
     knex.select()
         .from('enquirydata')
+        .where('adminexeStatus', "new")
+        .then(function(result) {
+            res.json(result.length);
+        })
+});
+router.post('/getnewtelcount1', (req, res) => {
+    knex.select()
+        .from('enquirydata')
+        .where('adminid', req.body.empid)
         .where('adminexeStatus', "new")
         .then(function(result) {
             res.json(result.length);
@@ -8570,7 +8543,6 @@ router.get('/getEnquiryApprovelistexe/:pagesize/:page/:id', (req, res, next) => 
                 })
         })
 });
-
 router.get('/getEnquirycontactedlistexe/:pagesize/:page/:id', (req, res, next) => {
     const pageSize = req.params.pagesize;
     const currentPage = req.params.page;
@@ -10055,5 +10027,598 @@ router.post('/getLateInStatus', (req, res, next) => {
                 });
             }
         });
+});
+
+router.get('/casecount/:obj', (req, res) => {
+    knex.select()
+        .from('applybank')
+        .where('executiveid', req.params.obj)
+        .groupBy('idcustomer')
+        .then(function(result) {
+            res.json(result.length);
+        })
+});
+router.get('/viewcustomerid/:pagesize/:page/:id', (req, res, next) => {
+    //console.log(req.params);
+    const pageSize = req.params.pagesize;
+    const currentPage = req.params.page;
+    const skip = (pageSize * (currentPage - 1));
+    var subquery = knex.select().from('applybank').max('applybank.idapplybank').groupBy('applybank.idcustomer')
+    knex.select()
+        .from('customer')
+        .join('applybank', 'customer.idcustomer', 'applybank.idcustomer')
+        .where('applybank.executiveid', req.params.id)
+        .whereIn('applybank.idapplybank', subquery)
+        .orderBy('applybank.idapplybank', 'desc')
+        .limit(pageSize).offset(skip)
+        .then(function(result) {
+            knex.select()
+                .from('customer')
+                .join('applybank', 'customer.idcustomer', 'applybank.idcustomer')
+                .where('applybank.executiveid', req.params.id)
+                .whereIn('applybank.idapplybank', subquery)
+                .groupBy('applybank.idcustomer')
+                .orderBy('applybank.idapplybank', 'desc')
+                .then(function(re) {
+                    res.status(200).json({
+                        message: "Memberlists fetched",
+                        posts: result,
+                        maxPosts: re.length
+                    });
+                })
+        })
+});
+router.get('/adminnotopenedlist', (req, res) => {
+    knex.select()
+        .from('enquirydata')
+        .where('executiveStatus', "new")
+        .then(function(result) {
+            res.json(result.length);
+        })
+});
+router.get('/adminfilepickedlist', (req, res) => {
+    knex.select()
+        .from('enquirydata')
+        .where('status', "FILE PICKED")
+        .then(function(result) {
+            res.json(result.length);
+        })
+});
+router.get('/admincontactedlist', (req, res) => {
+    knex.select()
+        .from('enquirydata')
+        .where('status', "CONTACTED")
+        .then(function(result) {
+            res.json(result.length);
+        })
+});
+router.get('/adminloginlist', (req, res) => {
+    knex.select()
+        .from('enquirydata')
+        .where('status', "LOGIN")
+        .then(function(result) {
+            res.json(result.length);
+        })
+});
+router.get('/adminwiplist', (req, res) => {
+    knex.select()
+        .from('enquirydata')
+        .where('status', "WORK IN PROGRESS")
+        .then(function(result) {
+            res.json(result.length);
+        })
+});
+router.get('/adminapprovedlist', (req, res) => {
+    knex.select()
+        .from('enquirydata')
+        .where('status', "APPROVED")
+        .then(function(result) {
+            res.json(result.length);
+        })
+});
+router.get('/adminnofallowup', (req, res) => {
+    knex.select()
+        .from('enquirydata')
+        .where('status', "REQUIRED")
+        .where('executiveStatus', "opened")
+        .then(function(result) {
+            res.json(result.length);
+        })
+});
+router.get('/empgetallearlygo/:pagesize/:page/:id', function(req, res) {
+    const pageSize = req.params.pagesize;
+    const currentPage = req.params.page;
+    const skip = (pageSize * (currentPage - 1))
+    knex.select()
+        .from('earlygo')
+        .where('empID', req.params.id)
+        .orderBy('earlyGoID', 'desc')
+        .limit(pageSize).offset(skip)
+        .then(function(result) {
+            knex.select()
+                .from('earlygo')
+                .where('empID', req.params.id)
+                .orderBy('earlyGoID', 'desc')
+                .then(function(re) {
+                    res.status(200).json({
+                        message: "Memberlists fetched",
+                        posts: result,
+                        maxPosts: re.length
+                    });
+
+                })
+        })
+});
+router.get('/getEnquiryApprovelistexe1/:pagesize/:page', (req, res, next) => {
+    const pageSize = req.params.pagesize;
+    const currentPage = req.params.page;
+    const skip = (pageSize * (currentPage - 1));
+    // //console.log(req.params.id);
+    var date3 = format.asString('MM/dd/yyyy', new Date());
+    var ddd = moment().format(date3);
+    var d = new Date(ddd);
+    var e = d.getDate();
+    var m = d.getMonth() + 1;
+    var y = d.getFullYear() + ',' + m + ',' + e;
+    knex.select('enquirydata.*', 'loantype.loantype', 'employee.name as ename')
+        .from('enquirydata')
+        .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
+        .join('employee', 'employee.idemployee', 'enquirydata.teleid')
+        .where('enquirydata.status', 'APPROVED')
+        .orderBy('enquirydata.idenquiry', 'desc')
+        .limit(pageSize).offset(skip)
+        .then(function(result) {
+            // //console.log(res);
+            var a = result.length
+            for (i = 0; i < a; i++) {
+                var d1 = new Date(result[i].updateddate);
+                var e1 = d1.getDate();
+                var m1 = d1.getMonth() + 1;
+                var y1 = d1.getFullYear() + ',' + m1 + ',' + e1;
+                var date1 = new Date(y);
+                var date4 = new Date(y1);
+                var diff = new DateDiff(date1, date4);
+                var opt = diff.days();
+                //console.log(opt);
+                result[i].opt = opt;
+            }
+            knex.select()
+                .from('enquirydata')
+                .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
+                .join('employee', 'employee.idemployee', 'enquirydata.teleid')
+                .where('enquirydata.status', 'APPROVED')
+                .orderBy('enquirydata.idenquiry', 'desc')
+                .then(function(re) {
+
+                    res.status(200).json({
+                        message: "Memberlists fetched",
+                        posts: result,
+                        maxPosts: re.length
+                    });
+                })
+        })
+});
+router.get('/getEnquirycontactedlistexe1/:pagesize/:page', (req, res, next) => {
+    const pageSize = req.params.pagesize;
+    const currentPage = req.params.page;
+    const skip = (pageSize * (currentPage - 1));
+    // //console.log(req.params.id);
+    var date3 = format.asString('MM/dd/yyyy', new Date());
+    var ddd = moment().format(date3);
+    var d = new Date(ddd);
+    var e = d.getDate();
+    var m = d.getMonth() + 1;
+    var y = d.getFullYear() + ',' + m + ',' + e;
+    knex.select('enquirydata.*', 'loantype.loantype', 'employee.name as ename')
+        .from('enquirydata')
+        .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
+        .join('employee', 'employee.idemployee', 'enquirydata.teleid')
+        .where('enquirydata.status', 'CONTACTED')
+        .orderBy('enquirydata.idenquiry', 'desc')
+        .limit(pageSize).offset(skip)
+        .then(function(result) {
+            // //console.log(res);
+            var a = result.length
+            for (i = 0; i < a; i++) {
+                var d1 = new Date(result[i].updateddate);
+                var e1 = d1.getDate();
+                var m1 = d1.getMonth() + 1;
+                var y1 = d1.getFullYear() + ',' + m1 + ',' + e1;
+                var date1 = new Date(y);
+                var date4 = new Date(y1);
+                var diff = new DateDiff(date1, date4);
+                var opt = diff.days();
+                //console.log(opt);
+                result[i].opt = opt;
+            }
+            knex.select()
+                .from('enquirydata')
+                .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
+                .join('employee', 'employee.idemployee', 'enquirydata.teleid')
+                .where('enquirydata.status', 'CONTACTED')
+                .orderBy('enquirydata.idenquiry', 'desc')
+                .then(function(re) {
+
+                    res.status(200).json({
+                        message: "Memberlists fetched",
+                        posts: result,
+                        maxPosts: re.length
+                    });
+                })
+        })
+});
+router.get('/getEnquirydisburselistexe1/:pagesize/:page', (req, res, next) => {
+    const pageSize = req.params.pagesize;
+    const currentPage = req.params.page;
+    const skip = (pageSize * (currentPage - 1));
+    // //console.log(req.params.id);
+    var date3 = format.asString('MM/dd/yyyy', new Date());
+    var ddd = moment().format(date3);
+    var d = new Date(ddd);
+    var e = d.getDate();
+    var m = d.getMonth() + 1;
+    var y = d.getFullYear() + ',' + m + ',' + e;
+    knex.select('enquirydata.*', 'loantype.loantype', 'employee.name as ename')
+        .from('enquirydata')
+        .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
+        .join('employee', 'employee.idemployee', 'enquirydata.teleid')
+        .where('enquirydata.status', 'DISBURSED')
+        .orderBy('enquirydata.idenquiry', 'desc')
+        .limit(pageSize).offset(skip)
+        .then(function(result) {
+            // //console.log(res);
+            var a = result.length
+            for (i = 0; i < a; i++) {
+                var d1 = new Date(result[i].updateddate);
+                var e1 = d1.getDate();
+                var m1 = d1.getMonth() + 1;
+                var y1 = d1.getFullYear() + ',' + m1 + ',' + e1;
+                var date1 = new Date(y);
+                var date4 = new Date(y1);
+                var diff = new DateDiff(date1, date4);
+                var opt = diff.days();
+                //console.log(opt);
+                result[i].opt = opt;
+            }
+            knex.select()
+                .from('enquirydata')
+                .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
+                .join('employee', 'employee.idemployee', 'enquirydata.teleid')
+                .where('enquirydata.status', 'DISBURSED')
+                .orderBy('enquirydata.idenquiry', 'desc')
+                .then(function(re) {
+
+                    res.status(200).json({
+                        message: "Memberlists fetched",
+                        posts: result,
+                        maxPosts: re.length
+                    });
+                })
+        })
+});
+router.get('/getEnquiryfilepicklistexe1/:pagesize/:page', (req, res, next) => {
+    const pageSize = req.params.pagesize;
+    const currentPage = req.params.page;
+    const skip = (pageSize * (currentPage - 1));
+    // //console.log(req.params.id);
+    var date3 = format.asString('MM/dd/yyyy', new Date());
+    var ddd = moment().format(date3);
+    var d = new Date(ddd);
+    var e = d.getDate();
+    var m = d.getMonth() + 1;
+    var y = d.getFullYear() + ',' + m + ',' + e;
+    knex.select('enquirydata.*', 'loantype.loantype', 'employee.name as ename')
+        .from('enquirydata')
+        .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
+        .join('employee', 'employee.idemployee', 'enquirydata.teleid')
+        .where('enquirydata.status', 'FILE PICKED')
+        .orderBy('enquirydata.idenquiry', 'desc')
+        .limit(pageSize).offset(skip)
+        .then(function(result) {
+            // //console.log(res);
+            var a = result.length
+            for (i = 0; i < a; i++) {
+                var d1 = new Date(result[i].updateddate);
+                var e1 = d1.getDate();
+                var m1 = d1.getMonth() + 1;
+                var y1 = d1.getFullYear() + ',' + m1 + ',' + e1;
+                var date1 = new Date(y);
+                var date4 = new Date(y1);
+                var diff = new DateDiff(date1, date4);
+                var opt = diff.days();
+                //console.log(opt);
+                result[i].opt = opt;
+            }
+            knex.select()
+                .from('enquirydata')
+                .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
+                .join('employee', 'employee.idemployee', 'enquirydata.teleid')
+                .where('enquirydata.status', 'FILE PICKED')
+                .orderBy('enquirydata.idenquiry', 'desc')
+                .then(function(re) {
+
+                    res.status(200).json({
+                        message: "Memberlists fetched",
+                        posts: result,
+                        maxPosts: re.length
+                    });
+                })
+        })
+});
+router.get('/getEnquiryloginlistexe1/:pagesize/:page', (req, res, next) => {
+    const pageSize = req.params.pagesize;
+    const currentPage = req.params.page;
+    const skip = (pageSize * (currentPage - 1));
+    // //console.log(req.params.id);
+    var date3 = format.asString('MM/dd/yyyy', new Date());
+    var ddd = moment().format(date3);
+    var d = new Date(ddd);
+    var e = d.getDate();
+    var m = d.getMonth() + 1;
+    var y = d.getFullYear() + ',' + m + ',' + e;
+    knex.select('enquirydata.*', 'loantype.loantype', 'employee.name as ename')
+        .from('enquirydata')
+        .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
+        .join('employee', 'employee.idemployee', 'enquirydata.teleid')
+        .where('enquirydata.status', 'LOGIN')
+        .orderBy('enquirydata.idenquiry', 'desc')
+        .limit(pageSize).offset(skip)
+        .then(function(result) {
+            // //console.log(res);
+            var a = result.length
+            for (i = 0; i < a; i++) {
+                var d1 = new Date(result[i].updateddate);
+                var e1 = d1.getDate();
+                var m1 = d1.getMonth() + 1;
+                var y1 = d1.getFullYear() + ',' + m1 + ',' + e1;
+                var date1 = new Date(y);
+                var date4 = new Date(y1);
+                var diff = new DateDiff(date1, date4);
+                var opt = diff.days();
+                //console.log(opt);
+                result[i].opt = opt;
+            }
+            knex.select()
+                .from('enquirydata')
+                .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
+                .join('employee', 'employee.idemployee', 'enquirydata.teleid')
+                .where('enquirydata.status', 'LOGIN')
+                .orderBy('enquirydata.idenquiry', 'desc')
+                .then(function(re) {
+
+                    res.status(200).json({
+                        message: "Memberlists fetched",
+                        posts: result,
+                        maxPosts: re.length
+                    });
+                })
+        })
+});
+router.get('/getEnquirynotopenlistexe1/:pagesize/:page', (req, res, next) => {
+    const pageSize = req.params.pagesize;
+    const currentPage = req.params.page;
+    const skip = (pageSize * (currentPage - 1));
+    // //console.log(req.params.id);
+    var date3 = format.asString('MM/dd/yyyy', new Date());
+    var ddd = moment().format(date3);
+    var d = new Date(ddd);
+    var e = d.getDate();
+    var m = d.getMonth() + 1;
+    var y = d.getFullYear() + ',' + m + ',' + e;
+    knex.select('enquirydata.*', 'loantype.loantype', 'employee.name as ename')
+        .from('enquirydata')
+        .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
+        .join('employee', 'employee.idemployee', 'enquirydata.teleid')
+        .where('executiveStatus', "new")
+        .orderBy('enquirydata.idenquiry', 'desc')
+        .limit(pageSize).offset(skip)
+        .then(function(result) {
+            // //console.log(res);
+            var a = result.length
+            for (i = 0; i < a; i++) {
+                var d1 = new Date(result[i].assignedTime);
+                var e1 = d1.getDate();
+                var m1 = d1.getMonth() + 1;
+                var y1 = d1.getFullYear() + ',' + m1 + ',' + e1;
+                var date1 = new Date(y);
+                var date4 = new Date(y1);
+                var diff = new DateDiff(date1, date4);
+                var opt = diff.days();
+                //console.log(opt);
+                result[i].opt = opt;
+            }
+            knex.select()
+                .from('enquirydata')
+                .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
+                .join('employee', 'employee.idemployee', 'enquirydata.teleid')
+                .where('executiveStatus', "new")
+                .orderBy('enquirydata.idenquiry', 'desc')
+                .then(function(re) {
+
+                    res.status(200).json({
+                        message: "Memberlists fetched",
+                        posts: result,
+                        maxPosts: re.length
+                    });
+                })
+        })
+});
+router.get('/getEnquiryrejectlistexe1/:pagesize/:page', (req, res, next) => {
+    const pageSize = req.params.pagesize;
+    const currentPage = req.params.page;
+    const skip = (pageSize * (currentPage - 1));
+    // //console.log(req.params.id);
+    var date3 = format.asString('MM/dd/yyyy', new Date());
+    var ddd = moment().format(date3);
+    var d = new Date(ddd);
+    var e = d.getDate();
+    var m = d.getMonth() + 1;
+    var y = d.getFullYear() + ',' + m + ',' + e;
+    knex.select('enquirydata.*', 'loantype.loantype', 'employee.name as ename')
+        .from('enquirydata')
+        .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
+        .join('employee', 'employee.idemployee', 'enquirydata.teleid')
+        .where('enquirydata.status', 'REJECTED')
+        .orderBy('enquirydata.idenquiry', 'desc')
+        .limit(pageSize).offset(skip)
+        .then(function(result) {
+            // //console.log(res);
+            var a = result.length
+            for (i = 0; i < a; i++) {
+                var d1 = new Date(result[i].updateddate);
+                var e1 = d1.getDate();
+                var m1 = d1.getMonth() + 1;
+                var y1 = d1.getFullYear() + ',' + m1 + ',' + e1;
+                var date1 = new Date(y);
+                var date4 = new Date(y1);
+                var diff = new DateDiff(date1, date4);
+                var opt = diff.days();
+                //console.log(opt);
+                result[i].opt = opt;
+            }
+            knex.select()
+                .from('enquirydata')
+                .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
+                .join('employee', 'employee.idemployee', 'enquirydata.teleid')
+                .where('enquirydata.status', 'REJECTED')
+                .orderBy('enquirydata.idenquiry', 'desc')
+                .then(function(re) {
+
+                    res.status(200).json({
+                        message: "Memberlists fetched",
+                        posts: result,
+                        maxPosts: re.length
+                    });
+                })
+        })
+});
+router.get('/getEnquirywiplistexe1/:pagesize/:page', (req, res, next) => {
+    const pageSize = req.params.pagesize;
+    const currentPage = req.params.page;
+    const skip = (pageSize * (currentPage - 1));
+    // //console.log(req.params.id);
+    var date3 = format.asString('MM/dd/yyyy', new Date());
+    var ddd = moment().format(date3);
+    var d = new Date(ddd);
+    var e = d.getDate();
+    var m = d.getMonth() + 1;
+    var y = d.getFullYear() + ',' + m + ',' + e;
+    knex.select('enquirydata.*', 'loantype.loantype', 'employee.name as ename')
+        .from('enquirydata')
+        .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
+        .join('employee', 'employee.idemployee', 'enquirydata.teleid')
+        .where('enquirydata.status', 'WORK IN PROGRESS')
+        .orderBy('enquirydata.idenquiry', 'desc')
+        .limit(pageSize).offset(skip)
+        .then(function(result) {
+            // //console.log(res);
+            var a = result.length
+            for (i = 0; i < a; i++) {
+                var d1 = new Date(result[i].updateddate);
+                var e1 = d1.getDate();
+                var m1 = d1.getMonth() + 1;
+                var y1 = d1.getFullYear() + ',' + m1 + ',' + e1;
+                var date1 = new Date(y);
+                var date4 = new Date(y1);
+                var diff = new DateDiff(date1, date4);
+                var opt = diff.days();
+                //console.log(opt);
+                result[i].opt = opt;
+            }
+            knex.select()
+                .from('enquirydata')
+                .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
+                .join('employee', 'employee.idemployee', 'enquirydata.teleid')
+                .where('enquirydata.status', 'WORK IN PROGRESS')
+                .orderBy('enquirydata.idenquiry', 'desc')
+                .then(function(re) {
+
+                    res.status(200).json({
+                        message: "Memberlists fetched",
+                        posts: result,
+                        maxPosts: re.length
+                    });
+                })
+        })
+});
+router.get('/getEnquirynofollowuplistexe1/:pagesize/:page', (req, res, next) => {
+    const pageSize = req.params.pagesize;
+    const currentPage = req.params.page;
+    const skip = (pageSize * (currentPage - 1));
+    // //console.log(req.params.id);
+    var date3 = format.asString('MM/dd/yyyy', new Date());
+    var ddd = moment().format(date3);
+    var d = new Date(ddd);
+    var e = d.getDate();
+    var m = d.getMonth() + 1;
+    var y = d.getFullYear() + ',' + m + ',' + e;
+    knex.select('enquirydata.*', 'loantype.loantype', 'employee.name as ename')
+        .from('enquirydata')
+        .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
+        .join('employee', 'employee.idemployee', 'enquirydata.teleid')
+        .where('enquirydata.status', "REQUIRED")
+        .where('enquirydata.executiveStatus', "opened")
+        .orderBy('enquirydata.idenquiry', 'desc')
+        .limit(pageSize).offset(skip)
+        .then(function(result) {
+            // //console.log(res);
+            var a = result.length
+            for (i = 0; i < a; i++) {
+                var d1 = new Date(result[i].assignedTime);
+                var e1 = d1.getDate();
+                var m1 = d1.getMonth() + 1;
+                var y1 = d1.getFullYear() + ',' + m1 + ',' + e1;
+                var date1 = new Date(y);
+                var date4 = new Date(y1);
+                var diff = new DateDiff(date1, date4);
+                var opt = diff.days();
+                //console.log(opt);
+                result[i].opt = opt;
+            }
+            knex.select()
+                .from('enquirydata')
+                .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
+                .join('employee', 'employee.idemployee', 'enquirydata.teleid')
+                .where('enquirydata.status', "REQUIRED")
+                .where('enquirydata.executiveStatus', "opened")
+                .orderBy('enquirydata.idenquiry', 'desc')
+                .then(function(re) {
+
+                    res.status(200).json({
+                        message: "Memberlists fetched",
+                        posts: result,
+                        maxPosts: re.length
+                    });
+                })
+        })
+});
+router.get('/getadminEnquirylist/:pagesize/:page', (req, res, next) => {
+    const pageSize = req.params.pagesize;
+    const currentPage = req.params.page;
+    const skip = (pageSize * (currentPage - 1));
+    // //console.log(req.params.id);
+
+    knex.select('enquirydata.*', 'loantype.loantype', 'employee.name as ename')
+        .from('enquirydata')
+        .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
+        .join('employee', 'employee.idemployee', 'enquirydata.teleid')
+        .orderBy('enquirydata.idenquiry', 'desc')
+        .limit(pageSize).offset(skip)
+        .then(function(result) {
+            // //console.log(res);
+            knex.select()
+                .from('enquirydata')
+                .join('loantype', 'loantype.idloantype', 'enquirydata.loantype')
+                .join('employee', 'employee.idemployee', 'enquirydata.teleid')
+                .orderBy('enquirydata.idenquiry', 'desc')
+                .then(function(re) {
+
+                    res.status(200).json({
+                        message: "Memberlists fetched",
+                        posts: result,
+                        maxPosts: re.length
+                    });
+                })
+        })
 });
 module.exports = router;

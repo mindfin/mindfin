@@ -7,7 +7,6 @@ import { PageEvent, MatTableDataSource, MatSort, MatPaginator, MatDialogRef } fr
 import { SampleService } from '../../sample.service';
 import {MatDialog,MAT_DIALOG_DATA,MatDialogConfig} from '@angular/material';
 import { DefaultLayoutComponent } from '../../containers';
-import { AssignDialogContent } from './adminteledatalist.component';
 
 // export interface DialogData {
 // this.model;
@@ -16,9 +15,9 @@ import { AssignDialogContent } from './adminteledatalist.component';
 
 @Component({
   selector: 'app-home',
-  templateUrl: './adminteledatafilepickedlist.component.html',
+  templateUrl: './superadminteledatafilepickedlist.component.html',
 })
-export class AdminTeledataFilePickedlistComponent  {
+export class SuperAdminTeledataFilePickedlistComponent  {
 
   displayedColumns: string[] = ['date','id','name','redate','mobile','email','address','bankname','bank','telename','comment','edit','assign'];
   samples:any;
@@ -57,7 +56,7 @@ empname:any;
       // console.log(params['id']);
       this.exeid=localStorage.getItem("id");
       // this.idvalue = params['id'];
-      this.commonservice.getEnquiryfilepicklistexe(this.postsPerPage, this.currentPage,this.exeid);
+      this.commonservice.getEnquiryfilepicklistexe1(this.postsPerPage, this.currentPage);
       this.commonservice
       .getEnquiryfilepicklistexeDetails()
        .subscribe((postData: {posts: SuperadminService[], postCount: number})=> {
@@ -89,7 +88,7 @@ empname:any;
     this.currentPage = pageData.pageIndex + 1;
     this.postsPerPage = pageData.pageSize;
     console.log(this.postsPerPage);
-    this.commonservice.getEnquiryfilepicklistexe(this.postsPerPage, this.currentPage,this.exeid);
+    this.commonservice.getEnquiryfilepicklistexe1(this.postsPerPage, this.currentPage);
   }
 
 refresh(): void {

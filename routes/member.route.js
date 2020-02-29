@@ -188,13 +188,22 @@ router.post('/bankstatementcam', (req, res) => {
 
                     // The raw PDF data in text form
                     const raw = pdfParser.getRawTextContent();
+
                     console.log(raw);
                     fs.unlink('./President/documentcam.pdf', function(err) {
                         if (err) return console.log(err);
                         console.log('file deleted successfully');
                     });
                     // Return the parsed data
+                    // for (let i = 0; i <= raw.length; i++) {
+                    //     if (raw[i] !== '\n') {
+                    //         if (raw[i] !== '\r') {
+
+                    //         }
+                    //     }
+                    // }
                     resolve({
+
                         data: raw
                     });
                 });

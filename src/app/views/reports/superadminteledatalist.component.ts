@@ -7,7 +7,6 @@ import { PageEvent, MatTableDataSource, MatSort, MatPaginator, MatDialogRef } fr
 import { SampleService } from '../../sample.service';
 import {MatDialog,MAT_DIALOG_DATA,MatDialogConfig} from '@angular/material';
 import { DefaultLayoutComponent } from '../../containers';
-import { AssignDialogContent } from './adminteledatalist.component';
 
 // export interface DialogData {
 // this.model;
@@ -16,11 +15,11 @@ import { AssignDialogContent } from './adminteledatalist.component';
 
 @Component({
   selector: 'app-home',
-  templateUrl: './adminteledatafilepickedlist.component.html',
+  templateUrl: './superadminteledatalist.component.html',
 })
-export class AdminTeledataFilePickedlistComponent  {
+export class SuperAdminTeledatalistComponent  {
 
-  displayedColumns: string[] = ['date','id','name','redate','mobile','email','address','bankname','bank','telename','comment','edit','assign'];
+  displayedColumns: string[] = ['date','id','name','mobile','email','address','bankname','bank','telename','comment','turnover','edit','assign'];
   samples:any;
   dataSource;
 
@@ -33,8 +32,7 @@ export class AdminTeledataFilePickedlistComponent  {
     @ViewChild(MatSort) sort: MatSort;
 
   
-    fetchData:any;
-    value1:any;
+fetchdata:any;
 model:any = {};
 aa:any;
 // posts:Memberlist[] = [];
@@ -57,9 +55,9 @@ empname:any;
       // console.log(params['id']);
       this.exeid=localStorage.getItem("id");
       // this.idvalue = params['id'];
-      this.commonservice.getEnquiryfilepicklistexe(this.postsPerPage, this.currentPage,this.exeid);
+      this.commonservice.getadminEnquirylist(this.postsPerPage, this.currentPage);
       this.commonservice
-      .getEnquiryfilepicklistexeDetails()
+      .getEnquirylistexeDetails1()
        .subscribe((postData: {posts: SuperadminService[], postCount: number})=> {
         
           this.totalPosts = postData.postCount;
@@ -73,11 +71,14 @@ empname:any;
       // console.log(this.dataSource.sort);
       });
     });
-    this.commonservice.getemailSettings().subscribe(res=>{
+    this.empid = localStorage.getItem("id");
+    this.empname = localStorage.getItem("empname");
+    var emp= {empid: this.empid, empname: this.empname };
+    this.commonservice.teldataopenstatus(emp).subscribe(res=>{
+      this.defaultlayout.ngOnInit();
       console.log(res);
-      this.fetchData =res;
-
-    })
+     });
+     
   }
 
   applyFilter(filterValue: string) {
@@ -89,7 +90,7 @@ empname:any;
     this.currentPage = pageData.pageIndex + 1;
     this.postsPerPage = pageData.pageSize;
     console.log(this.postsPerPage);
-    this.commonservice.getEnquiryfilepicklistexe(this.postsPerPage, this.currentPage,this.exeid);
+    this.commonservice.getadminEnquirylist(this.postsPerPage, this.currentPage);
   }
 
 refresh(): void {
@@ -99,13 +100,11 @@ exportAsXLSX(): void {
   console.log(this.samples);
   let come = this.samples;
   var a;
-  const fileName = "Enquired File Picked Data";
+  const fileName = "Enquired Data";
   for (let i = 0; i < come.length; i++) {
     this.array.push({
 
       "Enquired Date": this.samples[i].createddate,
-      "Reminded Date ": this.samples[i].remindDate,
-      "Updated On": this.samples[i].opt,
       "Company Name/Customer Name": this.samples[i].name,
       "Mobile": this.samples[i].mobile,
       "EmailId": this.samples[i].email,
@@ -126,63 +125,48 @@ exportAsXLSX(): void {
 
   // console.log(this.array);   
   this.excelservice.JSONToCSVConvertor(this.array, "Report", true, fileName);
+
+
 }
 
-notify(obj) {
+editData(id){
+  console.log(id);
+  this.commonservice.teleeditData(id);
+}
+getreport(obj) {
+
+  // this.commonservice.gettelereport(obj).subscribe(res=>{
+  //   console.log(res);
+  // })
   console.log(obj);
-  this.value1={value:obj, emails:this.fetchData}
-  this.commonservice.notify(this.value1).subscribe(res=>{
-    console.log(res);
-    alert("Reminder sent Successfully");
-   this.ngOnInit();
+  this.isLoading = true;
+  console.log(obj)
+  localStorage.setItem("startdate", obj.startdate[0]);
+    localStorage.setItem("enddate", obj.startdate[1]);
+    this.sdate = localStorage.getItem("startdate");
+    this.edate = localStorage.getItem("enddate");
+  this.commonservice.getDataEnquirylist1(this.postsPerPage, this.currentPage, this.sdate, this.edate,this.exeid);
+  this.commonservice
+    .getDataEnquirylistDetails1()
+    .subscribe((postData: { posts: SuperadminService[], postCount: number }) => {
 
-  })
+      this.totalPosts = postData.postCount;
+      this.dataSource = new MatTableDataSource(postData.posts);
+      // this.dataSource = new (postData.posts);
+      this.samples = postData.posts;
+      this.isLoading = false;
+      console.log(postData.posts);
+      console.log(postData.postCount);
+      this.dataSource.sort = this.sort;
+      console.log(this.dataSource.sort);
+    })
 }
-removeCase(obj) {
-  console.log(obj);
-  this.value1={value:obj, emails:this.fetchData}
-  this.commonservice.removeCase(this.value1).subscribe(res=>{
-    console.log(res);
-    alert("Case Removed Successfully");
-    this.openDialog(obj)
-
-  })
-}
-// getreport(obj) {
-
-//   // this.commonservice.gettelereport(obj).subscribe(res=>{
-//   //   console.log(res);
-//   // })
-//   console.log(obj);
-//   this.isLoading = true;
-//   console.log(obj)
-//   localStorage.setItem("startdate", obj.startdate[0]);
-//     localStorage.setItem("enddate", obj.startdate[1]);
-//     this.sdate = localStorage.getItem("startdate");
-//     this.edate = localStorage.getItem("enddate");
-//   this.commonservice.getDataEnquirylist1(this.postsPerPage, this.currentPage, this.sdate, this.edate,this.exeid);
-//   this.commonservice
-//     .getDataEnquirylistDetails1()
-//     .subscribe((postData: { posts: SuperadminService[], postCount: number }) => {
-
-//       this.totalPosts = postData.postCount;
-//       this.dataSource = new MatTableDataSource(postData.posts);
-//       // this.dataSource = new (postData.posts);
-//       this.samples = postData.posts;
-//       this.isLoading = false;
-//       console.log(postData.posts);
-//       console.log(postData.postCount);
-//       this.dataSource.sort = this.sort;
-//       console.log(this.dataSource.sort);
-//     })
-// }
-
 openDialog(element) {
   this.model=element;
   
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {element};
-    this.dialog.open(AssignDialogContent4,dialogConfig
+    this.dialog.open(AssignDialogContent,dialogConfig
   );
   console.log(dialogConfig );
   
@@ -194,12 +178,12 @@ openDialog(element) {
   templateUrl: 'assignexe-content.html',
 })
 
-export class AssignDialogContent4{ 
+export class AssignDialogContent{ 
 
 
   constructor(@Inject(MAT_DIALOG_DATA) public data:any,
   private commonservice: CommonService ,private route: ActivatedRoute, private router: Router,
-  public dialogRef: MatDialogRef<AssignDialogContent4>) {}
+  public dialogRef: MatDialogRef<AssignDialogContent>) {}
 element:any;
 //   constructor(
 //     @Inject(MAT_DIALOG_DATA) public data: any
@@ -237,9 +221,9 @@ assignexe(obj){
 
     this.exeid=localStorage.getItem("id");
     // this.idvalue = params['id'];
-    this.commonservice.getEnquiryfilepicklistexe(this.postsPerPage, this.currentPage,this.exeid);
+    this.commonservice.getEnquirylistexe1(this.postsPerPage, this.currentPage,this.exeid);
     this.commonservice
-    .getEnquiryfilepicklistexeDetails()
+    .getEnquirylistexeDetails1()
      .subscribe((postData: {posts: SuperadminService[], postCount: number})=> {
       
         this.totalPosts = postData.postCount;
@@ -259,10 +243,4 @@ assignexe(obj){
   window.location.reload();
 }
 }
-
-
-
-
-
-
 

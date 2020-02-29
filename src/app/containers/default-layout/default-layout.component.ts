@@ -67,6 +67,15 @@ export class DefaultLayoutComponent {
   fetchData19;
   fetchData20;
   fetchData21;
+  fetchData22;
+  fetchData23;
+  fetchData24;
+  fetchData25;
+  fetchData26;
+  fetchData27;
+  fetchData28;
+  fetchData29;
+  fetchData30;
   reason;
   half;
   other;
@@ -120,10 +129,11 @@ export class DefaultLayoutComponent {
     this.service.getweblead().subscribe(res => {
       this.fetchData7 = res;
     });
-    this.service.getnewtelcount().subscribe(res => {
+    this.val = { empid: this.memberid }
+    this.service.getnewtelcount(this.val).subscribe(res => {
       this.fetchData11 = res;
     });
-    this.val = { empid: this.memberid }
+    
     this.service.getnewappocount(this.val).subscribe(res => {
       this.fetchData10 = res;
     });
@@ -154,6 +164,27 @@ export class DefaultLayoutComponent {
       this.fetchData21 = res;
       console.log(this.fetchData20 = this.fetchData11 + this.fetchData14 + this.fetchData15 + this.fetchData16 +
         this.fetchData17 + this.fetchData18 + this.fetchData19+this.fetchData21);
+    });
+    this.service.getadminnewtelcount().subscribe(res => {
+      this.fetchData22 = res;
+    });
+    this.service.adminnotopenedlist().subscribe(res => {
+      this.fetchData23 = res;
+    }); this.service.adminfilepickedlist().subscribe(res => {
+      this.fetchData24 = res;
+    }); this.service.admincontactedlist().subscribe(res => {
+      this.fetchData25 = res;
+    }); this.service.adminloginlist().subscribe(res => {
+      this.fetchData26 = res;
+    }); this.service.adminwiplist().subscribe(res => {
+      this.fetchData27 = res;
+    }); this.service.adminapprovedlist().subscribe(res => {
+      this.fetchData28 = res;
+    });
+    this.service.adminnofallowup().subscribe(res => {
+      this.fetchData29 = res;
+      console.log(this.fetchData30 = this.fetchData22 + this.fetchData23 + this.fetchData24 + this.fetchData25 +
+        this.fetchData26 + this.fetchData27 + this.fetchData28+this.fetchData29);
     });
   }
 

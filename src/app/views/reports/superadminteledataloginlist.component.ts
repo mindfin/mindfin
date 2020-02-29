@@ -7,7 +7,6 @@ import { PageEvent, MatTableDataSource, MatSort, MatPaginator, MatDialogRef } fr
 import { SampleService } from '../../sample.service';
 import {MatDialog,MAT_DIALOG_DATA,MatDialogConfig} from '@angular/material';
 import { DefaultLayoutComponent } from '../../containers';
-import { AssignDialogContent } from './adminteledatalist.component';
 
 // export interface DialogData {
 // this.model;
@@ -16,9 +15,9 @@ import { AssignDialogContent } from './adminteledatalist.component';
 
 @Component({
   selector: 'app-home',
-  templateUrl: './adminteledatafilepickedlist.component.html',
+  templateUrl: './superadminteledataloginlist.component.html',
 })
-export class AdminTeledataFilePickedlistComponent  {
+export class SuperAdminTeledataLoginlistComponent  {
 
   displayedColumns: string[] = ['date','id','name','redate','mobile','email','address','bankname','bank','telename','comment','edit','assign'];
   samples:any;
@@ -57,9 +56,9 @@ empname:any;
       // console.log(params['id']);
       this.exeid=localStorage.getItem("id");
       // this.idvalue = params['id'];
-      this.commonservice.getEnquiryfilepicklistexe(this.postsPerPage, this.currentPage,this.exeid);
+      this.commonservice.getEnquiryloginlistexe1(this.postsPerPage, this.currentPage);
       this.commonservice
-      .getEnquiryfilepicklistexeDetails()
+      .getEnquiryloginlistexeDetails()
        .subscribe((postData: {posts: SuperadminService[], postCount: number})=> {
         
           this.totalPosts = postData.postCount;
@@ -89,7 +88,7 @@ empname:any;
     this.currentPage = pageData.pageIndex + 1;
     this.postsPerPage = pageData.pageSize;
     console.log(this.postsPerPage);
-    this.commonservice.getEnquiryfilepicklistexe(this.postsPerPage, this.currentPage,this.exeid);
+    this.commonservice.getEnquiryloginlistexe1(this.postsPerPage, this.currentPage);
   }
 
 refresh(): void {
@@ -99,7 +98,7 @@ exportAsXLSX(): void {
   console.log(this.samples);
   let come = this.samples;
   var a;
-  const fileName = "Enquired File Picked Data";
+  const fileName = "Enquired Login Data";
   for (let i = 0; i < come.length; i++) {
     this.array.push({
 
@@ -126,6 +125,8 @@ exportAsXLSX(): void {
 
   // console.log(this.array);   
   this.excelservice.JSONToCSVConvertor(this.array, "Report", true, fileName);
+
+
 }
 
 notify(obj) {
@@ -176,13 +177,12 @@ removeCase(obj) {
 //       console.log(this.dataSource.sort);
 //     })
 // }
-
 openDialog(element) {
   this.model=element;
   
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {element};
-    this.dialog.open(AssignDialogContent4,dialogConfig
+    this.dialog.open(AssignDialogContent5,dialogConfig
   );
   console.log(dialogConfig );
   
@@ -194,12 +194,12 @@ openDialog(element) {
   templateUrl: 'assignexe-content.html',
 })
 
-export class AssignDialogContent4{ 
+export class AssignDialogContent5{ 
 
 
   constructor(@Inject(MAT_DIALOG_DATA) public data:any,
   private commonservice: CommonService ,private route: ActivatedRoute, private router: Router,
-  public dialogRef: MatDialogRef<AssignDialogContent4>) {}
+  public dialogRef: MatDialogRef<AssignDialogContent5>) {}
 element:any;
 //   constructor(
 //     @Inject(MAT_DIALOG_DATA) public data: any
@@ -237,9 +237,9 @@ assignexe(obj){
 
     this.exeid=localStorage.getItem("id");
     // this.idvalue = params['id'];
-    this.commonservice.getEnquiryfilepicklistexe(this.postsPerPage, this.currentPage,this.exeid);
+    this.commonservice.getEnquiryloginlistexe(this.postsPerPage, this.currentPage,this.exeid);
     this.commonservice
-    .getEnquiryfilepicklistexeDetails()
+    .getEnquiryloginlistexeDetails()
      .subscribe((postData: {posts: SuperadminService[], postCount: number})=> {
       
         this.totalPosts = postData.postCount;
@@ -259,10 +259,6 @@ assignexe(obj){
   window.location.reload();
 }
 }
-
-
-
-
 
 
 

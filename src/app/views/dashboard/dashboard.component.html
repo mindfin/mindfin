@@ -16,136 +16,67 @@
     <div class="row">
         <div class="col-sm-6 col-lg-3">
             <a href="#/member/employeelist">
-                <div class="card text-white bg-box1">
+                <div class="card text-white bg-info">
                     <div class="card-body pb-0">
-                        <div style="font-size: 22px;">EMPLOYEE'S </div>
-                    </div>
-                    <div class="extra-height chart-wrapper mt-3 mx-3">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <i class="fa fa-users" aria-hidden="true" style="font-size:40px"></i>
-                            </div>
-                            <div class="col-md-6">
-                                <h1>{{fetchData3}}</h1>
-                            </div>
-                        </div>
-                        <!-- <h1>sad</h1> -->
+                        <button type="button" class="btn btn-transparent p-0 float-right">
+                            <img src="/assets/images/emp.png " class="Status " height="40px " width="40px " />
+                        </button>
+                        <div class="text-value">{{fetchData3}}</div>
+                        <div><b>Employee's</b></div>
                     </div>
                 </div>
             </a>
         </div>
-        <!--/.col-->
-
         <div class="col-sm-6 col-lg-3">
             <a>
-                <div class="card text-white bg-box3">
+                <div class="card text-white bg-warning">
                     <div class="card-body pb-0">
-                        <div style="font-size: 22px;">LOGIN COUNT</div>
-                    </div>
-                    <div class="extra-height chart-wrapper mt-3 mx-3">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <i class="fa fa-sign-in" aria-hidden="true" style="font-size:40px"></i>
-                            </div>
-                            <div class="col-md-6">
-                                <h1>{{fetchData2}}</h1>
-                            </div>
-                        </div>
+                        <button type="button" class="btn btn-transparent p-0 float-right">
+                            <img src="/assets/images/approved.png " class="Status " height="40px " width="40px " />
+                        </button>
+                        <div class="text-value">{{fetchData2}}</div>
+                        <div><b>Login Count</b></div>
                     </div>
                 </div>
             </a>
         </div>
-
-        <!--/.col-->
-
-
-
         <div class="col-sm-6 col-lg-3">
             <a>
-
-                <div class="card text-white bg-box3">
+                <div class="card text-white bg-danger">
                     <div class="card-body pb-0">
-                        <div style="font-size: 22px;">REJECTED</div>
+                        <button type="button" class="btn btn-transparent p-0 float-right">
+                            <img src="/assets/images/rejected.png " class="Status " height="40px " width="40px " />
+                        </button>
+                        <div class="text-value">{{fetchData1}}</div>
+                        <div><b>Reject Count</b></div>
                     </div>
-                    <div class="extra-height chart-wrapper mt-3 mx-3">
-
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <i class="fa fa-close" aria-hidden="true" style="font-size:40px"></i>
-                            </div>
-                            <div class="col-md-6">
-                                <h1>{{fetchData1}}</h1>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
             </a>
         </div>
-        <!--/.col-->
         <div class="col-sm-6 col-lg-3">
             <a>
-                <div class="card text-white bg-box4">
+                <div class="card text-white bg-success">
                     <div class="card-body pb-0">
-                        <div style="font-size: 22px;">DISBURSE COUNT </div>
-                    </div>
-                    <div class="extra-height chart-wrapper mt-3 mx-3">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <i class="fa fa-check-circle" aria-hidden="true" style="font-size:40px"></i>
-                            </div>
-                            <div class="col-md-6">
-                                <h1>{{fetchData5}}</h1>
-                            </div>
-                        </div>
+                        <button type="button" class="btn btn-transparent p-0 float-right">
+                            <img src="/assets/images/disbursed.png " class="Status " height="40px " width="40px " />
+                        </button>
+                        <div class="text-value">{{fetchData5}}</div>
+                        <div><b>Disbursed Count</b></div>
                     </div>
                 </div>
             </a>
         </div>
     </div>
     <!--/.col-->
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <h4 class="card-title">Employee Data</h4>
+            <div id="users-medium-pie-chart"></div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <h4 class="card-title">Data Entry </h4>
+            <div id="users-category-pie-chart"></div>
+        </div>
+    </div>
 </div>
 <!--/.row-->
-
-<div class="row">
-    <!-- <div class="col-lg-6 col-md-6 col-sm-6">
-    <div class="card card-stats">
-      <div id="chartContainer" style="height: 370px; width: 100%; margin-left:auto;margin-right:auto;"></div>
-
-    </div>
-  </div>
-  <div class="col-lg-6 col-md-6 col-sm-6">
-    <div class="card card-stats">
-      <div id="chartContainer1" style="height: 370px; width: 100%; margin-left:auto;margin-right:auto;"></div>
-
-    </div>
-  </div> -->
-    <div class="col-lg-6 col-md-6 col-sm-12">
-        <h4 class="card-title">Employee Data</h4>
-        <div id="users-medium-pie-chart"></div>
-    </div>
-    <div class="col-lg-6 col-md-6 col-sm-12">
-        <h4 class="card-title">Data Entry </h4>
-        <div id="users-category-pie-chart"></div>
-    </div>
-</div>
-<!--/.col-->
-
-
-<!-- 
-      <a href="#">   <div class="card text-white" style="background: linear-gradient(60deg,#26c6da,#037684) !important">
-        <div class="card-body pb-0">  
-          <div style="font-size: 22px;">NO.Of Client</div>
-        </div>
-        <div class="chart-wrapper mt-3 mx-3" style="height:70px;">     
-          <div class="row">
-            <div class="col-md-6 dash_extra"  >
-                <i class="fa fa-users" aria-hidden="true" style="font-size:56px"></i>
-              </div>
-              <div class="col-md-6 dash_extra">
-<h1 >{{fetchData2}}</h1>
-                </div>
-              </div>
-        </div>
-      </div></a> -->

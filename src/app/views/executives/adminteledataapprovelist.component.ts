@@ -44,7 +44,7 @@ export class AdminTeledataApprovelistComponent {
   emp = 2;
   idvalue;
   exeid: any;
-  array: any;
+  array = [];
   sdate: any;
   edate: any;
   empid: any;
@@ -94,15 +94,19 @@ export class AdminTeledataApprovelistComponent {
   refresh(): void {
     window.location.reload();
   }
+  
   exportAsXLSX(): void {
     console.log(this.samples);
     let come = this.samples;
     var a;
-    const fileName = "Enquired Data";
+
+    const fileName = "Enquired Approved Data";
     for (let i = 0; i < come.length; i++) {
       this.array.push({
 
         "Enquired Date": this.samples[i].createddate,
+        "Reminded Date ": this.samples[i].remindDate,
+      "Updated On": this.samples[i].opt,
         "Company Name/Customer Name": this.samples[i].name,
         "Mobile": this.samples[i].mobile,
         "EmailId": this.samples[i].email,

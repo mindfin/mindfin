@@ -15,9 +15,9 @@ import { DefaultLayoutComponent } from '../../containers';
 
 @Component({
   selector: 'app-home',
-  templateUrl: './adminteledatadisbursedlist.component.html',
+  templateUrl: './superadminteledatadisbursedlist.component.html',
 })
-export class AdminTeledataDisburslistComponent {
+export class SuperAdminTeledataDisburslistComponent {
 
   displayedColumns: string[] = ['date', 'id', 'name','redate', 'mobile', 'email', 'address', 'bankname', 'bank', 'telename', 'comment', 'edit', 'assign'];
   samples: any;
@@ -56,7 +56,7 @@ value1:any;
       // console.log(params['id']);
       this.exeid = localStorage.getItem("id");
       // this.idvalue = params['id'];
-      this.commonservice.getEnquirydisburselistexe(this.postsPerPage, this.currentPage, this.exeid);
+      this.commonservice.getEnquirydisburselistexe1(this.postsPerPage, this.currentPage);
       this.commonservice
         .getEnquirydisburselistexeDetails()
         .subscribe((postData: { posts: SuperadminService[], postCount: number }) => {
@@ -88,7 +88,7 @@ value1:any;
     this.currentPage = pageData.pageIndex + 1;
     this.postsPerPage = pageData.pageSize;
     console.log(this.postsPerPage);
-    this.commonservice.getEnquirydisburselistexe(this.postsPerPage, this.currentPage, this.exeid);
+    this.commonservice.getEnquirydisburselistexe1(this.postsPerPage, this.currentPage);
   }
 
   refresh(): void {

@@ -45,7 +45,7 @@ isLoading = false;
 emp = 2;
 idvalue;
 exeid:any;
-array:any;
+array = [];
 sdate:any;
 edate:any;
 empid:any;
@@ -98,12 +98,14 @@ exportAsXLSX(): void {
   console.log(this.samples);
   let come = this.samples;
   var a;
-  const fileName = "Enquired Data";
+  const fileName = "Enquired WIP Data";
   for (let i = 0; i < come.length; i++) {
     this.array.push({
 
       "Enquired Date": this.samples[i].createddate,
       "Company Name/Customer Name": this.samples[i].name,
+      "Reminded Date ": this.samples[i].remindDate,
+      "Updated On": this.samples[i].opt,
       "Mobile": this.samples[i].mobile,
       "EmailId": this.samples[i].email,
       "Address": this.samples[i].address,

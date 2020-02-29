@@ -17,6 +17,16 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { BackendBankReportComponent } from './backendbankreport.component';
 import { BackendCustomerReportComponent } from './backendcustomerreport.component';
 import { WebsiteLeadReportComponent } from './websitelead.component';
+import { SuperAdminTeledataApprovelistComponent, AssignDialogContent1 } from './superadminteledataapprovelist.component';
+import { SuperAdminTeledataContactedlistComponent, AssignDialogContent2 } from './superadminteledatacontactedlist.component';
+import { SuperAdminTeledataWIPlistComponent, AssignDialogContent9 } from './superadminteledatawiplist.component';
+import { SuperAdminTeledataDisburslistComponent, AssignDialogContent3 } from './superadminteledatadisbursedlist.component';
+import { SuperAdminTeledataFilePickedlistComponent, AssignDialogContent4 } from './superadminteledatafilepickedlist.component';
+import { SuperAdminTeledatalistComponent, AssignDialogContent } from './superadminteledatalist.component';
+import { SuperAdminTeledataLoginlistComponent, AssignDialogContent5 } from './superadminteledataloginlist.component';
+import { SuperAdminTeledataNoFollowUplistComponent, AssignDialogContent6 } from './superadminteledatanofollowuplist.component';
+import { SuperAdminTeledataNotOpenedlistComponent, AssignDialogContent7 } from './superadminteledatanotopenlist.component';
+import { SuperAdminTeledataRejectlistComponent, AssignDialogContent8 } from './superadminteledatarejectlist.component';
 
 
 
@@ -52,7 +62,15 @@ import { WebsiteLeadReportComponent } from './websitelead.component';
   ],
   declarations: [LoginReportComponent,BackendReportComponent,DataentryReportComponent
     ,ExecutiveRoutineComponent,LoginRoutineComponent,DatatelelistComponent,WebsiteLeadReportComponent,
-    BackendBankReportComponent,BackendCustomerReportComponent ],
-  entryComponents: []
+    BackendBankReportComponent,BackendCustomerReportComponent,SuperAdminTeledataApprovelistComponent,
+    SuperAdminTeledataContactedlistComponent,SuperAdminTeledataWIPlistComponent,SuperAdminTeledataDisburslistComponent,
+    SuperAdminTeledataFilePickedlistComponent,SuperAdminTeledatalistComponent,SuperAdminTeledataLoginlistComponent,
+    SuperAdminTeledataNoFollowUplistComponent,SuperAdminTeledataNotOpenedlistComponent,SuperAdminTeledataRejectlistComponent,
+    AssignDialogContent,AssignDialogContent1,AssignDialogContent2,
+    AssignDialogContent3,AssignDialogContent4,AssignDialogContent5,AssignDialogContent6,AssignDialogContent7,
+    AssignDialogContent8,AssignDialogContent9],
+  entryComponents: [AssignDialogContent,AssignDialogContent1,AssignDialogContent2,
+    AssignDialogContent3,AssignDialogContent4,AssignDialogContent5,AssignDialogContent6,AssignDialogContent7,
+    AssignDialogContent8,AssignDialogContent9]
 })
 export class ReportsModule { }
