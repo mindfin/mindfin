@@ -12,6 +12,7 @@ import { any } from 'bluebird';
 import { CommonService } from '../../common.service';
 import { navItems8 } from '../../_nav8';
 import { navItems9 } from '../../_nav9';
+import { navItems10 } from '../../_nav10';
 import { MAT_DIALOG_DATA, MatDialogConfig, MatDialog, MatDialogRef } from '@angular/material';
 
 class FileSnippet {
@@ -40,6 +41,7 @@ export class DefaultLayoutComponent {
   public navItems7 = navItems7;
   public navItems8 = navItems8;
   public navItems9 = navItems9;
+  public navItems10 = navItems10;
 
   public sidebarMinimized = true;
   private changes: MutationObserver;
@@ -76,6 +78,7 @@ export class DefaultLayoutComponent {
   fetchData28;
   fetchData29;
   fetchData30;
+  fetchData31;
   reason;
   half;
   other;
@@ -145,7 +148,12 @@ export class DefaultLayoutComponent {
     });
     this.service.getearlygocount().subscribe(res => {
       this.fetchData8 = res;
-      console.log(this.fetchData9 = this.fetchData6 + this.fetchData4 + this.fetchData5 + this.fetchData7 + this.fetchData8);
+      // console.log(this.fetchData9 = this.fetchData6 + this.fetchData4 + this.fetchData5 + this.fetchData7 + this.fetchData8);
+    });
+    this.service.getvisitorcount().subscribe(res => {
+      this.fetchData31 = res;
+      this.fetchData9 = this.fetchData6 + this.fetchData4 + this.fetchData5 + this.fetchData7 + this.fetchData8+ this.fetchData31
+      console.log(this.fetchData9);
     });
     this.service.notopenedlist(this.val).subscribe(res => {
       this.fetchData14 = res;
@@ -162,8 +170,9 @@ export class DefaultLayoutComponent {
     });
     this.service.nofallowup(this.val).subscribe(res => {
       this.fetchData21 = res;
-      console.log(this.fetchData20 = this.fetchData11 + this.fetchData14 + this.fetchData15 + this.fetchData16 +
-        this.fetchData17 + this.fetchData18 + this.fetchData19+this.fetchData21);
+      this.fetchData20 = this.fetchData11 + this.fetchData14 + this.fetchData15 + this.fetchData16 +
+        this.fetchData17 + this.fetchData18 + this.fetchData19+this.fetchData21
+      console.log(this.fetchData20 );
     });
     this.service.getadminnewtelcount().subscribe(res => {
       this.fetchData22 = res;
@@ -183,8 +192,9 @@ export class DefaultLayoutComponent {
     });
     this.service.adminnofallowup().subscribe(res => {
       this.fetchData29 = res;
-      console.log(this.fetchData30 = this.fetchData22 + this.fetchData23 + this.fetchData24 + this.fetchData25 +
-        this.fetchData26 + this.fetchData27 + this.fetchData28+this.fetchData29);
+      this.fetchData30 = this.fetchData22 + this.fetchData23 + this.fetchData24 + this.fetchData25 +
+        this.fetchData26 + this.fetchData27 + this.fetchData28+this.fetchData29
+      console.log(this.fetchData30);
     });
   }
 

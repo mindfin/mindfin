@@ -18,6 +18,8 @@ export class AdminTeledataEditComponent {
   selectedFile: File = null;
   selectedFile1: File = null;
   selectedFile2: File = null;
+  loantype:any;
+  loancatg:any;
 
   constructor(private commonservice: CommonService,private route: ActivatedRoute,private router:Router) { }
 
@@ -87,5 +89,13 @@ export class AdminTeledataEditComponent {
   }
   refresh(): void {
     window.location.reload();
+  }
+  onChange(event){
+    console.log(event);
+   this.loantype= event
+  }
+  onChange1(event){
+    console.log(event);
+   this.loancatg= event
   }
 }

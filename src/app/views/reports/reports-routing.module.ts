@@ -22,6 +22,7 @@ import { SuperAdminTeledataFilePickedlistComponent } from './superadminteledataf
 import { SuperAdminTeledataNotOpenedlistComponent } from './superadminteledatanotopenlist.component';
 import { SuperAdminTeledataNoFollowUplistComponent } from './superadminteledatanofollowuplist.component';
 import { SuperAdminTeledatalistComponent } from './superadminteledatalist.component';
+import { BackendRoutineComponent } from './backendroutine.component';
 
 
 
@@ -163,6 +164,13 @@ const routes: Routes = [
         component:SuperAdminTeledatalistComponent,
         data:{
           title:'NO Follow Ups'
+        }
+      },
+      {
+        path: 'backendroutine',
+        component:BackendRoutineComponent,
+        data:{
+          title:'Backend Routine'
         }
       },
 

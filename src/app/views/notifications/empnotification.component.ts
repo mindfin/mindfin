@@ -14,8 +14,11 @@ export class EmpNotificationComponent implements OnInit {
   empid: any;
   empname: any;
   fetchData: any;
-  fetchData1: any;
+  fetchData1:any;
   value:any;
+  value1:any;
+  dataSource;
+  searchText:any;
 
   constructor(private route: ActivatedRoute, private router: Router,
     private commonservice: CommonService, public defaultlayout: DefaultLayoutComponent,
@@ -35,8 +38,17 @@ this.value={empid:this.empid}
       });
     });
   }
-
-
+getnotification(senderid){
+  this.value1={value:senderid,empid:this.empid}
+  this.commonservice.getNotificationById(this.value1).subscribe(res=>{
+    console.log(res);
+    this.fetchData1=res;
+  })
+}
+  // applyFilter(filterValue: string) {
+  //   console.log(filterValue);
+  //   this.dataSource.filter = filterValue.trim().toLowerCase();
+  // }
   refresh(): void {
     window.location.reload();
   }

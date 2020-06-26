@@ -41,7 +41,7 @@ export class BackendBankapplyComponent implements OnInit {
       console.log(res);
       this.fetchData2 = res;
     });
-    this.service.getexecutivelist().subscribe(res => {
+    this.service.getallexecutivelist().subscribe(res => {
       console.log(res);
       this.fetchData3 = res;
     });

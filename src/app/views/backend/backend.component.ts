@@ -21,6 +21,10 @@ export class BackendComponent implements OnInit {
 
   obj: any;
   fetchData: any;
+  fetchData1: any;
+  fetchData2: any;
+  fetchData3: any;
+  fetchData4: any;
   model: any = {};
   myControl = new FormControl();
   val: any = [];
@@ -57,22 +61,87 @@ export class BackendComponent implements OnInit {
   myfields: any = [];
   value1: any;
   abc:any;
-
-
+  array:any=[];
+  array1:any=[];
+  tempval1:any;
+  loantype:any;
+  loancatg:any;
+  sourcetype:any;
+  branch:any;
   ngOnInit() {
     this.empid = localStorage.getItem("id");
     this.empname = localStorage.getItem("empname");
     
-    this.commonservice.getexecutivelist().subscribe(res => {
-      this.fetchData = [];
+    this.branch=localStorage.getItem('branch')
+    this.commonservice.getheadofficeEmployee().subscribe(res => {
+      this.fetchData4 = [];
       console.log(res);
       for (var i = 0; i < Object.keys(res).length; i++) {
         if (res[i].iduser != null) {
-          this.fetchData.push(res[i]);
+          this.fetchData4.push(res[i]);
         }
       }
     });
+    
+    this.commonservice.getloanlist().subscribe(res=>{
+      console.log(res);
+      this.fetchData2 = res;
+    });
+    this.commonservice.getemployeetypelist().subscribe(res=>{
+      this.fetchData3=res;
+    });
+    this.commonservice.getallexecutivelist().subscribe(res=>{
+    this.fetchData1 = [];
+    console.log(res);
+    for(var i=0;i<Object.keys(res).length;i++){
+      if(res[i].iduser!=null){
+      this.fetchData1.push(res[i]);
+    }
   }
+});}
+  addvalues1()
+  {
+    this.array1.push({
+      coname:this.model.coname,
+      copaddress:this.model.copaddress,
+      coraddress:this.model.coraddress
+    })
+    console.log(this.array1);
+    this.tempval1=this.array1;
+  }
+  clearFilters()
+  {
+    this.model.coname='';
+    this.model.copaddress='';
+    this.model.coraddress='';
+  }
+  removevalue(pro,index)
+  {
+    console.log(index);
+    this.array1.splice(index,1);
+  }
+  onChange(event){
+    console.log(event);
+   this.loantype= event
+  }
+  onChange1(event){
+    console.log(event);
+   this.loancatg= event
+  }
+   onChange2(event){
+    console.log(event);
+   this.sourcetype= event
+  }
+  pan_validate(value){
+    console.log(value)
+    var regpan = /[A-Z]{3}[PCHFATBLJG]{1}[A-Z]{1}[0-9]{4}[A-Z]{1}$/;
+    if (regpan.test(value)) {
+      this.model.pancheck = "true" ;
+    } else {
+      this.model.pancheck = "false";
+    }
+  }
+  
   public onFileSelect(event) {
     // this.processFile(event)
     let formData = new FormData();
@@ -199,17 +268,17 @@ export class BackendComponent implements OnInit {
   submitForm(value) {
     console.log(value);
     
-    this.abc = this.model.executiveid.split(",", 2);
+    this.abc = this.model.idexecutive.split(",", 2);
     this.value1 = {
       value: value, empid: this.empid, empname: this.empname, abc: this.abc,
       companykyc: this.companykycPath, customerkyc: this.customerkycPath, itr: this.itrPath,
       bankstatement: this.bankstatementPath, loanstatement: this.loanstatementPath,
-      gstandreturns: this.gstandreturnsPath,applicationDetails:this.applicationdetailPath
+      gstandreturns: this.gstandreturnsPath,applicationDetails:this.applicationdetailPath, arr: this.array1
     };
     console.log(this.value1);
     this.commonservice.custdocument(this.value1)
       .subscribe(res => {
-        this.router.navigate(["/backend/viewdocument"]);
+        this.router.navigate(["/members/viewcustomer"]);
       })
   }
   refresh(): void {

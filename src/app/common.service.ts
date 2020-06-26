@@ -93,6 +93,7 @@ export class CommonService {
         console.log('superadmin')
         localStorage.setItem('id', res[0]['idemployee']);
         localStorage.setItem('empname', res[0]['name']);
+        localStorage.setItem('branch', res[0]['branch']);
 
         localStorage.setItem('role', 'SUPERADMIN');
         this.router.navigate(["/dashboard"]);
@@ -102,6 +103,7 @@ export class CommonService {
         console.log('admin')
         localStorage.setItem('id', res[0]['idemployee']);
         localStorage.setItem('empname', res[0]['name']);
+        localStorage.setItem('branch', res[0]['branch']);
         localStorage.setItem('role', 'ADMIN');
         this.router.navigate(["/notification/profilesettings"]);
       }
@@ -110,6 +112,7 @@ export class CommonService {
         localStorage.setItem('id', res[0]['idemployee']);
         localStorage.setItem('empname', res[0]['name']);
         localStorage.setItem('desc', res[0]['designation']);
+        localStorage.setItem('branch', res[0]['branch']);
         localStorage.setItem('role', 'EXECUTIVE');
         this.router.navigate(["/notification/profilesettings"]);
       }
@@ -117,6 +120,7 @@ export class CommonService {
         console.log('exec')
         localStorage.setItem('id', res[0]['idemployee']);
         localStorage.setItem('empname', res[0]['name']);
+        localStorage.setItem('branch', res[0]['branch']);
         localStorage.setItem('role', 'EXECUTIVE');
         localStorage.setItem('desc', res[0]['designation']);
         this.router.navigate(["/dashboard/executive"]);
@@ -125,6 +129,7 @@ export class CommonService {
         console.log('back')
         localStorage.setItem('id', res[0]['idemployee']);
         localStorage.setItem('empname', res[0]['name']);
+        localStorage.setItem('branch', res[0]['branch']);
         localStorage.setItem('role', 'BACKEND');
         this.router.navigate(["/dashboard/backend"]);
       }
@@ -132,6 +137,7 @@ export class CommonService {
         console.log('data')
         localStorage.setItem('id', res[0]['idemployee']);
         localStorage.setItem('empname', res[0]['name']);
+        localStorage.setItem('branch', res[0]['branch']);
         localStorage.setItem('role', 'DATA ENTRY');
         this.router.navigate(["/dashboard/dataentry"]);
       }
@@ -139,13 +145,22 @@ export class CommonService {
         console.log('tel')
         localStorage.setItem('id', res[0]['idemployee']);
         localStorage.setItem('empname', res[0]['name']);
+        localStorage.setItem('branch', res[0]['branch']);
         localStorage.setItem('role', 'TELECALLER');
         this.router.navigate(["/dashboard/telecaller"]);
+      }
+      else if (res[0].user == 'GUEST') {
+        console.log('GUEST')
+        localStorage.setItem('id', res[0]['idemployee']);
+        localStorage.setItem('empname', res[0]['name']);
+        localStorage.setItem('role', 'GUEST');
+        this.router.navigate(["/guest/home"]);
       }
       else if (res[0].user == 'LOGIN') {
         console.log('login')
         localStorage.setItem('id', res[0]['idemployee']);
         localStorage.setItem('empname', res[0]['name']);
+        localStorage.setItem('branch', res[0]['branch']);
         localStorage.setItem('desc', res[0]['designation']);
         localStorage.setItem('role', 'LOGIN');
         this.router.navigate(["/dashboard/login"]);
@@ -154,6 +169,7 @@ export class CommonService {
         console.log('account')
         localStorage.setItem('id', res[0]['idemployee']);
         localStorage.setItem('empname', res[0]['name']);
+        localStorage.setItem('branch', res[0]['branch']);
         localStorage.setItem('role', 'ACCOUNTANT');
         this.router.navigate(["/notification/profilesettings"]);
       }
@@ -255,8 +271,7 @@ export class CommonService {
     const uri = "https://bank.mindfin.co.in/callapi/getexecutivelist/";
     return this.http.get(uri);
   }
-
-
+ 
 
   bankinsert(obj) {
     console.log(obj);
@@ -1498,16 +1513,14 @@ export class CommonService {
     console.log(obj);
     // const queryParams = `/${obj}/${obj1}`;
     const uri = "https://bank.mindfin.co.in/callapi/editstatus";
-    this.http.post(uri, obj).subscribe(res => {
-
-    })
+    return this.http.post(uri, obj);
   }
   addroutine(obj) {
     console.log(obj);
     const uri = 'https://bank.mindfin.co.in/callapi/addroutine';
     this.http.post(uri, obj).subscribe(res => {
       console.log(res);
-    })
+    }) 
   }
   loginviewbank(id) {
     console.log(id);
@@ -2016,6 +2029,11 @@ export class CommonService {
   getadminexecutivelist() {
 
     const uri = "https://bank.mindfin.co.in/callapi/getadminexecutivelist/";
+    return this.http.get(uri);
+  }
+  getteamhead() {
+
+    const uri = "https://bank.mindfin.co.in/callapi/getteamhead/";
     return this.http.get(uri);
   }
   getEnquirylistexe1(postsPerPage: number, currentPage: number, id) {
@@ -3484,5 +3502,111 @@ getadminEnquirylist(postsPerPage: number, currentPage: number) {
 
 getadminEnquirylistDetails() {
   return this.postsUpdated.asObservable();
+}
+getNotificationById(value) {
+  console.log(value)
+  const uri = "https://bank.mindfin.co.in/callapi/getNotificationById";
+  return this.http.post(uri,value);
+}
+getAllNotificationById(value) {
+  console.log(value)
+  const uri = "https://bank.mindfin.co.in/callapi/getAllNotificationById/"+value;
+  return this.http.get(uri);
+}
+gettodo1(value){
+  const uri="https://bank.mindfin.co.in/callapi/gettodo1/"+value;
+  return this.http.get(uri);
+}
+addvisitor(obj) {
+  console.log(obj);
+  const uri = "https://bank.mindfin.co.in/callapi/addvisitor";
+  return this.http.post(uri, obj)
+}
+getvisitorcount() {
+  const uri = "https://bank.mindfin.co.in/callapi/getvisitorcount";
+  return this.http.get(uri);
+}
+getAllVisitors(postsPerPage: number, currentPage: number) {
+  const queryParams = `/${postsPerPage}/${currentPage}`;
+  this.http
+    .get<{ message: string; posts: any; maxPosts: number }>(
+      "https://bank.mindfin.co.in/callapi/getAllVisitors" + queryParams
+    )
+    .pipe(
+      map(postData => {
+        return {
+          posts: postData.posts,
+          maxPosts: postData.maxPosts
+        };
+      })
+    )
+    .subscribe(transformedPostData => {
+      this.posts = transformedPostData.posts;
+      this.postsUpdated.next({
+        posts: [...this.posts],
+        postCount: transformedPostData.maxPosts
+      });
+    });
+}
+
+getAllVisitorsDetails() {
+  return this.postsUpdated.asObservable();
+}
+respondVisitor(value){
+  console.log(value);
+    return this.http.post(`https://bank.mindfin.co.in/callapi/respondVisitor`, value);
+}
+public visitoropenstatus(value) {
+  console.log(value);
+  return this.http.post(`https://bank.mindfin.co.in/callapi/visitoropenstatus`, value);
+}
+editBackend(id) {
+  console.log(id);
+  this.router.navigate(["/backend/editroutine/" + id]);
+}
+
+getexecutivelistWithBranch(value) {
+
+  const uri = "https://bank.mindfin.co.in/callapi/getexecutivelistWithBranch/"+value;
+  return this.http.get(uri);
+}
+getheadofficeEmployee() {
+
+  const uri = "https://bank.mindfin.co.in/callapi/getheadofficeEmployee/";
+  return this.http.get(uri);
+}
+getBackendroutinelist(postsPerPage: number, currentPage: number, sdate, edate) {
+  const queryParams = `/${postsPerPage}/${currentPage}/${sdate}/${edate}`;
+  this.http
+    .get<{ message: string; posts: any; maxPosts: number }>(
+      "https://bank.mindfin.co.in/callapi/getBackendroutinelist" + queryParams
+    )
+    .pipe(
+      map(postData => {
+        //console.log('');
+        return {
+          posts: postData.posts,
+
+          maxPosts: postData.maxPosts
+        };
+      })
+    )
+    .subscribe(transformedPostData => {
+      this.posts = transformedPostData.posts;
+      this.postsUpdated.next({
+        posts: [...this.posts],
+        postCount: transformedPostData.maxPosts
+      });
+    });
+}
+
+
+getBackendroutinelistDetails() {
+  return this.postsUpdated.asObservable();
+}
+getallexecutivelist() {
+
+  const uri = "https://bank.mindfin.co.in/callapi/getallexecutivelist/";
+  return this.http.get(uri);
 }
 }

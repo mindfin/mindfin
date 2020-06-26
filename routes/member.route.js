@@ -194,16 +194,7 @@ router.post('/bankstatementcam', (req, res) => {
                         if (err) return console.log(err);
                         console.log('file deleted successfully');
                     });
-                    // Return the parsed data
-                    // for (let i = 0; i <= raw.length; i++) {
-                    //     if (raw[i] !== '\n') {
-                    //         if (raw[i] !== '\r') {
-
-                    //         }
-                    //     }
-                    // }
                     resolve({
-
                         data: raw
                     });
                 });

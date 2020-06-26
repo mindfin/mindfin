@@ -72,6 +72,11 @@
                             <th>COMMENTS</th>
                             <td> {{fetchData.comment}}</td>
                         </tr>
+                        <tr>
+                            <td colspan="4" class="text-center"> <button mat-raised-button color="warn" [disabled]="fetchData.idcustomer===''" (click)="editcustomer(fetchData.idcustomer)"> EDIT
+                                </button>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -79,52 +84,59 @@
                 <strong>APPLIED BANK DETAILS</strong>
             </div>
             <div class="card-body">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Sl.No</th>
-                            <th>APPLIED DATE</th>
-                            <th>BANK NAME</th>
-                            <th>BANK PERSON</th>
-                            <th>LOANTYPE</th>
-                            <th>AMOUNT</th>
-                            <th>PRODUCT</th>
-                            <th>STATUS</th>
-                            <th>COMMENTS</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor='let pro of fetchData1;let i=index'>
-                            <td>
-                                {{i+1}}
-                            </td>
-                            <td>
-                                {{pro.createddate | date:'dd/MM/yyyy'}}
-                            </td>
-                            <td>
-                                {{pro.bankname}}
-                            </td>
-                            <td>
-                                {{pro.vendor}}
-                            </td>
-                            <td>
-                                {{pro.loantype}}
-                            </td>
-                            <td>
-                                {{pro.amount}}
-                            </td>
-                            <td>
-                                {{pro.product}}
-                            </td>
-                            <td>
-                                {{pro.sstatus}}
-                            </td>
-                            <td>
-                                {{pro.comment}}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Sl.No</th>
+                                <th>APPLIED DATE</th>
+                                <th>BANK NAME</th>
+                                <th>BANK PERSON</th>
+                                <th>LOANTYPE</th>
+                                <th>AMOUNT</th>
+                                <th>PRODUCT</th>
+                                <th>STATUS</th>
+                                <th>COMMENTS</th>
+                                <th>EDIT STATUS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor='let pro of fetchData1;let i=index'>
+                                <td>
+                                    {{i+1}}
+                                </td>
+                                <td>
+                                    {{pro.createddate | date:'dd/MM/yyyy'}}
+                                </td>
+                                <td>
+                                    {{pro.bankname}}
+                                </td>
+                                <td>
+                                    {{pro.vendor}}
+                                </td>
+                                <td>
+                                    {{pro.loantype}}
+                                </td>
+                                <td>
+                                    {{pro.amount}}
+                                </td>
+                                <td>
+                                    {{pro.product}}
+                                </td>
+                                <td>
+                                    {{pro.sstatus}}
+                                </td>
+                                <td>
+                                    {{pro.comment}}
+                                </td>
+                                <td colspan="4" class="text-center"> <button mat-raised-button color="warn" (click)="openDialog(pro)"> EDIT STATUS
+                            </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

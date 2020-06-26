@@ -27,6 +27,7 @@ import { SuperAdminTeledataLoginlistComponent, AssignDialogContent5 } from './su
 import { SuperAdminTeledataNoFollowUplistComponent, AssignDialogContent6 } from './superadminteledatanofollowuplist.component';
 import { SuperAdminTeledataNotOpenedlistComponent, AssignDialogContent7 } from './superadminteledatanotopenlist.component';
 import { SuperAdminTeledataRejectlistComponent, AssignDialogContent8 } from './superadminteledatarejectlist.component';
+import { BackendRoutineComponent } from './backendroutine.component';
 
 
 
@@ -68,7 +69,7 @@ import { SuperAdminTeledataRejectlistComponent, AssignDialogContent8 } from './s
     SuperAdminTeledataNoFollowUplistComponent,SuperAdminTeledataNotOpenedlistComponent,SuperAdminTeledataRejectlistComponent,
     AssignDialogContent,AssignDialogContent1,AssignDialogContent2,
     AssignDialogContent3,AssignDialogContent4,AssignDialogContent5,AssignDialogContent6,AssignDialogContent7,
-    AssignDialogContent8,AssignDialogContent9],
+    AssignDialogContent8,AssignDialogContent9,BackendRoutineComponent],
   entryComponents: [AssignDialogContent,AssignDialogContent1,AssignDialogContent2,
     AssignDialogContent3,AssignDialogContent4,AssignDialogContent5,AssignDialogContent6,AssignDialogContent7,
     AssignDialogContent8,AssignDialogContent9]

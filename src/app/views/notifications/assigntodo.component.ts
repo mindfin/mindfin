@@ -18,6 +18,7 @@ export class AssignToDoComponent implements OnInit {
   title: any;
   desc: any;
   fetchData:any;
+  fetchData1:any;
   value;
 
   constructor(private route: ActivatedRoute, private router: Router,
@@ -35,7 +36,12 @@ export class AssignToDoComponent implements OnInit {
       this.fetchData = res;
     });
   }
-
+  gettodo(todoid){    // this.value1={value:senderid}
+    this.commonservice.gettodo1(todoid).subscribe(res=>{
+      console.log(res);
+      this.fetchData1=res;
+    })
+  }
   openToDoialog() {
 
     const dialogConfig = new MatDialogConfig();
@@ -59,6 +65,7 @@ export class AssignToDoComponent implements OnInit {
   }
 
 }
+
 @Component({
   selector: 'dialog-content-example-dialog',
   templateUrl: 'createtodo_dialog.html',

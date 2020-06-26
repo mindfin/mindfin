@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import {MatDatepickerModule, MatNativeDateModule, MatInputModule,MatFormFieldModule, MatPaginatorModule, MatSortModule, MatTableModule, MatProgressSpinnerModule, MatBadgeModule, MatButtonModule, MatButtonToggleModule, MatDialogModule} from '@angular/material';
 import { CdkTableModule } from '@angular/cdk/table';
 
+
 // import { MembersComponent } from './members.component';
 // import { RejectBankDialogContent, ApprovalDialogContent, ViewbankComponent } from './viewbank.component';
 // import { BankapplyComponent } from './bankapply.component';
@@ -31,7 +32,7 @@ import { ViewCustomerComponent } from './viewcustomer.component';
 import { BankRejectComponent } from './bankreject.component';
 import { CheckCaseDownloadComponent } from './checkcasewithdownload.component';
 import { AdminCheckCaseComponent } from './admincheckcase.component';
-;
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 
 
@@ -41,7 +42,7 @@ import { AdminCheckCaseComponent } from './admincheckcase.component';
     CommonModule,MembersRoutingModule,ChartsModule,FormsModule,ReactiveFormsModule,BsDropdownModule,
     MatNativeDateModule,MatInputModule,MatDatepickerModule,MatFormFieldModule,MatBadgeModule,
     MatButtonModule,MatButtonToggleModule,CdkTableModule,MatPaginatorModule,MatSortModule,MatProgressSpinnerModule,
-    MatTableModule,ModalModule.forRoot(),
+    MatTableModule,ModalModule.forRoot(),BsDatepickerModule.forRoot()
   ],
   declarations: [MembersappComponent,DialogContent,TopuplistComponent,TopupnotifyComponent,SuccesstopuplistComponent,
     EditcustomersComponent, BankdisburseComponent,TopuplistComponent,RejectBankDialogContent,CustStatusComponent

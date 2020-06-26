@@ -33,7 +33,7 @@ const routes: Routes = [
     path: 'loginstatus/:id',
     component: LoginStatusComponent,
     data: {
-      title: 'login sent form'
+      title: 'Login Sent Form'
     }
   },
   {
@@ -47,14 +47,14 @@ const routes: Routes = [
     path: 'loginview',
     component: LoginOperationViewComponent,
     data: {
-      title: 'VIEW LOGIN'
+      title: 'View Login'
     }
   },
   {
     path: 'logindailyview',
     component: LoginDailyRoutineviewComponent,
     data: {
-      title: 'VIEW DAILY ROUTINE LOGIN '
+      title: 'View Daily Routine'
     }
   },
   {

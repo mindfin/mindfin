@@ -15,7 +15,7 @@ export class ViewBankStatusComponent implements OnInit {
   myControl = new FormControl();
   val: any = [];
 
-  displayedColumns: string[] = ['date', 'cname', 'name', 'whosecase', 'executive','status','created', 'view'];
+  displayedColumns: string[] = ['date', 'cname', 'name', 'whosecase', 'executive','status','created','viewcust', 'view'];
   constructor(private route: ActivatedRoute, private router: Router, private commonservice: CommonService,private dialog: MatDialog) { }
   samples: any;
   dataSource;
@@ -50,6 +50,15 @@ export class ViewBankStatusComponent implements OnInit {
 
       });
   }
+  openDialog(element) {
+    this.model=element;
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.data = {element};
+      this.dialog.open(ViewDialogContent1,dialogConfig
+    );
+    console.log(dialogConfig );
+    
+    }
   applyFilter(filterValue: string) {
     console.log(filterValue);
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -61,7 +70,7 @@ export class ViewBankStatusComponent implements OnInit {
     console.log(this.postsPerPage);
     this.commonservice.getdocument3(this.postsPerPage, this.currentPage);
   }
-  
+ 
   refresh(): void {
     window.location.reload();
   }
@@ -95,5 +104,21 @@ export class ViewBankStatusComponent implements OnInit {
           console.log(this.dataSource.sort);
         })
     }
+}
+@Component({
+  selector: 'dialog-content-example-dialog',
+  templateUrl: 'viewdialog-content.html',
+})
+
+export class ViewDialogContent1{ 
+
+
+  constructor(@Inject(MAT_DIALOG_DATA) public data:any) {}
+
+//   constructor(
+//     @Inject(MAT_DIALOG_DATA) public data: any
+//  ) { }
+ 
+
 }
 

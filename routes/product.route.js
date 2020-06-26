@@ -866,54 +866,164 @@ router.get('/getextradetails/:id', function(req, res) {
 })
 
 router.post('/customerupdate', (req, res) => {
-    //console.log(req.body);
-    //console.log("id", req.body.id);
+    var companykyc;
+    var comp_orgname;
+    var customerkyc;
+    var cust_orgname;
+    var itr;
+    var itr_orgname;
+    var bankstatement;
+    var bank_orgname;
+    var loanstatement;
+    var loan_orgname;
+    var gstandreturns;
+    var gst_orgname;
+    var applicationDetails;
+    var applicationDetails_orgname;
+    var status;
+    var displaystatus;
     var dob = req.body.value.dob;
     var applieddate = req.body.value.applieddate;
-    // //console.log(applieddate);
     const nowdate1 = format.asString('yyyy-MM-dd', new Date(dob));
     const nowdate = format.asString('yyyy-MM-dd', new Date(applieddate));
     const nowdate2 = format.asString('yyyy-MM-dd', new Date());
     let config = req.body.arr;
+    if (req.body.companykyc == undefined) {
+        companykyc = req.body.value.companykyc;
+
+    } else {
+        companykyc = req.body.companykyc[0].blobName;
+        comp_orgname = req.body.companykyc[0].originalname;
+        //console.log("company kyc BlobName  " + companykyc);
+        //console.log("comp orginal name  " + comp_orgname);
+    }
+    if (req.body.customerkyc == undefined) {
+        customerkyc = req.body.value.customerkyc;
+
+    } else {
+        customerkyc = req.body.customerkyc[0].blobName;
+        cust_orgname = req.body.customerkyc[0].originalname;
+        //console.log("cust kyc BlobName  " + customerkyc);
+        //console.log("cudt orginal name  " + cust_orgname);
+    }
+    if (req.body.itr == undefined) {
+        itr = req.body.value.itr;
+
+    } else {
+        itr = req.body.itr[0].blobName;
+        itr_orgname = req.body.itr[0].originalname;
+        //console.log("itr BlobName  " + itr);
+        //console.log("itr orginal name  " + itr_orgname);
+    }
+    if (req.body.bankstatement == undefined) {
+        bankstatement = req.body.value.bankstatement;
+
+    } else {
+        bankstatement = req.body.bankstatement[0].blobName;
+        bank_orgname = req.body.bankstatement[0].originalname;
+        //console.log("bankstatement BlobName  " + bankstatement);
+        //console.log("bankstatement orginal name  " + bank_orgname);
+    }
+    if (req.body.loanstatement == undefined) {
+        loanstatement = req.body.value.loanstatement;
+
+    } else {
+        loanstatement = req.body.loanstatement[0].blobName;
+        loan_orgname = req.body.loanstatement[0].originalname;
+        //console.log("loanstatement BlobName  " + loanstatement);
+        //console.log("loanstatement orginal name  " + loan_orgname);
+    }
+    if (req.body.gstandreturns == undefined) {
+        gstandreturns = req.body.value.gstandreturns;
+
+    } else {
+        gstandreturns = req.body.gstandreturns[0].blobName;
+        gst_orgname = req.body.gstandreturns[0].originalname;
+        //console.log("gstandreturns BlobName  " + gstandreturns);
+        //console.log("gstandreturns orginal name  " + gst_orgname);
+    }
+    if (req.body.applicationDetails == undefined) {
+        applicationDetails = 'admin.png';
+        applicationDetails_orgname = 'admin.png';
+
+    } else {
+        applicationDetails = req.body.applicationDetails[0].blobName;
+        applicationDetails_orgname = req.body.applicationDetails[0].originalname;
+        //console.log("applicationDetails BlobName  " + applicationDetails);
+        //console.log("applicationDetails orginal name  " + applicationDetails_orgname);
+    }
+    if (req.body.applicationDetails == undefined) {
+        applicationDetails = 'admin.png';
+        applicationDetails_orgname = 'admin.png';
+
+    } else {
+        applicationDetails = req.body.applicationDetails[0].blobName;
+        applicationDetails_orgname = req.body.applicationDetails[0].originalname;
+        //console.log("applicationDetails BlobName  " + applicationDetails);
+        //console.log("applicationDetails orginal name  " + applicationDetails_orgname);
+    }
+    if (req.body.value.displaystatus != 'APPROVED') {
+        displaystatus = "PENDING"
+        status = "PENDING"
+    } else {
+        displaystatus = "APPROVED"
+        status = "APPROVED"
+    }
     knex('customer')
-        .where("idcustomer", req.body.id)
+        .where("idcustomer", req.body.custid)
         .update({
-            name: req.body.value.name,
-            mobile: req.body.value.mobile,
-            email: req.body.value.email,
-            cemail: req.body.cemail,
-            dob: nowdate1,
-            salary: req.body.value.salary,
-            altmobile: req.body.value.altmobile,
-            address: req.body.value.address,
-            cname: req.body.value.cname,
-            designation: req.body.value.designation,
-            caddress: req.body.value.caddress,
-            pincode: req.body.value.pincode,
-            idexecutive: req.body.value.idexecutive,
-            gender: req.body.value.gender,
-            amount: req.body.value.amount,
-            applytype: req.body.value.applytype,
             applieddate: nowdate,
-            source: 'Application',
-            subvendor: req.body.value.subvendor,
-            topupstatus: 'topup',
-            sourcetype: req.body.value.sourcetype,
+            applytype: req.body.value.applytype,
+            loanCategory: req.body.value.loanCategory,
+            subLoanCategory: req.body.value.subLoanCategory,
+            name: req.body.value.name,
+            dob: nowdate1,
+            gender: req.body.value.gender,
+            address: req.body.value.address,
+            pincode: req.body.value.pincode,
+            mobile: req.body.value.mobile,
+            altmobile: req.body.value.altmobile,
+            email: req.body.value.email,
+            cname: req.body.value.cname,
+            caddress: req.body.value.caddress,
+            cemail: req.body.value.cemail,
+            emptype: req.body.value.emptype,
+            designation: req.body.value.designation,
+            salary: req.body.value.salary,
             aadharno: req.body.value.aadharno,
             panno: req.body.value.panno,
             dlno: req.body.value.dlno,
             voterno: req.body.value.voterno,
-            emptype: req.body.value.emptype,
-            editby: req.body.value.createdby,
+            whosecase: req.body.value.whosecase,
+            amount: req.body.value.amount,
+            subvendor: req.body.value.subvendor,
+            sourcetype: req.body.value.sourcetype,
+            // source: 'Application',
+            topupstatus: 'topup',
+            displaystatus: displaystatus,
+            companykyc: companykyc,
+            companykyc_orgname: comp_orgname,
+            customerkyc: customerkyc,
+            customerkyc_orgname: cust_orgname,
+            itr: itr,
+            itr_orgname: itr_orgname,
+            bankstatement: bankstatement,
+            bankstatement_orgname: bank_orgname,
+            gstandreturns: gstandreturns,
+            gstandreturns_orgname: gst_orgname,
+            loanstatement: loanstatement,
+            loanstatement_orgname: loan_orgname,
+            applicationDetails: applicationDetails,
+            applicationDetails_orgname: applicationDetails_orgname,
+            status: status,
+            comment: req.body.value.comment,
+            editby: req.body.value.empid,
             editorname: req.body.value.empname,
             updateddate: nowdate2,
         })
         .then(function() {
-            //console.log("conf", config);
-            if (config == undefined || config == 'undefined') {
-                res.json("Not Inserted");
-                //console.log("empty data")
-            } else {
+            // console.log("conf", config);
+            if (config !== undefined || config !== 'undefined') {
                 // const vbs1 = JSON.parse(config);
                 for (var j = 0; j < config.length; j++) {
                     var coname = config[j].coname
@@ -924,8 +1034,7 @@ router.post('/customerupdate', (req, res) => {
                             coappname: coname,
                             coappresaddress: copaddress,
                             coappperaddress: coraddress,
-                            idcustomer: req.body.id
-
+                            idcustomer: req.body.custid
                         }).then(function(re) {
                             res.json(re);
                         })
@@ -1089,7 +1198,9 @@ router.post('/addenquiry', (req, res) => {
             turnover: req.body.value.turnover,
             adminexeStatus: "new",
             approchedBank: req.body.value.approchedBank,
-            ownHouse: req.body.value.ohp
+            ownHouse: req.body.value.ohp,
+            loanCategory: req.body.value.loanCategory,
+            subLoanCategory: req.body.value.subLoanCategory
         })
         .then(function(result) {
             ////console.log(result); 
@@ -2800,8 +2911,9 @@ router.post('/updateenquiry', (req, res) => {
             comment: req.body.comment,
             updateddate: localTime,
             turnover: req.body.turnover,
-            approchedBank: req.body.approchedBank
-
+            approchedBank: req.body.approchedBank,
+            loanCategory: req.body.value.loanCategory,
+            subLoanCategory: req.body.value.subLoanCategory
 
         })
         .then(function(result) {
@@ -3033,8 +3145,15 @@ router.post('/custdocument', (req, res) => {
     var applicationDetails_orgname;
     var status;
     var displaystatus;
-    // //console.log(file)
-    const nowdate = format.asString('yyyy-MM-dd', new Date());
+
+    var dob = req.body.value.dob;
+    var applieddate = req.body.value.applieddate;
+    const nowdate = format.asString('yyyy-MM-dd', new Date(applieddate));
+    const nowdate1 = format.asString('yyyy-MM-dd', new Date(dob));
+    const nowdate2 = format.asString('yyyy-MM-dd', new Date());
+
+    let config = req.body.arr;
+
     if (req.body.companykyc == undefined) {
         companykyc = 'admin.png';
         comp_orgname = 'admin.png';
@@ -3114,10 +3233,36 @@ router.post('/custdocument', (req, res) => {
     }
     knex('customer')
         .insert({
-            cname: req.body.value.companyname,
-            name: req.body.value.customername,
+            applieddate: nowdate,
+            applytype: req.body.value.applytype,
+            loanCategory: req.body.value.loanCategory,
+            subLoanCategory: req.body.value.subLoanCategory,
+            name: req.body.value.name,
+            dob: nowdate1,
+            gender: req.body.value.gender,
+            address: req.body.value.address,
+            pincode: req.body.value.pincode,
+            mobile: req.body.value.mobile,
+            altmobile: req.body.value.altmobile,
+            email: req.body.value.email,
+            cname: req.body.value.cname,
+            caddress: req.body.value.caddress,
+            cemail: req.body.value.cemail,
+            emptype: req.body.value.emptype,
+            designation: req.body.value.designation,
+            salary: req.body.value.salary,
+            aadharno: req.body.value.aadharno,
+            panno: req.body.value.panno,
+            dlno: req.body.value.dlno,
+            voterno: req.body.value.voterno,
             whosecase: req.body.value.whosecase,
             idexecutive: req.body.abc[0],
+            executivename: req.body.abc[1],
+            amount: req.body.value.amount,
+            subvendor: req.body.value.subvendor,
+            sourcetype: req.body.value.sourcetype,
+            // source: 'Application',
+            topupstatus: 'topup',
             displaystatus: displaystatus,
             companykyc: companykyc,
             companykyc_orgname: comp_orgname,
@@ -3134,22 +3279,39 @@ router.post('/custdocument', (req, res) => {
             applicationDetails: applicationDetails,
             applicationDetails_orgname: applicationDetails_orgname,
             status: status,
-            applieddate: nowdate,
             createdby: req.body.empid,
             comment: req.body.value.comment,
-            mobile: req.body.value.mobile,
-            aadharno: req.body.value.aadharno,
-            panno: req.body.value.panno,
             createdbyname: req.body.empname,
-            executivename: req.body.abc[1],
         })
-        .then(function(result) {
-            //console.log(result);
-            res.json('customer document Added Successfully');
-        })
+        // .returning('id')
+        .then(function(id) {
+            //console.log("conf", config);
 
+            const ids = id.toString();
+            if (config == undefined || config == 'undefined') {
+                res.json("Not Inserted");
+                //console.log("empty data")
+            } else {
+                // const vbs1 = JSON.parse(config);
+                for (var j = 0; j < config.length; j++) {
+                    var coname = config[j].coname
+                    var copaddress = config[j].copaddress
+                    var coraddress = config[j].coraddress
+                    knex('co-customer')
+                        .insert({
+                            coappname: coname,
+                            coappresaddress: copaddress,
+                            coappperaddress: coraddress,
+                            idcustomer: ids
+
+                        }).then(function(re) {
+                            res.json("inserted");
+                            console.log("inserted")
+                        })
+                }
+            }
+        })
 });
-
 router.get('/getdocument/:pagesize/:page', function(req, res) {
     const pageSize = req.params.pagesize;
     const currentPage = req.params.page;
@@ -3509,7 +3671,7 @@ router.post('/editstatus', function(req, res) {
             createdbyname: req.body.empname
 
         }).then(function(result) {
-            //console.log(result);
+            res.json('sent added Successfully');
         })
 });
 router.get('/getloginexecutivelist', function(req, res) {
@@ -4316,6 +4478,16 @@ router.get('/getadminexecutivelist', function(req, res) {
         .where('usertype.user ', 'EXECUTIVE')
         .where('employee.designation', 'Admin')
         .where('employee.status ', 'active')
+        .then(function(result) {
+            ////console.log(result);
+            res.json(result);
+        })
+});
+router.get('/getteamhead', function(req, res) {
+    knex.select()
+        .from('employee')
+        .join('usertype', 'usertype.idusertype', 'employee.iduser')
+        .where('employee.teamHead ', 'true')
         .then(function(result) {
             ////console.log(result);
             res.json(result);
@@ -10619,6 +10791,1027 @@ router.get('/getadminEnquirylist/:pagesize/:page', (req, res, next) => {
                         maxPosts: re.length
                     });
                 })
+        })
+});
+router.post('/getNotificationById', (req, res) => {
+    knex.select('sendernotifications.*', 'receivernotification.*')
+        .from('sendernotifications', 'receivernotification.*')
+        .join('receivernotification', 'receivernotification.senderNotificationID', 'sendernotifications.senderNotificationID')
+        .where('sendernotifications.senderStatus ', 'sent')
+        .where('receivernotification.receiverStatus ', 'seen')
+        .where('receivernotification.receiverID', req.body.empid)
+        .where('sendernotifications.senderNotificationID', req.body.value)
+        .then(function(result) {
+            ////console.log(result);
+            res.json(result);
+        })
+});
+router.get('/getAllNotificationById/:id', (req, res) => {
+    knex.select('sendernotifications.*')
+        .from('sendernotifications')
+        .where('sendernotifications.senderNotificationID', req.params.id)
+        .where('sendernotifications.senderStatus ', 'sent')
+        .then(function(result) {
+            ////console.log(result);
+            res.json(result);
+        })
+});
+router.get('/gettodo1/:id', (req, res) => {
+    knex.select('todolist.*')
+        .from('todolist')
+        .where('todolist.todoID', req.params.id)
+        .then(function(result) {
+            res.json(result);
+        })
+});
+router.post('/addvisitor', function(req, res) {
+    var date = format.asString('yyyy-MM-dd', new Date());
+    var abc = req.body.value.toMeetWhom.split(",", 2);
+    knex('visitorform')
+        .insert({
+            createdDate: date,
+            visitorName: req.body.value.visitorName,
+            visitorPhoto: req.body.visitorPhoto,
+            organizationName: req.body.value.organizationName,
+            numberOfVisitors: req.body.value.numberOfVisitors,
+            emailId: req.body.value.emailId,
+            gender: req.body.value.gender,
+            mobileNumber: req.body.value.mobileNumber,
+            alternativeNumber: req.body.value.alternativeNumber,
+            address: req.body.value.address,
+            visitReason: req.body.value.visitReason,
+            referenceName: req.body.value.referenceName,
+            whomUMeetID: abc[0],
+            toMeetWhom: abc[1],
+            existingAppointment: req.body.value.existingAppointment,
+            status: '0',
+        })
+        .then(function(result) {
+            res.json('Appointment sent Successfully');
+            const output = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+            <html xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:v="urn:schemas-microsoft-com:vml">
+
+<head>
+    <!--[if gte mso 9]><xml><o:OfficeDocumentSettings><o:AllowPNG/><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml><![endif]-->
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+    <meta content="width=device-width" name="viewport" />
+    <!--[if !mso]><!-->
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+    <!--<![endif]-->
+
+    <!--[if !mso]><!-->
+    <!--<![endif]-->
+    <style type="text/css">
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        
+        table,
+        td,
+        tr {
+            vertical-align: top;
+            border-collapse: collapse;
+        }
+        
+        * {
+            line-height: inherit;
+        }
+        
+        a[x-apple-data-detectors=true] {
+            color: inherit !important;
+            text-decoration: none !important;
+        }
+    </style>
+    <style id="media-query" type="text/css">
+        @media (max-width: 660px) {
+            .block-grid,
+            .col {
+                min-width: 320px !important;
+                max-width: 100% !important;
+                display: block !important;
+            }
+            .block-grid {
+                width: 100% !important;
+            }
+            .col {
+                width: 100% !important;
+            }
+            .col>div {
+                margin: 0 auto;
+            }
+            img.fullwidth,
+            img.fullwidthOnMobile {
+                max-width: 100% !important;
+            }
+            .no-stack .col {
+                min-width: 0 !important;
+                display: table-cell !important;
+            }
+            .no-stack.two-up .col {
+                width: 50% !important;
+            }
+            .no-stack .col.num4 {
+                width: 33% !important;
+            }
+            .no-stack .col.num8 {
+                width: 66% !important;
+            }
+            .no-stack .col.num4 {
+                width: 33% !important;
+            }
+            .no-stack .col.num3 {
+                width: 25% !important;
+            }
+            .no-stack .col.num6 {
+                width: 50% !important;
+            }
+            .no-stack .col.num9 {
+                width: 75% !important;
+            }
+            .video-block {
+                max-width: none !important;
+            }
+            .mobile_hide {
+                min-height: 0px;
+                max-height: 0px;
+                max-width: 0px;
+                display: none;
+                overflow: hidden;
+                font-size: 0px;
+            }
+            .desktop_hide {
+                display: block !important;
+                max-height: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="clean-body" style="margin: 0; padding: 0; -webkit-text-size-adjust: 100%; background-color: #f1f1f1;">
+    <!--[if IE]><div class="ie-browser"><![endif]-->
+    <table bgcolor="#f1f1f1" cellpadding="0" cellspacing="0" class="nl-container" role="presentation" style="table-layout: fixed; vertical-align: top; min-width: 320px; Margin: 0 auto; border-spacing: 0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #f1f1f1; width: 100%;"
+        valign="top" width="100%">
+        <tbody>
+            <tr style="vertical-align: top;" valign="top">
+                <td style="word-break: break-word; vertical-align: top;" valign="top">
+                    <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center" style="background-color:#f1f1f1"><![endif]-->
+                    <div style="background-color:transparent;">
+                        <div class="block-grid" style="Margin: 0 auto; min-width: 320px; max-width: 640px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: #f1f1f1;">
+                            <div style="border-collapse: collapse;display: table;width: 100%;background-color:#f1f1f1;">
+                                <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:640px"><tr class="layout-full-width" style="background-color:#f1f1f1"><![endif]-->
+                                <!--[if (mso)|(IE)]><td align="center" width="640" style="background-color:#f1f1f1;width:640px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;"><![endif]-->
+                                <div class="col num12" style="min-width: 320px; max-width: 640px; display: table-cell; vertical-align: top; width: 640px;">
+                                    <div style="width:100% !important;">
+                                        <!--[if (!mso)&(!IE)]><!-->
+                                        <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
+                                            <!--<![endif]-->
+                                            <table border="0" cellpadding="0" cellspacing="0" class="divider" role="presentation" style="table-layout: fixed; vertical-align: top; border-spacing: 0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; min-width: 100%; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;"
+                                                valign="top" width="100%">
+                                                <tbody>
+                                                    <tr style="vertical-align: top;" valign="top">
+                                                        <td class="divider_inner" style="word-break: break-word; vertical-align: top; min-width: 100%; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px;" valign="top">
+                                                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="divider_content" height="0" role="presentation" style="table-layout: fixed; vertical-align: top; border-spacing: 0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-top: 0px solid transparent; height: 0px; width: 100%;"
+                                                                valign="top" width="100%">
+                                                                <tbody>
+                                                                    <tr style="vertical-align: top;" valign="top">
+                                                                        <td height="0" style="word-break: break-word; vertical-align: top; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;" valign="top"><span></span></td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <!--[if (!mso)&(!IE)]><!-->
+                                        </div>
+                                        <!--<![endif]-->
+                                    </div>
+                                </div>
+                                <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                                <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
+                            </div>
+                        </div>
+                    </div>
+                    <div style="background-color:transparent;">
+                        <div class="block-grid" style="Margin: 0 auto; min-width: 320px; max-width: 640px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: #ffffff;">
+                            <div style="border-collapse: collapse;display: table;width: 100%;background-color:#ffffff;">
+                                <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:640px"><tr class="layout-full-width" style="background-color:#ffffff"><![endif]-->
+                                <!--[if (mso)|(IE)]><td align="center" width="640" style="background-color:#ffffff;width:640px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:15px; padding-bottom:15px;"><![endif]-->
+                                <div class="col num12" style="min-width: 320px; max-width: 640px; display: table-cell; vertical-align: top; width: 640px;">
+                                    <div style="width:100% !important;">
+                                        <!--[if (!mso)&(!IE)]><!-->
+                                        <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:15px; padding-bottom:15px; padding-right: 0px; padding-left: 0px;">
+                                            <!--<![endif]-->
+                                            <div align="center" class="img-container center fixedwidth" style="padding-right: 0px;padding-left: 0px;">
+                                                <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr style="line-height:0px"><td style="padding-right: 0px;padding-left: 0px;" align="center"><![endif]-->
+                                                <a href="https://mindfin.co.in/" style="outline:none" tabindex="-1" target="_blank"> <img align="center" alt="Logo" border="0" class="center fixedwidth" src="https://mindfinfiles.blob.core.windows.net/mindfin-backend/logo.jpg" style="text-decoration: none; -ms-interpolation-mode: bicubic; height: auto; border: none; width: 100%; max-width: 224px; display: block;"
+                                                        title="Logo" width="224" /></a>
+                                                <!--[if mso]></td></tr></table><![endif]-->
+                                            </div>
+                                            <!--[if (!mso)&(!IE)]><!-->
+                                        </div>
+                                        <!--<![endif]-->
+                                    </div>
+                                </div>
+                                <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                                <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
+                            </div>
+                        </div>
+                    </div>
+                    <div style="background-color:transparent;">
+                        <div class="block-grid two-up" style="Margin: 0 auto; min-width: 320px; max-width: 640px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: #ffffff;">
+                            <div style="border-collapse: collapse;display: table;width: 100%;background-color:#ffffff;">
+                                <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:640px"><tr class="layout-full-width" style="background-color:#ffffff"><![endif]-->
+                                <!--[if (mso)|(IE)]><td align="center" width="320" style="background-color:#ffffff;width:320px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 35px; padding-left: 35px; padding-top:10px; padding-bottom:5px;"><![endif]-->
+                                <div class="col num6" style="min-width: 320px; max-width: 320px; display: table-cell; vertical-align: top; width: 320px;">
+                                    <div style="width:100% !important;">
+                                        <!--[if (!mso)&(!IE)]><!-->
+                                        <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:10px; padding-bottom:5px; padding-right: 35px; padding-left: 35px;">
+                                            <!--<![endif]-->
+                                            <div align="center" class="img-container center fixedwidth" style="padding-right: 0px;padding-left: 0px;">
+                                                <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr style="line-height:0px"><td style="padding-right: 0px;padding-left: 0px;" align="center"><![endif]--><img align="center" alt="Alternate text" border="0" class="center fixedwidth" src="` + req.body.visitorPhoto + `"style="text-decoration: none; -ms-interpolation-mode: bicubic; border: 0; height: auto; width: 100%; max-width: 137px; display: block;"
+                                                    title="Alternate text" width="137" />
+                                                <!--[if mso]></td></tr></table><![endif]-->
+                                            </div>
+                                            <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top: 10px; padding-bottom: 0px; font-family: Arial, sans-serif"><![endif]-->
+                                            <div style="color:#555555;font-family:Poppins, Arial, Helvetica, sans-serif;line-height:1.2;padding-top:10px;padding-right:0px;padding-bottom:0px;padding-left:0px;">
+                                                <div style="font-size: 14px; line-height: 1.2; color: #555555; font-family: Poppins, Arial, Helvetica, sans-serif; mso-line-height-alt: 17px;">
+                                                    <p style="font-size: 14px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 17px; margin: 0;">VISITOR NAME : ` + req.body.value.visitorName + `</p>
+                                                </div>
+                                            </div>
+                                            <!--[if mso]></td></tr></table><![endif]-->
+                                            <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top: 5px; padding-bottom: 0px; font-family: Arial, sans-serif"><![endif]-->
+                                            <div style="color:#80c1d8;font-family:Poppins, Arial, Helvetica, sans-serif;line-height:1.2;padding-top:5px;padding-right:0px;padding-bottom:0px;padding-left:0px;">
+                                                <div style="font-size: 14px; line-height: 1.2; color: #80c1d8; font-family: Poppins, Arial, Helvetica, sans-serif; mso-line-height-alt: 17px;">
+                                                    <p style="font-size: 13px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 16px; mso-ansi-font-size: 14px; margin: 0;"><span style="font-size: 13px; mso-ansi-font-size: 14px;">ORGANIZATION NAME : ` + req.body.value.organizationName + `</span></p>
+                                                </div>
+                                            </div>
+                                            <!--[if mso]></td></tr></table><![endif]-->
+                                            <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top: 10px; padding-bottom: 0px; font-family: Arial, sans-serif"><![endif]-->
+                                            <div style="color:#555555;font-family:Poppins, Arial, Helvetica, sans-serif;line-height:1.2;padding-top:10px;padding-right:0px;padding-bottom:0px;padding-left:0px;">
+                                                <div style="font-size: 14px; line-height: 1.2; color: #555555; font-family: Poppins, Arial, Helvetica, sans-serif; mso-line-height-alt: 17px;">
+                                                    <p style="font-size: 14px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 17px; margin: 0;">ADDRESS : ` + req.body.value.address + `</p>
+                                                </div>
+                                            </div>
+                                            <!--[if mso]></td></tr></table><![endif]-->
+                                            <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top: 10px; padding-bottom: 0px; font-family: Arial, sans-serif"><![endif]-->
+                                            <div style="color:#555555;font-family:Poppins, Arial, Helvetica, sans-serif;line-height:1.2;padding-top:10px;padding-right:0px;padding-bottom:0px;padding-left:0px;">
+                                                <div style="font-size: 14px; line-height: 1.2; color: #555555; font-family: Poppins, Arial, Helvetica, sans-serif; mso-line-height-alt: 17px;">
+                                                    <p style="font-size: 14px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 17px; margin: 0;">MOBILE NUMBER : ` + req.body.value.mobileNumber + `</p>
+                                                </div>
+                                            </div>
+                                            <!--[if mso]></td></tr></table><![endif]-->
+                                            <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top: 10px; padding-bottom: 0px; font-family: Arial, sans-serif"><![endif]-->
+                                            <div style="color:#555555;font-family:Poppins, Arial, Helvetica, sans-serif;line-height:1.2;padding-top:10px;padding-right:0px;padding-bottom:0px;padding-left:0px;">
+                                                <div style="font-size: 14px; line-height: 1.2; color: #555555; font-family: Poppins, Arial, Helvetica, sans-serif; mso-line-height-alt: 17px;">
+                                                    <p style="font-size: 14px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 17px; margin: 0;">EMAIL ID : ` + req.body.value.emailId + `</p>
+                                                </div>
+                                            </div>
+                                            <!--[if mso]></td></tr></table><![endif]-->
+                                            <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top: 5px; padding-bottom: 0px; font-family: Arial, sans-serif"><![endif]-->
+                                            <div style="color:#80c1d8;font-family:Poppins, Arial, Helvetica, sans-serif;line-height:1.2;padding-top:5px;padding-right:0px;padding-bottom:0px;padding-left:0px;">
+                                                <div style="font-size: 14px; line-height: 1.2; color: #80c1d8; font-family: Poppins, Arial, Helvetica, sans-serif; mso-line-height-alt: 17px;">
+                                                    <p style="font-size: 13px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 16px; mso-ansi-font-size: 14px; margin: 0;"><span style="font-size: 13px; mso-ansi-font-size: 14px;">NUMBER OF VISITOR'S : ` + req.body.value.numberOfVisitors + `</span></p>
+                                                </div>
+                                            </div>
+                                            <!--[if mso]></td></tr></table><![endif]-->
+                                            <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top: 10px; padding-bottom: 10px; font-family: Arial, sans-serif"><![endif]-->
+                                            <div style="color:#80c1d8;font-family:Poppins, Arial, Helvetica, sans-serif;line-height:1.2;padding-top:10px;padding-right:0px;padding-bottom:10px;padding-left:0px;">
+                                                <div style="font-size: 14px; line-height: 1.2; color: #80c1d8; font-family: Poppins, Arial, Helvetica, sans-serif; mso-line-height-alt: 17px;">
+                                                <p style="font-size: 13px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 16px; mso-ansi-font-size: 14px; margin: 0;"><span style="font-size: 13px; mso-ansi-font-size: 14px;">VISIT REASON : </span></p>
+
+                                                    <p style="font-size: 30px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 36px; margin: 0;"><span style="font-size: 30px;"><strong>` + req.body.value.visitReason + `</strong></span></p>
+                                                </div>
+                                            </div>
+                                            <!--[if mso]></td></tr></table><![endif]-->
+                                            <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top: 5px; padding-bottom: 0px; font-family: Arial, sans-serif"><![endif]-->
+                                            <div style="color:#80c1d8;font-family:Poppins, Arial, Helvetica, sans-serif;line-height:1.2;padding-top:5px;padding-right:0px;padding-bottom:0px;padding-left:0px;">
+                                                <div style="font-size: 14px; line-height: 1.2; color: #80c1d8; font-family: Poppins, Arial, Helvetica, sans-serif; mso-line-height-alt: 17px;">
+                                                    <p style="font-size: 13px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 16px; mso-ansi-font-size: 14px; margin: 0;"><span style="font-size: 13px; mso-ansi-font-size: 14px;">MEET WHOM : ` + abc[1] + `</span></p>
+                                                </div>
+                                            </div>
+                                            <!--[if mso]></td></tr></table><![endif]-->
+                                            <!--[if (!mso)&(!IE)]><!-->
+                                        </div>
+                                        <!--<![endif]-->
+                                    </div>
+                                </div>
+                                <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                                <!--[if (mso)|(IE)]></td><td align="center" width="320" style="background-color:#ffffff;width:320px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:10px; padding-bottom:0px;"><![endif]-->
+                                <div class="col num6" style="min-width: 320px; max-width: 320px; display: table-cell; vertical-align: top; width: 320px;">
+                                    <div style="width:100% !important;">
+                                        <!--[if (!mso)&(!IE)]><!-->
+                                        <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:10px; padding-bottom:0px; padding-right: 0px; padding-left: 0px;">
+                                            <!--<![endif]-->
+                                            <div class="mobile_hide">
+<div align="right" class="img-container right autowidth" style="padding-right: 0px;padding-left: 0px;">
+<!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr style="line-height:0px"><td style="padding-right: 0px;padding-left: 0px;" align="right"><![endif]--><img align="right" alt="Image" border="0" class="right autowidth" src="https://mindfinfiles.blob.core.windows.net/images/featured-image.png" style="text-decoration: none; -ms-interpolation-mode: bicubic; border: 0; height: auto; width: 100%; max-width: 254px; float: none; display: block;" title="Image" width="254"/>
+<!--[if mso]></td></tr></table><![endif]-->
+</div>
+</div>
+                                            
+                                            <!--[if (!mso)&(!IE)]><!-->
+                                        </div>
+                                        <!--<![endif]-->
+                                    </div>
+                                </div>
+                                <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                                <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
+                            </div>
+                        </div>
+                    </div>
+                    <div style="background-color:transparent;">
+                        <div class="block-grid" style="Margin: 0 auto; min-width: 320px; max-width: 640px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: #f1f1f1;">
+                            <div style="border-collapse: collapse;display: table;width: 100%;background-color:#f1f1f1;">
+                                <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:640px"><tr class="layout-full-width" style="background-color:#f1f1f1"><![endif]-->
+                                <!--[if (mso)|(IE)]><td align="center" width="640" style="background-color:#f1f1f1;width:640px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;"><![endif]-->
+                                <div class="col num12" style="min-width: 320px; max-width: 640px; display: table-cell; vertical-align: top; width: 640px;">
+                                    <div style="width:100% !important;">
+                                        <!--[if (!mso)&(!IE)]><!-->
+                                        <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
+                                            <!--<![endif]-->
+                                            <table border="0" cellpadding="0" cellspacing="0" class="divider" role="presentation" style="table-layout: fixed; vertical-align: top; border-spacing: 0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; min-width: 100%; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;"
+                                                valign="top" width="100%">
+                                                <tbody>
+                                                    <tr style="vertical-align: top;" valign="top">
+                                                        <td class="divider_inner" style="word-break: break-word; vertical-align: top; min-width: 100%; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px;" valign="top">
+                                                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="divider_content" height="0" role="presentation" style="table-layout: fixed; vertical-align: top; border-spacing: 0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-top: 0px solid transparent; height: 0px; width: 100%;"
+                                                                valign="top" width="100%">
+                                                                <tbody>
+                                                                    <tr style="vertical-align: top;" valign="top">
+                                                                        <td height="0" style="word-break: break-word; vertical-align: top; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;" valign="top"><span></span></td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <!--[if (!mso)&(!IE)]><!-->
+                                        </div>
+                                        <!--<![endif]-->
+                                    </div>
+                                </div>
+                                <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                                <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
+                            </div>
+                        </div>
+                    </div>
+                    <div style="background-color:transparent;">
+                        <div class="block-grid" style="Margin: 0 auto; min-width: 320px; max-width: 640px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: #ffffff;">
+                            <div style="border-collapse: collapse;display: table;width: 100%;background-color:#ffffff;">
+                                <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:640px"><tr class="layout-full-width" style="background-color:#ffffff"><![endif]-->
+                                <!--[if (mso)|(IE)]><td align="center" width="640" style="background-color:#ffffff;width:640px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;"><![endif]-->
+                                <div class="col num12" style="min-width: 320px; max-width: 640px; display: table-cell; vertical-align: top; width: 640px;">
+                                    <div style="width:100% !important;">
+                                        <!--[if (!mso)&(!IE)]><!-->
+                                        <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
+                                            <!--<![endif]-->
+                                            <table border="0" cellpadding="0" cellspacing="0" class="divider" role="presentation" style="table-layout: fixed; vertical-align: top; border-spacing: 0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; min-width: 100%; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;"
+                                                valign="top" width="100%">
+                                                <tbody>
+                                                    <tr style="vertical-align: top;" valign="top">
+                                                        <td class="divider_inner" style="word-break: break-word; vertical-align: top; min-width: 100%; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px;" valign="top">
+                                                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="divider_content" height="0" role="presentation" style="table-layout: fixed; vertical-align: top; border-spacing: 0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-top: 0px solid transparent; height: 0px; width: 100%;"
+                                                                valign="top" width="100%">
+                                                                <tbody>
+                                                                    <tr style="vertical-align: top;" valign="top">
+                                                                        <td height="0" style="word-break: break-word; vertical-align: top; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;" valign="top"><span></span></td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <!--[if (!mso)&(!IE)]><!-->
+                                        </div>
+                                        <!--<![endif]-->
+                                    </div>
+                                </div>
+                                <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                                <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
+                            </div>
+                        </div>
+                    </div>
+                    <div style="background-color:transparent;">
+                        <div class="block-grid two-up" style="Margin: 0 auto; min-width: 320px; max-width: 640px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: #ffffff;">
+                            <div style="border-collapse: collapse;display: table;width: 100%;background-color:#ffffff;">
+                                <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:640px"><tr class="layout-full-width" style="background-color:#ffffff"><![endif]-->
+                                <!--[if (mso)|(IE)]><td align="center" width="320" style="background-color:#ffffff;width:320px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;"><![endif]-->
+                                <div class="col num6" style="min-width: 320px; max-width: 320px; display: table-cell; vertical-align: top; width: 320px;">
+                                    <div style="width:100% !important;">
+                                        <!--[if (!mso)&(!IE)]><!-->
+                                        <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
+                                            <!--<![endif]-->
+                                            <div align="center" class="img-container center autowidth" style="padding-right: 0px;padding-left: 0px;">
+                                                <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr style="line-height:0px"><td style="padding-right: 0px;padding-left: 0px;" align="center"><![endif]--><img align="center" alt="Image" border="0" class="center autowidth" src="https://mindfinfiles.blob.core.windows.net/images/image-01_14.png" style="text-decoration: none; -ms-interpolation-mode: bicubic; border: 0; height: auto; width: 100%; max-width: 320px; display: block;"
+                                                    title="Image" width="320" />
+                                                <!--[if mso]></td></tr></table><![endif]-->
+                                            </div>
+                                            <!--[if (!mso)&(!IE)]><!-->
+                                        </div>
+                                        <!--<![endif]-->
+                                    </div>
+                                </div>
+                                <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                                <!--[if (mso)|(IE)]></td><td align="center" width="320" style="background-color:#ffffff;width:320px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:35px; padding-bottom:5px;"><![endif]-->
+                                <div class="col num6" style="min-width: 320px; max-width: 320px; display: table-cell; vertical-align: top; width: 320px;">
+                                    <div style="width:100% !important;">
+                                        <!--[if (!mso)&(!IE)]><!-->
+                                        <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:35px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
+                                            <!--<![endif]-->
+                                            <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Arial, sans-serif"><![endif]-->
+                                            <div style="color:#80c1d8;font-family:Poppins, Arial, Helvetica, sans-serif;line-height:1.2;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
+                                                <div style="font-size: 14px; line-height: 1.2; color: #80c1d8; font-family: Poppins, Arial, Helvetica, sans-serif; mso-line-height-alt: 17px;">
+                                                    <p style="font-size: 30px; line-height: 1.2; word-break: break-word; text-align: center; mso-line-height-alt: 36px; margin: 0;"><span style="font-size: 30px;"><strong>Schedule a Call</strong></span></p>
+                                                </div>
+                                            </div>
+                                            <!--[if mso]></td></tr></table><![endif]-->
+                                            <div align="center" class="button-container" style="padding-top:0px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
+                                                <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-spacing: 0; border-collapse: collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;"><tr><td style="padding-top: 0px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px" align="center"><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="https://bank.mindfin.co.in" style="height:30.75pt; width:130.5pt; v-text-anchor:middle;" arcsize="10%" stroke="false" fillcolor="#80c1d8"><w:anchorlock/><v:textbox inset="0,0,0,0"><center style="color:#ffffff; font-family:Arial, sans-serif; font-size:16px"><![endif]--><a href="https://bank.mindfin.co.in" style="-webkit-text-size-adjust: none; text-decoration: none; display: inline-block; color: #ffffff; background-color: #80c1d8; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; width: auto; width: auto; border-top: 1px solid #80c1d8; border-right: 1px solid #80c1d8; border-bottom: 1px solid #80c1d8; border-left: 1px solid #80c1d8; padding-top: 5px; padding-bottom: 5px; font-family: Poppins, Arial, Helvetica, sans-serif; text-align: center; mso-border-alt: none; word-break: keep-all;"
+                                                    target="_blank"><span style="padding-left:25px;padding-right:25px;font-size:16px;display:inline-block;"><span style="font-size: 16px; line-height: 2; word-break: break-word; mso-line-height-alt: 32px;">Schedule</span></span></a>
+                                                <!--[if mso]></center></v:textbox></v:roundrect></td></tr></table><![endif]-->
+                                            </div>
+                                            <!--[if (!mso)&(!IE)]><!-->
+                                        </div>
+                                        <!--<![endif]-->
+                                    </div>
+                                </div>
+                                <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                                <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
+                            </div>
+                        </div>
+                    </div>
+                    <div style="background-color:transparent;">
+                        <div class="block-grid" style="Margin: 0 auto; min-width: 320px; max-width: 640px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: #ffffff;">
+                            <div style="border-collapse: collapse;display: table;width: 100%;background-color:#ffffff;">
+                                <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:640px"><tr class="layout-full-width" style="background-color:#ffffff"><![endif]-->
+                                <!--[if (mso)|(IE)]><td align="center" width="640" style="background-color:#ffffff;width:640px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;"><![endif]-->
+                                <div class="col num12" style="min-width: 320px; max-width: 640px; display: table-cell; vertical-align: top; width: 640px;">
+                                    <div style="width:100% !important;">
+                                        <!--[if (!mso)&(!IE)]><!-->
+                                        <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
+                                            <!--<![endif]-->
+                                            <table border="0" cellpadding="0" cellspacing="0" class="divider" role="presentation" style="table-layout: fixed; vertical-align: top; border-spacing: 0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; min-width: 100%; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;"
+                                                valign="top" width="100%">
+                                                <tbody>
+                                                    <tr style="vertical-align: top;" valign="top">
+                                                        <td class="divider_inner" style="word-break: break-word; vertical-align: top; min-width: 100%; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px;" valign="top">
+                                                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="divider_content" height="0" role="presentation" style="table-layout: fixed; vertical-align: top; border-spacing: 0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-top: 0px solid transparent; height: 0px; width: 100%;"
+                                                                valign="top" width="100%">
+                                                                <tbody>
+                                                                    <tr style="vertical-align: top;" valign="top">
+                                                                        <td height="0" style="word-break: break-word; vertical-align: top; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;" valign="top"><span></span></td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <!--[if (!mso)&(!IE)]><!-->
+                                        </div>
+                                        <!--<![endif]-->
+                                    </div>
+                                </div>
+                                <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                                <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
+                            </div>
+                        </div>
+                    </div>
+                    <div style="background-color:transparent;">
+                        <div class="block-grid" style="Margin: 0 auto; min-width: 320px; max-width: 640px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: #f1f1f1;">
+                            <div style="border-collapse: collapse;display: table;width: 100%;background-color:#f1f1f1;">
+                                <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:640px"><tr class="layout-full-width" style="background-color:#f1f1f1"><![endif]-->
+                                <!--[if (mso)|(IE)]><td align="center" width="640" style="background-color:#f1f1f1;width:640px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;"><![endif]-->
+                                <div class="col num12" style="min-width: 320px; max-width: 640px; display: table-cell; vertical-align: top; width: 640px;">
+                                    <div style="width:100% !important;">
+                                        <!--[if (!mso)&(!IE)]><!-->
+                                        <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
+                                            <!--<![endif]-->
+                                            <table border="0" cellpadding="0" cellspacing="0" class="divider" role="presentation" style="table-layout: fixed; vertical-align: top; border-spacing: 0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; min-width: 100%; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;"
+                                                valign="top" width="100%">
+                                                <tbody>
+                                                    <tr style="vertical-align: top;" valign="top">
+                                                        <td class="divider_inner" style="word-break: break-word; vertical-align: top; min-width: 100%; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px;" valign="top">
+                                                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="divider_content" height="0" role="presentation" style="table-layout: fixed; vertical-align: top; border-spacing: 0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-top: 0px solid transparent; height: 0px; width: 100%;"
+                                                                valign="top" width="100%">
+                                                                <tbody>
+                                                                    <tr style="vertical-align: top;" valign="top">
+                                                                        <td height="0" style="word-break: break-word; vertical-align: top; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;" valign="top"><span></span></td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <!--[if (!mso)&(!IE)]><!-->
+                                        </div>
+                                        <!--<![endif]-->
+                                    </div>
+                                </div>
+                                <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                                <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
+                            </div>
+                        </div>
+                    </div>
+                    <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <!--[if (IE)]></div><![endif]-->
+</body>
+
+</html>`;
+
+            let transporter = nodemailer.createTransport({
+                host: req.body.emails[0].hostmail,
+                port: 587,
+                transportMethod: 'SMTP',
+                // secure: false, // true for 465, false for other ports
+                auth: {
+                    user: req.body.emails[0].emailuser, // gmail id
+                    pass: req.body.emails[0].emailpassword // gmail password
+                },
+                tls: {
+                    rejectUnauthorized: false
+                }
+            });
+            // setup email data with unicode symbols
+            let mailOptions = {
+                from: req.body.emails[0].fromemail1,
+                to: req.body.emails[0].vikas, // list of receivers
+                cc: req.body.emails[0].bcc + ',' + req.body.emails[0].boss,
+
+                // to: req.body.emails[0].bcc, // list of receivers
+                // cc: req.body.emails[0].cc,
+                // bcc: req.body.emails[0].fromemail2,
+                subject: ' New Visitor Form ', //"Project Payment Update From", // Subject line
+                text: 'Hello world?', // plain text body
+                html: output // html body
+            };
+            // send mail with defined transport object
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    return //console.log(error);
+                }
+                //console.log('Message sent: %s', info.messageId);
+                //console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+                // res.render('contact', { msg: 'Email has been sent' });
+            });
+
+
+
+        })
+
+});
+router.get('/getvisitorcount', (req, res) => {
+    knex.select()
+        .from('visitorform')
+        .where('status', "0")
+        .then(function(result) {
+            res.json(result.length);
+        })
+});
+router.get('/getAllVisitors/:pagesize/:page', function(req, res) {
+    const pageSize = req.params.pagesize;
+    const currentPage = req.params.page;
+    const skip = (pageSize * (currentPage - 1))
+    knex.select()
+        .from('visitorform')
+        .orderBy('visitorId', 'desc')
+        .limit(pageSize).offset(skip)
+        .then(function(result) {
+            knex.select()
+                .from('visitorform')
+                .orderBy('visitorId', 'desc')
+                .then(function(re) {
+                    res.status(200).json({
+                        message: "Memberlists fetched",
+                        posts: result,
+                        maxPosts: re.length
+                    });
+
+                })
+        })
+});
+router.post('/respondVisitor', function(req, res) {
+    var date = format.asString('yyyy-MM-dd', new Date());
+    // //console.log(req.body)
+    knex('visitorform')
+        .where({ visitorId: req.body.value.element.visitorId })
+        .update({
+            UpdatedDate: date,
+            status: '1',
+            response: req.body.value.element.response,
+            responseGivenby: req.body.empid,
+            responseGivenbyName: req.body.empname,
+        })
+        .then(function(result) {
+            res.json('Response sent Successfully');
+            const output = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+            <html xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:v="urn:schemas-microsoft-com:vml">
+            
+            <head>
+                <!--[if gte mso 9]><xml><o:OfficeDocumentSettings><o:AllowPNG/><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml><![endif]-->
+                <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+                <meta content="width=device-width" name="viewport" />
+                <!--[if !mso]><!-->
+                <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+                <!--<![endif]-->
+                <title></title>
+                <!--[if !mso]><!-->
+                <!--<![endif]-->
+                <style type="text/css">
+                    body {
+                        margin: 0;
+                        padding: 0;
+                    }
+                    
+                    table,
+                    td,
+                    tr {
+                        vertical-align: top;
+                        border-collapse: collapse;
+                    }
+                    
+                    * {
+                        line-height: inherit;
+                    }
+                    
+                    a[x-apple-data-detectors=true] {
+                        color: inherit !important;
+                        text-decoration: none !important;
+                    }
+                </style>
+                <style id="media-query" type="text/css">
+                    @media (max-width: 660px) {
+                        .block-grid,
+                        .col {
+                            min-width: 320px !important;
+                            max-width: 100% !important;
+                            display: block !important;
+                        }
+                        .block-grid {
+                            width: 100% !important;
+                        }
+                        .col {
+                            width: 100% !important;
+                        }
+                        .col>div {
+                            margin: 0 auto;
+                        }
+                        img.fullwidth,
+                        img.fullwidthOnMobile {
+                            max-width: 100% !important;
+                        }
+                        .no-stack .col {
+                            min-width: 0 !important;
+                            display: table-cell !important;
+                        }
+                        .no-stack.two-up .col {
+                            width: 50% !important;
+                        }
+                        .no-stack .col.num4 {
+                            width: 33% !important;
+                        }
+                        .no-stack .col.num8 {
+                            width: 66% !important;
+                        }
+                        .no-stack .col.num4 {
+                            width: 33% !important;
+                        }
+                        .no-stack .col.num3 {
+                            width: 25% !important;
+                        }
+                        .no-stack .col.num6 {
+                            width: 50% !important;
+                        }
+                        .no-stack .col.num9 {
+                            width: 75% !important;
+                        }
+                        .video-block {
+                            max-width: none !important;
+                        }
+                        .mobile_hide {
+                            min-height: 0px;
+                            max-height: 0px;
+                            max-width: 0px;
+                            display: none;
+                            overflow: hidden;
+                            font-size: 0px;
+                        }
+                        .desktop_hide {
+                            display: block !important;
+                            max-height: none !important;
+                        }
+                    }
+                </style>
+            </head>
+            
+            <body class="clean-body" style="margin: 0; padding: 0; -webkit-text-size-adjust: 100%; background-color: #f1f1f1;">
+                <!--[if IE]><div class="ie-browser"><![endif]-->
+                <table bgcolor="#f1f1f1" cellpadding="0" cellspacing="0" class="nl-container" role="presentation" style="table-layout: fixed; vertical-align: top; min-width: 320px; Margin: 0 auto; border-spacing: 0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #f1f1f1; width: 100%;"
+                    valign="top" width="100%">
+                    <tbody>
+                        <tr style="vertical-align: top;" valign="top">
+                            <td style="word-break: break-word; vertical-align: top;" valign="top">
+                                <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center" style="background-color:#f1f1f1"><![endif]-->
+                                <div style="background-color:transparent;">
+                                    <div class="block-grid" style="Margin: 0 auto; min-width: 320px; max-width: 640px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: #f1f1f1;">
+                                        <div style="border-collapse: collapse;display: table;width: 100%;background-color:#f1f1f1;">
+                                            <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:640px"><tr class="layout-full-width" style="background-color:#f1f1f1"><![endif]-->
+                                            <!--[if (mso)|(IE)]><td align="center" width="640" style="background-color:#f1f1f1;width:640px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;"><![endif]-->
+                                            <div class="col num12" style="min-width: 320px; max-width: 640px; display: table-cell; vertical-align: top; width: 640px;">
+                                                <div style="width:100% !important;">
+                                                    <!--[if (!mso)&(!IE)]><!-->
+                                                    <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
+                                                        <!--<![endif]-->
+                                                        <table border="0" cellpadding="0" cellspacing="0" class="divider" role="presentation" style="table-layout: fixed; vertical-align: top; border-spacing: 0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; min-width: 100%; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;"
+                                                            valign="top" width="100%">
+                                                            <tbody>
+                                                                <tr style="vertical-align: top;" valign="top">
+                                                                    <td class="divider_inner" style="word-break: break-word; vertical-align: top; min-width: 100%; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px;" valign="top">
+                                                                        <table align="center" border="0" cellpadding="0" cellspacing="0" class="divider_content" height="0" role="presentation" style="table-layout: fixed; vertical-align: top; border-spacing: 0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-top: 0px solid transparent; height: 0px; width: 100%;"
+                                                                            valign="top" width="100%">
+                                                                            <tbody>
+                                                                                <tr style="vertical-align: top;" valign="top">
+                                                                                    <td height="0" style="word-break: break-word; vertical-align: top; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;" valign="top"><span></span></td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        <!--[if (!mso)&(!IE)]><!-->
+                                                    </div>
+                                                    <!--<![endif]-->
+                                                </div>
+                                            </div>
+                                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                                            <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="background-color:transparent;">
+                                    <div class="block-grid two-up" style="Margin: 0 auto; min-width: 320px; max-width: 640px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: #ffffff;">
+                                        <div style="border-collapse: collapse;display: table;width: 100%;background-color:#ffffff;">
+                                            <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:640px"><tr class="layout-full-width" style="background-color:#ffffff"><![endif]-->
+                                            <!--[if (mso)|(IE)]><td align="center" width="320" style="background-color:#ffffff;width:320px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 35px; padding-left: 35px; padding-top:10px; padding-bottom:5px;"><![endif]-->
+                                            <div class="col num6" style="min-width: 320px; max-width: 320px; display: table-cell; vertical-align: top; width: 320px;">
+                                                <div style="width:100% !important;">
+                                                    <!--[if (!mso)&(!IE)]><!-->
+                                                    <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:10px; padding-bottom:5px; padding-right: 35px; padding-left: 35px;">
+                                                        <!--<![endif]-->
+                                                        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top: 10px; padding-bottom: 0px; font-family: Arial, sans-serif"><![endif]-->
+                                                        <div style="color:#555555;font-family:Poppins, Arial, Helvetica, sans-serif;line-height:1.2;padding-top:10px;padding-right:0px;padding-bottom:0px;padding-left:0px;">
+                                                            <div style="font-size: 14px; line-height: 1.2; color: #555555; font-family: Poppins, Arial, Helvetica, sans-serif; mso-line-height-alt: 17px;">
+                                                                <p style="font-size: 14px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 17px; margin: 0;">Dear ` + req.body.value.element.visitorName + `,</p>
+                                                                <p style="font-size: 14px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 17px; margin: 0;"> </p>
+                                                            </div>
+                                                        </div>
+                                                        <!--[if mso]></td></tr></table><![endif]-->
+                                                        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top: 10px; padding-bottom: 10px; font-family: Arial, sans-serif"><![endif]-->
+                                                        <div style="color:#80c1d8;font-family:Poppins, Arial, Helvetica, sans-serif;line-height:1.2;padding-top:10px;padding-right:0px;padding-bottom:10px;padding-left:0px;">
+                                                            <div style="font-size: 14px; line-height: 1.2; color: #80c1d8; font-family: Poppins, Arial, Helvetica, sans-serif; mso-line-height-alt: 17px;">
+                                                                <p style="font-size: 18px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 22px; margin: 0;"><span style="font-size: 18px;"><strong>Your Appointment to meet </strong></span></p>
+                                                                <p style="font-size: 18px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 22px; margin: 0;"><span style="font-size: 18px;"><strong>` + req.body.value.element.toMeetWhom + ` is set to</strong></span></p>
+                                                            </div>
+                                                        </div>
+                                                        <!--[if mso]></td></tr></table><![endif]-->
+                                                        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top: 5px; padding-bottom: 10px; font-family: Arial, sans-serif"><![endif]-->
+                                                        <div style="color:#808080;font-family:Poppins, Arial, Helvetica, sans-serif;line-height:2;padding-top:5px;padding-right:0px;padding-bottom:10px;padding-left:0px;">
+                                                            <div style="font-size: 14px; line-height: 2; color: #808080; font-family: Poppins, Arial, Helvetica, sans-serif; mso-line-height-alt: 28px;">
+                                                                <p style="font-size: 14px; line-height: 2; word-break: break-word; mso-line-height-alt: 28px; margin: 0;">📅 <span style="font-size: 16px;">` + req.body.value.element.createdDate + `</span></p>
+                                                                ` + req.body.value.element.response + `
+                                                            </div>
+                                                        </div>
+                                                        <!--[if mso]></td></tr></table><![endif]-->
+                                                        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top: 5px; padding-bottom: 10px; font-family: Arial, sans-serif"><![endif]-->
+                                                        <div style="color:#000000;font-family:Poppins, Arial, Helvetica, sans-serif;line-height:2;padding-top:5px;padding-right:0px;padding-bottom:10px;padding-left:0px;">
+                                                            <div style="font-size: 14px; line-height: 2; color: #000000; font-family: Poppins, Arial, Helvetica, sans-serif; mso-line-height-alt: 28px;">
+                                                                <p style="line-height: 2; word-break: break-word; mso-line-height-alt: NaNpx; margin: 0;">Thanks And Regards</p>
+                                                                <p style="line-height: 2; word-break: break-word; mso-line-height-alt: NaNpx; margin: 0;"><strong>Mindfin Admin</strong></p>
+                                                                <p style="line-height: 2; word-break: break-word; mso-line-height-alt: NaNpx; margin: 0;">No. 10, 1st Floor,</p>
+                                                                <p style="line-height: 2; word-break: break-word; mso-line-height-alt: NaNpx; margin: 0;">Krishna Block, 1st Main</p>
+                                                                <p style="line-height: 2; word-break: break-word; mso-line-height-alt: NaNpx; margin: 0;">Road, Seshadripuram,</p>
+                                                                <p style="line-height: 2; word-break: break-word; mso-line-height-alt: NaNpx; margin: 0;">Bangalore- 560020</p>
+                                                            </div>
+                                                        </div>
+                                                        <!--[if mso]></td></tr></table><![endif]-->
+                                                        <div align="left" class="img-container left fixedwidth" style="padding-right: 0px;padding-left: 0px;">
+                                                            <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr style="line-height:0px"><td style="padding-right: 0px;padding-left: 0px;" align="left"><![endif]--><img alt="Alternate text" border="0" class="left fixedwidth" src="https://mindfinfiles.blob.core.windows.net/mindfin-backend/logo.jpg" style="text-decoration: none; -ms-interpolation-mode: bicubic; border: 0; height: auto; width: 100%; max-width: 150px; display: block;"
+                                                                title="Alternate text" width="150" />
+                                                            <!--[if mso]></td></tr></table><![endif]-->
+                                                        </div>
+                                                        <!--[if (!mso)&(!IE)]><!-->
+                                                    </div>
+                                                    <!--<![endif]-->
+                                                </div>
+                                            </div>
+                                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                                            <!--[if (mso)|(IE)]></td><td align="center" width="320" style="background-color:#ffffff;width:320px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:10px; padding-bottom:0px;"><![endif]-->
+                                            <div class="col num6" style="min-width: 320px; max-width: 320px; display: table-cell; vertical-align: top; width: 320px;">
+                                                <div style="width:100% !important;">
+                                                    <!--[if (!mso)&(!IE)]><!-->
+                                                    <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:10px; padding-bottom:0px; padding-right: 0px; padding-left: 0px;">
+                                                        <!--<![endif]-->
+                                                        <div align="right" class="img-container right autowidth" style="padding-right: 0px;padding-left: 0px;">
+                                                            <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr style="line-height:0px"><td style="padding-right: 0px;padding-left: 0px;" align="right"><![endif]--><img align="right" alt="Image" border="0" class="right autowidth" src="https://mindfinfiles.blob.core.windows.net/images/featured-image.png" style="text-decoration: none; -ms-interpolation-mode: bicubic; border: 0; height: auto; width: 100%; max-width: 254px; float: none; display: block;"
+                                                                title="Image" width="254" />
+                                                            <!--[if mso]></td></tr></table><![endif]-->
+                                                        </div>
+                                                        <!--[if (!mso)&(!IE)]><!-->
+                                                    </div>
+                                                    <!--<![endif]-->
+                                                </div>
+                                            </div>
+                                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                                            <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="background-color:transparent;">
+                                    <div class="block-grid" style="Margin: 0 auto; min-width: 320px; max-width: 640px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: #f1f1f1;">
+                                        <div style="border-collapse: collapse;display: table;width: 100%;background-color:#f1f1f1;">
+                                            <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:640px"><tr class="layout-full-width" style="background-color:#f1f1f1"><![endif]-->
+                                            <!--[if (mso)|(IE)]><td align="center" width="640" style="background-color:#f1f1f1;width:640px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;"><![endif]-->
+                                            <div class="col num12" style="min-width: 320px; max-width: 640px; display: table-cell; vertical-align: top; width: 640px;">
+                                                <div style="width:100% !important;">
+                                                    <!--[if (!mso)&(!IE)]><!-->
+                                                    <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
+                                                        <!--<![endif]-->
+                                                        <table border="0" cellpadding="0" cellspacing="0" class="divider" role="presentation" style="table-layout: fixed; vertical-align: top; border-spacing: 0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; min-width: 100%; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;"
+                                                            valign="top" width="100%">
+                                                            <tbody>
+                                                                <tr style="vertical-align: top;" valign="top">
+                                                                    <td class="divider_inner" style="word-break: break-word; vertical-align: top; min-width: 100%; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px;" valign="top">
+                                                                        <table align="center" border="0" cellpadding="0" cellspacing="0" class="divider_content" height="0" role="presentation" style="table-layout: fixed; vertical-align: top; border-spacing: 0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-top: 0px solid transparent; height: 0px; width: 100%;"
+                                                                            valign="top" width="100%">
+                                                                            <tbody>
+                                                                                <tr style="vertical-align: top;" valign="top">
+                                                                                    <td height="0" style="word-break: break-word; vertical-align: top; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;" valign="top"><span></span></td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        <!--[if (!mso)&(!IE)]><!-->
+                                                    </div>
+                                                    <!--<![endif]-->
+                                                </div>
+                                            </div>
+                                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                                            <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!--[if (IE)]></div><![endif]-->
+            </body>
+            
+            </html>`;
+
+            let transporter = nodemailer.createTransport({
+                host: req.body.emails[0].hostmail,
+                port: 587,
+                transportMethod: 'SMTP',
+                // secure: false, // true for 465, false for other ports
+                auth: {
+                    user: req.body.emails[0].emailuser, // gmail id
+                    pass: req.body.emails[0].emailpassword // gmail password
+                },
+                tls: {
+                    rejectUnauthorized: false
+                }
+            });
+            // setup email data with unicode symbols
+            let mailOptions = {
+                from: req.body.emails[0].emailuser,
+                to: req.body.value.element.emailId,
+                cc: req.body.emails[0].vikas + ',' + req.body.emails[0].bcc + ',' + req.body.emails[0].boss,
+                // list of receivers
+                cc: req.body.emails[0].cc,
+                // bcc: req.body.emails[0].fromemail2,
+                subject: req.body.value.element.visitReason, //"Project Payment Update From", // Subject line
+                text: 'Hello world?', // plain text body
+                html: output // html body
+            };
+            // send mail with defined transport object
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    return //console.log(error);
+                }
+                //console.log('Message sent: %s', info.messageId);
+                //console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+                // res.render('contact', { msg: 'Email has been sent' });
+            });
+
+
+
+        })
+});
+router.post('/visitoropenstatus', function(req, res) {
+    var date = format.asString('yyyy-MM-dd', new Date());
+    // //console.log(req.body)
+    knex('visitorform')
+        .where({ status: '0' })
+        .update({
+            UpdatedDate: date,
+            status: 'Opened',
+            responseGivenby: req.body.empid,
+            responseGivenbyName: req.body.empname,
+        })
+        .then(function(result) {
+            res.json('Updated Successfully');
+        })
+});
+router.get('/getexecutivelistWithBranch/:branch', function(req, res) {
+    knex.select()
+        .from('employee')
+        .join('usertype', 'usertype.idusertype', 'employee.iduser')
+        .where('usertype.user ', 'EXECUTIVE')
+        .where('branch', req.params.branch)
+        .where('employee.status ', 'active')
+        .then(function(result) {
+            ////console.log(result);
+            res.json(result);
+        })
+});
+router.get('/getheadofficeEmployee', function(req, res) {
+    knex.select()
+        .from('employee')
+        .join('usertype', 'usertype.idusertype', 'employee.iduser')
+        // .where('usertype.user ', 'EXECUTIVE')
+        .where('branch', 'Head Office')
+        .where('employee.status ', 'active')
+        .then(function(result) {
+            ////console.log(result);
+            res.json(result);
+        })
+});
+router.get('/getBackendroutinelist/:pagesize/:page/:sdate/:edate', (req, res, next) => {
+    const pageSize = req.params.pagesize;
+    const currentPage = req.params.page;
+    const skip = (pageSize * (currentPage - 1));
+    const sdate = format.asString('yyyy-MM-dd', new Date(req.params.sdate));
+    const edate = format.asString('yyyy-MM-dd', new Date(req.params.edate));
+    knex.select('daily_routine.*', 'bank.bankname', 'employee.*', 'employee.name as empname', 'usertype.*', 'daily_routine.createddate as dcreateddate', 'daily_routine.status as dstatus')
+        .from('daily_routine', 'employee')
+        .join('bank', 'bank.idbank', 'daily_routine.bankid')
+        .join('employee', 'employee.idemployee', 'daily_routine.employeeid')
+        .join('usertype', 'usertype.idusertype', 'employee.iduser')
+        .where('usertype.user', 'BACKEND')
+        .where('daily_routine.createddate', '>=', sdate)
+        .where('daily_routine.createddate', '<=', edate)
+        .orderBy('daily_routine.routineid', 'desc')
+        .limit(pageSize).offset(skip)
+        .then(function(result) {
+            knex.select()
+                .from('daily_routine', 'employee')
+                .join('bank', 'bank.idbank', 'daily_routine.bankid')
+                .join('employee', 'employee.idemployee', 'daily_routine.employeeid')
+                .join('usertype', 'usertype.idusertype', 'employee.iduser')
+                .where('usertype.user', 'BACKEND')
+                .where('daily_routine.createddate', '>=', sdate)
+                .where('daily_routine.createddate', '<=', edate)
+                .orderBy('daily_routine.routineid', 'desc')
+                .then(function(re) {
+                    res.status(200).json({
+                        message: "Memberlists fetched",
+                        posts: result,
+                        maxPosts: re.length
+                    });
+                })
+        })
+});
+router.get('/getallexecutivelist', function(req, res) {
+    knex.select()
+        .from('employee')
+        .join('usertype', 'usertype.idusertype', 'employee.iduser')
+        .where((user) =>
+            user.whereIn('usertype.user', ['EXECUTIVE', 'BACKEND', 'DATAENTRY'])
+        )
+        // .where('usertype.user ', 'EXECUTIVE')
+        // .where('usertype.user', 'BACKEND')
+        // .where('usertype.user', 'DATAENTRY')
+        .where('employee.status ', 'active')
+        .then(function(result) {
+            ////console.log(result);
+            res.json(result);
         })
 });
 module.exports = router;

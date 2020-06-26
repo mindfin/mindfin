@@ -63,41 +63,41 @@ this.fetchData1 = res;
     console.log(bagColor);
      this.bname = bagColor;
   }
-  openDialog(element) {
-    this.model=element;
+  // openDialog(element) {
+  //   this.model=element;
     
-      const dialogConfig = new MatDialogConfig();
-      dialogConfig.data = {element};
-      this.dialog.open(EditDialogContent,dialogConfig
-    );
-    console.log(dialogConfig );
+  //     const dialogConfig = new MatDialogConfig();
+  //     dialogConfig.data = {element};
+  //     this.dialog.open(EditDialogContent,dialogConfig
+  //   );
+  //   console.log(dialogConfig );
     
-    }
+  //   }
 }
-@Component({
-  selector: 'dialog-content-example-dialog',
-  templateUrl: 'editstatusdialog-content.html',
-})
+// @Component({
+//   selector: 'dialog-content-example-dialog',
+//   templateUrl: 'editstatusdialog-content.html',
+// })
 
-export class EditDialogContent{ 
+// export class EditDialogContent{ 
 
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data:any,
-  private commonservice: CommonService ,private route: ActivatedRoute, private router: Router,) {}
-element:any;
-empid;
-empname;
-value;
+//   constructor(@Inject(MAT_DIALOG_DATA) public data:any,
+//   private commonservice: CommonService ,private route: ActivatedRoute, private router: Router,) {}
+// element:any;
+// empid;
+// empname;
+// value;
 
- editstatus(obj,obj1){
-  this.empid = localStorage.getItem("id");
-  this.empname = localStorage.getItem("empname");
-   console.log(obj);
-   console.log(obj1);
-   this.value = {obj:obj,empid:this.empid,empname:this.empname}
-  this.commonservice.editstatus(this.value);
- }
- refresh(): void {
-  window.location.reload();
-}
-}
+//  editstatus(obj,obj1){
+//   this.empid = localStorage.getItem("id");
+//   this.empname = localStorage.getItem("empname");
+//    console.log(obj);
+//    console.log(obj1);
+//    this.value = {obj:obj,empid:this.empid,empname:this.empname}
+//   this.commonservice.editstatus(this.value);
+//  }
+//  refresh(): void {
+//   window.location.reload();
+// }
+// }

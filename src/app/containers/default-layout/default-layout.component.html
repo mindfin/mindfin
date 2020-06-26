@@ -1,7 +1,7 @@
 <app-header [fixed]="true" [navbarBrandFull]="{src: 'assets/images/logo1.png', width: 130, height: 80, alt: 'Mindfin Logo'}" [navbarBrandMinimized]="{src: 'assets/images/head.png', width: 50, height: 50, alt: 'mindfin Logo'}" [sidebarToggler]="'lg'" [asideMenuToggler]="'lg'">
 
     <ul class="nav navbar-nav ml-auto">
-        <li class="nav-item  d-md-down-none ">
+        <li class="nav-item  d-md-down-none " *ngIf="abc!=='GUEST'">
             <a class="nav-link " role="button " [routerLink]="[ '/notification/empnotification'] " title="Notifications "><img src="/assets/images/viewnoti.png" alt="notification" height="40px" width="40px">
                 <span *ngIf="fetchData12 !==0 " class="badge badge-danger ">{{fetchData12}}</span>
             </a>
@@ -213,6 +213,11 @@
                     <img src="/assets/images/appointments.png " alt="Direct Appointment " height="30px " width="30px "> Direct Appointment
                     <span *ngIf="fetchData8 !==0 " class="badge badge-danger ">{{fetchData8}}</span>
                 </a>
+                <a *ngIf="abc==='SUPERADMIN' " class="dropdown-item " role="button " [routerLink]="[ '/guest/viewVisitor'] " title="New Direct Appointment ">
+
+                    <img src="/assets/images/visitor.png " alt="Visitor " height="30px " width="30px "> New Visitor
+                    <span *ngIf="fetchData31 !==0 " class="badge badge-danger ">{{fetchData31}}</span>
+                </a>
             </div>
         </li>
         <li class="nav-item  d-md-down-none " *ngIf="abc==='ACCOUNTANT' ">
@@ -288,13 +293,18 @@
         </app-sidebar-nav>
         <app-sidebar-minimizer></app-sidebar-minimizer>
     </app-sidebar>
+    <app-sidebar [fixed]="true " [display]=" 'lg' " *ngIf="abc==='GUEST' ">
+        <app-sidebar-nav [navItems]="navItems10" [perfectScrollbar] [disabled]="sidebarMinimized " style="background:url( 'assets/images/123.jpg')!important;background-repeat: no-repeat!important;background-size:cover!important; ">
+        </app-sidebar-nav>
+        <app-sidebar-minimizer></app-sidebar-minimizer>
+    </app-sidebar>
     <app-sidebar [fixed]="true " [display]=" 'lg' " *ngIf="abc==='CUSTOMER' ">
         <app-sidebar-nav [navItems]="navItems4 " [perfectScrollbar] [disabled]="sidebarMinimized " style="background:url( 'assets/images/123.jpg')!important;background-repeat: no-repeat!important;background-size:cover!important; ">
         </app-sidebar-nav>
         <app-sidebar-minimizer></app-sidebar-minimizer>
     </app-sidebar>
     <main class="main ">
-        <ol class="breadcrumb ">
+        <ol class="breadcrumb " style="color:orange;">
             <app-breadcrumb></app-breadcrumb>
         </ol>
         <div class="container-fluid ">
@@ -302,7 +312,7 @@
         </div>
     </main>
     <app-aside [fixed]="true " [display]="false " [ngClass]=" 'test' ">
-        <tabset>
+        <tabset *ngIf="abc!=='GUEST' ">
             <tab>
                 <ng-template tabHeading>
                     <a role="button " title="More Settings "><img src="/assets/images/alerts.png " alt="More Settings " height="25px " width="25px "></a>

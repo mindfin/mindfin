@@ -18,7 +18,7 @@ import {MatDialog,MAT_DIALOG_DATA,MatDialogConfig} from '@angular/material';
 export class MembersappComponent  { 
 	// private notifier: NotifierService;
 
-  displayedColumns: string[] = ['date','aging','name','cname','addbank','Approval','Assign','topup'];
+  displayedColumns: string[] = ['date','aging','name','cname','addbank','Approval','add','Assign','topup'];
   samples:any;
   dataSource;
 
@@ -176,12 +176,15 @@ refresh(): void {
   window.location.reload();
 }
 
-viewbank(element){
-  this.commonservice.viewbank(element);
-  }
+// viewbank(element){
+//   this.commonservice.viewbank(element);
+//   }
  
-  
   addbank(id){
+    this.commonservice.backendaddbank(id);
+  
+  } 
+  viewbank(id){
     this.commonservice.addbank(id);
   
   }

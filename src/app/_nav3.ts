@@ -17,6 +17,12 @@ export const navItems3 = [
       url: '/backend/checkcase',
       icon: 'icon-user-following'
     },
+    
+    {
+        name: 'Customer Documents Upload',
+        url: '/backend/document',
+        icon: 'fa fa-cloud-upload',
+       },
     {
       name: 'Customer List',
       url: '/members/viewcustomer',

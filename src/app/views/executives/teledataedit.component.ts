@@ -32,7 +32,8 @@ export class TeledataEditComponent {
   dob: any;
   teleid: any;
   idvalue;
-
+  loantype:any;
+  loancatg:any;
   ngOnInit() {
     // this.commonservice.getuserlist().subscribe(res => {
     //   console.log(res);
@@ -88,5 +89,13 @@ export class TeledataEditComponent {
   }
   refresh(): void {
     window.location.reload();
+  }
+  onChange(event){
+    console.log(event);
+   this.loantype= event
+  }
+  onChange1(event){
+    console.log(event);
+   this.loancatg= event
   }
 }

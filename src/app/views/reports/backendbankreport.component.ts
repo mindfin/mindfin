@@ -77,7 +77,7 @@ export class BackendBankReportComponent {
 
   applyFilter(filterValue: string) {
     console.log(filterValue);
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.fetchdata.filter = filterValue.trim().toLowerCase();
   }
   onChangedPage(pageData: PageEvent) {
     this.isLoading = true;

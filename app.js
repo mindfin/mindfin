@@ -13,9 +13,12 @@ const app = express();
 var http = require('http');
 console.log('in app')
 
-app.use(bodyParser.json());
+
+app.use(bodyParser.json({ limit: '150mb' }));
+app.use(bodyParser.urlencoded({ limit: '150mb', extended: true }));
+// app.use(bodyParser.json());
 app.use(cors());
-app.use(bodyParser.urlencoded({ 'extended': 'false' }));;
+// app.use(bodyParser.urlencoded({ 'extended': 'false' }));;
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 app.use(express.static(path.join(__dirname, 'dist')));

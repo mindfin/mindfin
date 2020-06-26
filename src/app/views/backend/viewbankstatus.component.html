@@ -197,11 +197,20 @@
 
                                 </td>
                             </ng-container>
+                            <ng-container matColumnDef="viewcust">
+                                <th *matHeaderCellDef mat-sort-header>VIEW CUSTOMER</th>
+                                <td *matCellDef="let element" style="text-align:center;">
+                                    <button mat-raised-button color="warn" (click)="openDialog(element)">
+                                           VIEW
+                                        </button>
+
+                                </td>
+                            </ng-container>
                             <ng-container matColumnDef="view">
                                 <th *matHeaderCellDef mat-sort-header>VIEW BANKS</th>
-                                <td *matCellDef="let element">
+                                <td *matCellDef="let element" style="text-align:center;">
                                     <button mat-raised-button color="warn" (click)="backendviewbank(element.idcustomer)">
-                                           VIEW BANKS
+                                           VIEW
                                         </button>
 
                                 </td>

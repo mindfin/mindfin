@@ -10,12 +10,14 @@ import { BackendViewComponent, ViewDialogContent } from './backendview.component
 import {MatDatepickerModule, MatNativeDateModule, MatInputModule,MatFormFieldModule, MatPaginatorModule, MatSortModule, MatTableModule, MatProgressSpinnerModule, MatBadgeModule, MatButtonModule, MatButtonToggleModule, MatDialogModule} from '@angular/material';
 import { CdkTableModule } from '@angular/cdk/table';
 import { BackendBankapplyComponent } from './backendbankapply.component';
-import { ViewBankStatusComponent } from './viewbankstatus.component';
-import { StatusComponent, EditDialogContent } from './status.component';
+import { ViewBankStatusComponent, ViewDialogContent1 } from './viewbankstatus.component';
+import { StatusComponent } from './status.component';
 import { EditBackendComponent } from './editbackend.component';
-import { CheckCaseComponent } from './checkcase.component';
-
-
+import { CheckCaseComponent, EditDialogContent1 } from './checkcase.component';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { BackendDailyRoutineComponent } from './backenddailyroutine.component';
+import { BackendDailyRoutineviewComponent } from './backendviewdailyroutine.component';
+import { BackendDailyRoutineEditComponent } from './backenddailyroutineedit.component';
 @NgModule({
   imports: [
     FormsModule,
@@ -37,14 +39,17 @@ import { CheckCaseComponent } from './checkcase.component';
     MatProgressSpinnerModule,
     MatTableModule,
     MatDialogModule,
-    ModalModule.forRoot()
-  ],
-  declarations: [ BackendComponent,BackendViewComponent,ViewDialogContent,
-    BackendBankapplyComponent, ViewBankStatusComponent,StatusComponent,EditBackendComponent,
-    EditDialogContent,CheckCaseComponent
+    ModalModule.forRoot(),
+    BsDatepickerModule.forRoot()
 
   ],
-  entryComponents: [ViewDialogContent,EditDialogContent
+  declarations: [ BackendComponent,BackendViewComponent,ViewDialogContent,ViewDialogContent1,
+    BackendBankapplyComponent, ViewBankStatusComponent,StatusComponent,EditBackendComponent
+    ,CheckCaseComponent,EditDialogContent1,BackendDailyRoutineComponent,
+    BackendDailyRoutineviewComponent,BackendDailyRoutineEditComponent
+
+  ],
+  entryComponents: [ViewDialogContent,ViewDialogContent1,EditDialogContent1
   ]
 })
 export class BackendModule { }

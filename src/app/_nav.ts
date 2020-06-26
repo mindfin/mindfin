@@ -231,24 +231,35 @@ export const navItems = [
         url: '/reports/datatelelist',
         icon: 'fa fa-list-ul'
       },
-
-      {
-        name: 'Sales Executive Routine',
-        url: '/reports/exeroutine',
-        icon: 'icon-docs'
-
-      },
-      {
-        name: 'Login Executive Routine',
-        url: '/reports/logroutine',
-        icon: 'icon-user'
-      },
       {
         name: 'Login Reports',
         url: '/reports/logreport',
         icon: 'icon-user'
       },
+      {
+        name: 'Daily Routine',
+        url: '/receipt',
+        // url: '/reports/backreport',
+        icon: 'icon-docs',
+        children: [
+          {
+            name: 'Login Executive Routine',
+            url: '/reports/logroutine',
+            icon: 'icon-user'
+          },
+          {
+            name: 'Sales Executive Routine',
+            url: '/reports/exeroutine',
+            icon: 'icon-docs'
+          },
+          {
+            name: 'Backend Routine',
+            url: '/reports/backendroutine',
+            icon: 'icon-docs',
+          }
+        ]
 
+      },
       {
         name: 'Backend Report',
         url: '/receipt',

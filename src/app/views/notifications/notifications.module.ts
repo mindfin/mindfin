@@ -23,6 +23,7 @@ import { EventCalendarComponent } from './eventcalendar.component';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { AddEventCalendarComponent } from './addeventcalendar.component'; 
 import { DemoUtilsModule } from '../demo-utils/module';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 @NgModule({
   imports: [
@@ -54,7 +55,8 @@ import { DemoUtilsModule } from '../demo-utils/module';
       useFactory: adapterFactory
     }),
     NgbModalModule,
-    DemoUtilsModule
+    DemoUtilsModule,
+    Ng2SearchPipeModule
   ],
   declarations: [ProfileSettingComponent,AddNotificationComponent,AssignToDoComponent,ViewNotificationComponent,
     EmpNotificationComponent,DeleteNotificationDialogContent,SeenByComponent,CreateToDoDialogContent,

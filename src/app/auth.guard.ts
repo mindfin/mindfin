@@ -78,6 +78,24 @@ export class AuthGuard implements CanActivate {
         return true;
       }
     }
+    else if (isAuth == 'GUEST') {
+
+      if (state.url == '/dashboard'
+        || state.url == '/addcustomer' || state.url == '/members/add' || state.url == '/members/approval'
+        || state.url == '/members/pdlist' || state.url == ' /members/datatelelist'
+        || state.url == '/members/approve' || state.url == '/members/disbursed'
+        || state.url == '/members/employee' || state.url == '/members/employeelist' || state.url == '/members/viewexecutive'
+        || state.url == '/members/bank' || state.url == '/members/loantype' || state.url == '/members/user'
+        || state.url == '/members/employeetype'
+        || state.url == '/members/approval' || state.url == '/dashboard/dataentry' || state.url == '/account/subvendor'
+        || state.url == '/account/disburselist'
+      ) {
+        this.router.navigate(['/guest/home']);
+        return false;
+      } else {
+        return true;
+      }
+    }
     else if (isAuth == 'DATA ENTRY') {
 
       if (state.url == '/dashboard' || state.url == '/member/addenquiry'

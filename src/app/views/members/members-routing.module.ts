@@ -72,7 +72,7 @@ const routes: Routes = [
         path: 'custstatus/:id',
         component: CustStatusComponent,
         data: {
-          title: 'view bank to customer'
+          title: 'View Bank'
         }
       },
 

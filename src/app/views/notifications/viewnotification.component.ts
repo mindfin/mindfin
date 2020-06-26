@@ -16,7 +16,8 @@ export class ViewNotificationComponent implements OnInit {
   empname: any;
   fetchData: any;
   fetchData1: any;
-
+  value1:any;
+  searchText:any;
   constructor(private route: ActivatedRoute, private router: Router,
     private commonservice: CommonService, public defaultlayout: DefaultLayoutComponent,
     private dialog: MatDialog
@@ -50,7 +51,13 @@ export class ViewNotificationComponent implements OnInit {
     this.commonservice.openSeenByDialog(value);
 
   }
- 
+  getnotification(senderid){
+    // this.value1={value:senderid,empid:this.empid}
+    this.commonservice.getAllNotificationById(senderid).subscribe(res=>{
+      console.log(res);
+      this.fetchData1=res;
+    })
+  }
   
   refresh(): void {
     window.location.reload();

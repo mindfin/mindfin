@@ -91,6 +91,11 @@ export const routes: Routes = [
         loadChildren: './views/reports/reports.module#ReportsModule'
       },
       {
+        path: 'guest',
+        canActivate: [AuthGuard],
+        loadChildren: './views/guest/guest.module#GuestModule'
+      },
+      {
         path: 'executives',
         canActivate: [AuthGuard],
         loadChildren: './views/executives/executives.module#ExecutivesModule'

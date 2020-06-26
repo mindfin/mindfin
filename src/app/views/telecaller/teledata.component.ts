@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 // import { SuperadminService } from '../../superadmin.service';
 import { CommonService } from '../../common.service';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 
 
 export interface User {
@@ -18,7 +19,7 @@ export class TeledataComponent {
   selectedFile1: File = null;
   selectedFile2: File = null;
 
-  constructor(private commonservice: CommonService) { }
+  constructor(private commonservice: CommonService,private router:Router) { }
 
   // options: User[] = this.val;
   // filteredOptions: Observable<User[]>;
@@ -30,6 +31,8 @@ export class TeledataComponent {
   value1: any;
   dob: any;
   teleid: any;
+  loantype:any;
+  loancatg:any;
 
 
   ngOnInit() {
@@ -58,7 +61,14 @@ export class TeledataComponent {
   //   this.dob=date;
   // }
 
-
+  onChange(event){
+    console.log(event);
+   this.loantype= event
+  }
+  onChange1(event){
+    console.log(event);
+   this.loancatg= event
+  }
   displayFn(user?: User): string | undefined {
     return user ? user.name : undefined;
 
@@ -71,12 +81,31 @@ export class TeledataComponent {
 
     this.commonservice.addenquiry(this.value1).subscribe(res => {
       console.log(res);
-      this.refresh()
+      this.clearFilters()
     })
 
   }
   refresh(): void {
     window.location.reload();
   }
-  
+  redirect(){
+    this.router.navigate(["/telcaller/teledatalist"]);
+  }
+  clearFilters(){
+    this.model.name='';
+    this.model.email='';
+    this.model.gender='';
+    this.model.mobile='';
+    this.model.altmobile='';
+    this.model.address='';
+    this.model.applytype='';
+    this.model.loanCategory='';
+    this.model.subLoanCategory='';
+    this.model.turnover='';
+    this.model.ownHouse='';
+    this.model.executive='';
+    this.model.approchedBank='';
+    this.model.status='';
+    this.model.comment='';
+  }
 }

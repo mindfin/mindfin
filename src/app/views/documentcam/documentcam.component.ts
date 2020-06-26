@@ -37,6 +37,7 @@ export class DocumentCamComponent implements OnInit {
   imageURL$: string;
   myfields: any = [];
 
+ converteddbankstatement:any;
   getdoctype: any;
   value1: any;
 
@@ -96,6 +97,9 @@ export class DocumentCamComponent implements OnInit {
       this.commonservice.bankstatementcam(this.value1)
       .subscribe(res => {
         console.log(res)
+        this.converteddbankstatement=res;
+        console.log(this.converteddbankstatement)
+        
       })
     }
     else if(this.getdoctype=="itr"){
