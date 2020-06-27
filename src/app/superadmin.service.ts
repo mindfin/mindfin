@@ -16,12 +16,13 @@ import { Keepalive } from '@ng-idle/keepalive';
 const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
 const EXCEL_EXTENSION = '.xlsx';
 import { TabHeadingDirective } from 'ngx-bootstrap/tabs';
-const commonurl = 'https://bank.mindfin.co.in';
+
 @Injectable({
   providedIn: 'root'
 })
 
 export class SuperadminService {
+  commonurl = 'https://bank.mindfin.co.in';
   idleState = 'Not started.';
   timedOut = false;
   lastPing?: Date = null;
@@ -60,27 +61,27 @@ export class SuperadminService {
 
 
   getintroducer1() {
-    const uri = 'https://bank.mindfin.co.in/superadmin/getintroducer1';
+    const uri = this.commonurl+'/superadmin/getintroducer1';
     //console.log('');
     return this.http.get(uri)
   }
 
   addintroducer1(obj) {
     console.log(obj);
-    const uri = "https://bank.mindfin.co.in/superadmin/addintroducer1/";
+    const uri = this.commonurl+'/superadmin/addintroducer1/';
     return this.http.post(uri, obj).subscribe(res => {
     })
   }
 
   getintroducer2() {
-    const uri = 'https://bank.mindfin.co.in/superadmin/getintroducer2';
+    const uri = this.commonurl+'/superadmin/getintroducer2';
     //console.log('');
     return this.http.get(uri)
   }
 
   addintroducer2(obj) {
     console.log(obj);
-    const uri = "https://bank.mindfin.co.in/superadmin/addintroducer2/";
+    const uri = this.commonurl+'/superadmin/addintroducer2/';
     return this.http.post(uri, obj).subscribe(res => {
     })
   }
@@ -89,7 +90,7 @@ export class SuperadminService {
   //     const queryParams = `/${postsPerPage}/${currentPage}`;
   //     this.http
   //       .get<{ message: string; posts: any; maxPosts: number }>(
-  //         "https://bank.mindfin.co.in/callapi/gettransfer" + queryParams
+  //         this.commonurl+'/callapi/gettransfer" + queryParams
   //       )
   //       .pipe(
   //         map(postData => {
@@ -113,7 +114,7 @@ export class SuperadminService {
     const queryParams = `/${postsPerPage}/${currentPage}`;
     this.http
       .get<{ message: string; posts: any; maxPosts: number }>(
-        "https://bank.mindfin.co.in/superadmin/gettransfer" + queryParams
+        this.commonurl+'/superadmin/gettransfer' + queryParams
       )
       .pipe(
         map(postData => {
@@ -139,7 +140,7 @@ export class SuperadminService {
 
   approvemember(obj) {
     console.log(obj);
-    const uri = "https://bank.mindfin.co.in/superadmin/approvemember/";
+    const uri = this.commonurl+'/superadmin/approvemember/';
     return this.http.post(uri, obj).subscribe(res => {
       //console.log('');
     })
@@ -152,7 +153,7 @@ export class SuperadminService {
     const queryParams = `/${postsPerPage}/${currentPage}`;
     this.http
       .get<{ message: string; posts: any; maxPosts: number }>(
-        "https://bank.mindfin.co.in/superadmin/memberlist" + queryParams
+        this.commonurl+'/superadmin/memberlist' + queryParams
       )
       .pipe(
         map(postData => {
@@ -179,14 +180,14 @@ export class SuperadminService {
 
   rejectmember(obj) {
     console.log(obj);
-    const uri = "https://bank.mindfin.co.in/superadmin/rejectmember/";
+    const uri = this.commonurl+'/superadmin/rejectmember/';
     return this.http.post(uri, obj).subscribe(res => {
     })
   }
 
   rejecteditmember(obj) {
     console.log(obj);
-    const uri = "https://bank.mindfin.co.in/superadmin/rejecteditmember/";
+    const uri = this.commonurl+'/superadmin/rejecteditmember/';
     return this.http.post(uri, obj).subscribe(res => {
     })
   }
@@ -196,7 +197,7 @@ export class SuperadminService {
     const queryParams = `/${postsPerPage}/${currentPage}`;
     this.http
       .get<{ message: string; posts: any; maxPosts: number }>(
-        "https://bank.mindfin.co.in/superadmin/editmemberlist" + queryParams
+        this.commonurl+'/superadmin/editmemberlist' + queryParams
       )
       .pipe(
         map(postData => {
@@ -218,7 +219,7 @@ export class SuperadminService {
 
   editapprovemember(obj) {
     console.log(obj);
-    const uri = "https://bank.mindfin.co.in/superadmin/editapprovemember/";
+    const uri = this.commonurl+'/superadmin/editapprovemember/';
     return this.http.post(uri, obj).subscribe(res => {
       //console.log('');
     })
@@ -230,7 +231,7 @@ export class SuperadminService {
     const queryParams = `/${postsPerPage}/${currentPage}`;
     this.http
       .get<{ message: string; posts: any; maxPosts: number }>(
-        "https://bank.mindfin.co.in/superadmin/getdeleteMember" + queryParams
+        this.commonurl+'/superadmin/getdeleteMember' + queryParams
       )
       .pipe(
         map(postData => {
@@ -250,14 +251,14 @@ export class SuperadminService {
   }
   deleteapprovemember(obj) {
     console.log(obj);
-    const uri = "https://bank.mindfin.co.in/superadmin/deleteapprovemember/";
+    const uri = this.commonurl+'/superadmin/deleteapprovemember/';
     return this.http.post(uri, obj).subscribe(res => {
       //console.log('');
     })
   }
   rejectdeletemember(obj) {
     console.log(obj);
-    const uri = "https://bank.mindfin.co.in/superadmin/rejectdeletemember/";
+    const uri = this.commonurl+'/superadmin/rejectdeletemember/';
     return this.http.post(uri, obj).subscribe(res => {
     })
   }
@@ -273,7 +274,7 @@ export class SuperadminService {
   }
   deletebooking(obj) {
     console.log(obj);
-    const uri = "https://bank.mindfin.co.in/superadmin/deletebooking/";
+    const uri = this.commonurl+'/superadmin/deletebooking/';
     return this.http.post(uri, obj).subscribe(res => {
       //console.log('');
     })
@@ -284,7 +285,7 @@ export class SuperadminService {
     const queryParams = `/${postsPerPage}/${currentPage}`;
     this.http
       .get<{ message: string; posts: any; maxPosts: number }>(
-        "https://bank.mindfin.co.in/superadmin/gethistoryMember" + queryParams
+        this.commonurl+'/superadmin/gethistoryMember' + queryParams
       )
       .pipe(
         map(postData => {
@@ -308,7 +309,7 @@ export class SuperadminService {
     const queryParams = `/${postsPerPage}/${currentPage}`;
     this.http
       .get<{ message: string; posts: any; maxPosts: number }>(
-        "https://bank.mindfin.co.in/superadmin/getReceiptapproval" + queryParams
+        this.commonurl+'/superadmin/getReceiptapproval' + queryParams
       )
       .pipe(
         map(postData => {
@@ -328,30 +329,30 @@ export class SuperadminService {
   }
   approvereceipt(obj) {
     console.log(obj);
-    const uri = "https://bank.mindfin.co.in/superadmin/approvereceipt/";
+    const uri = this.commonurl+'/superadmin/approvereceipt/';
     return this.http.post(uri, obj).subscribe(res => {
       //console.log('');
     })
   }
   rejectreceipt(obj) {
     console.log(obj);
-    const uri = "https://bank.mindfin.co.in/superadmin/rejectreceipt/";
+    const uri = this.commonurl+'/superadmin/rejectreceipt/';
     return this.http.post(uri, obj).subscribe(res => {
     })
   }
   getSeniorityid() {
-    const uri = "https://bank.mindfin.co.in/superadmin/getseniorityid";
+    const uri = this.commonurl+'/superadmin/getseniorityid';
     return this.http.get(uri);
   }
 
   getseniordetails(id) {
-    const uri = "https://bank.mindfin.co.in/superadmin/getseniordetails/" + encodeURIComponent(id);
+    const uri = this.commonurl+'/superadmin/getseniordetails/' + encodeURIComponent(id);
     return this.http.get(uri);
   }
 
   updateplot(obj) {
     console.log(obj);
-    const uri = "https://bank.mindfin.co.in/superadmin/updateplot";
+    const uri = this.commonurl+'/superadmin/updateplot';
     this.http.post(uri, obj).subscribe(res => {
       // console.log(res);
     })
@@ -362,7 +363,7 @@ export class SuperadminService {
     const queryParams = `/${postsPerPage}/${currentPage}`;
     this.http
       .get<{ message: string; posts: any; maxPosts: number }>(
-        "https://bank.mindfin.co.in/superadmin/gettransferapproval" + queryParams
+        this.commonurl+'/superadmin/gettransferapproval' + queryParams
       )
       .pipe(
         map(postData => {
@@ -382,7 +383,7 @@ export class SuperadminService {
   }
   approvetransfer(obj) {
     console.log(obj);
-    const uri = "https://bank.mindfin.co.in/superadmin/approvetransfer/";
+    const uri = this.commonurl+'/superadmin/approvetransfer/';
     return this.http.post(uri, obj).subscribe(res => {
       //console.log('');
     })
@@ -390,7 +391,7 @@ export class SuperadminService {
 
   rejecttransfermember(obj) {
     console.log(obj);
-    const uri = "https://bank.mindfin.co.in/superadmin/rejecttransfermember/";
+    const uri = this.commonurl+'/superadmin/rejecttransfermember/';
     return this.http.post(uri, obj).subscribe(res => {
     })
   }
@@ -401,7 +402,7 @@ export class SuperadminService {
     const queryParams = `/${postsPerPage}/${currentPage}/${id}/${psize}/${fdate}/${tdate}/${ndays}/${introducer1}/${introducer2}/${lamount}`;
     this.http
       .get<{ message: string; posts: any; maxPosts: number }>(
-        "https://bank.mindfin.co.in/callapi/memberlist" + queryParams
+        this.commonurl+'/callapi/memberlist' + queryParams
       )
       .pipe(
         map(postData => {
@@ -437,7 +438,7 @@ export class SuperadminService {
     const queryParams = `/${postsPerPage}/${currentPage}/${mode}/${stat}/${fdate}/${tdate}/`;
     this.http
       .get<{ message: string; posts: any; maxPosts: number }>(
-        "https://bank.mindfin.co.in/callapi/getallreceipts" + queryParams
+        this.commonurl+'/callapi/getallreceipts' + queryParams
       )
       .pipe(
         map(postData => {
@@ -460,7 +461,7 @@ export class SuperadminService {
   }
   editaffidivate(obj) {
     console.log(obj);
-    const uri = "https://bank.mindfin.co.in/callapi/editaffidivate/";
+    const uri = this.commonurl+'/callapi/editaffidivate/';
     return this.http.post(uri, obj);
     // .subscribe(res=>{
     //   console.log(res);
@@ -468,14 +469,14 @@ export class SuperadminService {
   }
 
   getaffidivate() {
-    const uri = "https://bank.mindfin.co.in/superadmin/getaffidivate";
+    const uri = this.commonurl+'/superadmin/getaffidivate';
     return this.http.get(uri);
   }
 
 
   login(loginvalue) {
     console.log(loginvalue);
-    const uri = "https://bank.mindfin.co.in/superadmin/superadmin/";
+    const uri = this.commonurl+'/superadmin/superadmin/';
     // return this.http.post(uri,obj);
     this.http.post(uri, loginvalue).subscribe(res => {
       // console.log(res[0]['adminid']);
@@ -503,7 +504,7 @@ export class SuperadminService {
 
 
   presidentlist1() {
-    const uri = "https://bank.mindfin.co.in/superadmin/presidentlist1";
+    const uri = this.commonurl+'/superadmin/presidentlist1';
     return this.http.get(uri);
   }
 
@@ -512,7 +513,7 @@ export class SuperadminService {
     const queryParams = `/${postsPerPage}/${currentPage}`;
     this.http
       .get<{ message: string; posts: any; maxPosts: number }>( 
-        "https://bank.mindfin.co.in/callapi/customerlist" + queryParams
+        this.commonurl+'/callapi/customerlist' + queryParams
       )
       .pipe(
         map(postData => {
