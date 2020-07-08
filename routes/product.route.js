@@ -20,6 +20,8 @@ var JSZip = require("jszip");
 var FileSaver = require('file-saver');
 var macaddress = require('macaddress');
 
+const MAO = require('multer-aliyun-oss');
+
 var now = new Date()
 
 const azureStorage = new MulterAzureStorage({
@@ -30,6 +32,15 @@ const azureStorage = new MulterAzureStorage({
     containerAccessLevel: 'blob',
     urlExpirationTime: 60,
 });
+const aliOssStorage = MAO({
+    config: {
+        region: 'oss-ap-south-1',
+        accessKeyId: 'LTAI4GGoAKC67ZwLrJZ2jgeD',
+        accessKeySecret: 'JNF52oPMNo2dQ23Ce7PFX9QTMhebxO',
+        bucket: 'mindfin'
+    }
+});
+//mindfin-images
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
         cb(null, './src/assets/President/');
@@ -48,8 +59,15 @@ const fileFilter = (req, file, cb) => {
         cb(null, false);
     }
 };
+// const upload = multer({
+//     storage: azureStorage,
+//     limits: {
+//         fileSize: 150 * 1024 * 1024
+//     },
+//     fileFilter: fileFilter,
+// });
 const upload = multer({
-    storage: azureStorage,
+    storage: aliOssStorage,
     limits: {
         fileSize: 150 * 1024 * 1024
     },
@@ -759,27 +777,27 @@ router.post('/editemployee', (req, res) => {
         cimage = req.body.value.cimage;
 
     } else {
-        cimage = req.body.cimg[0].blobName;
-        //console.log("BlobName  " + cimage);
+        cimage = req.body.cimg[0].filename;
+        //console.log("filename  " + cimage);
     }
     if (req.body.pimg == undefined) {
         pimage = req.body.value.pimage;
 
     } else {
-        pimage = req.body.pimg[0].blobName;
+        pimage = req.body.pimg[0].filename;
         //console.log(pimage);
     }
     if (req.body.aimg == undefined) {
         aimage = req.body.value.aimage;
     } else {
-        aimage = req.body.aimg[0].blobName;
+        aimage = req.body.aimg[0].filename;
         //console.log(aimage);
     }
     if (req.body.appletimg == undefined) {
         appointmentLetter = req.body.value.appointmentLetter;
         appointmentLetter_org = req.body.value.appointmentLetter_org;
     } else {
-        appointmentLetter = req.body.appletimg[0].blobName;
+        appointmentLetter = req.body.appletimg[0].filename;
         appointmentLetter_org = req.body.appletimg[0].originalname
             //console.log(aimage);
     }
@@ -892,54 +910,54 @@ router.post('/customerupdate', (req, res) => {
         companykyc = req.body.value.companykyc;
 
     } else {
-        companykyc = req.body.companykyc[0].blobName;
+        companykyc = req.body.companykyc[0].filename;
         comp_orgname = req.body.companykyc[0].originalname;
-        //console.log("company kyc BlobName  " + companykyc);
+        //console.log("company kyc filename  " + companykyc);
         //console.log("comp orginal name  " + comp_orgname);
     }
     if (req.body.customerkyc == undefined) {
         customerkyc = req.body.value.customerkyc;
 
     } else {
-        customerkyc = req.body.customerkyc[0].blobName;
+        customerkyc = req.body.customerkyc[0].filename;
         cust_orgname = req.body.customerkyc[0].originalname;
-        //console.log("cust kyc BlobName  " + customerkyc);
+        //console.log("cust kyc filename  " + customerkyc);
         //console.log("cudt orginal name  " + cust_orgname);
     }
     if (req.body.itr == undefined) {
         itr = req.body.value.itr;
 
     } else {
-        itr = req.body.itr[0].blobName;
+        itr = req.body.itr[0].filename;
         itr_orgname = req.body.itr[0].originalname;
-        //console.log("itr BlobName  " + itr);
+        //console.log("itr filename  " + itr);
         //console.log("itr orginal name  " + itr_orgname);
     }
     if (req.body.bankstatement == undefined) {
         bankstatement = req.body.value.bankstatement;
 
     } else {
-        bankstatement = req.body.bankstatement[0].blobName;
+        bankstatement = req.body.bankstatement[0].filename;
         bank_orgname = req.body.bankstatement[0].originalname;
-        //console.log("bankstatement BlobName  " + bankstatement);
+        //console.log("bankstatement filename  " + bankstatement);
         //console.log("bankstatement orginal name  " + bank_orgname);
     }
     if (req.body.loanstatement == undefined) {
         loanstatement = req.body.value.loanstatement;
 
     } else {
-        loanstatement = req.body.loanstatement[0].blobName;
+        loanstatement = req.body.loanstatement[0].filename;
         loan_orgname = req.body.loanstatement[0].originalname;
-        //console.log("loanstatement BlobName  " + loanstatement);
+        //console.log("loanstatement filename  " + loanstatement);
         //console.log("loanstatement orginal name  " + loan_orgname);
     }
     if (req.body.gstandreturns == undefined) {
         gstandreturns = req.body.value.gstandreturns;
 
     } else {
-        gstandreturns = req.body.gstandreturns[0].blobName;
+        gstandreturns = req.body.gstandreturns[0].filename;
         gst_orgname = req.body.gstandreturns[0].originalname;
-        //console.log("gstandreturns BlobName  " + gstandreturns);
+        //console.log("gstandreturns filename  " + gstandreturns);
         //console.log("gstandreturns orginal name  " + gst_orgname);
     }
     if (req.body.applicationDetails == undefined) {
@@ -947,9 +965,9 @@ router.post('/customerupdate', (req, res) => {
         applicationDetails_orgname = 'admin.png';
 
     } else {
-        applicationDetails = req.body.applicationDetails[0].blobName;
+        applicationDetails = req.body.applicationDetails[0].filename;
         applicationDetails_orgname = req.body.applicationDetails[0].originalname;
-        //console.log("applicationDetails BlobName  " + applicationDetails);
+        //console.log("applicationDetails filename  " + applicationDetails);
         //console.log("applicationDetails orginal name  " + applicationDetails_orgname);
     }
     if (req.body.applicationDetails == undefined) {
@@ -957,9 +975,9 @@ router.post('/customerupdate', (req, res) => {
         applicationDetails_orgname = 'admin.png';
 
     } else {
-        applicationDetails = req.body.applicationDetails[0].blobName;
+        applicationDetails = req.body.applicationDetails[0].filename;
         applicationDetails_orgname = req.body.applicationDetails[0].originalname;
-        //console.log("applicationDetails BlobName  " + applicationDetails);
+        //console.log("applicationDetails filename  " + applicationDetails);
         //console.log("applicationDetails orginal name  " + applicationDetails_orgname);
     }
     if (req.body.value.displaystatus != 'APPROVED') {
@@ -3159,9 +3177,9 @@ router.post('/custdocument', (req, res) => {
         comp_orgname = 'admin.png';
 
     } else {
-        companykyc = req.body.companykyc[0].blobName;
+        companykyc = req.body.companykyc[0].filename;
         comp_orgname = req.body.companykyc[0].originalname;
-        //console.log("company kyc BlobName  " + companykyc);
+        //console.log("company kyc filename  " + companykyc);
         //console.log("comp orginal name  " + comp_orgname);
     }
     if (req.body.customerkyc == undefined) {
@@ -3169,9 +3187,9 @@ router.post('/custdocument', (req, res) => {
         cust_orgname = 'admin.png';
 
     } else {
-        customerkyc = req.body.customerkyc[0].blobName;
+        customerkyc = req.body.customerkyc[0].filename;
         cust_orgname = req.body.customerkyc[0].originalname;
-        //console.log("cust kyc BlobName  " + customerkyc);
+        //console.log("cust kyc filename  " + customerkyc);
         //console.log("cudt orginal name  " + cust_orgname);
     }
     if (req.body.itr == undefined) {
@@ -3179,9 +3197,9 @@ router.post('/custdocument', (req, res) => {
         itr_orgname = 'admin.png';
 
     } else {
-        itr = req.body.itr[0].blobName;
+        itr = req.body.itr[0].filename;
         itr_orgname = req.body.itr[0].originalname;
-        //console.log("itr BlobName  " + itr);
+        //console.log("itr filename  " + itr);
         //console.log("itr orginal name  " + itr_orgname);
     }
     if (req.body.bankstatement == undefined) {
@@ -3189,9 +3207,9 @@ router.post('/custdocument', (req, res) => {
         bank_orgname = 'admin.png';
 
     } else {
-        bankstatement = req.body.bankstatement[0].blobName;
+        bankstatement = req.body.bankstatement[0].filename;
         bank_orgname = req.body.bankstatement[0].originalname;
-        //console.log("bankstatement BlobName  " + bankstatement);
+        //console.log("bankstatement filename  " + bankstatement);
         //console.log("bankstatement orginal name  " + bank_orgname);
     }
     if (req.body.loanstatement == undefined) {
@@ -3199,9 +3217,9 @@ router.post('/custdocument', (req, res) => {
         loan_orgname = 'admin.png';
 
     } else {
-        loanstatement = req.body.loanstatement[0].blobName;
+        loanstatement = req.body.loanstatement[0].filename;
         loan_orgname = req.body.loanstatement[0].originalname;
-        //console.log("loanstatement BlobName  " + loanstatement);
+        //console.log("loanstatement filename  " + loanstatement);
         //console.log("loanstatement orginal name  " + loan_orgname);
     }
     if (req.body.gstandreturns == undefined) {
@@ -3209,9 +3227,9 @@ router.post('/custdocument', (req, res) => {
         gst_orgname = 'admin.png';
 
     } else {
-        gstandreturns = req.body.gstandreturns[0].blobName;
+        gstandreturns = req.body.gstandreturns[0].filename;
         gst_orgname = req.body.gstandreturns[0].originalname;
-        //console.log("gstandreturns BlobName  " + gstandreturns);
+        //console.log("gstandreturns filename  " + gstandreturns);
         //console.log("gstandreturns orginal name  " + gst_orgname);
     }
     if (req.body.applicationDetails == undefined) {
@@ -3219,9 +3237,9 @@ router.post('/custdocument', (req, res) => {
         applicationDetails_orgname = 'admin.png';
 
     } else {
-        applicationDetails = req.body.applicationDetails[0].blobName;
+        applicationDetails = req.body.applicationDetails[0].filename;
         applicationDetails_orgname = req.body.applicationDetails[0].originalname;
-        //console.log("applicationDetails BlobName  " + applicationDetails);
+        //console.log("applicationDetails filename  " + applicationDetails);
         //console.log("applicationDetails orginal name  " + applicationDetails_orgname);
     }
     if (req.body.value.displaystatus != 'APPROVED') {
@@ -3424,54 +3442,54 @@ router.post('/editcustdoc', (req, res) => {
         companykyc = req.body.value.companykyc;
 
     } else {
-        companykyc = req.body.companykyc[0].blobName;
+        companykyc = req.body.companykyc[0].filename;
         comp_orgname = req.body.companykyc[0].originalname;
-        //console.log("company kyc BlobName  " + companykyc);
+        //console.log("company kyc filename  " + companykyc);
         //console.log("comp orginal name  " + comp_orgname);
     }
     if (req.body.customerkyc == undefined) {
         customerkyc = req.body.value.customerkyc;
 
     } else {
-        customerkyc = req.body.customerkyc[0].blobName;
+        customerkyc = req.body.customerkyc[0].filename;
         cust_orgname = req.body.customerkyc[0].originalname;
-        //console.log("cust kyc BlobName  " + customerkyc);
+        //console.log("cust kyc filename  " + customerkyc);
         //console.log("cudt orginal name  " + cust_orgname);
     }
     if (req.body.itr == undefined) {
         itr = req.body.value.itr;
 
     } else {
-        itr = req.body.itr[0].blobName;
+        itr = req.body.itr[0].filename;
         itr_orgname = req.body.itr[0].originalname;
-        //console.log("itr BlobName  " + itr);
+        //console.log("itr filename  " + itr);
         //console.log("itr orginal name  " + itr_orgname);
     }
     if (req.body.bankstatement == undefined) {
         bankstatement = req.body.value.bankstatement;
 
     } else {
-        bankstatement = req.body.bankstatement[0].blobName;
+        bankstatement = req.body.bankstatement[0].filename;
         bank_orgname = req.body.bankstatement[0].originalname;
-        //console.log("bankstatement BlobName  " + bankstatement);
+        //console.log("bankstatement filename  " + bankstatement);
         //console.log("bankstatement orginal name  " + bank_orgname);
     }
     if (req.body.loanstatement == undefined) {
         loanstatement = req.body.value.loanstatement;
 
     } else {
-        loanstatement = req.body.loanstatement[0].blobName;
+        loanstatement = req.body.loanstatement[0].filename;
         loan_orgname = req.body.loanstatement[0].originalname;
-        //console.log("loanstatement BlobName  " + loanstatement);
+        //console.log("loanstatement filename  " + loanstatement);
         //console.log("loanstatement orginal name  " + loan_orgname);
     }
     if (req.body.gstandreturns == undefined) {
         gstandreturns = req.body.value.gstandreturns;
 
     } else {
-        gstandreturns = req.body.gstandreturns[0].blobName;
+        gstandreturns = req.body.gstandreturns[0].filename;
         gst_orgname = req.body.gstandreturns[0].originalname;
-        //console.log("gstandreturns BlobName  " + gstandreturns);
+        //console.log("gstandreturns filename  " + gstandreturns);
         //console.log("gstandreturns orginal name  " + gst_orgname);
     }
     if (req.body.applicationDetails == undefined) {
@@ -3479,9 +3497,9 @@ router.post('/editcustdoc', (req, res) => {
         applicationDetails_orgname = 'admin.png';
 
     } else {
-        applicationDetails = req.body.applicationDetails[0].blobName;
+        applicationDetails = req.body.applicationDetails[0].filename;
         applicationDetails_orgname = req.body.applicationDetails[0].originalname;
-        //console.log("applicationDetails BlobName  " + applicationDetails);
+        //console.log("applicationDetails filename  " + applicationDetails);
         //console.log("applicationDetails orginal name  " + applicationDetails_orgname);
     }
     if (req.body.applicationDetails == undefined) {
@@ -3489,9 +3507,9 @@ router.post('/editcustdoc', (req, res) => {
         applicationDetails_orgname = 'admin.png';
 
     } else {
-        applicationDetails = req.body.applicationDetails[0].blobName;
+        applicationDetails = req.body.applicationDetails[0].filename;
         applicationDetails_orgname = req.body.applicationDetails[0].originalname;
-        //console.log("applicationDetails BlobName  " + applicationDetails);
+        //console.log("applicationDetails filename  " + applicationDetails);
         //console.log("applicationDetails orginal name  " + applicationDetails_orgname);
     }
     if (req.body.value.displaystatus != 'APPROVED') {
@@ -4846,7 +4864,7 @@ router.post('/assignexe', function(req, res) {
                                                                                         <tbody>
                                                                                             <tr style="border-collapse:collapse;">
                                                                                                 <td align="center" style="padding:0;Margin:0;">
-                                                                                                    <a href="https://mindfin.co.in" target="_blank" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;font-size:14px;text-decoration:underline;color:#CCCCCC;"><img src="https://mindfinfiles.blob.core.windows.net/mindfin-backend/logo.jpg" alt="Smart home logo" title="Smart home logo" width="109" style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;"></a>
+                                                                                                    <a href="https://mindfin.co.in" target="_blank" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;font-size:14px;text-decoration:underline;color:#CCCCCC;"><img src="http://mindfin.oss-ap-south-1.aliyuncs.com/logo.jpg" alt="Smart home logo" title="Smart home logo" width="109" style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;"></a>
                                                                                                 </td>
                                                                                             </tr>
                                                                                         </tbody>
@@ -4997,7 +5015,7 @@ router.post('/assignexe', function(req, res) {
                                                                                         <tbody>
                                                                                             <tr style="border-collapse:collapse;">
                                                                                                 <td class="es-m-p0l" align="left" style="padding:0;Margin:0;padding-bottom:10px;">
-                                                                                                    <a href="https://mindfin.co.in" target="_blank" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;font-size:13px;text-decoration:underline;color:#333333;"><img src="https://mindfinfiles.blob.core.windows.net/mindfin-backend/logo.jpg" alt="" width="103" style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;"></a>
+                                                                                                    <a href="https://mindfin.co.in" target="_blank" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;font-size:13px;text-decoration:underline;color:#333333;"><img src="http://mindfin.oss-ap-south-1.aliyuncs.com/logo.jpg" alt="" width="103" style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;"></a>
                                                                                                 </td>
                                                                                             </tr>
                                                                                         </tbody>
@@ -5202,7 +5220,7 @@ router.get('/getCallbackformlist/:pagesize/:page', (req, res, next) => {
 router.post('/image-upload', upload.any(), (req, res) => {
     //console.log(req.files)
 
-    // res.json(req.files.blobName)
+    // res.json(req.files.filename)
     return res.json({ 'imageUrl': req.files });
 });
 router.post('/addemployee', (req, res) => {
@@ -5218,19 +5236,19 @@ router.post('/addemployee', (req, res) => {
     if (req.body.cimg == undefined) {
         cimage = 'admin.png';
     } else {
-        cimage = req.body.cimg[0].blobName;
-        //console.log("BlobName  " + cimage);
+        cimage = req.body.cimg[0].filename;
+        //console.log("filename  " + cimage);
     }
     if (req.body.pimg == undefined) {
         pimage = 'admin.png';
     } else {
-        pimage = req.body.pimg[0].blobName;
+        pimage = req.body.pimg[0].filename;
         //console.log(pimage);
     }
     if (req.body.aimg == undefined) {
         aimage = 'admin.png';
     } else {
-        aimage = req.body.aimg[0].blobName;
+        aimage = req.body.aimg[0].filename;
         //console.log(aimage);
     }
     knex('employee')
@@ -5518,7 +5536,7 @@ router.post('/addemployee', (req, res) => {
                                                                     <table width="100%" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
                                                                         <tr style="border-collapse:collapse;">
                                                                             <td align="center" style="padding:0;Margin:0;">
-                                                                                <a target="_blank" href="https://mindfin.co.in" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;font-size:14px;text-decoration:none;color:#1376C8;"><img class="adapt-img" src="https://mindfinfiles.blob.core.windows.net/mindfin-backend/logo.jpg" alt style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;"
+                                                                                <a target="_blank" href="https://mindfin.co.in" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;font-size:14px;text-decoration:none;color:#1376C8;"><img class="adapt-img" src="http://mindfin.oss-ap-south-1.aliyuncs.com/logo.jpg" alt style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;"
                                                                                         width="100"></a>
                                                                             </td>
                                                                         </tr>
@@ -5543,7 +5561,7 @@ router.post('/addemployee', (req, res) => {
                                                                 <td width="620" valign="top" align="center" style="padding:0;Margin:0;">
                                                                     <table style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-position:left top;" width="100%" cellspacing="0" cellpadding="0">
                                                                         <tr style="border-collapse:collapse;">
-                                                                            <td align="center" style="padding:0;Margin:0;padding-top:5px;padding-bottom:5px;"><img src="https://mindfinfiles.blob.core.windows.net/mindfin-backend/login.png" alt style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;"
+                                                                            <td align="center" style="padding:0;Margin:0;padding-top:5px;padding-bottom:5px;"><img src="http://mindfin.oss-ap-south-1.aliyuncs.com/login.png" alt style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;"
                                                                                     width="175"></td>
                                                                         </tr>
                                                                         <tr style="border-collapse:collapse;">
@@ -6100,7 +6118,7 @@ router.post('/suggbox', function(req, res) {
                                                                         </tr>
                                                                         <tr style="border-collapse:collapse;">
                                                                             <td class="es-m-txt-l" align="left" style="padding:0;Margin:0;padding-bottom:10px;">
-                                                                                <a target="_blank" href="https://mindfin.co.in" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;font-size:11px;text-decoration:underline;color:#333333;"><img src="https://mindfinfiles.blob.core.windows.net/mindfin-backend/logo.jpg" alt style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;" width="137"></a>
+                                                                                <a target="_blank" href="https://mindfin.co.in" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;font-size:11px;text-decoration:underline;color:#333333;"><img src="http://mindfin.oss-ap-south-1.aliyuncs.com/logo.jpg" alt style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;" width="137"></a>
                                                                             </td>
                                                                         </tr>
                                                                         <tr style="border-collapse:collapse;">
@@ -6306,7 +6324,7 @@ router.post('/leaveapp', function(req, res) {
                                                     <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
                                                         <!--<![endif]-->
                                                         <div align="center" class="img-container center" style="padding-right: 0px;padding-left: 0px;">
-                                                            <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr style="line-height:0px"><td style="padding-right: 0px;padding-left: 0px;" align="center"><![endif]--><img align="center" alt="Image" border="0" class="center" src="https://mindfinfiles.blob.core.windows.net/mindfin-backend/logo.jpg" style="text-decoration: none; -ms-interpolation-mode: bicubic; border: 0; height: auto; width: 100%; max-width: 248px; display: block;"
+                                                            <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr style="line-height:0px"><td style="padding-right: 0px;padding-left: 0px;" align="center"><![endif]--><img align="center" alt="Image" border="0" class="center" src="http://mindfin.oss-ap-south-1.aliyuncs.com/logo.jpg" style="text-decoration: none; -ms-interpolation-mode: bicubic; border: 0; height: auto; width: 100%; max-width: 248px; display: block;"
                                                                 title="Image" width="248" />
                                                             <!--[if mso]></td></tr></table><![endif]-->
                                                         </div>
@@ -6771,9 +6789,9 @@ router.post('/conves', function(req, res) {
         conImg = 'admin.png';
         orgName = 'admin.png';
     } else {
-        conImg = req.body.catimg[0].blobName;
+        conImg = req.body.catimg[0].filename;
         orgName = req.body.catimg[0].originalname;
-        //console.log("convens BlobName  " + conImg);
+        //console.log("convens filename  " + conImg);
         //console.log("convens orginal name  " + orgName);
     }
     if (req.body.value.catgory == "other") {
@@ -6907,7 +6925,7 @@ router.post('/conves', function(req, res) {
                                                         <!--<![endif]-->
                                                         <div align="center" class="img-container center fixedwidth" style="padding-right: 0px;padding-left: 0px;">
                                                             <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr style="line-height:0px"><td style="padding-right: 0px;padding-left: 0px;" align="center"><![endif]-->
-                                                            <a href="https://mindfin.co.in" style="outline:none" tabindex="-1" target="_blank"> <img align="center" alt="Logo" border="0" class="center fixedwidth" src="https://mindfinfiles.blob.core.windows.net/mindfin-backend/logo.jpg" style="text-decoration: none; -ms-interpolation-mode: bicubic; height: auto; border: none; width: 100%; max-width: 180px; display: block;"
+                                                            <a href="https://mindfin.co.in" style="outline:none" tabindex="-1" target="_blank"> <img align="center" alt="Logo" border="0" class="center fixedwidth" src="http://mindfin.oss-ap-south-1.aliyuncs.com/logo.jpg" style="text-decoration: none; -ms-interpolation-mode: bicubic; height: auto; border: none; width: 100%; max-width: 180px; display: block;"
                                                                     title="Logo" width="180" /></a>
                                                             <!--[if mso]></td></tr></table><![endif]-->
                                                         </div>
@@ -7630,12 +7648,12 @@ router.post('/webleadopenstatus', function(req, res) {
 });
 // router.post('/downloadall', function(req, res) {
 //     var zip = new JSZip();
-//     zip.file("https://mindfinfiles.blob.core.windows.net/mindfin-backend/" + req.body.companykyc);
-//     zip.file("https://mindfinfiles.blob.core.windows.net/mindfin-backend/" + req.body.customerkyc);
-//     zip.file("https://mindfinfiles.blob.core.windows.net/mindfin-backend/" + req.body.bankstatement);
-//     zip.file("https://mindfinfiles.blob.core.windows.net/mindfin-backend/" + req.body.itr);
-//     zip.file("https://mindfinfiles.blob.core.windows.net/mindfin-backend/" + req.body.gstandreturns);
-//     zip.file("https://mindfinfiles.blob.core.windows.net/mindfin-backend/" + req.body.loanstatement);
+//     zip.file("http://mindfin.oss-ap-south-1.aliyuncs.com/" + req.body.companykyc);
+//     zip.file("http://mindfin.oss-ap-south-1.aliyuncs.com/" + req.body.customerkyc);
+//     zip.file("http://mindfin.oss-ap-south-1.aliyuncs.com/" + req.body.bankstatement);
+//     zip.file("http://mindfin.oss-ap-south-1.aliyuncs.com/" + req.body.itr);
+//     zip.file("http://mindfin.oss-ap-south-1.aliyuncs.com/" + req.body.gstandreturns);
+//     zip.file("http://mindfin.oss-ap-south-1.aliyuncs.com/" + req.body.loanstatement);
 
 //     zip.generateAsync({ type: 'nodebuffer', mimeType: "application/zip" })
 //         .then(function(content) {
@@ -7926,7 +7944,7 @@ router.post('/earlygo', function(req, res) {
                                                                         </tr>
                                                                         <tr style="border-collapse:collapse;">
                                                                             <td class="es-m-txt-l" align="left" style="padding:0;Margin:0;padding-bottom:10px;">
-                                                                                <a target="_blank" href="https://mindfin.co.in" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;font-size:11px;text-decoration:underline;color:#333333;"><img src="https://mindfinfiles.blob.core.windows.net/mindfin-backend/logo.jpg" alt style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;" width="137"></a>
+                                                                                <a target="_blank" href="https://mindfin.co.in" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;font-size:11px;text-decoration:underline;color:#333333;"><img src="http://mindfin.oss-ap-south-1.aliyuncs.com/logo.jpg" alt style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;" width="137"></a>
                                                                             </td>
                                                                         </tr>
                                                                         <tr style="border-collapse:collapse;">
@@ -8122,8 +8140,8 @@ router.post('/cimageUpload', (req, res) => {
         cimage = req.body.empid.cimage;
 
     } else {
-        cimage = req.body.cimgupload[0].blobName;
-        //console.log("BlobName  " + cimage);
+        cimage = req.body.cimgupload[0].filename;
+        //console.log("filename  " + cimage);
     }
     knex('employee')
         .where('employee.idemployee', req.body.empid.idemployee)
@@ -8153,9 +8171,9 @@ router.post('/individualNotification', (req, res) => {
         notificationImg_org = req.body.value.notificationImg_org
 
     } else {
-        notificationImg = req.body.notificationImg[0].blobName;
+        notificationImg = req.body.notificationImg[0].filename;
         notificationImg_org = req.body.notificationImg[0].originalname;
-        //console.log("BlobName  " + notificationImg);
+        //console.log("filename  " + notificationImg);
     }
     knex('sendernotifications')
         .insert({
@@ -8234,9 +8252,9 @@ router.post('/generalNotification', (req, res) => {
         notificationImg_org = req.body.value.notificationImg_org
 
     } else {
-        notificationImg = req.body.notificationImg[0].blobName;
+        notificationImg = req.body.notificationImg[0].filename;
         notificationImg_org = req.body.notificationImg[0].originalname;
-        //console.log("BlobName  " + notificationImg);
+        //console.log("filename  " + notificationImg);
     }
     knex('sendernotifications')
         .insert({
@@ -9349,7 +9367,7 @@ router.post('/notify', function(req, res) {
                                                                 <table width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
                                                                     <tbody><tr style="border-collapse:collapse;">
                                                                         <td align="center" style="padding:0;Margin:0;">
-                                                                            <a href="https://mindfin.co.in" target="_blank" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;font-size:14px;text-decoration:underline;color:#CCCCCC;"><img src="https://mindfinfiles.blob.core.windows.net/mindfin-backend/logo.jpg" alt="Smart home logo" title="Smart home logo" width="109" style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;" height="46"></a>
+                                                                            <a href="https://mindfin.co.in" target="_blank" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;font-size:14px;text-decoration:underline;color:#CCCCCC;"><img src="http://mindfin.oss-ap-south-1.aliyuncs.com/logo.jpg" alt="Smart home logo" title="Smart home logo" width="109" style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;" height="46"></a>
                                                                         </td>
                                                                     </tr>
                                                                 </tbody></table>
@@ -9472,7 +9490,7 @@ router.post('/notify', function(req, res) {
                                                                 <table width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
                                                                     <tbody><tr style="border-collapse:collapse;">
                                                                         <td class="es-m-p0l" align="left" style="padding:0;Margin:0;padding-bottom:10px;">
-                                                                            <a href="https://mindfin.co.in" target="_blank" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;font-size:13px;text-decoration:underline;color:#333333;"><img src="https://mindfinfiles.blob.core.windows.net/mindfin-backend/logo.jpg" alt="" width="103" style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;" height="43"></a>
+                                                                            <a href="https://mindfin.co.in" target="_blank" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;font-size:13px;text-decoration:underline;color:#333333;"><img src="http://mindfin.oss-ap-south-1.aliyuncs.com/logo.jpg" alt="" width="103" style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;" height="43"></a>
                                                                         </td>
                                                                     </tr>
                                                                 </tbody></table>
@@ -9857,7 +9875,7 @@ router.post('/removeCase', function(req, res) {
                                                                                     <table width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
                                                                                         <tr style="border-collapse:collapse;">
                                                                                             <td align="center" style="padding:0;Margin:0;">
-                                                                                                <a href="https://mindfin.co.in" target="_blank" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;font-size:14px;text-decoration:underline;color:#CCCCCC;"><img src="https://mindfinfiles.blob.core.windows.net/mindfin-backend/logo.jpg" alt="Smart home logo" title="Smart home logo" width="109" style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;"></a>
+                                                                                                <a href="https://mindfin.co.in" target="_blank" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;font-size:14px;text-decoration:underline;color:#CCCCCC;"><img src="http://mindfin.oss-ap-south-1.aliyuncs.com/logo.jpg" alt="Smart home logo" title="Smart home logo" width="109" style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;"></a>
                                                                                             </td>
                                                                                         </tr>
                                                                                     </table>
@@ -9980,7 +9998,7 @@ router.post('/removeCase', function(req, res) {
                                                                                     <table width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
                                                                                         <tr style="border-collapse:collapse;">
                                                                                             <td class="es-m-p0l" align="left" style="padding:0;Margin:0;padding-bottom:10px;">
-                                                                                                <a href="https://mindfin.co.in" target="_blank" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;font-size:13px;text-decoration:underline;color:#333333;"><img src="https://mindfinfiles.blob.core.windows.net/mindfin-backend/logo.jpg" alt width="103" style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;"></a>
+                                                                                                <a href="https://mindfin.co.in" target="_blank" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;font-size:13px;text-decoration:underline;color:#333333;"><img src="http://mindfin.oss-ap-south-1.aliyuncs.com/logo.jpg" alt width="103" style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;"></a>
                                                                                             </td>
                                                                                         </tr>
                                                                                     </table>
@@ -11006,7 +11024,7 @@ router.post('/addvisitor', function(req, res) {
                                             <!--<![endif]-->
                                             <div align="center" class="img-container center fixedwidth" style="padding-right: 0px;padding-left: 0px;">
                                                 <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr style="line-height:0px"><td style="padding-right: 0px;padding-left: 0px;" align="center"><![endif]-->
-                                                <a href="https://mindfin.co.in/" style="outline:none" tabindex="-1" target="_blank"> <img align="center" alt="Logo" border="0" class="center fixedwidth" src="https://mindfinfiles.blob.core.windows.net/mindfin-backend/logo.jpg" style="text-decoration: none; -ms-interpolation-mode: bicubic; height: auto; border: none; width: 100%; max-width: 224px; display: block;"
+                                                <a href="https://mindfin.co.in/" style="outline:none" tabindex="-1" target="_blank"> <img align="center" alt="Logo" border="0" class="center fixedwidth" src="http://mindfin.oss-ap-south-1.aliyuncs.com/logo.jpg" style="text-decoration: none; -ms-interpolation-mode: bicubic; height: auto; border: none; width: 100%; max-width: 224px; display: block;"
                                                         title="Logo" width="224" /></a>
                                                 <!--[if mso]></td></tr></table><![endif]-->
                                             </div>
@@ -11607,7 +11625,7 @@ router.post('/respondVisitor', function(req, res) {
                                                         </div>
                                                         <!--[if mso]></td></tr></table><![endif]-->
                                                         <div align="left" class="img-container left fixedwidth" style="padding-right: 0px;padding-left: 0px;">
-                                                            <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr style="line-height:0px"><td style="padding-right: 0px;padding-left: 0px;" align="left"><![endif]--><img alt="Alternate text" border="0" class="left fixedwidth" src="https://mindfinfiles.blob.core.windows.net/mindfin-backend/logo.jpg" style="text-decoration: none; -ms-interpolation-mode: bicubic; border: 0; height: auto; width: 100%; max-width: 150px; display: block;"
+                                                            <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr style="line-height:0px"><td style="padding-right: 0px;padding-left: 0px;" align="left"><![endif]--><img alt="Alternate text" border="0" class="left fixedwidth" src="http://mindfin.oss-ap-south-1.aliyuncs.com/logo.jpg" style="text-decoration: none; -ms-interpolation-mode: bicubic; border: 0; height: auto; width: 100%; max-width: 150px; display: block;"
                                                                 title="Alternate text" width="150" />
                                                             <!--[if mso]></td></tr></table><![endif]-->
                                                         </div>
