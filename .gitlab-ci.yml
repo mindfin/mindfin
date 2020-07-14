@@ -6,7 +6,7 @@ before_script:
 
 stages:
   - deploy
-
+# //testing
 deploy:dev:
   stage: deploy
   script:
