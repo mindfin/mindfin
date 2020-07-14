@@ -23,7 +23,7 @@ import { TabHeadingDirective } from 'ngx-bootstrap/tabs';
 })
 
 export class CommonService {
-  commonurl = 'http://test.mindfin.co.in';
+  commonurl = 'https://bank.mindfin.co.in';
   idleState = 'Not started.';
   timedOut = false;
   lastPing?: Date = null;
