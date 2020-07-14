@@ -10,7 +10,7 @@ rm -rf /home/mindfinadmin/mindfin
 
 echo "clone repo"
 # clone the repo again
-git clone git@gitlab.com:mindfin1/mindfin.git /root/mindfin/mindfin 
+git clone git@gitlab.com:mindfin1/mindfin.git /home/mindfinadmin/mindfin 
 
 
 
@@ -21,18 +21,16 @@ git clone git@gitlab.com:mindfin1/mindfin.git /root/mindfin/mindfin
 
 # stop the previous pm2
 echo "pm2 stop mindfin-webapp"
-pm2 stop mindfin-webapp
+/home/mindfinadmin/.nvm/versions/node/v10.13.0/bin/pm2 stop mindfin-webapp
 
 echo "changeing to mindfin"
-cd /root/mindfin/mindfin
+cd /home/mindfinadmin/mindfin
 
 #install npm packages
 echo "Running npm install"
-npm install
-echo "Running ng build"
-npm run postinstall
+/home/mindfinadmin/.nvm/versions/node/v10.13.0/bin/npm install
 
 
 echo "pm2 start"
 #Restart the node server
-pm2 start mindfin-webapp
+/home/mindfinadmin/.nvm/versions/node/v10.13.0/bin/pm2 start mindfin-webapp
