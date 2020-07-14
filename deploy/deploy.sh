@@ -27,7 +27,7 @@ for server in "${ALL_SERVERS[@]}"
 do
 echo "deploying to ${server}"
 
-ssh mindfinadmin@${server} 'bash -s' < ./deploy/updateAndRestart.sh
+ssh root@${server} 'bash -s' < ./deploy/updateAndRestart.sh
 
 done
 
