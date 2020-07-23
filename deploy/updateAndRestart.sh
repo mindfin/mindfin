@@ -32,4 +32,4 @@ npm install
 
 echo "pm2 start"
 #Restart the node server
-pm2 -- start --name midfin_test
+pm2 -- start --name mindfin_live
