@@ -1,5 +1,5 @@
 #!/bin/bash
-
+export PATH=$PATH:/home/anantaloop/.nvm/versions/node/v10.12.0/bin/
 # any future command that fails will exit the script
 set -e
 
@@ -21,7 +21,7 @@ git clone git@gitlab.com:mindfin1/mindfin.git ~/mindfin/mindfin
 
 # stop the previous pm2
 echo "pm2 stop mindfin_live"
-/home/anantaloop/.nvm/versions/node/v10.12.0/bin/pm2 stop mindfin_live
+pm2 stop mindfin_live
 
 echo "changeing to mindfin"
 cd ~/mindfin/mindfin
@@ -32,4 +32,4 @@ npm install
 
 echo "pm2 start"
 #Restart the node server
-/home/anantaloop/.nvm/versions/node/v10.12.0/bin/pm2 -- start --name mindfin_live
+pm2 start mindfin_live
