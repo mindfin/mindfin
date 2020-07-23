@@ -27,7 +27,7 @@ for server in "${ALL_SERVERS[@]}"
 do
 echo "deploying to ${server}"
 
-ssh root@${server} 'bash -s' < ./deploy/updateAndRestart.sh
+ssh anantaloop@${server} 'bash -s' < ./deploy/updateAndRestart.sh
 
 done
 
