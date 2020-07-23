@@ -6,11 +6,11 @@ set -e
 
 echo "remove repo"
 # Delete the old repo
-rm -rf /root/mindfin/mindfin
+rm -rf ~/mindfin/mindfin
 
 echo "clone repo"
 # clone the repo again
-git clone git@gitlab.com:mindfin1/mindfin.git /root/mindfin/mindfin 
+git clone git@gitlab.com:mindfin1/mindfin.git ~/mindfin/mindfin 
 
 
 
@@ -20,20 +20,16 @@ git clone git@gitlab.com:mindfin1/mindfin.git /root/mindfin/mindfin
 #source /home/ubuntu/.nvm/nvm.sh
 
 # stop the previous pm2
-echo "pm2 stop mindfin-webapp"
-/root/.nvm/versions/node/v10.13.0/bin/pm2 stop mindfin-webapp
+echo "pm2 stop mindfin_live"
+pm2 stop mindfin_live
 
 echo "changeing to mindfin"
-cd /home/mindfinadmin/mindfin
+cd ~/mindfin/mindfin
 
 #install npm packages
 echo "Running npm install"
-/root/.nvm/versions/node/v10.13.0/bin/npm install
-
-echo "Running ng build"
-/root/.nvm/versions/node/v10.13.0/bin/npm run postinstall
-
+npm install
 
 echo "pm2 start"
 #Restart the node server
-/root/.nvm/versions/node/v10.13.0/bin/pm2 start mindfin-webapp
+pm2 start mindfin_live
