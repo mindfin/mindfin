@@ -8,10 +8,11 @@ import { BackendBankapplyComponent } from './backendbankapply.component';
 import { ViewBankStatusComponent } from './viewbankstatus.component';
 import { StatusComponent } from './status.component';
 import { EditBackendComponent } from './editbackend.component';
-import { CheckCaseComponent } from './checkcase.component';
 import { BackendDailyRoutineComponent } from './backenddailyroutine.component';
 import { BackendDailyRoutineviewComponent } from './backendviewdailyroutine.component';
 import { BackendDailyRoutineEditComponent } from './backenddailyroutineedit.component';
+import { TeamHeadCheckCaseComponent } from './teamHeadcheckcase.component';
+import { CheckCaseComponent } from './checkcase.component';
 const routes: Routes = [
   {
     path: 'document',
@@ -44,6 +45,13 @@ const routes: Routes = [
   {
     path: 'checkcase',
     component: CheckCaseComponent,
+    data: {
+      title: 'Check Case'
+    }
+  },
+  {
+    path: 'teamcheckcase',
+    component: TeamHeadCheckCaseComponent,
     data: {
       title: 'Check Case'
     }

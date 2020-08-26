@@ -4,7 +4,10 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { CommonModule } from '@angular/common';
-import {MatDatepickerModule, MatNativeDateModule, MatInputModule,MatFormFieldModule, MatPaginatorModule, MatSortModule, MatTableModule, MatProgressSpinnerModule, MatBadgeModule, MatButtonModule, MatButtonToggleModule, MatDialogModule} from '@angular/material';
+import {MatDatepickerModule, MatNativeDateModule, MatInputModule,
+  MatFormFieldModule, MatPaginatorModule, MatSortModule, MatTableModule,
+   MatProgressSpinnerModule, MatBadgeModule, MatButtonModule,
+    MatButtonToggleModule, MatDialogModule,MatIconModule} from '@angular/material';
 import { CdkTableModule } from '@angular/cdk/table';
 import { ReportsRoutingModule } from './reports-routing.module';
 import { LoginReportComponent } from './loginreport.component';
@@ -28,7 +31,7 @@ import { SuperAdminTeledataNoFollowUplistComponent, AssignDialogContent6 } from 
 import { SuperAdminTeledataNotOpenedlistComponent, AssignDialogContent7 } from './superadminteledatanotopenlist.component';
 import { SuperAdminTeledataRejectlistComponent, AssignDialogContent8 } from './superadminteledatarejectlist.component';
 import { BackendRoutineComponent } from './backendroutine.component';
-
+import { TeleRoutineComponent } from './teleroutine.component';
 
 
 
@@ -58,7 +61,7 @@ import { BackendRoutineComponent } from './backendroutine.component';
     MatTableModule,
     MatDialogModule,
     ModalModule.forRoot(),
-    BsDatepickerModule.forRoot()
+    BsDatepickerModule.forRoot(), MatIconModule
 
   ],
   declarations: [LoginReportComponent,BackendReportComponent,DataentryReportComponent
@@ -69,7 +72,7 @@ import { BackendRoutineComponent } from './backendroutine.component';
     SuperAdminTeledataNoFollowUplistComponent,SuperAdminTeledataNotOpenedlistComponent,SuperAdminTeledataRejectlistComponent,
     AssignDialogContent,AssignDialogContent1,AssignDialogContent2,
     AssignDialogContent3,AssignDialogContent4,AssignDialogContent5,AssignDialogContent6,AssignDialogContent7,
-    AssignDialogContent8,AssignDialogContent9,BackendRoutineComponent],
+    AssignDialogContent8,AssignDialogContent9,BackendRoutineComponent,TeleRoutineComponent],
   entryComponents: [AssignDialogContent,AssignDialogContent1,AssignDialogContent2,
     AssignDialogContent3,AssignDialogContent4,AssignDialogContent5,AssignDialogContent6,AssignDialogContent7,
     AssignDialogContent8,AssignDialogContent9]

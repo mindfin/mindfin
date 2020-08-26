@@ -7,7 +7,10 @@ import {BackendRoutingModule } from './backend-routing.module';
 import { CommonModule } from '@angular/common';
 import { BackendComponent } from './backend.component';
 import { BackendViewComponent, ViewDialogContent } from './backendview.component';
-import {MatDatepickerModule, MatNativeDateModule, MatInputModule,MatFormFieldModule, MatPaginatorModule, MatSortModule, MatTableModule, MatProgressSpinnerModule, MatBadgeModule, MatButtonModule, MatButtonToggleModule, MatDialogModule} from '@angular/material';
+import {MatDatepickerModule, MatNativeDateModule, MatInputModule,
+  MatFormFieldModule, MatPaginatorModule, MatSortModule, MatTableModule, 
+  MatProgressSpinnerModule, MatBadgeModule, MatButtonModule, MatButtonToggleModule,
+   MatDialogModule, MatIconModule} from '@angular/material';
 import { CdkTableModule } from '@angular/cdk/table';
 import { BackendBankapplyComponent } from './backendbankapply.component';
 import { ViewBankStatusComponent, ViewDialogContent1 } from './viewbankstatus.component';
@@ -18,6 +21,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { BackendDailyRoutineComponent } from './backenddailyroutine.component';
 import { BackendDailyRoutineviewComponent } from './backendviewdailyroutine.component';
 import { BackendDailyRoutineEditComponent } from './backenddailyroutineedit.component';
+import { TeamHeadCheckCaseComponent, AddTenureDialogContent } from './teamHeadcheckcase.component';
 @NgModule({
   imports: [
     FormsModule,
@@ -40,16 +44,18 @@ import { BackendDailyRoutineEditComponent } from './backenddailyroutineedit.comp
     MatTableModule,
     MatDialogModule,
     ModalModule.forRoot(),
-    BsDatepickerModule.forRoot()
+    BsDatepickerModule.forRoot(),
+    MatIconModule
 
   ],
   declarations: [ BackendComponent,BackendViewComponent,ViewDialogContent,ViewDialogContent1,
     BackendBankapplyComponent, ViewBankStatusComponent,StatusComponent,EditBackendComponent
     ,CheckCaseComponent,EditDialogContent1,BackendDailyRoutineComponent,
-    BackendDailyRoutineviewComponent,BackendDailyRoutineEditComponent
+    BackendDailyRoutineviewComponent,BackendDailyRoutineEditComponent,TeamHeadCheckCaseComponent,
+    AddTenureDialogContent
 
   ],
-  entryComponents: [ViewDialogContent,ViewDialogContent1,EditDialogContent1
+  entryComponents: [ViewDialogContent,ViewDialogContent1,EditDialogContent1,AddTenureDialogContent
   ]
 })
 export class BackendModule { }

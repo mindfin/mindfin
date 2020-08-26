@@ -1,38 +1,38 @@
 export const navItems3 = [
-    {
-      name: 'DASHBOARD',
-      url: '/dashboard/dataentry',
-      icon: 'fa fa-tachometer',
-      badge: {
-        variant: 'info',
-      }
-    },
-    // {
-    //   name: 'My Profile',
-    //   url: '/notification/profilesettings',
-    //   icon: 'fa fa-address-book-o',
-    // },
-    {
-      name: 'Check Customer',
-      url: '/backend/checkcase',
-      icon: 'icon-user-following'
-    },
-    
-    {
-        name: 'Customer Documents Upload',
-        url: '/backend/document',
-        icon: 'fa fa-cloud-upload',
-       },
-    {
-      name: 'Customer List',
-      url: '/members/viewcustomer',
-      icon: 'fa fa-handshake-o'
-    },
-    // {
-    //   name: 'Disbursed List',
-    //   url: '/members/disbursed',
-    //   icon: 'icon-user-following'
-    // },
+  {
+    name: 'DASHBOARD',
+    url: '/dashboard/dataentry',
+    icon: 'fa fa-tachometer',
+    badge: {
+      variant: 'info',
+    }
+  },
+  // {
+  //   name: 'My Profile',
+  //   url: '/notification/profilesettings',
+  //   icon: 'fa fa-address-book-o',
+  // },
+  {
+    name: 'Check Customer',
+    url: '/members/datacheckcase',
+    icon: 'icon-user-following'
+  },
+  
+  {
+      name: 'Customer Documents Upload',
+      url: '/backend/document',
+      icon: 'fa fa-cloud-upload',
+     },
+  {
+    name: 'Customer List',
+    url: '/members/viewcustomer',
+    icon: 'fa fa-handshake-o'
+  },
+  // {
+  //   name: 'Disbursed List',
+  //   url: '/members/disbursed',
+  //   icon: 'icon-user-following'
+  // },
 // {
 //     name: 'ADD CUSTOMER',
 //     url: '/members/add',
@@ -43,7 +43,7 @@ export const navItems3 = [
 //         url: '/members/approval',
 //         icon: 'fa fa-sign-in'
 //       },
-     
+   
 //       { 
 //         name: 'PD LIST',
 //         url: '/members/pdlist',
@@ -61,21 +61,21 @@ export const navItems3 = [
 //         url: '/members/disbursed',
 //         icon: 'icon-user-following'
 //       },
-     
+   
 //       {
 //         name: 'CUSTOMER BANK LIST',
 //         url: '/members/completlist',
 //         icon: 'fa fa-user-times'
 //       },
-      // {
-      //   name: 'BANK REJECTED LIST',
-      //   url: '/members/bankreject',
-      //   icon: 'fa fa-university'
-      // },
-      {
-        name:'CHANGE PASSWORD',
-        url:'/member/changepwd',
-        icon:'icon-settings'
-    }
-  ];
-  
+    // {
+    //   name: 'BANK REJECTED LIST',
+    //   url: '/members/bankreject',
+    //   icon: 'fa fa-university'
+    // },
+    {
+      name:'CHANGE PASSWORD',
+      url:'/member/changepwd',
+      icon:'icon-settings'
+  }
+];
+

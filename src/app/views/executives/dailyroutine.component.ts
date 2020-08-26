@@ -53,10 +53,10 @@ export class DailyRoutineComponent implements OnInit {
       arr: this.array,
       idvalue: this.idvalue
     }
-    this.service.addroutine(this.vvv);
-    //   .subscribe(res=>{
-    //    window.location.reload();
-    //  })
+    this.service.addroutine(this.vvv)
+      .subscribe(res=>{ alert("Daily Routine Added Successfully")
+        this.router.navigate(['/executives/dailyroutineview']);
+     })
   }
 
   // onSubmit() {
@@ -90,8 +90,7 @@ export class DailyRoutineComponent implements OnInit {
     console.log(pro);
     this.model = pro;
   }
-  removevalue(pro,index)
-{
+  removevalue(pro,index){
   console.log(index);
   this.array.splice(index,1);
 

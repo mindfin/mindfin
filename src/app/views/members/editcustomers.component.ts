@@ -32,6 +32,7 @@ fetchData1:any;
 fetchData2:any;
 fetchData5:any;
 fetchData6:any;
+fetchData7:any;
 dob:any;
 idvalue;
 tempval1:any;
@@ -73,6 +74,7 @@ imageURL$: string;
 myfields: any = [];
 value1: any;
 abc: any;
+designation:any;
 // options: User[] = this.val;
 // filteredOptions: Observable<User[]>;
 
@@ -98,7 +100,10 @@ ngOnInit() {
   this.commonservice.getemployeetypelist().subscribe(res=>{
     this.fetchData6=res;
   });
-
+  this.commonservice.getnatureofbusinesslist().subscribe(res=>{
+    console.log(res);
+    this.fetchData7 = res;
+  });
   this.commonservice.getexecutivelist().subscribe(res=>{
     this.fetchData1 = [];
     console.log(res);
@@ -121,7 +126,10 @@ ngOnInit() {
   });
 
 }
-
+onChange3(event){
+  console.log(event);
+ this.designation= event
+}
 onChange(event){
   console.log(event);
  this.loantype= event
