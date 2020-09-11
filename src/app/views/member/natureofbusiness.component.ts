@@ -23,7 +23,6 @@ model: any = {};
       console.log(res);
       alert("Updated Successfully");
       
-      this.model=''
       this.ngOnInit()
 
     });

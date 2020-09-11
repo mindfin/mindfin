@@ -36,8 +36,8 @@ var now = new Date()
 const aliOssStorage = MAO({
     config: {
         region: 'oss-ap-south-1',
-        accessKeyId: 'LTAI4GGoAKC67ZwLrJZ2jgeD',
-        accessKeySecret: 'JNF52oPMNo2dQ23Ce7PFX9QTMhebxO',
+        accessKeyId: 'LTAI4GBkVnr5k1VWnsmdyHmn',
+        accessKeySecret: 'HH5AqRxsyKouhgHGumggasr4YYIPt7',
         bucket: 'mindfin-files',
     }
 });
