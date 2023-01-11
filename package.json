@@ -54,7 +54,7 @@
         "generate-password": "^1.4.2",
         "implode": "^2.0.1",
         "install": "^0.12.2",
-        "knex": "^0.19.5",
+        "knex": "^2.4.0",
         "macaddress": "^0.2.9",
         "moment": "^2.24.0",
         "mssql": "^4.3.7",
